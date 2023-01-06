@@ -23,7 +23,7 @@ macro(ADD_MY_TEST testname testsrc)
         Qt5::Xml
         Qt5::Widgets
         Qt5::Test
-        viewshed
+        ${LIB_NAME}
     )
     add_test(${testname} ${testname} -maxwarnings 10000)
 endmacro(ADD_MY_TEST)
