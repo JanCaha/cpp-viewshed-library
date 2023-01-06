@@ -1,6 +1,9 @@
 #ifndef MEMORYRASTER_H
 #define MEMORYRASTER_H
 
+#include <cmath>
+#include <limits>
+
 #include "qgis.h"
 #include "qgscoordinatereferencesystem.h"
 #include "qgsrasterdataprovider.h"
@@ -13,9 +16,9 @@ class MemoryRaster
 
   public:
     MemoryRaster( std::shared_ptr<QgsRasterLayer> rasterTemplate, Qgis::DataType dataType = Qgis::DataType::Float32,
-                  double defaultValue = 0 );
+                  double defaultValue = std::numeric_limits<double>::quiet_NaN() );
 
-    std::shared_ptr<QgsRasterDataProvider> dataProvider();
+    std::unique_ptr<QgsRasterDataProvider> dataProvider();
 
     bool save( QString fileName );
     const int height();
@@ -26,23 +29,23 @@ class MemoryRaster
     const int defaultBand();
 
     bool isValid();
-    bool setValue( const double &value, const int &col, const int &row );
-    bool setValues( std::shared_ptr<QgsRasterBlock> values, const int rowOffset = 0, const int colOffset = 0 );
+    QString error();
+    bool setValue( double value, int col, int row );
 
   private:
-    std::shared_ptr<QgsRasterDataProvider> mDataProvider;
-    std::unique_ptr<QgsRasterBlock> mRasterBlock;
+    std::unique_ptr<QgsRasterBlock> mRasterData;
     QgsCoordinateReferenceSystem mCrs;
     QgsRectangle mExtent;
     Qgis::DataType mDataType;
-    QString mRasterFilename;
     int mHeight;
     int mWidth;
     double mNoDataValue;
     int mDefaultBand = 1;
     bool mValid;
+    QString mError;
 
     QString randomName( int length = 16 );
+    void prefillValues( double value );
 };
 
 #endif
