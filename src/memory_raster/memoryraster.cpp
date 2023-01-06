@@ -151,7 +151,6 @@ const int MemoryRaster::defaultBand() { return 1; }
 bool MemoryRaster::setValue( double value, int col, int row )
 {
     bool success = mRasterData->setValue( row, col, value );
-
     return success;
 }
 
