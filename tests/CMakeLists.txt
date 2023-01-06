@@ -1,5 +1,3 @@
-include(CTest)
-enable_testing(true)
 find_package(Qt5Test REQUIRED)
 
 set(TEST_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data")
