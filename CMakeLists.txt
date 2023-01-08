@@ -58,7 +58,7 @@ set(MINIMAL_QGIS_LIBS
     Qt5::Widgets
 )
 
-set(HEADERS
+set(PUBLIC_HEADERS
     include/viewshead/enums.h
     include/viewshead/event.h
     include/viewshead/iviewshedalgorithm.h
@@ -86,6 +86,8 @@ add_library(${LIB_NAME} SHARED
 
 set_target_properties(${LIB_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${LIB_NAME} PROPERTIES SOVERSION 1)
+
+set_target_properties(${LIB_NAME} PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
 
 target_include_directories(${LIB_NAME} PUBLIC include/viewshead)
 
