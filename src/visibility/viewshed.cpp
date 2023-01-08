@@ -1,5 +1,7 @@
 #include <functional>
 
+#include <QElapsedTimer>
+
 #include "viewshed.h"
 #include "visibility.h"
 
@@ -148,15 +150,12 @@ void Viewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_,
     result.save( fileName );
 }
 
-void Viewshed::parseEventList()
+void Viewshed::parseEventList( std::function<void( int size, int current )> progressCallback )
 {
     int i = 0;
     for ( Event e : eventList )
     {
-        if ( i % 10000 == 0 )
-        {
-            qDebug() << ( i / (double)eventList.size() ) * 100 << "%";
-        }
+        progressCallback( eventList.size(), i );
 
         StatusNode sn;
         switch ( e.eventType )
@@ -281,4 +280,30 @@ bool Viewshed::checkInsideAngle( double eventEnterAngle, double eventExitAngle )
     }
 
     return false;
+}
+
+void Viewshed::calculate( std::function<void( std::string, double )> stepsTimingCallback,
+                          std::function<void( int size, int current )> progressCallback )
+{
+    QElapsedTimer timer;
+
+    timer.start();
+
+    initEventList();
+
+    stepsTimingCallback( "Init event list lasted: ", timer.elapsed() / 1000.0 );
+
+    timer.restart();
+
+    sortEventList();
+
+    stepsTimingCallback( "Sort event list lasted: ", timer.elapsed() / 1000.0 );
+
+    prefillStatusList();
+
+    timer.restart();
+
+    parseEventList( progressCallback );
+
+    stepsTimingCallback( "Parese of event list lasted: ", timer.elapsed() / 1000.0 );
 }

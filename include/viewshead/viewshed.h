@@ -23,10 +23,15 @@ class Viewshed
     void initEventList();
     void sortEventList();
     void prefillStatusList();
-    void parseEventList();
+    void parseEventList( std::function<void( int, int )> progressCallback = []( int, int ) {} );
     void extractValuesFromEventList();
     void extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
                                      std::function<double( StatusNode )> func );
+
+    void calculate(
+        std::function<void( std::string, double )> stepsTimingCallback = []( std::string text, double time )
+        { qDebug() << QString::fromStdString( text ) << time; },
+        std::function<void( int, int )> progressCallback = []( int, int ) {} );
 
     bool checkInsideAngle( double eventEnterAngle, double eventExitAngle );
 
