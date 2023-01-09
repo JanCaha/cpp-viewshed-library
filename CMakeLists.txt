@@ -103,7 +103,10 @@ install(TARGETS ${LIB_NAME}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
+include(Packing)
+
 include(CTest)
 enable_testing(true)
+add_subdirectory(tests)
 
 add_subdirectory(tests)
