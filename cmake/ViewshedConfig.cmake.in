@@ -1,0 +1,8 @@
+set(Viewshed x.y.z)
+
+@PACKAGE_INIT@
+
+set_and_check(VIEWSHED_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
+set_and_check(VIEWSHED_SYSCONFIG_DIR "@PACKAGE_SYSCONFIG_INSTALL_DIR@")
+
+check_required_components(Viewshed)

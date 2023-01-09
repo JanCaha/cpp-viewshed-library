@@ -109,4 +109,26 @@ include(CTest)
 enable_testing(true)
 add_subdirectory(tests)
 
-add_subdirectory(tests)
+# https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
+set(INCLUDE_INSTALL_DIR include/)
+set(SYSCONFIG_INSTALL_DIR lib/)
+
+# ...
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/Viewshed/cmake
+    PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR
+)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
+)
