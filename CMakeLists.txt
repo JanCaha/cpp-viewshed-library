@@ -110,8 +110,8 @@ enable_testing(true)
 add_subdirectory(tests)
 
 # https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
-set(INCLUDE_INSTALL_DIR include/)
-set(SYSCONFIG_INSTALL_DIR lib/)
+set(INCLUDE_INSTALL_DIR include/viewshed)
+set(SYSCONFIG_INSTALL_DIR lib/libviewshed.so)
 
 # ...
 include(CMakePackageConfigHelpers)
