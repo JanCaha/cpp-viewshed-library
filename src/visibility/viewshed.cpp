@@ -34,6 +34,8 @@ Viewshed::Viewshed( std::shared_ptr<ViewPoint> vp, std::shared_ptr<QgsRasterLaye
                                                             mInputDem->dataProvider()->sourceNoDataValue( 1 ) ) );
     }
 
+    mThreadPool.reset( mThreadPool.get_thread_count() - 1 );
+
     mValid = true;
 }
 
