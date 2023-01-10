@@ -32,3 +32,4 @@ endmacro(ADD_MY_TEST)
 # Tests:
 ADD_MY_TEST(testviewpoint testviewpoint.cpp)
 ADD_MY_TEST(testmemoryraster testmemoryraster.cpp)
+ADD_MY_TEST(testlos testlos.cpp)
