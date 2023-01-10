@@ -6,13 +6,15 @@
 #include "iviewshedalgorithm.h"
 #include "points.h"
 #include "statusnode.h"
+#include "viewshedvalues.h"
 
 class LoSEvaluator
 {
   public:
     LoSEvaluator( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs );
 
-    void calculate( std::vector<StatusNode> &statusNodes, StatusNode &poi, std::shared_ptr<ViewPoint> vp );
+    void calculate( std::vector<StatusNode> &statusNodes, std::shared_ptr<StatusNode> poi,
+                    std::shared_ptr<ViewPoint> vp );
     void reset();
 
     int size();
@@ -28,13 +30,15 @@ class LoSEvaluator
     int mCountHorizonBefore = 0;
     int mCountHorizon = 0;
 
+    ViewshedValues mResultValues = ViewshedValues( 0, 0 );
+
     std::vector<double> mResults;
-    double resultAt( int i );
+    // double resultAt( int i );
 
   private:
     std::vector<std::shared_ptr<IViewshedAlgorithm>> mAlgs;
 
-    void parseNodes( std::vector<StatusNode> &statusNodes, StatusNode &poi );
+    void parseNodes( std::vector<StatusNode> &statusNodes, std::shared_ptr<StatusNode> poi );
 };
 
 #endif

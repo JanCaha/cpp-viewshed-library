@@ -6,7 +6,7 @@ int LoSEvaluator::size() { return mAlgs.size(); }
 
 std::shared_ptr<IViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { return mAlgs.at( i ); }
 
-void LoSEvaluator::parseNodes( std::vector<StatusNode> &statusNodes, StatusNode &poi )
+void LoSEvaluator::parseNodes( std::vector<StatusNode> &statusNodes, std::shared_ptr<StatusNode> poi )
 {
     StatusNode sn;
     StatusNode snNext;
@@ -16,21 +16,21 @@ void LoSEvaluator::parseNodes( std::vector<StatusNode> &statusNodes, StatusNode 
     {
         sn = statusNodes.at( i );
 
-        if ( sn == poi )
+        if ( sn == *poi.get() )
         {
             mIndexPoi = i;
         }
 
-        snGradient = sn.valueAtAngle( poi.centreAngle(), ValueType::Gradient );
+        snGradient = sn.valueAtAngle( poi->centreAngle(), ValueType::Gradient );
 
         if ( i + 1 < statusNodes.size() )
         {
             snNext = statusNodes.at( i + 1 );
 
-            if ( snNext.centreDistance() < poi.centreDistance() )
+            if ( snNext.centreDistance() < poi->centreDistance() )
             {
                 if ( mMaxGradientBefore < snGradient &&
-                     snNext.valueAtAngle( poi.centreAngle(), ValueType::Gradient ) < snGradient )
+                     snNext.valueAtAngle( poi->centreAngle(), ValueType::Gradient ) < snGradient )
                 {
                     mIndexHorizonBefore = i;
                     mCountHorizonBefore++;
@@ -38,14 +38,14 @@ void LoSEvaluator::parseNodes( std::vector<StatusNode> &statusNodes, StatusNode 
             }
 
             if ( mMaxGradient < snGradient &&
-                 snNext.valueAtAngle( poi.centreAngle(), ValueType::Gradient ) < snGradient )
+                 snNext.valueAtAngle( poi->centreAngle(), ValueType::Gradient ) < snGradient )
             {
                 mIndexHorizon = i;
                 mCountHorizon++;
             }
         }
 
-        if ( sn.centreDistance() < poi.centreDistance() )
+        if ( sn.centreDistance() < poi->centreDistance() )
         {
             if ( mMaxGradientBefore < snGradient )
             {
@@ -62,22 +62,26 @@ void LoSEvaluator::parseNodes( std::vector<StatusNode> &statusNodes, StatusNode 
 
         for ( int j = 0; j < mAlgs.size(); j++ )
         {
-            mAlgs.at( j )->extractValues( sn, poi, i );
+            mAlgs.at( j )->extractValues( sn, *poi.get(), i );
         }
     }
 }
 
-void LoSEvaluator::calculate( std::vector<StatusNode> &statusNodes, StatusNode &poi, std::shared_ptr<ViewPoint> vp )
+void LoSEvaluator::calculate( std::vector<StatusNode> &statusNodes, std::shared_ptr<StatusNode> poi,
+                              std::shared_ptr<ViewPoint> vp )
 {
     parseNodes( statusNodes, poi );
 
+    mResultValues = ViewshedValues( poi->row, poi->col );
+
     for ( int i = 0; i < mAlgs.size(); i++ )
     {
-        mResults.push_back( mAlgs.at( i )->result( this, statusNodes, poi, vp ) );
+        mResultValues.values.push_back( mAlgs.at( i )->result( this, statusNodes, *poi.get(), vp ) );
+        // mResults.push_back( mAlgs.at( i )->result( this, statusNodes, poi, vp ) );
     }
 }
 
-double LoSEvaluator::resultAt( int i ) { return mResults.at( i ); }
+// double LoSEvaluator::resultAt( int i ) { return mResults.at( i ); }
 
 void LoSEvaluator::reset()
 {

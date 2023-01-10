@@ -7,7 +7,7 @@
 
 Viewshed::Viewshed( std::shared_ptr<ViewPoint> vp, std::shared_ptr<QgsRasterLayer> dem,
                     std::vector<std::shared_ptr<IViewshedAlgorithm>> algs, double minimalAngle, double maximalAngle )
-    : mLosEvaluator( algs ), mVp( std::move( vp ) ), mInputDem( std::move( dem ) )
+    : mLosEvaluator( algs ), mVp( std::move( vp ) ), mInputDem( std::move( dem ) ), mAlgs( algs )
 {
     mValid = false;
 
@@ -191,7 +191,8 @@ void Viewshed::parseEventList( std::function<void( int size, int current )> prog
             }
             case CellPosition::CENTER:
             {
-                sn = StatusNode( mVp, &e, mCellSize );
+                // sn = StatusNode( mVp, &e, mCellSize );
+                std::shared_ptr<StatusNode> poi = std::make_shared<StatusNode>( mVp, &e, mCellSize );
 
                 if ( mVp->row == sn.row && mVp->col == sn.col )
                 {
@@ -202,20 +203,38 @@ void Viewshed::parseEventList( std::function<void( int size, int current )> prog
                     break;
                 }
 
-                std::sort( statusList.begin(), statusList.end() );
+                mResultPixels.push_back( mThreadPool.submit( taskVisibility, mAlgs, statusList, poi, mVp ) );
 
-                mLosEvaluator.reset();
-                mLosEvaluator.calculate( statusList, sn, mVp );
-
-                for ( int j = 0; j < mLosEvaluator.size(); j++ )
-                {
-                    mResults.at( j )->setValue( mLosEvaluator.resultAt( j ), sn.col, sn.row );
-                }
                 break;
             }
         }
         i++;
     }
+
+    ViewshedValues rasterValues( 0, 0 );
+
+    for ( int i = 0; i < mResultPixels.size(); i++ )
+    {
+        rasterValues = mResultPixels[i].get();
+
+        for ( int j = 0; j < rasterValues.values.size(); j++ )
+        {
+            mResults.at( j )->setValue( rasterValues.values.at( j ), rasterValues.col, rasterValues.row );
+        }
+    }
+}
+
+ViewshedValues taskVisibility( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
+                               std::vector<StatusNode> statusList, std::shared_ptr<StatusNode> poi,
+                               std::shared_ptr<ViewPoint> vp )
+{
+    std::sort( statusList.begin(), statusList.end() );
+
+    LoSEvaluator losEval( algs );
+
+    losEval.calculate( statusList, poi, vp );
+
+    return losEval.mResultValues;
 }
 
 std::shared_ptr<MemoryRaster> Viewshed::resultRaster( int index ) { return mResults.at( index ); }

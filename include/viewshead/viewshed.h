@@ -13,6 +13,7 @@
 #include "points.h"
 #include "position.h"
 #include "statusnode.h"
+#include "viewshedvalues.h"
 
 class Viewshed
 {
@@ -49,6 +50,7 @@ class Viewshed
     std::vector<Event> eventList;
     std::shared_ptr<QgsRasterLayer> mInputDem;
     std::shared_ptr<ViewPoint> mVp;
+    std::vector<std::shared_ptr<IViewshedAlgorithm>> mAlgs;
     Qgis::DataType dataType = Qgis::DataType::Float64;
     int mDefaultBand = 1;
 
@@ -59,8 +61,13 @@ class Viewshed
     double mValid;
 
     BS::thread_pool mThreadPool;
+    BS::multi_future<ViewshedValues> mResultPixels;
 
     std::vector<std::shared_ptr<MemoryRaster>> mResults;
 
     double getCornerValue( const Position &pos, const std::unique_ptr<QgsRasterBlock> &block, double defaultValue );
 };
+
+ViewshedValues taskVisibility( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
+                               std::vector<StatusNode> statusList, std::shared_ptr<StatusNode> poi,
+                               std::shared_ptr<ViewPoint> vp );
