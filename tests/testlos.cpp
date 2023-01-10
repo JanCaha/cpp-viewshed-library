@@ -7,9 +7,12 @@
 
 #include "enums.h"
 #include "event.h"
+#include "iviewshedalgorithm.h"
+#include "losevaluator.h"
 #include "memoryraster.h"
 #include "points.h"
 #include "statusnode.h"
+#include "viewshedvisibility.h"
 
 class TestLos : public QObject
 {
@@ -19,15 +22,15 @@ class TestLos : public QObject
     std::vector<Event> eventList;
     std::vector<StatusNode> statusList;
     std::shared_ptr<ViewPoint> vp = std::make_shared<ViewPoint>( 0, 0, 0, 0.001 );
+    LoSEvaluator losEval;
 
   private slots:
 
-    void arrayValue( double[] * arr, double value )
+    void resetArray( double *arr, double value )
     {
         arr[0] = value;
         arr[1] = value;
         arr[2] = value;
-        return arr;
     }
 
     void initTestCase()
@@ -58,12 +61,20 @@ class TestLos : public QObject
         for ( int i = 0; i < eventList.size(); i++ )
         {
             Event e = eventList.at( i );
-            Event *eptr = &e;
             statusList.push_back( StatusNode( vp, &e, cellSize ) );
         }
     }
 
-    void constructWithDefaultSettings() {}
+    void constructWithDefaultSettings()
+    {
+        std::shared_ptr<IViewshedAlgorithm> alg = std::make_shared<ViewshedVisibility>();
+        std::vector<std::shared_ptr<IViewshedAlgorithm>> algs;
+        algs.push_back( alg );
+
+        losEval.calculate( algs, statusList, std::make_shared<StatusNode>( statusList.at( 2 ) ), vp );
+
+        QVERIFY( losEval.mResults[0] == 1.0 );
+    }
 };
 
 QTEST_MAIN( TestLos )
