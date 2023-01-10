@@ -8,6 +8,8 @@ struct ViewshedValues
     double row, col;
     std::vector<double> values;
 
+    ViewshedValues(){};
+
     ViewshedValues( double row_, double col_ )
     {
         row = row_;
