@@ -19,10 +19,11 @@ find_package(QGIS REQUIRED)
 
 find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
 
+find_package(Threads REQUIRED)
+
 include_directories(
     ${QGIS_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
-     include/external
 )
 
 set(VISIBILITY_ALGS
@@ -59,10 +60,6 @@ set(MINIMAL_QGIS_LIBS
     Qt5::Widgets
 )
 
-# set(EXTERNAL_HEADERS
-#     include/external/BS_thread_pool.hpp
-# )
-
 set(PUBLIC_HEADERS
     include/viewshead/enums.h
     include/viewshead/event.h
@@ -80,6 +77,8 @@ set(PUBLIC_HEADERS
     include/viewshead/viewshedviewangle.h
     include/viewshead/viewshedvisibility.h
     include/viewshead/visibility.h
+    include/viewshead/viewshedvalues.h
+    "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
 
 add_library(${LIB_NAME} SHARED
@@ -90,15 +89,19 @@ add_library(${LIB_NAME} SHARED
     # ${EXTERNAL_HEADERS}
 )
 
+add_subdirectory(external)
+
 set_target_properties(${LIB_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${LIB_NAME} PROPERTIES SOVERSION 1)
 
 set_target_properties(${LIB_NAME} PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
 
 target_include_directories(${LIB_NAME} PUBLIC include/viewshead)
+target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
 
 target_link_libraries(${LIB_NAME}
     ${MINIMAL_QGIS_LIBS}
+    bs_thread_pool
 )
 
 include(GNUInstallDirs)
