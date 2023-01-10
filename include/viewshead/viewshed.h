@@ -3,6 +3,8 @@
 
 #include <qgsrasterlayer.h>
 
+#include "BS_thread_pool.hpp"
+
 #include "enums.h"
 #include "event.h"
 #include "iviewshedalgorithm.h"
@@ -55,6 +57,8 @@ class Viewshed
     double mMaxDistance = std::numeric_limits<double>::max();
     double mCellSize;
     double mValid;
+
+    BS::thread_pool mThreadPool;
 
     std::vector<std::shared_ptr<MemoryRaster>> mResults;
 
