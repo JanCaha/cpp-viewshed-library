@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18.0)
 
-project(viewshed VERSION 1.0.1 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 1.0.2 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 set(LIB_NAME viewshed)
 
@@ -22,6 +22,7 @@ find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
 include_directories(
     ${QGIS_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
+     include/external
 )
 
 set(VISIBILITY_ALGS
@@ -58,6 +59,10 @@ set(MINIMAL_QGIS_LIBS
     Qt5::Widgets
 )
 
+# set(EXTERNAL_HEADERS
+#     include/external/BS_thread_pool.hpp
+# )
+
 set(PUBLIC_HEADERS
     include/viewshead/enums.h
     include/viewshead/event.h
@@ -82,6 +87,7 @@ add_library(${LIB_NAME} SHARED
     ${STRUCTURES}
     ${VISIBILITY_ALGS}
     ${VISIBILITY}
+    # ${EXTERNAL_HEADERS}
 )
 
 set_target_properties(${LIB_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
