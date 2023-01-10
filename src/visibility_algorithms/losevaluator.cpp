@@ -1,7 +1,5 @@
 #include "losevaluator.h"
 
-LoSEvaluator::LoSEvaluator( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs ) : mAlgs( algs ) {}
-
 int LoSEvaluator::size() { return mAlgs.size(); }
 
 std::shared_ptr<IViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { return mAlgs.at( i ); }
@@ -67,9 +65,13 @@ void LoSEvaluator::parseNodes( std::vector<StatusNode> &statusNodes, std::shared
     }
 }
 
-void LoSEvaluator::calculate( std::vector<StatusNode> &statusNodes, std::shared_ptr<StatusNode> poi,
+void LoSEvaluator::calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
+                              std::vector<StatusNode> &statusNodes, std::shared_ptr<StatusNode> poi,
                               std::shared_ptr<ViewPoint> vp )
 {
+
+    mAlgs = algs;
+
     parseNodes( statusNodes, poi );
 
     mResultValues = ViewshedValues( poi->row, poi->col );
