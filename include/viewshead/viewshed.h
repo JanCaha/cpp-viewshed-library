@@ -44,7 +44,6 @@ class Viewshed
     void setMaximalDistance( double distance );
 
   private:
-    LoSEvaluator mLosEvaluator;
     std::vector<Event> viewPointRowEventList;
     std::vector<StatusNode> statusList;
     std::vector<Event> eventList;

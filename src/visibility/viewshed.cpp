@@ -7,7 +7,7 @@
 
 Viewshed::Viewshed( std::shared_ptr<ViewPoint> vp, std::shared_ptr<QgsRasterLayer> dem,
                     std::vector<std::shared_ptr<IViewshedAlgorithm>> algs, double minimalAngle, double maximalAngle )
-    : mLosEvaluator( algs ), mVp( std::move( vp ) ), mInputDem( std::move( dem ) ), mAlgs( algs )
+    : mVp( std::move( vp ) ), mInputDem( std::move( dem ) ), mAlgs( algs )
 {
     mValid = false;
 
@@ -28,7 +28,7 @@ Viewshed::Viewshed( std::shared_ptr<ViewPoint> vp, std::shared_ptr<QgsRasterLaye
 
     mCellSize = mInputDem->rasterUnitsPerPixelX();
 
-    for ( int i = 0; i < mLosEvaluator.size(); i++ )
+    for ( int i = 0; i < mAlgs.size(); i++ )
     {
         mResults.push_back( std::make_shared<MemoryRaster>( mInputDem, Qgis::DataType::Float32,
                                                             mInputDem->dataProvider()->sourceNoDataValue( 1 ) ) );
@@ -196,9 +196,9 @@ void Viewshed::parseEventList( std::function<void( int size, int current )> prog
 
                 if ( mVp->row == sn.row && mVp->col == sn.col )
                 {
-                    for ( int j = 0; j < mLosEvaluator.size(); j++ )
+                    for ( int j = 0; j < mAlgs.size(); j++ )
                     {
-                        mResults.at( j )->setValue( mLosEvaluator.algorithmAt( j )->viewpointValue(), sn.col, sn.row );
+                        mResults.at( j )->setValue( mAlgs.at( j )->viewpointValue(), sn.col, sn.row );
                     }
                     break;
                 }
@@ -211,7 +211,7 @@ void Viewshed::parseEventList( std::function<void( int size, int current )> prog
         i++;
     }
 
-    ViewshedValues rasterValues( 0, 0 );
+    ViewshedValues rasterValues;
 
     for ( int i = 0; i < mResultPixels.size(); i++ )
     {
@@ -230,9 +230,9 @@ ViewshedValues taskVisibility( std::vector<std::shared_ptr<IViewshedAlgorithm>> 
 {
     std::sort( statusList.begin(), statusList.end() );
 
-    LoSEvaluator losEval( algs );
+    LoSEvaluator losEval;
 
-    losEval.calculate( statusList, poi, vp );
+    losEval.calculate( algs, statusList, poi, vp );
 
     return losEval.mResultValues;
 }
@@ -275,9 +275,9 @@ double Viewshed::getCornerValue( const Position &pos, const std::unique_ptr<QgsR
 
 void Viewshed::saveResults( QString location )
 {
-    for ( int i = 0; i < mLosEvaluator.size(); i++ )
+    for ( int i = 0; i < mAlgs.size(); i++ )
     {
-        QString file = QString( "%1/%2.tif" ).arg( location ).arg( mLosEvaluator.algorithmAt( i )->name() );
+        QString file = QString( "%1/%2.tif" ).arg( location ).arg( mAlgs.at( i )->name() );
         mResults.at( i )->save( file );
     }
 }
