@@ -30,7 +30,14 @@ ViewPoint::ViewPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, doubl
     mValid = true;
 }
 
-ViewPoint::ViewPoint( int row, int col, double elevation, double offset ) { mValid = true; }
+ViewPoint::ViewPoint( int row_, int col_, double elevation_, double offset_ )
+{
+    row = row_;
+    col = col_;
+    elevation = elevation_;
+    offset = offset_;
+    mValid = true;
+}
 
 double ViewPoint::totalElevation() { return elevation + offset; }
 

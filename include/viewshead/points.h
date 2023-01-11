@@ -11,7 +11,7 @@ struct ViewPoint
     double elevation, offset;
 
     ViewPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offset = 1.6, int rasterBand = 1 );
-    ViewPoint( int row, int col, double elevation, double offset );
+    ViewPoint( int row_, int col_, double elevation_, double offset_ );
 
     double totalElevation();
     bool isValid();
