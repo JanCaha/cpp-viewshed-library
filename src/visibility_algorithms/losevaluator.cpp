@@ -79,11 +79,8 @@ void LoSEvaluator::calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> a
     for ( int i = 0; i < mAlgs.size(); i++ )
     {
         mResultValues.values.push_back( mAlgs.at( i )->result( this, statusNodes, *poi.get(), vp ) );
-        // mResults.push_back( mAlgs.at( i )->result( this, statusNodes, poi, vp ) );
     }
 }
-
-// double LoSEvaluator::resultAt( int i ) { return mResults.at( i ); }
 
 void LoSEvaluator::reset()
 {
@@ -96,5 +93,7 @@ void LoSEvaluator::reset()
     mIndexHorizon = 0;
     mCountHorizonBefore = 0;
     mCountHorizon = 0;
-    mResults.clear();
+    mResultValues = ViewshedValues();
 }
+
+double LoSEvaluator::resultAt( int i ) { return mResultValues.values[i]; }

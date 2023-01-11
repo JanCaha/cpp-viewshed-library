@@ -17,6 +17,7 @@ class LoSEvaluator
 
     int size();
     std::shared_ptr<IViewshedAlgorithm> algorithmAt( int i );
+    double resultAt( int i );
 
     double mMaxGradientBefore = std::numeric_limits<double>::max() * ( -1 );
     double mMaxGradient = std::numeric_limits<double>::max() * ( -1 );
@@ -29,9 +30,6 @@ class LoSEvaluator
     int mCountHorizon = 0;
 
     ViewshedValues mResultValues;
-
-    std::vector<double> mResults;
-    // double resultAt( int i );
 
   private:
     std::vector<std::shared_ptr<IViewshedAlgorithm>> mAlgs;
