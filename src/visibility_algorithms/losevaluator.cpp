@@ -84,8 +84,8 @@ void LoSEvaluator::calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> a
 
 void LoSEvaluator::reset()
 {
-    mMaxGradientBefore = std::numeric_limits<double>::max() * ( -1 );
-    mMaxGradient = std::numeric_limits<double>::max() * ( -1 );
+    mMaxGradientBefore = -180;
+    mMaxGradient = -180;
     mIndexPoi = 0;
     mIndexMaxGradientBefore = 0;
     mIndexMaxGradient = 0;

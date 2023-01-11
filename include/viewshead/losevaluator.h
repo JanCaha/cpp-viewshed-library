@@ -19,8 +19,8 @@ class LoSEvaluator
     std::shared_ptr<IViewshedAlgorithm> algorithmAt( int i );
     double resultAt( int i );
 
-    double mMaxGradientBefore = std::numeric_limits<double>::max() * ( -1 );
-    double mMaxGradient = std::numeric_limits<double>::max() * ( -1 );
+    double mMaxGradientBefore = -180;
+    double mMaxGradient = -180;
     int mIndexPoi = 0;
     int mIndexMaxGradientBefore = 0;
     int mIndexMaxGradient = 0;
