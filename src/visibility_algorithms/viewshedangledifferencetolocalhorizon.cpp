@@ -14,7 +14,7 @@ double ViewshedAngleDifferenceToLocalHorizon::result( LoSEvaluator *losevaluator
     double difference;
     if ( losevaluator->mIndexHorizonBefore != 0 )
     {
-        double difference =
+        difference =
             poi.centreGradient() -
             statusNodes.at( losevaluator->mIndexHorizonBefore ).valueAtAngle( poi.centreAngle(), ValueType::Gradient );
     }
