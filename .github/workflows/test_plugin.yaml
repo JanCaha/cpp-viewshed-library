@@ -20,7 +20,7 @@ jobs:
       - name: Add Sources
         run: |
           sudo gpg -k
-          sudo wget -O /etc/apt/keyrings/qgis-archive-keyring.gpg https://download.qgis.org/downloads/qgis-archive-keyring.gpg
+          sudo wget -O /etc/apt/trusted.gpg.d/qgis-archive-keyring.gpg https://download.qgis.org/downloads/qgis-archive-keyring.gpg
           sudo chmod a+r /etc/apt/trusted.gpg.d/qgis-archive-keyring.gpg
           sudo add-apt-repository "deb https://qgis.org/ubuntu `lsb_release -c -s` main"
       
