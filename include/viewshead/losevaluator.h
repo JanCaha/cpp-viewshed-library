@@ -29,6 +29,8 @@ class LoSEvaluator
     int mCountHorizonBefore = 0;
     int mCountHorizon = 0;
 
+    bool mAlreadyParsed = false;
+
     ViewshedValues mResultValues;
 
   private:

@@ -25,7 +25,7 @@ void LoSEvaluator::parseNodes( std::vector<StatusNode> &statusNodes, std::shared
         {
             snNext = statusNodes.at( i + 1 );
 
-            if ( snNext.centreDistance() < poi->centreDistance() )
+            if ( snNext.centreDistance() <= poi->centreDistance() )
             {
                 if ( mMaxGradientBefore < snGradient &&
                      snNext.valueAtAngle( poi->centreAngle(), ValueType::Gradient ) < snGradient )
@@ -63,6 +63,8 @@ void LoSEvaluator::parseNodes( std::vector<StatusNode> &statusNodes, std::shared
             mAlgs.at( j )->extractValues( sn, *poi.get(), i );
         }
     }
+
+    mAlreadyParsed = true;
 }
 
 void LoSEvaluator::calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
@@ -71,6 +73,9 @@ void LoSEvaluator::calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> a
 {
 
     mAlgs = algs;
+
+    if ( mAlreadyParsed )
+        reset();
 
     parseNodes( statusNodes, poi );
 
