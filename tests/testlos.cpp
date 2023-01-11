@@ -65,15 +65,47 @@ class TestLos : public QObject
         }
     }
 
+    std::shared_ptr<StatusNode> getPointLoS( int i ) { return std::make_shared<StatusNode>( statusList.at( i ) ); }
+
     void constructWithDefaultSettings()
     {
-        std::shared_ptr<IViewshedAlgorithm> alg = std::make_shared<ViewshedVisibility>();
         std::vector<std::shared_ptr<IViewshedAlgorithm>> algs;
-        algs.push_back( alg );
+        algs.push_back( std::make_shared<ViewshedVisibility>() );
 
-        losEval.calculate( algs, statusList, std::make_shared<StatusNode>( statusList.at( 2 ) ), vp );
+        QVERIFY( getPointLoS( 2 )->centreElevation() == 3.0 );
+        QVERIFY( getPointLoS( 2 )->centreDistance() == 3.0 );
+        losEval.calculate( algs, statusList, getPointLoS( 2 ), vp );
+        QVERIFY( losEval.resultAt( 0 ) == 1.0 );
 
-        QVERIFY( losEval.mResults[0] == 1.0 );
+        QVERIFY( getPointLoS( 3 )->centreElevation() == 1.0 );
+        QVERIFY( getPointLoS( 3 )->centreDistance() == 4.0 );
+        losEval.calculate( algs, statusList, getPointLoS( 3 ), vp );
+        QVERIFY( losEval.resultAt( 0 ) == 0.0 );
+
+        QVERIFY( getPointLoS( 4 )->centreElevation() == 1.0 );
+        QVERIFY( getPointLoS( 4 )->centreDistance() == 5.0 );
+        losEval.calculate( algs, statusList, getPointLoS( 4 ), vp );
+        QVERIFY( losEval.resultAt( 0 ) == 0.0 );
+
+        QVERIFY( getPointLoS( 5 )->centreElevation() == 8.0 );
+        QVERIFY( getPointLoS( 5 )->centreDistance() == 6.0 );
+        losEval.calculate( algs, statusList, getPointLoS( 5 ), vp );
+        QVERIFY( losEval.resultAt( 0 ) == 1.0 );
+
+        QVERIFY( getPointLoS( 6 )->centreElevation() == 2.0 );
+        QVERIFY( getPointLoS( 6 )->centreDistance() == 7.0 );
+        losEval.calculate( algs, statusList, getPointLoS( 6 ), vp );
+        QVERIFY( losEval.resultAt( 0 ) == 0.0 );
+
+        QVERIFY( getPointLoS( 8 )->centreElevation() == 15.0 );
+        QVERIFY( getPointLoS( 8 )->centreDistance() == 9.0 );
+        losEval.calculate( algs, statusList, getPointLoS( 8 ), vp );
+        QVERIFY( losEval.resultAt( 0 ) == 1.0 );
+
+        QVERIFY( getPointLoS( 9 )->centreElevation() == 10.0 );
+        QVERIFY( getPointLoS( 9 )->centreDistance() == 10.0 );
+        losEval.calculate( algs, statusList, getPointLoS( 9 ), vp );
+        QVERIFY( losEval.resultAt( 0 ) == 0.0 );
     }
 };
 
