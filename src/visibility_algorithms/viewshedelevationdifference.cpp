@@ -1,7 +1,5 @@
-#include <limits>
-
-#include "losevaluator.h"
 #include "viewshedelevationdifference.h"
+#include "losevaluator.h"
 
 double ViewshedElevationDifference::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes,
                                             StatusNode &poi, std::shared_ptr<ViewPoint> vp )
