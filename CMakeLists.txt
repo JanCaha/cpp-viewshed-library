@@ -31,6 +31,7 @@ set(VISIBILITY_ALGS
     src/visibility_algorithms/viewshedviewangle.cpp
     src/visibility_algorithms/viewshedelevationdifference.cpp
     src/visibility_algorithms/viewshedhorizons.cpp
+    src/visibility_algorithms/viewshedelevationdifferencetolocalhorizon.cpp
     src/visibility_algorithms/viewshedangledifferencetolocalhorizon.cpp
     src/visibility_algorithms/viewshedangledifferencetoglobalhorizon.cpp
     src/visibility_algorithms/losevaluator.cpp
@@ -70,6 +71,7 @@ set(PUBLIC_HEADERS
     include/viewshead/position.h
     include/viewshead/statusnode.h
     include/viewshead/viewshedangledifferencetoglobalhorizon.h
+    include/viewshead/viewshedelevationdifferencetolocalhorizon.h
     include/viewshead/viewshedangledifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifference.h
     include/viewshead/viewshed.h
@@ -86,6 +88,7 @@ add_library(${LIB_NAME} SHARED
     ${STRUCTURES}
     ${VISIBILITY_ALGS}
     ${VISIBILITY}
+
     # ${EXTERNAL_HEADERS}
 )
 
