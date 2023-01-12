@@ -14,6 +14,7 @@
 #include "statusnode.h"
 #include "viewshedangledifferencetoglobalhorizon.h"
 #include "viewshedangledifferencetolocalhorizon.h"
+#include "viewshedelevationdifferencetoglobalhorizon.h"
 #include "viewshedelevationdifferencetolocalhorizon.h"
 
 #include "viewshedhorizons.h"
@@ -324,6 +325,61 @@ class TestLos : public QObject
         losEval.calculate( algs, statusList, getPointLoS( 8 ), vp );
         QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), 3, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEval.resultAt( 1 ), 3, 0.1 ) );
+
+        losEval.calculate( algs, statusList, getPointLoS( 9 ), vp );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), invisible, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 1 ), -6.6, 0.1 ) );
+    }
+
+    void differenceElevationGlobalHorizon()
+    {
+        losEval = LoSEvaluator();
+
+        algs.clear();
+
+        double noHorizonBefore = -99;
+        double invisible = -9999;
+
+        algs.push_back(
+            std::make_shared<ViewshedElevationDifferenceToGlobalHorizon>( false, invisible, noHorizonBefore ) );
+        algs.push_back(
+            std::make_shared<ViewshedElevationDifferenceToGlobalHorizon>( true, invisible, noHorizonBefore ) );
+
+        losEval.calculate( algs, statusList, getPointLoS( 0 ), vp );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 1 ), noHorizonBefore, 0.1 ) );
+
+        losEval.calculate( algs, statusList, getPointLoS( 1 ), vp );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 1 ), noHorizonBefore, 0.1 ) );
+
+        losEval.calculate( algs, statusList, getPointLoS( 2 ), vp );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 1 ), noHorizonBefore, 0.1 ) );
+
+        losEval.calculate( algs, statusList, getPointLoS( 3 ), vp );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), invisible, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 1 ), -5.6, 0.1 ) );
+
+        losEval.calculate( algs, statusList, getPointLoS( 4 ), vp );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), invisible, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 1 ), -7.3, 0.1 ) );
+
+        losEval.calculate( algs, statusList, getPointLoS( 5 ), vp );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), -2.0, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 1 ), -2.0, 0.1 ) );
+
+        losEval.calculate( algs, statusList, getPointLoS( 6 ), vp );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), invisible, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 1 ), -9.6, 0.1 ) );
+
+        losEval.calculate( algs, statusList, getPointLoS( 7 ), vp );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), invisible, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 1 ), -9.3, 0.1 ) );
+
+        losEval.calculate( algs, statusList, getPointLoS( 8 ), vp );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), 0, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEval.resultAt( 1 ), 0, 0.1 ) );
 
         losEval.calculate( algs, statusList, getPointLoS( 9 ), vp );
         QVERIFY( qgsDoubleNear( losEval.resultAt( 0 ), invisible, 0.1 ) );
