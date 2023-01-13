@@ -28,15 +28,18 @@ Viewshed::Viewshed( std::shared_ptr<ViewPoint> vp, std::shared_ptr<QgsRasterLaye
 
     mCellSize = mInputDem->rasterUnitsPerPixelX();
 
+    mThreadPool.reset( mThreadPool.get_thread_count() - 1 );
+
+    mValid = true;
+}
+
+void Viewshed::prepareMemoryRasters()
+{
     for ( int i = 0; i < mAlgs.size(); i++ )
     {
         mResults.push_back( std::make_shared<MemoryRaster>( mInputDem, Qgis::DataType::Float32,
                                                             mInputDem->dataProvider()->sourceNoDataValue( 1 ) ) );
     }
-
-    mThreadPool.reset( mThreadPool.get_thread_count() - 1 );
-
-    mValid = true;
 }
 
 void Viewshed::initEventList()
@@ -154,6 +157,10 @@ void Viewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_,
 
 void Viewshed::parseEventList( std::function<void( int size, int current )> progressCallback )
 {
+    prepareMemoryRasters();
+
+    ViewshedValues rasterValues;
+
     int i = 0;
     for ( Event e : eventList )
     {
@@ -191,36 +198,49 @@ void Viewshed::parseEventList( std::function<void( int size, int current )> prog
             }
             case CellPosition::CENTER:
             {
-                // sn = StatusNode( mVp, &e, mCellSize );
                 std::shared_ptr<StatusNode> poi = std::make_shared<StatusNode>( mVp, &e, mCellSize );
-
-                if ( mVp->row == sn.row && mVp->col == sn.col )
-                {
-                    for ( int j = 0; j < mAlgs.size(); j++ )
-                    {
-                        mResults.at( j )->setValue( mAlgs.at( j )->viewpointValue(), sn.col, sn.row );
-                    }
-                    break;
-                }
 
                 mResultPixels.push_back( mThreadPool.submit( taskVisibility, mAlgs, statusList, poi, mVp ) );
 
                 break;
             }
         }
+
+        if ( mMaxNumberOfTasks < mThreadPool.get_tasks_total() || mMaxNumberOfResults < mResultPixels.size() )
+        {
+            // parse result to rasters to avoid clutching in memory
+            parseCalculatedResults();
+        }
+
         i++;
     }
 
-    ViewshedValues rasterValues;
+    // parse results left after the algorithm finished
+    parseCalculatedResults();
 
-    for ( int i = 0; i < mResultPixels.size(); i++ )
+    for ( int j = 0; j < mAlgs.size(); j++ )
     {
-        rasterValues = mResultPixels[i].get();
+        mResults.at( j )->setValue( mAlgs.at( j )->viewpointValue(), mVp->col, mVp->row );
+    }
+}
 
-        for ( int j = 0; j < rasterValues.values.size(); j++ )
-        {
-            mResults.at( j )->setValue( rasterValues.values.at( j ), rasterValues.col, rasterValues.row );
-        }
+void Viewshed::parseCalculatedResults()
+{
+    mThreadPool.wait_for_tasks();
+
+    for ( int j = 0; j < mResultPixels.size(); j++ )
+    {
+        setPixelData( mResultPixels[j].get() );
+    }
+
+    mResultPixels = BS::multi_future<ViewshedValues>();
+}
+
+void Viewshed::setPixelData( ViewshedValues values )
+{
+    for ( int j = 0; j < values.values.size(); j++ )
+    {
+        mResults.at( j )->setValue( values.values.at( j ), values.col, values.row );
     }
 }
 

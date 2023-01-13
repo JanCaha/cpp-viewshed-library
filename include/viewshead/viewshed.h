@@ -59,6 +59,13 @@ class Viewshed
     double mCellSize;
     double mValid;
 
+    int mMaxNumberOfTasks = 100;
+    int mMaxNumberOfResults = 500;
+
+    void prepareMemoryRasters();
+    void setPixelData( ViewshedValues values );
+    void parseCalculatedResults();
+
     BS::thread_pool mThreadPool;
     BS::multi_future<ViewshedValues> mResultPixels;
 
