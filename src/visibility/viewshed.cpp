@@ -326,5 +326,5 @@ void Viewshed::calculate( std::function<void( std::string, double )> stepsTiming
 
     parseEventList( progressCallback );
 
-    stepsTimingCallback( "Parese of event list lasted: ", timer.elapsed() / 1000.0 );
+    stepsTimingCallback( "Parsing of event list lasted: ", timer.elapsed() / 1000.0 );
 }
