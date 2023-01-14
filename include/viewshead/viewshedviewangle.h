@@ -1,3 +1,5 @@
+#ifndef VIEWSHEDLIB_VIEWSHEDANGLE_H
+#define VIEWSHEDLIB_VIEWSHEDANGLE_H
 
 #include "iviewshedalgorithm.h"
 
@@ -13,3 +15,5 @@ class ViewshedViewAngle : public IViewshedAlgorithm
     const double completlyVisible() override;
     const QString name() override;
 };
+
+#endif

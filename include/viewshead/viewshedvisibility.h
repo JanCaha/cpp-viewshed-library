@@ -1,3 +1,6 @@
+#ifndef VIEWSHEDLIB_VIEWSHEDVISIBILITY_H
+#define VIEWSHEDLIB_VIEWSHEDVISIBILITY_H
+
 #include "limits"
 
 #include "iviewshedalgorithm.h"
@@ -14,3 +17,5 @@ class ViewshedVisibility : public IViewshedAlgorithm
     const QString name() override;
     void extractValues( StatusNode &sn, StatusNode &poi, int &position ) override;
 };
+
+#endif

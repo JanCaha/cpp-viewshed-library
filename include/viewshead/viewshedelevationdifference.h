@@ -1,3 +1,5 @@
+#ifndef VIEWSHEDLIB_VIEWSHEDELEVDIFF_H
+#define VIEWSHEDLIB_VIEWSHEDELEVDIFF_H
 
 #include "iviewshedalgorithm.h"
 
@@ -13,3 +15,5 @@ class ViewshedElevationDifference : public IViewshedAlgorithm
     const QString name() override;
     void extractValues( StatusNode &sn, StatusNode &poi, int &position ) override;
 };
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef VIEWSHEDLIB_VIEWSHEDANGLEDIFFGLOBAL_H
+#define VIEWSHEDLIB_VIEWSHEDANGLEDIFFGLOBAL_H
+
 #include "limits"
 
 #include "iviewshedalgorithm.h"
@@ -19,3 +22,5 @@ class ViewshedAngleDifferenceToGlobalHorizon : public IViewshedAlgorithm
     bool mAllPoints = false;
     double mInvisibleValue;
 };
+
+#endif

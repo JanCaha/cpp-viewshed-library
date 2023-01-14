@@ -1,3 +1,6 @@
+#ifndef VIEWSHEDLIB_VIEWSHEDELEVDIFFGLOBAL_H
+#define VIEWSHEDLIB_VIEWSHEDELEVDIFFGLOBAL_H
+
 #include "iviewshedalgorithm.h"
 
 class ViewshedElevationDifferenceToGlobalHorizon : public IViewshedAlgorithm
@@ -19,3 +22,5 @@ class ViewshedElevationDifferenceToGlobalHorizon : public IViewshedAlgorithm
     double mInvisibleValue;
     double mDifferenceWithoutHorizon;
 };
+
+#endif

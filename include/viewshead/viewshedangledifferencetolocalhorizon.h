@@ -1,3 +1,6 @@
+#ifndef VIEWSHEDLIB_VIEWSHEDANGLEDIFFLOCAL_H
+#define VIEWSHEDLIB_VIEWSHEDANGLEDIFFLOCAL_H
+
 #include "limits"
 
 #include "iviewshedalgorithm.h"
@@ -19,3 +22,5 @@ class ViewshedAngleDifferenceToLocalHorizon : public IViewshedAlgorithm
     bool mAllPoints = false;
     double mInvisibleValue;
 };
+
+#endif

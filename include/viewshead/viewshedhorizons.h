@@ -1,3 +1,6 @@
+#ifndef VIEWSHEDLIB_VIEWSHEDHORIZON_H
+#define VIEWSHEDLIB_VIEWSHEDHORIZON_H
+
 #include "limits"
 
 #include "iviewshedalgorithm.h"
@@ -14,3 +17,5 @@ class ViewshedHorizons : public IViewshedAlgorithm
     const double completlyVisible() override;
     const QString name() override;
 };
+
+#endif
