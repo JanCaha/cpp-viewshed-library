@@ -3,3 +3,5 @@ build
 .vscode/tasks.json
 tests/data/*.aux.xml
 _packages
+tests/data/results/*
+tests/data/*.qgz
