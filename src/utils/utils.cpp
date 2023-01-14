@@ -45,7 +45,6 @@ std::vector<std::pair<double, double>> Utils::distanceElevation( SharedStatusLis
         StatusNode sn = los->at( i );
         data.push_back( std::make_pair<double, double>( sn.valueAtAngle( poi.centreAngle(), ValueType::Distance ),
                                                         sn.valueAtAngle( poi.centreAngle(), ValueType::Elevation ) ) );
-        std::string;
     }
 
     return data;
