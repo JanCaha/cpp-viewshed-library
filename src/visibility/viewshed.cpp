@@ -105,7 +105,6 @@ void Viewshed::initEventList()
 
                         if ( mVp->row == row && mVp->col < column )
                         {
-                            // qDebug() << "Sn prefill " << row << ":" << column;
                             viewPointRowEventList.push_back( eCenter );
                         }
                         else
@@ -126,6 +125,11 @@ void Viewshed::sortEventList() { std::sort( eventList.begin(), eventList.end() )
 
 void Viewshed::prefillStatusList()
 {
+    if ( 0 < statusList.size() )
+    {
+        statusList.clear();
+    }
+
     for ( Event e : viewPointRowEventList )
     {
         StatusNode sn( mVp, &e, mCellSize );
@@ -141,9 +145,6 @@ void Viewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_,
     int i = 0;
     for ( Event event : eventList )
     {
-        if ( i % 10'000 == 0 )
-            qDebug() << ( (double)i / (double)eventList.size() ) * 100.0 << "%.";
-
         if ( event.eventType == CellPosition::CENTER )
         {
             StatusNode sn( mVp, &event, mCellSize );
@@ -256,7 +257,7 @@ ViewshedValues taskVisibility( ViewshedAlgorithms algs, std::vector<StatusNode> 
     return losEval.mResultValues;
 }
 
-StatusNode Viewshed::poi( QgsPoint point )
+StatusNode Viewshed::statusNodeFromPoint( QgsPoint point )
 {
     QgsPoint pointRaster = mInputDem->dataProvider()->transformCoordinates(
         point, QgsRasterDataProvider::TransformType::TransformLayerToImage );
@@ -266,41 +267,23 @@ StatusNode Viewshed::poi( QgsPoint point )
 
     StatusNode sn;
 
-    int i = 0;
     for ( Event e : eventList )
     {
-        switch ( e.eventType )
+        if ( e.eventType == CellPosition::CENTER && e.col == col && e.row == row )
         {
-            case CellPosition::CENTER:
-            {
-                sn = StatusNode( mVp, &e, mCellSize );
-
-                if ( sn.col == col && sn.row == row )
-                {
-                    return sn;
-                }
-
-                break;
-            }
-            default:
-            {
-                break;
-            }
+            sn = StatusNode( mVp, &e, mCellSize );
+            return sn;
         }
     }
-
-    return sn;
 }
 
 std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, bool onlyToPoint )
 {
-    QgsPoint pointRaster = mInputDem->dataProvider()->transformCoordinates(
-        point, QgsRasterDataProvider::TransformType::TransformLayerToImage );
+    prefillStatusList();
 
-    int row = pointRaster.y();
-    int col = pointRaster.x();
+    StatusNode poi = statusNodeFromPoint( point );
 
-    SharedStatusList los = std::make_shared<StatusList>();
+    SharedStatusList losToReturn;
 
     StatusNode sn;
 
@@ -317,7 +300,7 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
                 }
 
                 sn = StatusNode( mVp, &e, mCellSize );
-                los->push_back( sn );
+                statusList.push_back( sn );
                 break;
             }
             case CellPosition::EXIT:
@@ -329,10 +312,10 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
 
                 sn = StatusNode( e.row, e.col );
 
-                std::vector<StatusNode>::iterator index = std::find( los->begin(), los->end(), sn );
-                if ( index != los->end() )
+                std::vector<StatusNode>::iterator index = std::find( statusList.begin(), statusList.end(), sn );
+                if ( index != statusList.end() )
                 {
-                    los->erase( index );
+                    statusList.erase( index );
                 }
                 break;
             }
@@ -343,34 +326,37 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
             }
         }
 
-        if ( sn.col == col && sn.row == row )
+        if ( sn.col == poi.col && sn.row == poi.row )
         {
-            if ( onlyToPoint )
-            {
-                SharedStatusList shortLoS;
+            std::sort( statusList.begin(), statusList.end() );
 
-                for ( int i = 0; i < los->size(); i++ )
+            losToReturn = std::make_shared<StatusList>();
+
+            for ( int j = 0; j < statusList.size(); j++ )
+            {
+                StatusNode node = statusList.at( j );
+
+                if ( node.angle[CellPosition::ENTER] <= poi.centreAngle() &&
+                     poi.centreAngle() <= node.angle[CellPosition::EXIT] )
                 {
-                    StatusNode node = los->at( i );
-                    if ( node.centreDistance() <= sn.centreDistance() )
+                    if ( onlyToPoint && node.centreDistance() <= poi.centreDistance() )
                     {
-                        shortLoS->push_back( node );
+                        losToReturn->push_back( node );
+                    }
+                    else
+                    {
+                        losToReturn->push_back( node );
                     }
                 }
+            }
 
-                std::sort( shortLoS->begin(), shortLoS->end() );
-                return shortLoS;
-            }
-            else
-            {
-                std::sort( los->begin(), los->end() );
-                return los;
-            }
+            std::sort( losToReturn->begin(), losToReturn->end() );
+            return losToReturn;
         }
         i++;
     }
 
-    return los;
+    return losToReturn;
 }
 
 std::shared_ptr<MemoryRaster> Viewshed::resultRaster( int index ) { return mResults.at( index ); }

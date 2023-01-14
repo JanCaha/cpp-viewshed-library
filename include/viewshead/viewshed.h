@@ -50,7 +50,7 @@ class Viewshed
     void saveResults( QString location );
     void setMaximalDistance( double distance );
     SharedStatusList LoSToPoint( QgsPoint point, bool onlyToPoint = false );
-    StatusNode poi( QgsPoint point );
+    StatusNode statusNodeFromPoint( QgsPoint point );
 
   private:
     EventList viewPointRowEventList;
