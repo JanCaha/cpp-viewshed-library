@@ -275,6 +275,8 @@ StatusNode Viewshed::statusNodeFromPoint( QgsPoint point )
             return sn;
         }
     }
+
+    return sn;
 }
 
 std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, bool onlyToPoint )
@@ -325,6 +327,9 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
             }
         }
     }
+
+    SharedStatusList los;
+    return los;
 }
 
 SharedStatusList Viewshed::getLoS( StatusNode poi, bool onlyToPoi )
