@@ -11,6 +11,7 @@
 #include "viewshedangledifferencetolocalhorizon.h"
 #include "viewshedhorizons.h"
 #include "viewshedvisibility.h"
+#include "visibility.h"
 
 class TestViewshed : public QObject
 {
@@ -31,6 +32,27 @@ class TestViewshed : public QObject
         algs.push_back( std::make_shared<ViewshedHorizons>() );
         algs.push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( true ) );
         algs.push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( false ) );
+    }
+
+    void testLoS()
+    {
+
+        QgsPoint poiPoint = QgsPoint( -336428.767, -1189102.785 );
+
+        Viewshed v( vp, dem, algs );
+        v.initEventList();
+        v.sortEventList();
+
+        StatusNode poi = v.poi( poiPoint );
+
+        SharedStatusList los = v.LoSToPoint( poiPoint );
+        QVERIFY( los->size() == 184 );
+
+        los = v.LoSToPoint( poiPoint, true );
+        QVERIFY( los->size() == 71 );
+
+        std::vector<std::pair<double, double>> data = Visibility::distanceElevation( los, poi );
+        QVERIFY( data.size() == 71 );
     }
 
     void test()

@@ -20,7 +20,7 @@
 #include "viewshedhorizons.h"
 #include "viewshedvisibility.h"
 
-class TestLos : public QObject
+class TestLosAlgorithms : public QObject
 {
     Q_OBJECT
 
@@ -387,5 +387,5 @@ class TestLos : public QObject
     }
 };
 
-QTEST_MAIN( TestLos )
-#include "testlos.moc"
+QTEST_MAIN( TestLosAlgorithms )
+#include "testlosalgorithms.moc"
