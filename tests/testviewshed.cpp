@@ -7,6 +7,7 @@
 
 #include "iviewshedalgorithm.h"
 #include "points.h"
+#include "utils.h"
 #include "viewshed.h"
 #include "viewshedangledifferencetolocalhorizon.h"
 #include "viewshedhorizons.h"
@@ -42,24 +43,31 @@ class TestViewshed : public QObject
         Viewshed v( vp, dem, algs );
         v.initEventList();
         v.sortEventList();
+        v.prefillStatusList();
 
-        StatusNode poi = v.poi( poiPoint );
+        StatusNode poi = v.statusNodeFromPoint( poiPoint );
 
-        SharedStatusList los = v.LoSToPoint( poiPoint );
-        QVERIFY( los->size() == 184 );
+        std::shared_ptr<std::vector<StatusNode>> los = v.LoSToPoint( poiPoint );
+        QVERIFY( los->size() == 71 );
 
         los = v.LoSToPoint( poiPoint, true );
         QVERIFY( los->size() == 71 );
 
-        std::vector<std::pair<double, double>> data = Visibility::distanceElevation( los, poi );
+        std::vector<std::pair<double, double>> data = Utils::distanceElevation( los, poi );
         QVERIFY( data.size() == 71 );
+
+        Utils::saveToCsv( data, TEST_DATA_LOS );
     }
 
     void test()
     {
         Viewshed v( vp, dem, algs );
-        v.calculate();
-        v.saveResults( TEST_DATA_RESULTS_DIR );
+        v.initEventList();
+        v.sortEventList();
+        v.prefillStatusList();
+        v.parseEventList();
+        // v.calculate();
+        // v.saveResults( TEST_DATA_RESULTS_DIR );
     }
 };
 
