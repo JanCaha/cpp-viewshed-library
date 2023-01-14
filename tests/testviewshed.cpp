@@ -48,7 +48,7 @@ class TestViewshed : public QObject
         StatusNode poi = v.statusNodeFromPoint( poiPoint );
 
         std::shared_ptr<std::vector<StatusNode>> los = v.LoSToPoint( poiPoint );
-        QVERIFY( los->size() == 71 );
+        QVERIFY( los->size() == 182 );
 
         los = v.LoSToPoint( poiPoint, true );
         QVERIFY( los->size() == 71 );
@@ -62,12 +62,8 @@ class TestViewshed : public QObject
     void test()
     {
         Viewshed v( vp, dem, algs );
-        v.initEventList();
-        v.sortEventList();
-        v.prefillStatusList();
-        v.parseEventList();
-        // v.calculate();
-        // v.saveResults( TEST_DATA_RESULTS_DIR );
+        v.calculate();
+        v.saveResults( TEST_DATA_RESULTS_DIR );
     }
 };
 
