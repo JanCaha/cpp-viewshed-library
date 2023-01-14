@@ -1,5 +1,5 @@
-#ifndef MEMORYRASTER_H
-#define MEMORYRASTER_H
+#ifndef VIEWSHEDLIB_MEMORYRASTER_H
+#define VIEWSHEDLIB_MEMORYRASTER_H
 
 #include <cmath>
 #include <limits>

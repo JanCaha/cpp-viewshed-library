@@ -1,5 +1,5 @@
-#ifndef POSITION_H
-#define POSITION_H
+#ifndef VIEWSHEDLIB_POSITION_H
+#define VIEWSHEDLIB_POSITION_H
 
 struct Position
 {

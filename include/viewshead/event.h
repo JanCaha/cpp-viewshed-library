@@ -1,5 +1,5 @@
-#ifndef EVENT_H
-#define EVENT_H
+#ifndef VIEWSHEDLIB_EVENT_H
+#define VIEWSHEDLIB_EVENT_H
 
 #include "enums.h"
 

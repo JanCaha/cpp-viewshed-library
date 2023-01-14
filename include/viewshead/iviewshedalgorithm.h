@@ -1,5 +1,5 @@
-#ifndef IALG_H
-#define IALG_H
+#ifndef VIEWSHEDLIB_IVIEWSHEDALGORITHM_H
+#define VIEWSHEDLIB_IVIEWSHEDALGORITHM_H
 
 #include <limits>
 

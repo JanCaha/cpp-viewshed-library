@@ -1,5 +1,5 @@
-#ifndef STATUSNODE_H
-#define STATUSNODE_H
+#ifndef VIEWSHEDLIB_STATUSNODE_H
+#define VIEWSHEDLIB_STATUSNODE_H
 
 #include "enums.h"
 #include "event.h"

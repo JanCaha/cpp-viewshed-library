@@ -1,5 +1,5 @@
-#ifndef LOSEVALUATOR_H
-#define LOSEVALUATOR_H
+#ifndef VIEWSHEDLIB_LOSEVALUATOR_H
+#define VIEWSHEDLIB_LOSEVALUATOR_H
 
 #include <limits>
 

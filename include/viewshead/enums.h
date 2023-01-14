@@ -1,5 +1,5 @@
-#ifndef ENUMS_H
-#define ENUMS_H
+#ifndef VIEWSHEDLIB_ENUMS_H
+#define VIEWSHEDLIB_ENUMS_H
 
 enum class ValueType
 {

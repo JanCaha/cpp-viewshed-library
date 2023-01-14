@@ -1,5 +1,5 @@
-#ifndef POINTS_H
-#define POINTS_H
+#ifndef VIEWSHEDLIB_POINTS_H
+#define VIEWSHEDLIB_POINTS_H
 
 #include "qgspoint.h"
 #include "qgsrasterlayer.h"
