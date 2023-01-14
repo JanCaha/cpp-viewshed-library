@@ -1,3 +1,6 @@
+#ifndef VIEWSHEDLIB_VIEWSHED_H
+#define VIEWSHEDLIB_VIEWSHED_H
+
 #include <cmath>
 #include <limits>
 
@@ -15,11 +18,15 @@
 #include "statusnode.h"
 #include "viewshedvalues.h"
 
+typedef std::vector<Event> EventList;
+typedef std::vector<StatusNode> StatusList;
+typedef std::shared_ptr<std::vector<StatusNode>> SharedStatusList;
+typedef std::vector<std::shared_ptr<IViewshedAlgorithm>> ViewshedAlgorithms;
+
 class Viewshed
 {
   public:
-    Viewshed( std::shared_ptr<ViewPoint> vp_, std::shared_ptr<QgsRasterLayer> dem_,
-              std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
+    Viewshed( std::shared_ptr<ViewPoint> vp_, std::shared_ptr<QgsRasterLayer> dem_, ViewshedAlgorithms algs,
               double minimalAngle = std::numeric_limits<double>::quiet_NaN(),
               double maximalAngle = std::numeric_limits<double>::quiet_NaN() );
 
@@ -42,14 +49,16 @@ class Viewshed
 
     void saveResults( QString location );
     void setMaximalDistance( double distance );
+    SharedStatusList LoSToPoint( QgsPoint point, bool onlyToPoint = false );
+    StatusNode poi( QgsPoint point );
 
   private:
-    std::vector<Event> viewPointRowEventList;
-    std::vector<StatusNode> statusList;
-    std::vector<Event> eventList;
+    EventList viewPointRowEventList;
+    StatusList statusList;
+    EventList eventList;
     std::shared_ptr<QgsRasterLayer> mInputDem;
     std::shared_ptr<ViewPoint> mVp;
-    std::vector<std::shared_ptr<IViewshedAlgorithm>> mAlgs;
+    ViewshedAlgorithms mAlgs;
     Qgis::DataType dataType = Qgis::DataType::Float64;
     int mDefaultBand = 1;
 
@@ -74,6 +83,7 @@ class Viewshed
     double getCornerValue( const Position &pos, const std::unique_ptr<QgsRasterBlock> &block, double defaultValue );
 };
 
-ViewshedValues taskVisibility( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
-                               std::vector<StatusNode> statusList, std::shared_ptr<StatusNode> poi,
-                               std::shared_ptr<ViewPoint> vp );
+ViewshedValues taskVisibility( ViewshedAlgorithms algs, std::vector<StatusNode> statusList,
+                               std::shared_ptr<StatusNode> poi, std::shared_ptr<ViewPoint> vp );
+
+#endif

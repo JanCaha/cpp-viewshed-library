@@ -5,8 +5,8 @@
 #include "viewshed.h"
 #include "visibility.h"
 
-Viewshed::Viewshed( std::shared_ptr<ViewPoint> vp, std::shared_ptr<QgsRasterLayer> dem,
-                    std::vector<std::shared_ptr<IViewshedAlgorithm>> algs, double minimalAngle, double maximalAngle )
+Viewshed::Viewshed( std::shared_ptr<ViewPoint> vp, std::shared_ptr<QgsRasterLayer> dem, ViewshedAlgorithms algs,
+                    double minimalAngle, double maximalAngle )
     : mVp( std::move( vp ) ), mInputDem( std::move( dem ) ), mAlgs( algs )
 {
     mValid = false;
@@ -244,9 +244,8 @@ void Viewshed::setPixelData( ViewshedValues values )
     }
 }
 
-ViewshedValues taskVisibility( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
-                               std::vector<StatusNode> statusList, std::shared_ptr<StatusNode> poi,
-                               std::shared_ptr<ViewPoint> vp )
+ViewshedValues taskVisibility( ViewshedAlgorithms algs, std::vector<StatusNode> statusList,
+                               std::shared_ptr<StatusNode> poi, std::shared_ptr<ViewPoint> vp )
 {
     std::sort( statusList.begin(), statusList.end() );
 
@@ -255,6 +254,123 @@ ViewshedValues taskVisibility( std::vector<std::shared_ptr<IViewshedAlgorithm>> 
     losEval.calculate( algs, statusList, poi, vp );
 
     return losEval.mResultValues;
+}
+
+StatusNode Viewshed::poi( QgsPoint point )
+{
+    QgsPoint pointRaster = mInputDem->dataProvider()->transformCoordinates(
+        point, QgsRasterDataProvider::TransformType::TransformLayerToImage );
+
+    int row = pointRaster.y();
+    int col = pointRaster.x();
+
+    StatusNode sn;
+
+    int i = 0;
+    for ( Event e : eventList )
+    {
+        switch ( e.eventType )
+        {
+            case CellPosition::CENTER:
+            {
+                sn = StatusNode( mVp, &e, mCellSize );
+
+                if ( sn.col == col && sn.row == row )
+                {
+                    return sn;
+                }
+
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
+
+    return sn;
+}
+
+std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, bool onlyToPoint )
+{
+    QgsPoint pointRaster = mInputDem->dataProvider()->transformCoordinates(
+        point, QgsRasterDataProvider::TransformType::TransformLayerToImage );
+
+    int row = pointRaster.y();
+    int col = pointRaster.x();
+
+    SharedStatusList los = std::make_shared<StatusList>();
+
+    StatusNode sn;
+
+    int i = 0;
+    for ( Event e : eventList )
+    {
+        switch ( e.eventType )
+        {
+            case CellPosition::ENTER:
+            {
+                if ( mVp->row == e.row && mVp->col == e.col )
+                {
+                    break;
+                }
+
+                sn = StatusNode( mVp, &e, mCellSize );
+                los->push_back( sn );
+                break;
+            }
+            case CellPosition::EXIT:
+            {
+                if ( mVp->row == e.row && mVp->col == e.col )
+                {
+                    break;
+                }
+
+                sn = StatusNode( e.row, e.col );
+
+                std::vector<StatusNode>::iterator index = std::find( los->begin(), los->end(), sn );
+                if ( index != los->end() )
+                {
+                    los->erase( index );
+                }
+                break;
+            }
+            case CellPosition::CENTER:
+            {
+                sn = StatusNode( mVp, &e, mCellSize );
+                break;
+            }
+        }
+
+        if ( sn.col == col && sn.row == row )
+        {
+            if ( onlyToPoint )
+            {
+                SharedStatusList shortLoS;
+
+                for ( int i = 0; i < los->size(); i++ )
+                {
+                    StatusNode node = los->at( i );
+                    if ( node.centreDistance() <= sn.centreDistance() )
+                    {
+                        shortLoS->push_back( node );
+                    }
+                }
+
+                std::sort( shortLoS->begin(), shortLoS->end() );
+                return shortLoS;
+            }
+            else
+            {
+                std::sort( los->begin(), los->end() );
+                return los;
+            }
+        }
+        i++;
+    }
+
+    return los;
 }
 
 std::shared_ptr<MemoryRaster> Viewshed::resultRaster( int index ) { return mResults.at( index ); }
