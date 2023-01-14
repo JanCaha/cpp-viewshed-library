@@ -41,6 +41,9 @@ set(VISIBILITY_ALGS
 set(MEMORY_RASTER
     src/memory_raster/memoryraster.cpp
 )
+set(UTILS
+    src/utils/utils.cpp
+)
 
 set(STRUCTURES
     src/structures/event.cpp
@@ -82,6 +85,7 @@ set(PUBLIC_HEADERS
     include/viewshead/viewshedvisibility.h
     include/viewshead/visibility.h
     include/viewshead/viewshedvalues.h
+    include/viewshead/utils.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
 
@@ -90,6 +94,7 @@ add_library(${LIB_NAME} SHARED
     ${STRUCTURES}
     ${VISIBILITY_ALGS}
     ${VISIBILITY}
+    ${UTILS}
 
     # ${EXTERNAL_HEADERS}
 )
