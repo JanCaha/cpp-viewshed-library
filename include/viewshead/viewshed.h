@@ -81,6 +81,8 @@ class Viewshed
     std::vector<std::shared_ptr<MemoryRaster>> mResults;
 
     double getCornerValue( const Position &pos, const std::unique_ptr<QgsRasterBlock> &block, double defaultValue );
+
+    SharedStatusList getLoS( StatusNode poi, bool onlyToPoi = false );
 };
 
 ViewshedValues taskVisibility( ViewshedAlgorithms algs, std::vector<StatusNode> statusList,

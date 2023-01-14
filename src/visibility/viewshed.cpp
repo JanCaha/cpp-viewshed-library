@@ -282,12 +282,8 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
     prefillStatusList();
 
     StatusNode poi = statusNodeFromPoint( point );
-
-    SharedStatusList losToReturn;
-
     StatusNode sn;
 
-    int i = 0;
     for ( Event e : eventList )
     {
         switch ( e.eventType )
@@ -298,20 +294,18 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
                 {
                     break;
                 }
-
                 sn = StatusNode( mVp, &e, mCellSize );
                 statusList.push_back( sn );
                 break;
             }
+
             case CellPosition::EXIT:
             {
                 if ( mVp->row == e.row && mVp->col == e.col )
                 {
                     break;
                 }
-
                 sn = StatusNode( e.row, e.col );
-
                 std::vector<StatusNode>::iterator index = std::find( statusList.begin(), statusList.end(), sn );
                 if ( index != statusList.end() )
                 {
@@ -319,42 +313,46 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
                 }
                 break;
             }
+
             case CellPosition::CENTER:
             {
                 sn = StatusNode( mVp, &e, mCellSize );
+                if ( sn.col == poi.col && sn.row == poi.row )
+                {
+                    return getLoS( poi, onlyToPoint );
+                }
                 break;
             }
         }
+    }
+}
 
-        if ( sn.col == poi.col && sn.row == poi.row )
+SharedStatusList Viewshed::getLoS( StatusNode poi, bool onlyToPoi )
+{
+    SharedStatusList losToReturn = std::make_shared<StatusList>();
+
+    for ( int j = 0; j < statusList.size(); j++ )
+    {
+        StatusNode node = statusList.at( j );
+
+        if ( node.angle[CellPosition::ENTER] <= poi.centreAngle() &&
+             poi.centreAngle() <= node.angle[CellPosition::EXIT] )
         {
-            std::sort( statusList.begin(), statusList.end() );
-
-            losToReturn = std::make_shared<StatusList>();
-
-            for ( int j = 0; j < statusList.size(); j++ )
+            if ( onlyToPoi )
             {
-                StatusNode node = statusList.at( j );
-
-                if ( node.angle[CellPosition::ENTER] <= poi.centreAngle() &&
-                     poi.centreAngle() <= node.angle[CellPosition::EXIT] )
+                if ( node.centreDistance() <= poi.centreDistance() )
                 {
-                    if ( onlyToPoint && node.centreDistance() <= poi.centreDistance() )
-                    {
-                        losToReturn->push_back( node );
-                    }
-                    else
-                    {
-                        losToReturn->push_back( node );
-                    }
+                    losToReturn->push_back( node );
                 }
             }
-
-            std::sort( losToReturn->begin(), losToReturn->end() );
-            return losToReturn;
+            else
+            {
+                losToReturn->push_back( node );
+            }
         }
-        i++;
     }
+
+    std::sort( losToReturn->begin(), losToReturn->end() );
 
     return losToReturn;
 }
