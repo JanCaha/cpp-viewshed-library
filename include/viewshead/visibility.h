@@ -1,9 +1,11 @@
-#ifndef VISIBILITY_H
-#define VISIBILITY_H
+#ifndef VIEWSHEDLIB_VISIBILITY_H
+#define VIEWSHEDLIB_VISIBILITY_H
 
 #include "enums.h"
 #include "points.h"
 #include "position.h"
+#include "statusnode.h"
+#include "viewshed.h"
 
 class Visibility
 {
@@ -17,6 +19,7 @@ class Visibility
     static double calculateGradient( std::shared_ptr<ViewPoint> vp, Position *pos, double elevation, double &distance );
     static double calculateGradient( std::shared_ptr<ViewPoint> vp, double &row, double &column, double elevation,
                                      double &distance );
+    static std::vector<std::pair<double, double>> distanceElevation( SharedStatusList los, StatusNode poi );
 };
 
 #endif
