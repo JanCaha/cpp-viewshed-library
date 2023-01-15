@@ -55,6 +55,11 @@ set(STRUCTURES
 set(VISIBILITY
     src/visibility/visibility.cpp
     src/visibility/viewshed.cpp
+    src/visibility/iviewshed.cpp
+)
+
+set(THREAD_TASKS
+    src/thread_tasks/threadtasks.cpp
 )
 
 set(MINIMAL_QGIS_LIBS
@@ -79,6 +84,7 @@ set(PUBLIC_HEADERS
     include/viewshead/viewshedelevationdifferencetoglobalhorizon.h
     include/viewshead/viewshedangledifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifference.h
+    include/viewshead/iviewshed.h
     include/viewshead/viewshed.h
     include/viewshead/viewshedhorizons.h
     include/viewshead/viewshedviewangle.h
@@ -86,6 +92,7 @@ set(PUBLIC_HEADERS
     include/viewshead/visibility.h
     include/viewshead/viewshedvalues.h
     include/viewshead/utils.h
+    include/viewshead/threadtasks.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
 
@@ -95,6 +102,7 @@ add_library(${LIB_NAME} SHARED
     ${VISIBILITY_ALGS}
     ${VISIBILITY}
     ${UTILS}
+    ${THREAD_TASKS}
 
     # ${EXTERNAL_HEADERS}
 )
