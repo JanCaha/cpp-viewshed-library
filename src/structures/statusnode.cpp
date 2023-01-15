@@ -18,7 +18,7 @@ StatusNode::StatusNode( int row_, int col_ )
     col = col_;
 }
 
-StatusNode::StatusNode( std::shared_ptr<IPoint> point, Event *e, double &cellSize )
+StatusNode::StatusNode( std::shared_ptr<IPoint> point, CellEvent *e, double &cellSize )
 {
     row = e->row;
     col = e->col;

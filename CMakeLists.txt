@@ -46,7 +46,7 @@ set(UTILS
 )
 
 set(STRUCTURES
-    src/structures/event.cpp
+    src/structures/cellevent.cpp
     src/structures/points.cpp
     src/structures/position.cpp
     src/structures/statusnode.cpp
@@ -72,7 +72,7 @@ set(MINIMAL_QGIS_LIBS
 
 set(PUBLIC_HEADERS
     include/viewshead/enums.h
-    include/viewshead/event.h
+    include/viewshead/cellevent.h
     include/viewshead/iviewshedalgorithm.h
     include/viewshead/losevaluator.h
     include/viewshead/memoryraster.h

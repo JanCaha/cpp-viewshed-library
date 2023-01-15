@@ -6,7 +6,7 @@
 
 #include "BS_thread_pool.hpp"
 
-#include "event.h"
+#include "cellevent.h"
 #include "iviewshedalgorithm.h"
 #include "memoryraster.h"
 #include "position.h"
@@ -15,7 +15,7 @@
 
 namespace viewshed
 {
-    typedef std::vector<Event> EventList;
+    typedef std::vector<CellEvent> EventList;
     typedef std::vector<StatusNode> StatusList;
     typedef std::shared_ptr<std::vector<StatusNode>> SharedStatusList;
     typedef std::vector<std::shared_ptr<IViewshedAlgorithm>> ViewshedAlgorithms;

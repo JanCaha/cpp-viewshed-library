@@ -8,8 +8,8 @@
 
 #include "BS_thread_pool.hpp"
 
+#include "cellevent.h"
 #include "enums.h"
-#include "event.h"
 #include "iviewshed.h"
 #include "iviewshedalgorithm.h"
 #include "losevaluator.h"

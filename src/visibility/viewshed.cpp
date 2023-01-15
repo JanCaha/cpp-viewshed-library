@@ -40,7 +40,7 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
     StatusNode poi = statusNodeFromPoint( point );
     StatusNode sn;
 
-    for ( Event e : eventList )
+    for ( CellEvent e : eventList )
     {
         switch ( e.eventType )
         {

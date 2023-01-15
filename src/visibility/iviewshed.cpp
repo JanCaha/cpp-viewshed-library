@@ -70,12 +70,12 @@ void IViewshed::initEventList()
 
                     if ( eventDistance < mMaxDistance && checkInsideAngle( angleEnter, angleExit ) )
                     {
-                        Event eCenter = Event( CellPosition::CENTER, row, column, eventDistance, angleCenter, elevs );
-                        Event eEnter = Event( CellPosition::ENTER, row, column,
+                        CellEvent eCenter = CellEvent( CellPosition::CENTER, row, column, eventDistance, angleCenter, elevs );
+                        CellEvent eEnter = CellEvent( CellPosition::ENTER, row, column,
                                               Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
                                               angleEnter, elevs );
-                        Event eExit =
-                            Event( CellPosition::EXIT, row, column,
+                        CellEvent eExit =
+                            CellEvent( CellPosition::EXIT, row, column,
                                    Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ), angleExit, elevs );
 
                         if ( mPoint->row == row && mPoint->col < column )
@@ -155,7 +155,7 @@ void IViewshed::prefillStatusList()
         statusList.clear();
     }
 
-    for ( Event e : viewPointRowEventList )
+    for ( CellEvent e : viewPointRowEventList )
     {
         StatusNode sn( mPoint, &e, mCellSize );
         statusList.push_back( sn );
@@ -169,7 +169,7 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
     ViewshedValues rasterValues;
 
     int i = 0;
-    for ( Event e : eventList )
+    for ( CellEvent e : eventList )
     {
         progressCallback( eventList.size(), i );
 
@@ -258,7 +258,7 @@ void IViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_
     MemoryRaster result = MemoryRaster( dem_ );
 
     int i = 0;
-    for ( Event event : eventList )
+    for ( CellEvent event : eventList )
     {
         if ( event.eventType == CellPosition::CENTER )
         {
@@ -326,7 +326,7 @@ StatusNode IViewshed::statusNodeFromPoint( QgsPoint point )
 
     StatusNode sn;
 
-    for ( Event e : eventList )
+    for ( CellEvent e : eventList )
     {
         if ( e.eventType == CellPosition::CENTER && e.col == col && e.row == row )
         {

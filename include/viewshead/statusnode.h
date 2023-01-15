@@ -1,8 +1,8 @@
 #ifndef VIEWSHEDLIB_STATUSNODE_H
 #define VIEWSHEDLIB_STATUSNODE_H
 
+#include "cellevent.h"
 #include "enums.h"
-#include "event.h"
 #include "points.h"
 
 namespace viewshed
@@ -17,7 +17,7 @@ namespace viewshed
 
         StatusNode();
         StatusNode( int row_, int col_ );
-        StatusNode( std::shared_ptr<IPoint> point, Event *e, double &cellSize );
+        StatusNode( std::shared_ptr<IPoint> point, CellEvent *e, double &cellSize );
 
         bool operator==( const StatusNode &other );
         bool operator!=( const StatusNode &other );
