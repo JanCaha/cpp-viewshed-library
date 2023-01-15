@@ -3,6 +3,8 @@
 #include "losevaluator.h"
 #include "viewshedangledifferencetolocalhorizon.h"
 
+using viewshed::ViewshedAngleDifferenceToLocalHorizon;
+
 ViewshedAngleDifferenceToLocalHorizon::ViewshedAngleDifferenceToLocalHorizon( bool all, double invisibleValue )
     : mAllPoints( all ), mInvisibleValue( invisibleValue )
 {

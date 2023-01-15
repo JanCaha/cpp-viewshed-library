@@ -3,6 +3,8 @@
 #include "losevaluator.h"
 #include "viewshedviewangle.h"
 
+using viewshed::ViewshedViewAngle;
+
 double ViewshedViewAngle::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
                                   std::shared_ptr<ViewPoint> vp )
 {

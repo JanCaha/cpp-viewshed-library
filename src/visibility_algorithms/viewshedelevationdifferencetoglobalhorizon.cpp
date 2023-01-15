@@ -3,6 +3,8 @@
 #include "losevaluator.h"
 #include "viewshedelevationdifferencetoglobalhorizon.h"
 
+using viewshed::ViewshedElevationDifferenceToGlobalHorizon;
+
 ViewshedElevationDifferenceToGlobalHorizon::ViewshedElevationDifferenceToGlobalHorizon(
     bool all, double invisibleValue, double differenceWithoutHorizon )
     : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon )

@@ -3,6 +3,7 @@
 
 #include "iviewshedalgorithm.h"
 
+namespace viewshed{
 class ViewshedElevationDifference : public IViewshedAlgorithm
 {
 
@@ -15,5 +16,6 @@ class ViewshedElevationDifference : public IViewshedAlgorithm
     const QString name() override;
     void extractValues( StatusNode &sn, StatusNode &poi, int &position ) override;
 };
+}
 
 #endif

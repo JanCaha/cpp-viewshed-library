@@ -2,6 +2,9 @@
 
 #include "visibility.h"
 
+using viewshed::Position;
+using viewshed::Visibility;
+
 double Visibility::calculateAngle( Position *pos, std::shared_ptr<ViewPoint> vp )
 {
     return calculateAngle( pos->row, pos->col, vp );

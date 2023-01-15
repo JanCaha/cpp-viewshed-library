@@ -5,6 +5,15 @@
 #include "viewshed.h"
 #include "visibility.h"
 
+using viewshed::LoSEvaluator;
+using viewshed::MemoryRaster;
+using viewshed::SharedStatusList;
+using viewshed::StatusNode;
+using viewshed::ViewPoint;
+using viewshed::Viewshed;
+using viewshed::ViewshedAlgorithms;
+using viewshed::ViewshedValues;
+
 Viewshed::Viewshed( std::shared_ptr<ViewPoint> vp, std::shared_ptr<QgsRasterLayer> dem, ViewshedAlgorithms algs,
                     double minimalAngle, double maximalAngle )
     : mVp( std::move( vp ) ), mInputDem( std::move( dem ) ), mAlgs( algs )
@@ -245,8 +254,8 @@ void Viewshed::setPixelData( ViewshedValues values )
     }
 }
 
-ViewshedValues taskVisibility( ViewshedAlgorithms algs, std::vector<StatusNode> statusList,
-                               std::shared_ptr<StatusNode> poi, std::shared_ptr<ViewPoint> vp )
+ViewshedValues viewshed::taskVisibility( ViewshedAlgorithms algs, std::vector<StatusNode> statusList,
+                                         std::shared_ptr<StatusNode> poi, std::shared_ptr<ViewPoint> vp )
 {
     std::sort( statusList.begin(), statusList.end() );
 

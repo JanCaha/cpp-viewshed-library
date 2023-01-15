@@ -7,6 +7,8 @@
 
 #include "points.h"
 
+using viewshed::ViewPoint;
+
 class TestViewpoint : public QObject
 {
     Q_OBJECT

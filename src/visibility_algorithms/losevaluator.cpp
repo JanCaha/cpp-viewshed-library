@@ -1,5 +1,8 @@
 #include "losevaluator.h"
 
+using viewshed::IViewshedAlgorithm;
+using viewshed::LoSEvaluator;
+
 int LoSEvaluator::size() { return mAlgs.size(); }
 
 std::shared_ptr<IViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { return mAlgs.at( i ); }

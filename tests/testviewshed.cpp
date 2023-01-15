@@ -14,6 +14,8 @@
 #include "viewshedvisibility.h"
 #include "visibility.h"
 
+using namespace viewshed;
+
 class TestViewshed : public QObject
 {
     Q_OBJECT

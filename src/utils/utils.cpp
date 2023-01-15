@@ -5,6 +5,8 @@
 
 #include "utils.h"
 
+using viewshed::Utils;
+
 void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation, std::string fileName )
 {
     std::ofstream resultCsvFile;

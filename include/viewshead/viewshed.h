@@ -18,74 +18,77 @@
 #include "statusnode.h"
 #include "viewshedvalues.h"
 
-typedef std::vector<Event> EventList;
-typedef std::vector<StatusNode> StatusList;
-typedef std::shared_ptr<std::vector<StatusNode>> SharedStatusList;
-typedef std::vector<std::shared_ptr<IViewshedAlgorithm>> ViewshedAlgorithms;
-
-class Viewshed
+namespace viewshed
 {
-  public:
-    Viewshed( std::shared_ptr<ViewPoint> vp_, std::shared_ptr<QgsRasterLayer> dem_, ViewshedAlgorithms algs,
-              double minimalAngle = std::numeric_limits<double>::quiet_NaN(),
-              double maximalAngle = std::numeric_limits<double>::quiet_NaN() );
+    typedef std::vector<Event> EventList;
+    typedef std::vector<StatusNode> StatusList;
+    typedef std::shared_ptr<std::vector<StatusNode>> SharedStatusList;
+    typedef std::vector<std::shared_ptr<IViewshedAlgorithm>> ViewshedAlgorithms;
 
-    void initEventList();
-    void sortEventList();
-    void prefillStatusList();
-    void parseEventList( std::function<void( int, int )> progressCallback = []( int, int ) {} );
-    void extractValuesFromEventList();
-    void extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
-                                     std::function<double( StatusNode )> func );
+    class Viewshed
+    {
+      public:
+        Viewshed( std::shared_ptr<ViewPoint> vp_, std::shared_ptr<QgsRasterLayer> dem_, ViewshedAlgorithms algs,
+                  double minimalAngle = std::numeric_limits<double>::quiet_NaN(),
+                  double maximalAngle = std::numeric_limits<double>::quiet_NaN() );
 
-    void calculate(
-        std::function<void( std::string, double )> stepsTimingCallback = []( std::string text, double time )
-        { qDebug() << QString::fromStdString( text ) << time; },
-        std::function<void( int, int )> progressCallback = []( int, int ) {} );
+        void initEventList();
+        void sortEventList();
+        void prefillStatusList();
+        void parseEventList( std::function<void( int, int )> progressCallback = []( int, int ) {} );
+        void extractValuesFromEventList();
+        void extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
+                                         std::function<double( StatusNode )> func );
 
-    bool checkInsideAngle( double eventEnterAngle, double eventExitAngle );
+        void calculate(
+            std::function<void( std::string, double )> stepsTimingCallback = []( std::string text, double time )
+            { qDebug() << QString::fromStdString( text ) << time; },
+            std::function<void( int, int )> progressCallback = []( int, int ) {} );
 
-    std::shared_ptr<MemoryRaster> resultRaster( int index = 0 );
+        bool checkInsideAngle( double eventEnterAngle, double eventExitAngle );
 
-    void saveResults( QString location );
-    void setMaximalDistance( double distance );
-    SharedStatusList LoSToPoint( QgsPoint point, bool onlyToPoint = false );
-    StatusNode statusNodeFromPoint( QgsPoint point );
+        std::shared_ptr<MemoryRaster> resultRaster( int index = 0 );
 
-  private:
-    EventList viewPointRowEventList;
-    StatusList statusList;
-    EventList eventList;
-    std::shared_ptr<QgsRasterLayer> mInputDem;
-    std::shared_ptr<ViewPoint> mVp;
-    ViewshedAlgorithms mAlgs;
-    Qgis::DataType dataType = Qgis::DataType::Float64;
-    int mDefaultBand = 1;
+        void saveResults( QString location );
+        void setMaximalDistance( double distance );
+        SharedStatusList LoSToPoint( QgsPoint point, bool onlyToPoint = false );
+        StatusNode statusNodeFromPoint( QgsPoint point );
 
-    double mMinAngle = -360.0;
-    double mMaxAngle = 720.0;
-    double mMaxDistance = std::numeric_limits<double>::max();
-    double mCellSize;
-    double mValid;
+      private:
+        EventList viewPointRowEventList;
+        StatusList statusList;
+        EventList eventList;
+        std::shared_ptr<QgsRasterLayer> mInputDem;
+        std::shared_ptr<ViewPoint> mVp;
+        ViewshedAlgorithms mAlgs;
+        Qgis::DataType dataType = Qgis::DataType::Float64;
+        int mDefaultBand = 1;
 
-    int mMaxNumberOfTasks = 100;
-    int mMaxNumberOfResults = 500;
+        double mMinAngle = -360.0;
+        double mMaxAngle = 720.0;
+        double mMaxDistance = std::numeric_limits<double>::max();
+        double mCellSize;
+        double mValid;
 
-    void prepareMemoryRasters();
-    void setPixelData( ViewshedValues values );
-    void parseCalculatedResults();
+        int mMaxNumberOfTasks = 100;
+        int mMaxNumberOfResults = 500;
 
-    BS::thread_pool mThreadPool;
-    BS::multi_future<ViewshedValues> mResultPixels;
+        void prepareMemoryRasters();
+        void setPixelData( ViewshedValues values );
+        void parseCalculatedResults();
 
-    std::vector<std::shared_ptr<MemoryRaster>> mResults;
+        BS::thread_pool mThreadPool;
+        BS::multi_future<ViewshedValues> mResultPixels;
 
-    double getCornerValue( const Position &pos, const std::unique_ptr<QgsRasterBlock> &block, double defaultValue );
+        std::vector<std::shared_ptr<MemoryRaster>> mResults;
 
-    SharedStatusList getLoS( StatusNode poi, bool onlyToPoi = false );
-};
+        double getCornerValue( const Position &pos, const std::unique_ptr<QgsRasterBlock> &block, double defaultValue );
 
-ViewshedValues taskVisibility( ViewshedAlgorithms algs, std::vector<StatusNode> statusList,
-                               std::shared_ptr<StatusNode> poi, std::shared_ptr<ViewPoint> vp );
+        SharedStatusList getLoS( StatusNode poi, bool onlyToPoi = false );
+    };
+
+    ViewshedValues taskVisibility( ViewshedAlgorithms algs, std::vector<StatusNode> statusList,
+                                   std::shared_ptr<StatusNode> poi, std::shared_ptr<ViewPoint> vp );
+} // namespace viewshed
 
 #endif

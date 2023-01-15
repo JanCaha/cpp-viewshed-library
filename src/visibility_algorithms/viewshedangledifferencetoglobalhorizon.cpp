@@ -3,6 +3,8 @@
 #include "losevaluator.h"
 #include "viewshedangledifferencetoglobalhorizon.h"
 
+using viewshed::ViewshedAngleDifferenceToGlobalHorizon;
+
 ViewshedAngleDifferenceToGlobalHorizon::ViewshedAngleDifferenceToGlobalHorizon( bool all, double invisibleValue )
     : mAllPoints( all ), mInvisibleValue( invisibleValue )
 {

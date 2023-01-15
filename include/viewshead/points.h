@@ -4,20 +4,23 @@
 #include "qgspoint.h"
 #include "qgsrasterlayer.h"
 
-struct ViewPoint
+namespace viewshed
 {
-    int row, col;
-    double x, y;
-    double elevation, offset;
+    struct ViewPoint
+    {
+        int row, col;
+        double x, y;
+        double elevation, offset;
 
-    ViewPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offset = 1.6, int rasterBand = 1 );
-    ViewPoint( int row_, int col_, double elevation_, double offset_ );
+        ViewPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offset = 1.6, int rasterBand = 1 );
+        ViewPoint( int row_, int col_, double elevation_, double offset_ );
 
-    double totalElevation();
-    bool isValid();
+        double totalElevation();
+        bool isValid();
 
-  private:
-    bool mValid;
-};
+      private:
+        bool mValid;
+    };
+} // namespace viewshed
 
 #endif

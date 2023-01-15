@@ -3,6 +3,7 @@
 
 #include "iviewshedalgorithm.h"
 
+namespace viewshed{
 class ViewshedViewAngle : public IViewshedAlgorithm
 {
 
@@ -15,5 +16,6 @@ class ViewshedViewAngle : public IViewshedAlgorithm
     const double completlyVisible() override;
     const QString name() override;
 };
+}
 
 #endif

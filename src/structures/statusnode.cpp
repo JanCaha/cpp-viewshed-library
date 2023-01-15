@@ -4,6 +4,8 @@
 #include "statusnode.h"
 #include "visibility.h"
 
+using viewshed::StatusNode;
+
 StatusNode::StatusNode()
 {
     row = 0;

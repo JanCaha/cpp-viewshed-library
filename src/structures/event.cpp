@@ -1,5 +1,7 @@
 #include "event.h"
 
+using viewshed::Event;
+
 Event::Event( CellPosition eventType_, int row_, int col_, double dist_, double angle_, double elevation_[3] )
 {
     eventType = eventType_;

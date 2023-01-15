@@ -7,6 +7,8 @@
 
 #include "memoryraster.h"
 
+using viewshed::MemoryRaster;
+
 class TestMemoryRaster : public QObject
 {
     Q_OBJECT

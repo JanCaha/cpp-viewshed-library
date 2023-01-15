@@ -5,6 +5,7 @@
 
 #include "iviewshedalgorithm.h"
 
+namespace viewshed{
 class ViewshedAngleDifferenceToLocalHorizon : public IViewshedAlgorithm
 {
 
@@ -22,5 +23,6 @@ class ViewshedAngleDifferenceToLocalHorizon : public IViewshedAlgorithm
     bool mAllPoints = false;
     double mInvisibleValue;
 };
+}
 
 #endif

@@ -1,5 +1,7 @@
 #include "points.h"
 
+using viewshed::ViewPoint;
+
 ViewPoint::ViewPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offset_, int rasterBand )
 {
     mValid = false;

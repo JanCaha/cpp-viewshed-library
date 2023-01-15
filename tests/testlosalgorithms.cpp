@@ -20,6 +20,8 @@
 #include "viewshedhorizons.h"
 #include "viewshedvisibility.h"
 
+using namespace viewshed;
+
 class TestLosAlgorithms : public QObject
 {
     Q_OBJECT

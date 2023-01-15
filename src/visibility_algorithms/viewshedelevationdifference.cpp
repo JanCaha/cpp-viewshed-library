@@ -1,6 +1,8 @@
 #include "viewshedelevationdifference.h"
 #include "losevaluator.h"
 
+using viewshed::ViewshedElevationDifference;
+
 double ViewshedElevationDifference::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes,
                                             StatusNode &poi, std::shared_ptr<ViewPoint> vp )
 {
