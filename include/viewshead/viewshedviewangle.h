@@ -3,19 +3,20 @@
 
 #include "iviewshedalgorithm.h"
 
-namespace viewshed{
-class ViewshedViewAngle : public IViewshedAlgorithm
+namespace viewshed
 {
+    class ViewshedViewAngle : public IViewshedAlgorithm
+    {
 
-  public:
-    double result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes, LoSNode &poi,
-                   std::shared_ptr<IPoint> vp ) override;
-    void extractValues( LoSNode &sn, LoSNode &poi, int &position ) override;
-    const double viewpointValue() override;
-    const double invisible() override;
-    const double completlyVisible() override;
-    const QString name() override;
-};
-}
+      public:
+        double result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes, LoSNode &poi,
+                       std::shared_ptr<IPoint> vp ) override;
+        void extractValues( LoSNode &ln, LoSNode &poi, int &position ) override;
+        const double viewpointValue() override;
+        const double invisible() override;
+        const double completlyVisible() override;
+        const QString name() override;
+    };
+} // namespace viewshed
 
 #endif

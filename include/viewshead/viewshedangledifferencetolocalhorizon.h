@@ -5,24 +5,25 @@
 
 #include "iviewshedalgorithm.h"
 
-namespace viewshed{
-class ViewshedAngleDifferenceToLocalHorizon : public IViewshedAlgorithm
+namespace viewshed
 {
+    class ViewshedAngleDifferenceToLocalHorizon : public IViewshedAlgorithm
+    {
 
-  public:
-    ViewshedAngleDifferenceToLocalHorizon( bool all = false, double invisibleValue = -91 );
-    double result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes, LoSNode &poi,
-                   std::shared_ptr<IPoint> vp ) override;
-    const double viewpointValue() override;
-    const double invisible() override;
-    const double completlyVisible() override;
-    const QString name() override;
-    void extractValues( LoSNode &sn, LoSNode &poi, int &position ) override;
+      public:
+        ViewshedAngleDifferenceToLocalHorizon( bool all = false, double invisibleValue = -91 );
+        double result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes, LoSNode &poi,
+                       std::shared_ptr<IPoint> vp ) override;
+        const double viewpointValue() override;
+        const double invisible() override;
+        const double completlyVisible() override;
+        const QString name() override;
+        void extractValues( LoSNode &ln, LoSNode &poi, int &position ) override;
 
-  private:
-    bool mAllPoints = false;
-    double mInvisibleValue;
-};
-}
+      private:
+        bool mAllPoints = false;
+        double mInvisibleValue;
+    };
+} // namespace viewshed
 
 #endif

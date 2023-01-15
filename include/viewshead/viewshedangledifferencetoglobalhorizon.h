@@ -18,7 +18,7 @@ namespace viewshed
         const double invisible() override;
         const double completlyVisible() override;
         const QString name() override;
-        void extractValues( LoSNode &sn, LoSNode &poi, int &position ) override;
+        void extractValues( LoSNode &ln, LoSNode &poi, int &position ) override;
 
       private:
         bool mAllPoints = false;

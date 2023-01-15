@@ -7,9 +7,9 @@
 
 using viewshed::IPoint;
 using viewshed::LoSEvaluator;
+using viewshed::LoSNode;
 using viewshed::MemoryRaster;
 using viewshed::SharedStatusList;
-using viewshed::LoSNode;
 using viewshed::ViewPoint;
 using viewshed::Viewshed;
 using viewshed::ViewshedAlgorithms;
@@ -38,7 +38,7 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
     prefillStatusList();
 
     LoSNode poi = statusNodeFromPoint( point );
-    LoSNode sn;
+    LoSNode ln;
 
     for ( CellEvent e : eventList )
     {
@@ -50,8 +50,8 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
                 {
                     break;
                 }
-                sn = LoSNode( mPoint, &e, mCellSize );
-                statusList.push_back( sn );
+                ln = LoSNode( mPoint, &e, mCellSize );
+                statusList.push_back( ln );
                 break;
             }
 
@@ -61,8 +61,8 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
                 {
                     break;
                 }
-                sn = LoSNode( e.row, e.col );
-                std::vector<LoSNode>::iterator index = std::find( statusList.begin(), statusList.end(), sn );
+                ln = LoSNode( e.row, e.col );
+                std::vector<LoSNode>::iterator index = std::find( statusList.begin(), statusList.end(), ln );
                 if ( index != statusList.end() )
                 {
                     statusList.erase( index );
@@ -72,8 +72,8 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
 
             case CellPosition::CENTER:
             {
-                sn = LoSNode( mPoint, &e, mCellSize );
-                if ( sn.col == poi.col && sn.row == poi.row )
+                ln = LoSNode( mPoint, &e, mCellSize );
+                if ( ln.col == poi.col && ln.row == poi.row )
                 {
                     return getLoS( poi, onlyToPoint );
                 }

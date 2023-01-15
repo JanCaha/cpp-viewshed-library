@@ -4,8 +4,8 @@
 #include "visibility.h"
 
 using viewshed::IViewshed;
-using viewshed::MemoryRaster;
 using viewshed::LoSNode;
+using viewshed::MemoryRaster;
 
 void IViewshed::prepareMemoryRasters()
 {
@@ -70,13 +70,14 @@ void IViewshed::initEventList()
 
                     if ( eventDistance < mMaxDistance && checkInsideAngle( angleEnter, angleExit ) )
                     {
-                        CellEvent eCenter = CellEvent( CellPosition::CENTER, row, column, eventDistance, angleCenter, elevs );
+                        CellEvent eCenter =
+                            CellEvent( CellPosition::CENTER, row, column, eventDistance, angleCenter, elevs );
                         CellEvent eEnter = CellEvent( CellPosition::ENTER, row, column,
-                                              Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
-                                              angleEnter, elevs );
-                        CellEvent eExit =
-                            CellEvent( CellPosition::EXIT, row, column,
-                                   Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ), angleExit, elevs );
+                                                      Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
+                                                      angleEnter, elevs );
+                        CellEvent eExit = CellEvent( CellPosition::EXIT, row, column,
+                                                     Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ),
+                                                     angleExit, elevs );
 
                         if ( mPoint->row == row && mPoint->col < column )
                         {
@@ -157,8 +158,8 @@ void IViewshed::prefillStatusList()
 
     for ( CellEvent e : viewPointRowEventList )
     {
-        LoSNode sn( mPoint, &e, mCellSize );
-        statusList.push_back( sn );
+        LoSNode ln( mPoint, &e, mCellSize );
+        statusList.push_back( ln );
     }
 }
 
@@ -173,7 +174,7 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
     {
         progressCallback( eventList.size(), i );
 
-        LoSNode sn;
+        LoSNode ln;
         switch ( e.eventType )
         {
             case CellPosition::ENTER:
@@ -183,8 +184,8 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
                     break;
                 }
 
-                sn = LoSNode( mPoint, &e, mCellSize );
-                statusList.push_back( sn );
+                ln = LoSNode( mPoint, &e, mCellSize );
+                statusList.push_back( ln );
                 break;
             }
             case CellPosition::EXIT:
@@ -194,9 +195,9 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
                     break;
                 }
 
-                sn = LoSNode( e.row, e.col );
+                ln = LoSNode( e.row, e.col );
 
-                std::vector<LoSNode>::iterator index = std::find( statusList.begin(), statusList.end(), sn );
+                std::vector<LoSNode>::iterator index = std::find( statusList.begin(), statusList.end(), ln );
                 if ( index != statusList.end() )
                 {
                     statusList.erase( index );
@@ -262,8 +263,8 @@ void IViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_
     {
         if ( event.eventType == CellPosition::CENTER )
         {
-            LoSNode sn( mPoint, &event, mCellSize );
-            result.setValue( func( sn ), sn.col, sn.row );
+            LoSNode ln( mPoint, &event, mCellSize );
+            result.setValue( func( ln ), ln.col, ln.row );
         }
         i++;
     }
@@ -324,16 +325,16 @@ LoSNode IViewshed::statusNodeFromPoint( QgsPoint point )
     int row = pointRaster.y();
     int col = pointRaster.x();
 
-    LoSNode sn;
+    LoSNode ln;
 
     for ( CellEvent e : eventList )
     {
         if ( e.eventType == CellPosition::CENTER && e.col == col && e.row == row )
         {
-            sn = LoSNode( mPoint, &e, mCellSize );
-            return sn;
+            ln = LoSNode( mPoint, &e, mCellSize );
+            return ln;
         }
     }
 
-    return sn;
+    return ln;
 }
