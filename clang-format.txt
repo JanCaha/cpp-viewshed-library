@@ -8,6 +8,7 @@ BreakBeforeBraces: Allman
 ColumnLimit: 120
 IndentCaseLabels: 'true'
 IndentWidth: '4'
+NamespaceIndentation: All
 PointerAlignment: Right
 SeparateDefinitionBlocks: Always
 SortIncludesOptions: CaseSensitive
