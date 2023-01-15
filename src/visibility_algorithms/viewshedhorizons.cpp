@@ -25,8 +25,6 @@ double ViewshedHorizons::result( LoSEvaluator *losevaluator, std::vector<LoSNode
     return invisible();
 }
 
-void ViewshedHorizons::extractValues( LoSNode &ln, LoSNode &poi, int &position ) {}
-
 const double ViewshedHorizons::invisible() { return 0.0; }
 
 const double ViewshedHorizons::completlyVisible() { return 1.0; }

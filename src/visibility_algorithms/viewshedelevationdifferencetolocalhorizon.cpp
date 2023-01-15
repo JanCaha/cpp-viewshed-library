@@ -11,9 +11,8 @@ ViewshedElevationDifferenceToLocalHorizon::ViewshedElevationDifferenceToLocalHor
 {
 }
 
-double ViewshedElevationDifferenceToLocalHorizon::result( LoSEvaluator *losevaluator,
-                                                          std::vector<LoSNode> &statusNodes, LoSNode &poi,
-                                                          std::shared_ptr<IPoint> vp )
+double ViewshedElevationDifferenceToLocalHorizon::result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes,
+                                                          LoSNode &poi, std::shared_ptr<IPoint> vp )
 {
     double change;
     double difference;
@@ -44,8 +43,6 @@ double ViewshedElevationDifferenceToLocalHorizon::result( LoSEvaluator *losevalu
             return difference;
     }
 }
-
-void ViewshedElevationDifferenceToLocalHorizon::extractValues( LoSNode &ln, LoSNode &poi, int &position ) {}
 
 const double ViewshedElevationDifferenceToLocalHorizon::invisible() { return mInvisibleValue; }
 

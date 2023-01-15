@@ -17,7 +17,7 @@ namespace viewshed
         const double invisible() override;
         const double completlyVisible() override;
         const QString name() override;
-        void extractValues( LoSNode &ln, LoSNode &poi, int &position ) override;
+         
     };
 } // namespace viewshed
 

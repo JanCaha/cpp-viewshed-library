@@ -46,8 +46,6 @@ double ViewshedElevationDifferenceToGlobalHorizon::result( LoSEvaluator *loseval
     }
 }
 
-void ViewshedElevationDifferenceToGlobalHorizon::extractValues( LoSNode &ln, LoSNode &poi, int &position ) {}
-
 const double ViewshedElevationDifferenceToGlobalHorizon::invisible() { return mInvisibleValue; }
 
 const double ViewshedElevationDifferenceToGlobalHorizon::completlyVisible() { return 0; }

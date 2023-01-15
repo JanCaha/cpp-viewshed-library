@@ -11,8 +11,6 @@ double ViewshedViewAngle::result( LoSEvaluator *losevaluator, std::vector<LoSNod
     return poi.gradient[CellPosition::CENTER];
 }
 
-void ViewshedViewAngle::extractValues( LoSNode &ln, LoSNode &poi, int &position ) {}
-
 const double ViewshedViewAngle::invisible() { return -91.0; }
 
 const double ViewshedViewAngle::completlyVisible() { return 90.0; }

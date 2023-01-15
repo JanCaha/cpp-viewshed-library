@@ -14,8 +14,6 @@ double ViewshedVisibility::result( LoSEvaluator *losevaluator, std::vector<LoSNo
         return completlyVisible();
 }
 
-void ViewshedVisibility::extractValues( LoSNode &ln, LoSNode &poi, int &position ) {}
-
 const double ViewshedVisibility::invisible() { return 0.0; }
 
 const double ViewshedVisibility::completlyVisible() { return 1.0; }

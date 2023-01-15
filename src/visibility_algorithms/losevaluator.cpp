@@ -62,11 +62,6 @@ void LoSEvaluator::parseNodes( std::vector<LoSNode> &statusNodes, std::shared_pt
             mMaxGradient = snGradient;
             mIndexMaxGradient = i;
         }
-
-        for ( int j = 0; j < mAlgs.size(); j++ )
-        {
-            mAlgs.at( j )->extractValues( ln, *poi.get(), i );
-        }
     }
 
     mAlreadyParsed = true;

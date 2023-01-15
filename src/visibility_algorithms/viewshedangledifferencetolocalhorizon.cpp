@@ -38,8 +38,6 @@ double ViewshedAngleDifferenceToLocalHorizon::result( LoSEvaluator *losevaluator
     }
 }
 
-void ViewshedAngleDifferenceToLocalHorizon::extractValues( LoSNode &ln, LoSNode &poi, int &position ) {}
-
 const double ViewshedAngleDifferenceToLocalHorizon::invisible() { return mInvisibleValue; }
 
 const double ViewshedAngleDifferenceToLocalHorizon::completlyVisible() { return 0; }

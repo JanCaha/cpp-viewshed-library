@@ -9,8 +9,6 @@ double ViewshedElevationDifference::result( LoSEvaluator *losevaluator, std::vec
     return poi.elevs[CellPosition::CENTER] - vp->totalElevation();
 }
 
-void ViewshedElevationDifference::extractValues( LoSNode &ln, LoSNode &poi, int &position ) {}
-
 const double ViewshedElevationDifference::invisible() { return 0.0; }
 
 const double ViewshedElevationDifference::completlyVisible() { return 0.0; }
