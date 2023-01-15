@@ -21,11 +21,6 @@
 
 namespace viewshed
 {
-    // typedef std::vector<Event> EventList;
-    // typedef std::vector<StatusNode> StatusList;
-    // typedef std::shared_ptr<std::vector<StatusNode>> SharedStatusList;
-    // typedef std::vector<std::shared_ptr<IViewshedAlgorithm>> ViewshedAlgorithms;
-
     class Viewshed : public IViewshed
     {
       public:
