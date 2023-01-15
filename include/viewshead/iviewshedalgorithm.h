@@ -16,7 +16,7 @@ namespace viewshed
     {
       public:
         virtual double result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
-                               std::shared_ptr<ViewPoint> vp ) = 0;
+                               std::shared_ptr<IPoint> vp ) = 0;
         virtual void extractValues( StatusNode &sn, StatusNode &poi, int &position ) = 0;
         virtual const double viewpointValue() = 0;
         virtual const double invisible() = 0;

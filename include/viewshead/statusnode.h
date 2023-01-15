@@ -17,7 +17,7 @@ namespace viewshed
 
         StatusNode();
         StatusNode( int row_, int col_ );
-        StatusNode( std::shared_ptr<ViewPoint> vp, Event *e, double &cellSize );
+        StatusNode( std::shared_ptr<IPoint> point, Event *e, double &cellSize );
 
         bool operator==( const StatusNode &other );
         bool operator!=( const StatusNode &other );

@@ -6,21 +6,30 @@
 
 namespace viewshed
 {
-    struct ViewPoint
+
+    class IPoint
     {
+      public:
         int row, col;
         double x, y;
         double elevation, offset;
 
-        ViewPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offset = 1.6, int rasterBand = 1 );
-        ViewPoint( int row_, int col_, double elevation_, double offset_ );
-
         double totalElevation();
         bool isValid();
 
-      private:
+      protected:
         bool mValid;
+
+        void setUp( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, int rasterBand = 1 );
     };
+
+    class ViewPoint : public IPoint
+    {
+      public:
+        ViewPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offset = 1.6, int rasterBand = 1 );
+        ViewPoint( int row_, int col_, double elevation_, double offset_ );
+    };
+
 } // namespace viewshed
 
 #endif

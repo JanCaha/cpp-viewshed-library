@@ -5,50 +5,50 @@
 using viewshed::Position;
 using viewshed::Visibility;
 
-double Visibility::calculateAngle( Position *pos, std::shared_ptr<ViewPoint> vp )
+double Visibility::calculateAngle( Position *pos, std::shared_ptr<IPoint> point )
 {
-    return calculateAngle( pos->row, pos->col, vp );
+    return calculateAngle( pos->row, pos->col, point );
 }
 
-double Visibility::calculateAngle( double row, double column, std::shared_ptr<ViewPoint> vp )
+double Visibility::calculateAngle( double row, double column, std::shared_ptr<IPoint> point )
 {
-    double angle = atan( fabs( row - vp->row ) / fabs( column - vp->col ) );
+    double angle = atan( fabs( row - point->row ) / fabs( column - point->col ) );
 
-    if ( vp->row == row && column > vp->col )
+    if ( point->row == row && column > point->col )
     {
         return 0; /*between 1st and 4th quadrant */
     }
-    else if ( column > vp->col && row < vp->row )
+    else if ( column > point->col && row < point->row )
     {
         /*first quadrant */
         return angle;
     }
-    else if ( vp->col == column && vp->row > row )
+    else if ( point->col == column && point->row > row )
     {
         /*between 1st and 2nd quadrant */
         return M_PI / 2;
     }
-    else if ( column < vp->col && row < vp->row )
+    else if ( column < point->col && row < point->row )
     {
         /*second quadrant */
         return ( M_PI - angle );
     }
-    else if ( vp->row == row && column < vp->col )
+    else if ( point->row == row && column < point->col )
     {
         /*between 1st and 3rd quadrant */
         return M_PI;
     }
-    else if ( row > vp->row && column < vp->col )
+    else if ( row > point->row && column < point->col )
     {
         /*3rd quadrant */
         return ( M_PI + angle );
     }
-    else if ( vp->col == column && vp->row < row )
+    else if ( point->col == column && point->row < row )
     {
         /*between 3rd and 4th quadrant */
         return ( ( M_PI * 3.0 ) / 2.0 );
     }
-    else if ( column > vp->col && row > vp->row )
+    else if ( column > point->col && row > point->row )
     {
         /*4th quadrant */
         return ( M_PI * 2.0 - angle );
@@ -57,35 +57,35 @@ double Visibility::calculateAngle( double row, double column, std::shared_ptr<Vi
     return 0;
 }
 
-double Visibility::calculateDistance( Position *pos, std::shared_ptr<ViewPoint> vp, double &cellSize )
+double Visibility::calculateDistance( Position *pos, std::shared_ptr<IPoint> point, double &cellSize )
 {
-    return calculateDistance( pos->row, pos->col, vp, cellSize );
+    return calculateDistance( pos->row, pos->col, point, cellSize );
 }
 
-double Visibility::calculateDistance( double &row, double &column, std::shared_ptr<ViewPoint> vp, double &cellSize )
+double Visibility::calculateDistance( double &row, double &column, std::shared_ptr<IPoint> point, double &cellSize )
 {
-    return sqrt( pow( row - vp->row, 2 ) + pow( column - vp->col, 2 ) ) * cellSize;
+    return sqrt( pow( row - point->row, 2 ) + pow( column - point->col, 2 ) ) * cellSize;
 }
 
-double Visibility::calculateDistance( int &row, int &column, std::shared_ptr<ViewPoint> vp, double &cellSize )
+double Visibility::calculateDistance( int &row, int &column, std::shared_ptr<IPoint> point, double &cellSize )
 {
     double r = (double)row;
     double c = (double)column;
-    return calculateDistance( r, c, vp, cellSize );
+    return calculateDistance( r, c, point, cellSize );
 }
 
-double Visibility::calculateGradient( std::shared_ptr<ViewPoint> vp, Position *pos, double elevation, double &distance )
+double Visibility::calculateGradient( std::shared_ptr<IPoint> point, Position *pos, double elevation, double &distance )
 {
-    return calculateGradient( vp, pos->row, pos->col, elevation, distance );
+    return calculateGradient( point, pos->row, pos->col, elevation, distance );
 }
 
-double Visibility::calculateGradient( std::shared_ptr<ViewPoint> vp, double &row, double &column, double elevation,
+double Visibility::calculateGradient( std::shared_ptr<IPoint> point, double &row, double &column, double elevation,
                                       double &distance )
 {
-    double dx = vp->col - column;
-    double dy = vp->row - row;
+    double dx = point->col - column;
+    double dy = point->row - row;
 
-    double elevationDifference = elevation - vp->totalElevation();
+    double elevationDifference = elevation - point->totalElevation();
 
     if ( elevationDifference == 0 )
         return 0;
@@ -93,7 +93,7 @@ double Visibility::calculateGradient( std::shared_ptr<ViewPoint> vp, double &row
     return atan( elevationDifference / distance ) * ( 180 / M_PI );
 }
 
-Position Visibility::calculateEventPosition( CellPosition eventType, int row, int col, ViewPoint point )
+Position Visibility::calculateEventPosition( CellPosition eventType, int row, int col, std::shared_ptr<IPoint> point )
 {
 
     double rRow, rCol;
@@ -105,7 +105,7 @@ Position Visibility::calculateEventPosition( CellPosition eventType, int row, in
         rCol = col;
     }
 
-    if ( row < point.row && col < point.col )
+    if ( row < point->row && col < point->col )
     {
         /*first quadrant */
         if ( eventType == CellPosition::ENTER )
@@ -121,7 +121,7 @@ Position Visibility::calculateEventPosition( CellPosition eventType, int row, in
             rCol = col - 0.5;
         }
     }
-    else if ( col == point.col && row < point.row )
+    else if ( col == point->col && row < point->row )
     {
         /*between the first and second quadrant */
         if ( eventType == CellPosition::ENTER )
@@ -137,7 +137,7 @@ Position Visibility::calculateEventPosition( CellPosition eventType, int row, in
             rCol = col - 0.5;
         }
     }
-    else if ( col > point.col && row < point.row )
+    else if ( col > point->col && row < point->row )
     {
         /*second quadrant */
         if ( eventType == CellPosition::ENTER )
@@ -152,7 +152,7 @@ Position Visibility::calculateEventPosition( CellPosition eventType, int row, in
             rCol = col - 0.5;
         }
     }
-    else if ( row == point.row && col > point.col )
+    else if ( row == point->row && col > point->col )
     {
         /*between the second and the fourth quadrant */
         if ( eventType == CellPosition::ENTER )
@@ -168,7 +168,7 @@ Position Visibility::calculateEventPosition( CellPosition eventType, int row, in
             rCol = col - 0.5;
         }
     }
-    else if ( col > point.col && row > point.row )
+    else if ( col > point->col && row > point->row )
     {
         /*fourth quadrant */
         if ( eventType == CellPosition::ENTER )
@@ -184,7 +184,7 @@ Position Visibility::calculateEventPosition( CellPosition eventType, int row, in
             rCol = col + 0.5;
         }
     }
-    else if ( col == point.col && row > point.row )
+    else if ( col == point->col && row > point->row )
     {
         /*between the third and fourth quadrant */
         if ( eventType == CellPosition::ENTER )
@@ -200,7 +200,7 @@ Position Visibility::calculateEventPosition( CellPosition eventType, int row, in
             rCol = col + 0.5;
         }
     }
-    else if ( col < point.col && row > point.row )
+    else if ( col < point->col && row > point->row )
     {
         /*third quadrant */
         if ( eventType == CellPosition::ENTER )
@@ -216,7 +216,7 @@ Position Visibility::calculateEventPosition( CellPosition eventType, int row, in
             rCol = col + 0.5;
         }
     }
-    else if ( row == point.row && col < point.col )
+    else if ( row == point->row && col < point->col )
     {
         /*between first and third quadrant */
         if ( eventType == CellPosition::ENTER )

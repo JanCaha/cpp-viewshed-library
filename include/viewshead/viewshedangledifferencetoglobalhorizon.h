@@ -13,7 +13,7 @@ namespace viewshed
       public:
         ViewshedAngleDifferenceToGlobalHorizon( bool all = false, double invisibleValue = -91 );
         double result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
-                       std::shared_ptr<ViewPoint> vp ) override;
+                       std::shared_ptr<IPoint> vp ) override;
         const double viewpointValue() override;
         const double invisible() override;
         const double completlyVisible() override;

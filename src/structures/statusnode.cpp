@@ -18,7 +18,7 @@ StatusNode::StatusNode( int row_, int col_ )
     col = col_;
 }
 
-StatusNode::StatusNode( std::shared_ptr<ViewPoint> vp, Event *e, double &cellSize )
+StatusNode::StatusNode( std::shared_ptr<IPoint> point, Event *e, double &cellSize )
 {
     row = e->row;
     col = e->col;
@@ -26,10 +26,10 @@ StatusNode::StatusNode( std::shared_ptr<ViewPoint> vp, Event *e, double &cellSiz
     elevs[CellPosition::ENTER] = e->elevation[CellPosition::ENTER];
     elevs[CellPosition::EXIT] = e->elevation[CellPosition::EXIT];
 
-    angle[CellPosition::CENTER] = Visibility::calculateAngle( row, col, vp );
+    angle[CellPosition::CENTER] = Visibility::calculateAngle( row, col, point );
 
-    Position posEnter = Visibility::calculateEventPosition( CellPosition::ENTER, e->row, e->col, *vp );
-    double angleEnter = Visibility::calculateAngle( &posEnter, vp );
+    Position posEnter = Visibility::calculateEventPosition( CellPosition::ENTER, e->row, e->col, point );
+    double angleEnter = Visibility::calculateAngle( &posEnter, point );
 
     if ( angleEnter > angle[CellPosition::CENTER] )
     {
@@ -38,22 +38,22 @@ StatusNode::StatusNode( std::shared_ptr<ViewPoint> vp, Event *e, double &cellSiz
 
     angle[CellPosition::ENTER] = angleEnter;
 
-    Position posExit = Visibility::calculateEventPosition( CellPosition::EXIT, e->row, e->col, *vp );
-    angle[CellPosition::EXIT] = Visibility::calculateAngle( &posExit, vp );
+    Position posExit = Visibility::calculateEventPosition( CellPosition::EXIT, e->row, e->col, point );
+    angle[CellPosition::EXIT] = Visibility::calculateAngle( &posExit, point );
 
-    distances[CellPosition::CENTER] = Visibility::calculateDistance( row, col, vp, cellSize );
-    distances[CellPosition::ENTER] = Visibility::calculateDistance( &posEnter, vp, cellSize );
-    distances[CellPosition::EXIT] = Visibility::calculateDistance( &posExit, vp, cellSize );
+    distances[CellPosition::CENTER] = Visibility::calculateDistance( row, col, point, cellSize );
+    distances[CellPosition::ENTER] = Visibility::calculateDistance( &posEnter, point, cellSize );
+    distances[CellPosition::EXIT] = Visibility::calculateDistance( &posExit, point, cellSize );
 
     double dRow = (double)row;
     double dCol = (double)col;
 
-    gradient[CellPosition::CENTER] =
-        Visibility::calculateGradient( vp, dRow, dCol, elevs[CellPosition::CENTER], distances[CellPosition::CENTER] );
+    gradient[CellPosition::CENTER] = Visibility::calculateGradient( point, dRow, dCol, elevs[CellPosition::CENTER],
+                                                                    distances[CellPosition::CENTER] );
     gradient[CellPosition::ENTER] =
-        Visibility::calculateGradient( vp, &posEnter, elevs[CellPosition::ENTER], distances[CellPosition::ENTER] );
+        Visibility::calculateGradient( point, &posEnter, elevs[CellPosition::ENTER], distances[CellPosition::ENTER] );
     gradient[CellPosition::EXIT] =
-        Visibility::calculateGradient( vp, &posExit, elevs[CellPosition::EXIT], distances[CellPosition::EXIT] );
+        Visibility::calculateGradient( point, &posExit, elevs[CellPosition::EXIT], distances[CellPosition::EXIT] );
 }
 
 double StatusNode::value( int position, ValueType valueType )

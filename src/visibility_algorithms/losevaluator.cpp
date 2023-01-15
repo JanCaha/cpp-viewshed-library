@@ -72,7 +72,7 @@ void LoSEvaluator::parseNodes( std::vector<StatusNode> &statusNodes, std::shared
 
 void LoSEvaluator::calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
                               std::vector<StatusNode> &statusNodes, std::shared_ptr<StatusNode> poi,
-                              std::shared_ptr<ViewPoint> vp )
+                              std::shared_ptr<IPoint> point )
 {
 
     mAlgs = algs;
@@ -86,7 +86,7 @@ void LoSEvaluator::calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> a
 
     for ( int i = 0; i < mAlgs.size(); i++ )
     {
-        mResultValues.values.push_back( mAlgs.at( i )->result( this, statusNodes, *poi.get(), vp ) );
+        mResultValues.values.push_back( mAlgs.at( i )->result( this, statusNodes, *poi.get(), point ) );
     }
 }
 

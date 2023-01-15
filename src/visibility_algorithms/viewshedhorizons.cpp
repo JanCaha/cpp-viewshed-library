@@ -6,7 +6,7 @@
 using viewshed::ViewshedHorizons;
 
 double ViewshedHorizons::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
-                                 std::shared_ptr<ViewPoint> vp )
+                                 std::shared_ptr<IPoint> vp )
 {
 
     bool isHorizon = false;

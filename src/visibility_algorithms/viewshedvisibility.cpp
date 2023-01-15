@@ -6,7 +6,7 @@
 using viewshed::ViewshedVisibility;
 
 double ViewshedVisibility::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
-                                   std::shared_ptr<ViewPoint> vp )
+                                   std::shared_ptr<IPoint> vp )
 {
     if ( poi.centreGradient() < losevaluator->mMaxGradientBefore )
         return invisible();

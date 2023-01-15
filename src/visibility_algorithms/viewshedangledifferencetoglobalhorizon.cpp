@@ -11,7 +11,7 @@ ViewshedAngleDifferenceToGlobalHorizon::ViewshedAngleDifferenceToGlobalHorizon( 
 }
 
 double ViewshedAngleDifferenceToGlobalHorizon::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes,
-                                                       StatusNode &poi, std::shared_ptr<ViewPoint> vp )
+                                                       StatusNode &poi, std::shared_ptr<IPoint> vp )
 {
     double difference;
     if ( losevaluator->mIndexHorizon != 0 )

@@ -13,7 +13,7 @@ ViewshedElevationDifferenceToGlobalHorizon::ViewshedElevationDifferenceToGlobalH
 
 double ViewshedElevationDifferenceToGlobalHorizon::result( LoSEvaluator *losevaluator,
                                                            std::vector<StatusNode> &statusNodes, StatusNode &poi,
-                                                           std::shared_ptr<ViewPoint> vp )
+                                                           std::shared_ptr<IPoint> vp )
 {
     double change;
     double difference;

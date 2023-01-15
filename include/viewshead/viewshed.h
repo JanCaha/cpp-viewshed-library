@@ -28,7 +28,7 @@ namespace viewshed
     class Viewshed
     {
       public:
-        Viewshed( std::shared_ptr<ViewPoint> vp_, std::shared_ptr<QgsRasterLayer> dem_, ViewshedAlgorithms algs,
+        Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem, ViewshedAlgorithms algs,
                   double minimalAngle = std::numeric_limits<double>::quiet_NaN(),
                   double maximalAngle = std::numeric_limits<double>::quiet_NaN() );
 
@@ -59,7 +59,7 @@ namespace viewshed
         StatusList statusList;
         EventList eventList;
         std::shared_ptr<QgsRasterLayer> mInputDem;
-        std::shared_ptr<ViewPoint> mVp;
+        std::shared_ptr<IPoint> mPoint;
         ViewshedAlgorithms mAlgs;
         Qgis::DataType dataType = Qgis::DataType::Float64;
         int mDefaultBand = 1;
@@ -88,7 +88,7 @@ namespace viewshed
     };
 
     ViewshedValues taskVisibility( ViewshedAlgorithms algs, std::vector<StatusNode> statusList,
-                                   std::shared_ptr<StatusNode> poi, std::shared_ptr<ViewPoint> vp );
+                                   std::shared_ptr<StatusNode> poi, std::shared_ptr<IPoint> point );
 } // namespace viewshed
 
 #endif

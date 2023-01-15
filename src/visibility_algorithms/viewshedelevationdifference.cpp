@@ -4,7 +4,7 @@
 using viewshed::ViewshedElevationDifference;
 
 double ViewshedElevationDifference::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes,
-                                            StatusNode &poi, std::shared_ptr<ViewPoint> vp )
+                                            StatusNode &poi, std::shared_ptr<IPoint> vp )
 {
     return poi.elevs[CellPosition::CENTER] - vp->totalElevation();
 }

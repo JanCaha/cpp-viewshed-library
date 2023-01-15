@@ -5,6 +5,7 @@
 #include "viewshed.h"
 #include "visibility.h"
 
+using viewshed::IPoint;
 using viewshed::LoSEvaluator;
 using viewshed::MemoryRaster;
 using viewshed::SharedStatusList;
@@ -14,9 +15,9 @@ using viewshed::Viewshed;
 using viewshed::ViewshedAlgorithms;
 using viewshed::ViewshedValues;
 
-Viewshed::Viewshed( std::shared_ptr<ViewPoint> vp, std::shared_ptr<QgsRasterLayer> dem, ViewshedAlgorithms algs,
+Viewshed::Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem, ViewshedAlgorithms algs,
                     double minimalAngle, double maximalAngle )
-    : mVp( std::move( vp ) ), mInputDem( std::move( dem ) ), mAlgs( algs )
+    : mPoint( std::move( point ) ), mInputDem( std::move( dem ) ), mAlgs( algs )
 {
     mValid = false;
 
@@ -85,14 +86,15 @@ void Viewshed::initEventList()
                     double elevs[3];
                     elevs[CellPosition::CENTER] = pixelValue;
                     Position tempPosEnter =
-                        Visibility::calculateEventPosition( CellPosition::ENTER, row, column, *mVp );
+                        Visibility::calculateEventPosition( CellPosition::ENTER, row, column, mPoint );
                     elevs[CellPosition::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
-                    Position tempPosExit = Visibility::calculateEventPosition( CellPosition::EXIT, row, column, *mVp );
+                    Position tempPosExit =
+                        Visibility::calculateEventPosition( CellPosition::EXIT, row, column, mPoint );
                     elevs[CellPosition::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
 
-                    double angleCenter = Visibility::calculateAngle( row, column, mVp );
-                    double angleEnter = Visibility::calculateAngle( &tempPosEnter, mVp );
-                    double angleExit = Visibility::calculateAngle( &tempPosExit, mVp );
+                    double angleCenter = Visibility::calculateAngle( row, column, mPoint );
+                    double angleEnter = Visibility::calculateAngle( &tempPosEnter, mPoint );
+                    double angleExit = Visibility::calculateAngle( &tempPosExit, mPoint );
 
                     // ??? probably not necessary here ???
                     if ( angleEnter > angleCenter )
@@ -100,19 +102,19 @@ void Viewshed::initEventList()
                         angleEnter -= 2 * M_PI;
                     }
 
-                    double eventDistance = Visibility::calculateDistance( row, column, mVp, mCellSize );
+                    double eventDistance = Visibility::calculateDistance( row, column, mPoint, mCellSize );
 
                     if ( eventDistance < mMaxDistance && checkInsideAngle( angleEnter, angleExit ) )
                     {
                         Event eCenter = Event( CellPosition::CENTER, row, column, eventDistance, angleCenter, elevs );
-                        Event eEnter =
-                            Event( CellPosition::ENTER, row, column,
-                                   Visibility::calculateDistance( &tempPosEnter, mVp, mCellSize ), angleEnter, elevs );
+                        Event eEnter = Event( CellPosition::ENTER, row, column,
+                                              Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
+                                              angleEnter, elevs );
                         Event eExit =
                             Event( CellPosition::EXIT, row, column,
-                                   Visibility::calculateDistance( &tempPosExit, mVp, mCellSize ), angleExit, elevs );
+                                   Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ), angleExit, elevs );
 
-                        if ( mVp->row == row && mVp->col < column )
+                        if ( mPoint->row == row && mPoint->col < column )
                         {
                             viewPointRowEventList.push_back( eCenter );
                         }
@@ -141,7 +143,7 @@ void Viewshed::prefillStatusList()
 
     for ( Event e : viewPointRowEventList )
     {
-        StatusNode sn( mVp, &e, mCellSize );
+        StatusNode sn( mPoint, &e, mCellSize );
         statusList.push_back( sn );
     }
 }
@@ -156,7 +158,7 @@ void Viewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_,
     {
         if ( event.eventType == CellPosition::CENTER )
         {
-            StatusNode sn( mVp, &event, mCellSize );
+            StatusNode sn( mPoint, &event, mCellSize );
             result.setValue( func( sn ), sn.col, sn.row );
         }
         i++;
@@ -181,18 +183,18 @@ void Viewshed::parseEventList( std::function<void( int size, int current )> prog
         {
             case CellPosition::ENTER:
             {
-                if ( mVp->row == e.row && mVp->col == e.col )
+                if ( mPoint->row == e.row && mPoint->col == e.col )
                 {
                     break;
                 }
 
-                sn = StatusNode( mVp, &e, mCellSize );
+                sn = StatusNode( mPoint, &e, mCellSize );
                 statusList.push_back( sn );
                 break;
             }
             case CellPosition::EXIT:
             {
-                if ( mVp->row == e.row && mVp->col == e.col )
+                if ( mPoint->row == e.row && mPoint->col == e.col )
                 {
                     break;
                 }
@@ -208,9 +210,9 @@ void Viewshed::parseEventList( std::function<void( int size, int current )> prog
             }
             case CellPosition::CENTER:
             {
-                std::shared_ptr<StatusNode> poi = std::make_shared<StatusNode>( mVp, &e, mCellSize );
+                std::shared_ptr<StatusNode> poi = std::make_shared<StatusNode>( mPoint, &e, mCellSize );
 
-                mResultPixels.push_back( mThreadPool.submit( taskVisibility, mAlgs, statusList, poi, mVp ) );
+                mResultPixels.push_back( mThreadPool.submit( taskVisibility, mAlgs, statusList, poi, mPoint ) );
 
                 break;
             }
@@ -230,7 +232,7 @@ void Viewshed::parseEventList( std::function<void( int size, int current )> prog
 
     for ( int j = 0; j < mAlgs.size(); j++ )
     {
-        mResults.at( j )->setValue( mAlgs.at( j )->viewpointValue(), mVp->col, mVp->row );
+        mResults.at( j )->setValue( mAlgs.at( j )->viewpointValue(), mPoint->col, mPoint->row );
     }
 }
 
@@ -255,13 +257,13 @@ void Viewshed::setPixelData( ViewshedValues values )
 }
 
 ViewshedValues viewshed::taskVisibility( ViewshedAlgorithms algs, std::vector<StatusNode> statusList,
-                                         std::shared_ptr<StatusNode> poi, std::shared_ptr<ViewPoint> vp )
+                                         std::shared_ptr<StatusNode> poi, std::shared_ptr<IPoint> point )
 {
     std::sort( statusList.begin(), statusList.end() );
 
     LoSEvaluator losEval;
 
-    losEval.calculate( algs, statusList, poi, vp );
+    losEval.calculate( algs, statusList, poi, point );
 
     return losEval.mResultValues;
 }
@@ -280,7 +282,7 @@ StatusNode Viewshed::statusNodeFromPoint( QgsPoint point )
     {
         if ( e.eventType == CellPosition::CENTER && e.col == col && e.row == row )
         {
-            sn = StatusNode( mVp, &e, mCellSize );
+            sn = StatusNode( mPoint, &e, mCellSize );
             return sn;
         }
     }
@@ -301,18 +303,18 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
         {
             case CellPosition::ENTER:
             {
-                if ( mVp->row == e.row && mVp->col == e.col )
+                if ( mPoint->row == e.row && mPoint->col == e.col )
                 {
                     break;
                 }
-                sn = StatusNode( mVp, &e, mCellSize );
+                sn = StatusNode( mPoint, &e, mCellSize );
                 statusList.push_back( sn );
                 break;
             }
 
             case CellPosition::EXIT:
             {
-                if ( mVp->row == e.row && mVp->col == e.col )
+                if ( mPoint->row == e.row && mPoint->col == e.col )
                 {
                     break;
                 }
@@ -327,7 +329,7 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
 
             case CellPosition::CENTER:
             {
-                sn = StatusNode( mVp, &e, mCellSize );
+                sn = StatusNode( mPoint, &e, mCellSize );
                 if ( sn.col == poi.col && sn.row == poi.row )
                 {
                     return getLoS( poi, onlyToPoint );
