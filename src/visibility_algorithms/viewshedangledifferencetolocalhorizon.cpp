@@ -10,8 +10,8 @@ ViewshedAngleDifferenceToLocalHorizon::ViewshedAngleDifferenceToLocalHorizon( bo
 {
 }
 
-double ViewshedAngleDifferenceToLocalHorizon::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes,
-                                                      StatusNode &poi, std::shared_ptr<IPoint> vp )
+double ViewshedAngleDifferenceToLocalHorizon::result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes,
+                                                      LoSNode &poi, std::shared_ptr<IPoint> vp )
 {
     double difference;
     if ( losevaluator->mIndexHorizonBefore != 0 )
@@ -38,7 +38,7 @@ double ViewshedAngleDifferenceToLocalHorizon::result( LoSEvaluator *losevaluator
     }
 }
 
-void ViewshedAngleDifferenceToLocalHorizon::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
+void ViewshedAngleDifferenceToLocalHorizon::extractValues( LoSNode &sn, LoSNode &poi, int &position ) {}
 
 const double ViewshedAngleDifferenceToLocalHorizon::invisible() { return mInvisibleValue; }
 

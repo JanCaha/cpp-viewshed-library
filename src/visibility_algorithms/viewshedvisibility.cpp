@@ -5,7 +5,7 @@
 
 using viewshed::ViewshedVisibility;
 
-double ViewshedVisibility::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
+double ViewshedVisibility::result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes, LoSNode &poi,
                                    std::shared_ptr<IPoint> vp )
 {
     if ( poi.centreGradient() < losevaluator->mMaxGradientBefore )
@@ -14,7 +14,7 @@ double ViewshedVisibility::result( LoSEvaluator *losevaluator, std::vector<Statu
         return completlyVisible();
 }
 
-void ViewshedVisibility::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
+void ViewshedVisibility::extractValues( LoSNode &sn, LoSNode &poi, int &position ) {}
 
 const double ViewshedVisibility::invisible() { return 0.0; }
 

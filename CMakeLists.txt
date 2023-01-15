@@ -49,7 +49,7 @@ set(STRUCTURES
     src/structures/cellevent.cpp
     src/structures/points.cpp
     src/structures/position.cpp
-    src/structures/statusnode.cpp
+    src/structures/losnode.cpp
 )
 
 set(VISIBILITY
@@ -78,7 +78,7 @@ set(PUBLIC_HEADERS
     include/viewshead/memoryraster.h
     include/viewshead/points.h
     include/viewshead/position.h
-    include/viewshead/statusnode.h
+    include/viewshead/losnode.h
     include/viewshead/viewshedangledifferencetoglobalhorizon.h
     include/viewshead/viewshedelevationdifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifferencetoglobalhorizon.h

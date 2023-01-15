@@ -1,24 +1,24 @@
 #include <iterator>
 #include <limits>
 
-#include "statusnode.h"
+#include "losnode.h"
 #include "visibility.h"
 
-using viewshed::StatusNode;
+using viewshed::LoSNode;
 
-StatusNode::StatusNode()
+LoSNode::LoSNode()
 {
     row = 0;
     col = 0;
 }
 
-StatusNode::StatusNode( int row_, int col_ )
+LoSNode::LoSNode( int row_, int col_ )
 {
     row = row_;
     col = col_;
 }
 
-StatusNode::StatusNode( std::shared_ptr<IPoint> point, CellEvent *e, double &cellSize )
+LoSNode::LoSNode( std::shared_ptr<IPoint> point, CellEvent *e, double &cellSize )
 {
     row = e->row;
     col = e->col;
@@ -56,7 +56,7 @@ StatusNode::StatusNode( std::shared_ptr<IPoint> point, CellEvent *e, double &cel
         Visibility::calculateGradient( point, &posExit, elevs[CellPosition::EXIT], distances[CellPosition::EXIT] );
 }
 
-double StatusNode::value( int position, ValueType valueType )
+double LoSNode::value( int position, ValueType valueType )
 {
     switch ( valueType )
     {
@@ -83,7 +83,7 @@ double StatusNode::value( int position, ValueType valueType )
     }
 }
 
-double StatusNode::valueAtAngle( const double &specificAngle, ValueType valueType )
+double LoSNode::valueAtAngle( const double &specificAngle, ValueType valueType )
 {
     if ( specificAngle == angle[CellPosition::CENTER] )
         return value( CellPosition::CENTER, valueType );
@@ -111,15 +111,15 @@ double StatusNode::valueAtAngle( const double &specificAngle, ValueType valueTyp
     }
 }
 
-double StatusNode::centreAngle() { return angle[CellPosition::CENTER]; }
+double LoSNode::centreAngle() { return angle[CellPosition::CENTER]; }
 
-double StatusNode::centreGradient() { return gradient[CellPosition::CENTER]; }
+double LoSNode::centreGradient() { return gradient[CellPosition::CENTER]; }
 
-double StatusNode::centreElevation() { return elevs[CellPosition::CENTER]; }
+double LoSNode::centreElevation() { return elevs[CellPosition::CENTER]; }
 
-double StatusNode::centreDistance() { return distances[CellPosition::CENTER]; }
+double LoSNode::centreDistance() { return distances[CellPosition::CENTER]; }
 
-bool StatusNode::operator==( const StatusNode &other )
+bool LoSNode::operator==( const LoSNode &other )
 {
     if ( row == other.row && col == other.col )
         return true;
@@ -127,7 +127,7 @@ bool StatusNode::operator==( const StatusNode &other )
         return false;
 }
 
-bool StatusNode::operator!=( const StatusNode &other )
+bool LoSNode::operator!=( const LoSNode &other )
 {
     if ( row == other.row && col == other.col )
         return false;
@@ -135,7 +135,7 @@ bool StatusNode::operator!=( const StatusNode &other )
         return true;
 }
 
-bool StatusNode::operator<( const StatusNode other )
+bool LoSNode::operator<( const LoSNode other )
 {
     return distances[CellPosition::CENTER] < other.distances[CellPosition::CENTER];
 }

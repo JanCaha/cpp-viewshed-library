@@ -7,10 +7,10 @@ int LoSEvaluator::size() { return mAlgs.size(); }
 
 std::shared_ptr<IViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { return mAlgs.at( i ); }
 
-void LoSEvaluator::parseNodes( std::vector<StatusNode> &statusNodes, std::shared_ptr<StatusNode> poi )
+void LoSEvaluator::parseNodes( std::vector<LoSNode> &statusNodes, std::shared_ptr<LoSNode> poi )
 {
-    StatusNode sn;
-    StatusNode snNext;
+    LoSNode sn;
+    LoSNode snNext;
     double snGradient;
 
     for ( int i = 0; i < statusNodes.size(); i++ )
@@ -71,7 +71,7 @@ void LoSEvaluator::parseNodes( std::vector<StatusNode> &statusNodes, std::shared
 }
 
 void LoSEvaluator::calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
-                              std::vector<StatusNode> &statusNodes, std::shared_ptr<StatusNode> poi,
+                              std::vector<LoSNode> &statusNodes, std::shared_ptr<LoSNode> poi,
                               std::shared_ptr<IPoint> point )
 {
 

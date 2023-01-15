@@ -5,7 +5,7 @@
 
 #include "iviewshedalgorithm.h"
 #include "points.h"
-#include "statusnode.h"
+#include "losnode.h"
 #include "viewshedvalues.h"
 
 namespace viewshed
@@ -13,8 +13,8 @@ namespace viewshed
     class LoSEvaluator
     {
       public:
-        void calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs, std::vector<StatusNode> &statusNodes,
-                        std::shared_ptr<StatusNode> poi, std::shared_ptr<IPoint> point );
+        void calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs, std::vector<LoSNode> &statusNodes,
+                        std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> point );
         void reset();
 
         int size();
@@ -38,7 +38,7 @@ namespace viewshed
       private:
         std::vector<std::shared_ptr<IViewshedAlgorithm>> mAlgs;
 
-        void parseNodes( std::vector<StatusNode> &statusNodes, std::shared_ptr<StatusNode> poi );
+        void parseNodes( std::vector<LoSNode> &statusNodes, std::shared_ptr<LoSNode> poi );
     };
 } // namespace viewshed
 

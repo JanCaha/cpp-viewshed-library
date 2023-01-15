@@ -5,7 +5,7 @@
 
 using viewshed::IViewshed;
 using viewshed::MemoryRaster;
-using viewshed::StatusNode;
+using viewshed::LoSNode;
 
 void IViewshed::prepareMemoryRasters()
 {
@@ -157,7 +157,7 @@ void IViewshed::prefillStatusList()
 
     for ( CellEvent e : viewPointRowEventList )
     {
-        StatusNode sn( mPoint, &e, mCellSize );
+        LoSNode sn( mPoint, &e, mCellSize );
         statusList.push_back( sn );
     }
 }
@@ -173,7 +173,7 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
     {
         progressCallback( eventList.size(), i );
 
-        StatusNode sn;
+        LoSNode sn;
         switch ( e.eventType )
         {
             case CellPosition::ENTER:
@@ -183,7 +183,7 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
                     break;
                 }
 
-                sn = StatusNode( mPoint, &e, mCellSize );
+                sn = LoSNode( mPoint, &e, mCellSize );
                 statusList.push_back( sn );
                 break;
             }
@@ -194,9 +194,9 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
                     break;
                 }
 
-                sn = StatusNode( e.row, e.col );
+                sn = LoSNode( e.row, e.col );
 
-                std::vector<StatusNode>::iterator index = std::find( statusList.begin(), statusList.end(), sn );
+                std::vector<LoSNode>::iterator index = std::find( statusList.begin(), statusList.end(), sn );
                 if ( index != statusList.end() )
                 {
                     statusList.erase( index );
@@ -205,7 +205,7 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
             }
             case CellPosition::CENTER:
             {
-                std::shared_ptr<StatusNode> poi = std::make_shared<StatusNode>( mPoint, &e, mCellSize );
+                std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint, &e, mCellSize );
 
                 mResultPixels.push_back(
                     mThreadPool.submit( viewshed::evaluateLoSForPoI, mAlgs, statusList, poi, mPoint ) );
@@ -253,7 +253,7 @@ void IViewshed::setPixelData( ViewshedValues values )
 }
 
 void IViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
-                                            std::function<double( StatusNode )> func )
+                                            std::function<double( LoSNode )> func )
 {
     MemoryRaster result = MemoryRaster( dem_ );
 
@@ -262,7 +262,7 @@ void IViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_
     {
         if ( event.eventType == CellPosition::CENTER )
         {
-            StatusNode sn( mPoint, &event, mCellSize );
+            LoSNode sn( mPoint, &event, mCellSize );
             result.setValue( func( sn ), sn.col, sn.row );
         }
         i++;
@@ -316,7 +316,7 @@ void IViewshed::saveResults( QString location )
     }
 }
 
-StatusNode IViewshed::statusNodeFromPoint( QgsPoint point )
+LoSNode IViewshed::statusNodeFromPoint( QgsPoint point )
 {
     QgsPoint pointRaster = mInputDem->dataProvider()->transformCoordinates(
         point, QgsRasterDataProvider::TransformType::TransformLayerToImage );
@@ -324,13 +324,13 @@ StatusNode IViewshed::statusNodeFromPoint( QgsPoint point )
     int row = pointRaster.y();
     int col = pointRaster.x();
 
-    StatusNode sn;
+    LoSNode sn;
 
     for ( CellEvent e : eventList )
     {
         if ( e.eventType == CellPosition::CENTER && e.col == col && e.row == row )
         {
-            sn = StatusNode( mPoint, &e, mCellSize );
+            sn = LoSNode( mPoint, &e, mCellSize );
             return sn;
         }
     }

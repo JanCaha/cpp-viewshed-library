@@ -11,7 +11,7 @@
 #include "losevaluator.h"
 #include "memoryraster.h"
 #include "points.h"
-#include "statusnode.h"
+#include "losnode.h"
 #include "viewshedangledifferencetoglobalhorizon.h"
 #include "viewshedangledifferencetolocalhorizon.h"
 #include "viewshedelevationdifferencetoglobalhorizon.h"
@@ -28,7 +28,7 @@ class TestLosAlgorithms : public QObject
 
   private:
     std::vector<CellEvent> eventList;
-    std::vector<StatusNode> statusList;
+    std::vector<LoSNode> statusList;
     std::shared_ptr<ViewPoint> vp = std::make_shared<ViewPoint>( 0, 0, 0, 0.001 );
     LoSEvaluator losEval;
     std::vector<std::shared_ptr<IViewshedAlgorithm>> algs;
@@ -70,15 +70,15 @@ class TestLosAlgorithms : public QObject
         for ( int i = 0; i < eventList.size(); i++ )
         {
             CellEvent e = eventList.at( i );
-            statusList.push_back( StatusNode( vp, &e, cellSize ) );
+            statusList.push_back( LoSNode( vp, &e, cellSize ) );
         }
     }
 
-    std::shared_ptr<StatusNode> getPointLoS( int i ) { return std::make_shared<StatusNode>( statusList.at( i ) ); }
+    std::shared_ptr<LoSNode> getPointLoS( int i ) { return std::make_shared<LoSNode>( statusList.at( i ) ); }
 
     void checkValues()
     {
-        std::shared_ptr<StatusNode> p = getPointLoS( 0 );
+        std::shared_ptr<LoSNode> p = getPointLoS( 0 );
         QVERIFY( p->centreDistance() == 1.0 );
         QVERIFY( qgsDoubleNear( p->centreElevation(), 0.8, 0.1 ) );
         QVERIFY( qgsDoubleNear( p->centreGradient(), 38.6, 0.1 ) );

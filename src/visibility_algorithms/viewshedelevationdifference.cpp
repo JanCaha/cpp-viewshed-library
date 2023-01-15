@@ -3,13 +3,13 @@
 
 using viewshed::ViewshedElevationDifference;
 
-double ViewshedElevationDifference::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes,
-                                            StatusNode &poi, std::shared_ptr<IPoint> vp )
+double ViewshedElevationDifference::result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes,
+                                            LoSNode &poi, std::shared_ptr<IPoint> vp )
 {
     return poi.elevs[CellPosition::CENTER] - vp->totalElevation();
 }
 
-void ViewshedElevationDifference::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
+void ViewshedElevationDifference::extractValues( LoSNode &sn, LoSNode &poi, int &position ) {}
 
 const double ViewshedElevationDifference::invisible() { return 0.0; }
 

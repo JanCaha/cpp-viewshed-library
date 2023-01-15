@@ -5,7 +5,7 @@
 
 using viewshed::ViewshedHorizons;
 
-double ViewshedHorizons::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
+double ViewshedHorizons::result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes, LoSNode &poi,
                                  std::shared_ptr<IPoint> vp )
 {
 
@@ -25,7 +25,7 @@ double ViewshedHorizons::result( LoSEvaluator *losevaluator, std::vector<StatusN
     return invisible();
 }
 
-void ViewshedHorizons::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
+void ViewshedHorizons::extractValues( LoSNode &sn, LoSNode &poi, int &position ) {}
 
 const double ViewshedHorizons::invisible() { return 0.0; }
 

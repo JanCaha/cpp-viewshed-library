@@ -38,13 +38,13 @@ void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation,
     resultCsvFile.close();
 }
 
-std::vector<std::pair<double, double>> Utils::distanceElevation( SharedStatusList los, StatusNode poi )
+std::vector<std::pair<double, double>> Utils::distanceElevation( SharedStatusList los, LoSNode poi )
 {
     std::vector<std::pair<double, double>> data;
 
     for ( int i = 0; i < los->size(); i++ )
     {
-        StatusNode sn = los->at( i );
+        LoSNode sn = los->at( i );
         data.push_back( std::make_pair<double, double>( sn.valueAtAngle( poi.centreAngle(), ValueType::Distance ),
                                                         sn.valueAtAngle( poi.centreAngle(), ValueType::Elevation ) ) );
     }

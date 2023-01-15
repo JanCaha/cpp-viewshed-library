@@ -9,7 +9,7 @@ using viewshed::IPoint;
 using viewshed::LoSEvaluator;
 using viewshed::MemoryRaster;
 using viewshed::SharedStatusList;
-using viewshed::StatusNode;
+using viewshed::LoSNode;
 using viewshed::ViewPoint;
 using viewshed::Viewshed;
 using viewshed::ViewshedAlgorithms;
@@ -33,12 +33,12 @@ Viewshed::Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLaye
     mValid = true;
 }
 
-std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, bool onlyToPoint )
+std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool onlyToPoint )
 {
     prefillStatusList();
 
-    StatusNode poi = statusNodeFromPoint( point );
-    StatusNode sn;
+    LoSNode poi = statusNodeFromPoint( point );
+    LoSNode sn;
 
     for ( CellEvent e : eventList )
     {
@@ -50,7 +50,7 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
                 {
                     break;
                 }
-                sn = StatusNode( mPoint, &e, mCellSize );
+                sn = LoSNode( mPoint, &e, mCellSize );
                 statusList.push_back( sn );
                 break;
             }
@@ -61,8 +61,8 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
                 {
                     break;
                 }
-                sn = StatusNode( e.row, e.col );
-                std::vector<StatusNode>::iterator index = std::find( statusList.begin(), statusList.end(), sn );
+                sn = LoSNode( e.row, e.col );
+                std::vector<LoSNode>::iterator index = std::find( statusList.begin(), statusList.end(), sn );
                 if ( index != statusList.end() )
                 {
                     statusList.erase( index );
@@ -72,7 +72,7 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
 
             case CellPosition::CENTER:
             {
-                sn = StatusNode( mPoint, &e, mCellSize );
+                sn = LoSNode( mPoint, &e, mCellSize );
                 if ( sn.col == poi.col && sn.row == poi.row )
                 {
                     return getLoS( poi, onlyToPoint );
@@ -86,13 +86,13 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
     return los;
 }
 
-SharedStatusList Viewshed::getLoS( StatusNode poi, bool onlyToPoi )
+SharedStatusList Viewshed::getLoS( LoSNode poi, bool onlyToPoi )
 {
     SharedStatusList losToReturn = std::make_shared<StatusList>();
 
     for ( int j = 0; j < statusList.size(); j++ )
     {
-        StatusNode node = statusList.at( j );
+        LoSNode node = statusList.at( j );
 
         if ( node.angle[CellPosition::ENTER] <= poi.centreAngle() &&
              poi.centreAngle() <= node.angle[CellPosition::EXIT] )

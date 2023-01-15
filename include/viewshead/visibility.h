@@ -4,7 +4,7 @@
 #include "enums.h"
 #include "points.h"
 #include "position.h"
-#include "statusnode.h"
+#include "losnode.h"
 #include "viewshed.h"
 
 namespace viewshed
@@ -23,7 +23,7 @@ namespace viewshed
                                          double &distance );
         static double calculateGradient( std::shared_ptr<IPoint> point, double &row, double &column, double elevation,
                                          double &distance );
-        static std::vector<std::pair<double, double>> distanceElevation( SharedStatusList los, StatusNode poi );
+        static std::vector<std::pair<double, double>> distanceElevation( SharedStatusList los, LoSNode poi );
     };
 } // namespace viewshed
 

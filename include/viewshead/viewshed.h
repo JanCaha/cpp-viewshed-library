@@ -16,7 +16,7 @@
 #include "memoryraster.h"
 #include "points.h"
 #include "position.h"
-#include "statusnode.h"
+#include "losnode.h"
 #include "viewshedvalues.h"
 
 namespace viewshed
@@ -41,7 +41,7 @@ namespace viewshed
         SharedStatusList LoSToPoint( QgsPoint point, bool onlyToPoint = false );
 
       private:
-        SharedStatusList getLoS( StatusNode poi, bool onlyToPoi = false );
+        SharedStatusList getLoS( LoSNode poi, bool onlyToPoi = false );
     };
 
 } // namespace viewshed

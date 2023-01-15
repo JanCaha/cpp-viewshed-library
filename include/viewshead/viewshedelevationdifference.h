@@ -9,13 +9,13 @@ namespace viewshed
     {
 
       public:
-        double result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
+        double result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes, LoSNode &poi,
                        std::shared_ptr<IPoint> vp ) override;
         const double viewpointValue() override;
         const double invisible() override;
         const double completlyVisible() override;
         const QString name() override;
-        void extractValues( StatusNode &sn, StatusNode &poi, int &position ) override;
+        void extractValues( LoSNode &sn, LoSNode &poi, int &position ) override;
     };
 } // namespace viewshed
 

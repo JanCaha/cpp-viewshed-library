@@ -1,5 +1,5 @@
-#ifndef VIEWSHEDLIB_STATUSNODE_H
-#define VIEWSHEDLIB_STATUSNODE_H
+#ifndef VIEWSHEDLIB_LOSNODE_H
+#define VIEWSHEDLIB_LOSNODE_H
 
 #include "cellevent.h"
 #include "enums.h"
@@ -7,7 +7,7 @@
 
 namespace viewshed
 {
-    struct StatusNode
+    struct LoSNode
     {
         int row, col;
         double gradient[3];
@@ -15,13 +15,13 @@ namespace viewshed
         double elevs[3];
         double distances[3];
 
-        StatusNode();
-        StatusNode( int row_, int col_ );
-        StatusNode( std::shared_ptr<IPoint> point, CellEvent *e, double &cellSize );
+        LoSNode();
+        LoSNode( int row_, int col_ );
+        LoSNode( std::shared_ptr<IPoint> point, CellEvent *e, double &cellSize );
 
-        bool operator==( const StatusNode &other );
-        bool operator!=( const StatusNode &other );
-        bool operator<( const StatusNode other );
+        bool operator==( const LoSNode &other );
+        bool operator!=( const LoSNode &other );
+        bool operator<( const LoSNode other );
 
         double valueAtAngle( const double &angle, ValueType valueType = ValueType::Gradient );
         double value( int position, ValueType valueType = ValueType::Gradient );

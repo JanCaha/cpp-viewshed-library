@@ -5,13 +5,13 @@
 
 using viewshed::ViewshedViewAngle;
 
-double ViewshedViewAngle::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
+double ViewshedViewAngle::result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes, LoSNode &poi,
                                   std::shared_ptr<IPoint> vp )
 {
     return poi.gradient[CellPosition::CENTER];
 }
 
-void ViewshedViewAngle::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
+void ViewshedViewAngle::extractValues( LoSNode &sn, LoSNode &poi, int &position ) {}
 
 const double ViewshedViewAngle::invisible() { return -91.0; }
 

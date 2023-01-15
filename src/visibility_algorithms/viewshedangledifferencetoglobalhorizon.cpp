@@ -10,8 +10,8 @@ ViewshedAngleDifferenceToGlobalHorizon::ViewshedAngleDifferenceToGlobalHorizon( 
 {
 }
 
-double ViewshedAngleDifferenceToGlobalHorizon::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes,
-                                                       StatusNode &poi, std::shared_ptr<IPoint> vp )
+double ViewshedAngleDifferenceToGlobalHorizon::result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes,
+                                                       LoSNode &poi, std::shared_ptr<IPoint> vp )
 {
     double difference;
     if ( losevaluator->mIndexHorizon != 0 )
@@ -38,7 +38,7 @@ double ViewshedAngleDifferenceToGlobalHorizon::result( LoSEvaluator *losevaluato
     }
 }
 
-void ViewshedAngleDifferenceToGlobalHorizon::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
+void ViewshedAngleDifferenceToGlobalHorizon::extractValues( LoSNode &sn, LoSNode &poi, int &position ) {}
 
 const double ViewshedAngleDifferenceToGlobalHorizon::invisible() { return mInvisibleValue; }
 

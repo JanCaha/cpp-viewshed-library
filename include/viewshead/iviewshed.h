@@ -10,14 +10,14 @@
 #include "iviewshedalgorithm.h"
 #include "memoryraster.h"
 #include "position.h"
-#include "statusnode.h"
+#include "losnode.h"
 #include "viewshedvalues.h"
 
 namespace viewshed
 {
     typedef std::vector<CellEvent> EventList;
-    typedef std::vector<StatusNode> StatusList;
-    typedef std::shared_ptr<std::vector<StatusNode>> SharedStatusList;
+    typedef std::vector<LoSNode> StatusList;
+    typedef std::shared_ptr<std::vector<LoSNode>> SharedStatusList;
     typedef std::vector<std::shared_ptr<IViewshedAlgorithm>> ViewshedAlgorithms;
 
     class IViewshed
@@ -29,7 +29,7 @@ namespace viewshed
         void parseEventList( std::function<void( int, int )> progressCallback = []( int, int ) {} );
         void extractValuesFromEventList();
         void extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
-                                         std::function<double( StatusNode )> func );
+                                         std::function<double( LoSNode )> func );
         bool checkInsideAngle( double eventEnterAngle, double eventExitAngle );
 
         void setMaximalDistance( double distance );
@@ -38,7 +38,7 @@ namespace viewshed
         std::shared_ptr<MemoryRaster> resultRaster( int index = 0 );
 
         void saveResults( QString location );
-        StatusNode statusNodeFromPoint( QgsPoint point );
+        LoSNode statusNodeFromPoint( QgsPoint point );
 
       protected:
         EventList viewPointRowEventList;
