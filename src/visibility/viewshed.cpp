@@ -9,7 +9,7 @@ using viewshed::IPoint;
 using viewshed::LoSEvaluator;
 using viewshed::LoSNode;
 using viewshed::MemoryRaster;
-using viewshed::SharedStatusList;
+using viewshed::SharedLoSNodeList;
 using viewshed::ViewPoint;
 using viewshed::Viewshed;
 using viewshed::ViewshedAlgorithms;
@@ -82,13 +82,13 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
         }
     }
 
-    SharedStatusList los;
+    SharedLoSNodeList los;
     return los;
 }
 
-SharedStatusList Viewshed::getLoS( LoSNode poi, bool onlyToPoi )
+SharedLoSNodeList Viewshed::getLoS( LoSNode poi, bool onlyToPoi )
 {
-    SharedStatusList losToReturn = std::make_shared<StatusList>();
+    SharedLoSNodeList losToReturn = std::make_shared<LoSNodeList>();
 
     for ( int j = 0; j < statusList.size(); j++ )
     {

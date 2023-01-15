@@ -23,7 +23,7 @@ namespace viewshed
                                          double &distance );
         static double calculateGradient( std::shared_ptr<IPoint> point, double &row, double &column, double elevation,
                                          double &distance );
-        static std::vector<std::pair<double, double>> distanceElevation( SharedStatusList los, LoSNode poi );
+        static std::vector<std::pair<double, double>> distanceElevation( SharedLoSNodeList los, LoSNode poi );
     };
 } // namespace viewshed
 

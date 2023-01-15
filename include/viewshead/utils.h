@@ -10,7 +10,7 @@ namespace viewshed
     {
       public:
         static void saveToCsv( std::vector<std::pair<double, double>> distanceElevation, std::string fileName );
-        static std::vector<std::pair<double, double>> distanceElevation( SharedStatusList los, LoSNode poi );
+        static std::vector<std::pair<double, double>> distanceElevation( SharedLoSNodeList los, LoSNode poi );
     };
 } // namespace viewshed
 

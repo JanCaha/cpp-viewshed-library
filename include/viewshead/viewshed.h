@@ -13,10 +13,10 @@
 #include "iviewshed.h"
 #include "iviewshedalgorithm.h"
 #include "losevaluator.h"
+#include "losnode.h"
 #include "memoryraster.h"
 #include "points.h"
 #include "position.h"
-#include "losnode.h"
 #include "viewshedvalues.h"
 
 namespace viewshed
@@ -33,10 +33,10 @@ namespace viewshed
             { qDebug() << QString::fromStdString( text ) << time; },
             std::function<void( int, int )> progressCallback = []( int, int ) {} );
 
-        SharedStatusList LoSToPoint( QgsPoint point, bool onlyToPoint = false );
+        SharedLoSNodeList LoSToPoint( QgsPoint point, bool onlyToPoint = false );
 
       private:
-        SharedStatusList getLoS( LoSNode poi, bool onlyToPoi = false );
+        SharedLoSNodeList getLoS( LoSNode poi, bool onlyToPoi = false );
     };
 
 } // namespace viewshed

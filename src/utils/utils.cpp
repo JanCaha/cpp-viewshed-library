@@ -38,7 +38,7 @@ void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation,
     resultCsvFile.close();
 }
 
-std::vector<std::pair<double, double>> Utils::distanceElevation( SharedStatusList los, LoSNode poi )
+std::vector<std::pair<double, double>> Utils::distanceElevation( SharedLoSNodeList los, LoSNode poi )
 {
     std::vector<std::pair<double, double>> data;
 

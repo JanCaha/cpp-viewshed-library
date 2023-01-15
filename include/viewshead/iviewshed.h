@@ -8,16 +8,16 @@
 
 #include "cellevent.h"
 #include "iviewshedalgorithm.h"
+#include "losnode.h"
 #include "memoryraster.h"
 #include "position.h"
-#include "losnode.h"
 #include "viewshedvalues.h"
 
 namespace viewshed
 {
-    typedef std::vector<CellEvent> EventList;
-    typedef std::vector<LoSNode> StatusList;
-    typedef std::shared_ptr<std::vector<LoSNode>> SharedStatusList;
+    typedef std::vector<CellEvent> CellEventList;
+    typedef std::vector<LoSNode> LoSNodeList;
+    typedef std::shared_ptr<std::vector<LoSNode>> SharedLoSNodeList;
     typedef std::vector<std::shared_ptr<IViewshedAlgorithm>> ViewshedAlgorithms;
 
     class IViewshed
@@ -41,9 +41,9 @@ namespace viewshed
         LoSNode statusNodeFromPoint( QgsPoint point );
 
       protected:
-        EventList viewPointRowEventList;
-        StatusList statusList;
-        EventList eventList;
+        CellEventList viewPointRowEventList;
+        LoSNodeList statusList;
+        CellEventList eventList;
         std::shared_ptr<QgsRasterLayer> mInputDem;
         std::shared_ptr<IPoint> mPoint;
         ViewshedAlgorithms mAlgs;
