@@ -28,10 +28,6 @@ jobs:
           sudo apt update
           sudo apt upgrade -y
 
-      - name: Cmake version
-        run: |
-          cmake --version
-
       - name: Install QGIS
         run: |
           sudo apt update
