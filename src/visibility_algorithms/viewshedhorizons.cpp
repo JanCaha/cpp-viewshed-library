@@ -1,20 +1,19 @@
 #include <limits>
 
-#include "losevaluator.h"
 #include "viewshedhorizons.h"
 
 using viewshed::ViewshedHorizons;
 
-double ViewshedHorizons::result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes, LoSNode &poi,
-                                 std::shared_ptr<IPoint> vp )
+double ViewshedHorizons::result( std::shared_ptr<LoSImportantValues> losValues, std::vector<LoSNode> &statusNodes,
+                                 LoSNode &poi, std::shared_ptr<IPoint> vp )
 {
 
     bool isHorizon = false;
 
-    if ( losevaluator->mIndexPoi + 1 < statusNodes.size() && losevaluator->mMaxGradientBefore < poi.centreGradient() )
+    if ( losValues->mIndexPoi + 1 < statusNodes.size() && losValues->mMaxGradientBefore < poi.centreGradient() )
     {
         double gradientBehind =
-            statusNodes.at( losevaluator->mIndexPoi + 1 ).valueAtAngle( poi.centreAngle(), ValueType::Gradient );
+            statusNodes.at( losValues->mIndexPoi + 1 ).valueAtAngle( poi.centreAngle(), ValueType::Gradient );
 
         if ( gradientBehind < poi.centreGradient() )
         {

@@ -1,9 +1,8 @@
 #include "losevaluator.h"
+#include "iviewshed.h"
 
 using viewshed::IViewshedAlgorithm;
 using viewshed::LoSEvaluator;
-
-using viewshed::LoSNodeList;
 
 int LoSEvaluator::size() { return mAlgs.size(); }
 
@@ -21,7 +20,7 @@ void LoSEvaluator::parseNodes( std::vector<LoSNode> &statusNodes, std::shared_pt
 
         if ( ln == *poi.get() )
         {
-            mIndexPoi = i;
+            mLosValues->mIndexPoi = i;
         }
 
         snGradient = ln.valueAtAngle( poi->centreAngle(), ValueType::Gradient );
@@ -32,38 +31,37 @@ void LoSEvaluator::parseNodes( std::vector<LoSNode> &statusNodes, std::shared_pt
 
             if ( lnNext.centreDistance() <= poi->centreDistance() )
             {
-                if ( mMaxGradientBefore < snGradient &&
+                if ( mLosValues->mMaxGradientBefore < snGradient &&
                      lnNext.valueAtAngle( poi->centreAngle(), ValueType::Gradient ) < snGradient )
                 {
-                    mIndexHorizonBefore = i;
-                    mCountHorizonBefore++;
+                    mLosValues->mIndexHorizonBefore = i;
+                    mLosValues->mCountHorizonBefore++;
                 }
             }
 
-            if ( mMaxGradient < snGradient &&
+            if ( mLosValues->mMaxGradient < snGradient &&
                  lnNext.valueAtAngle( poi->centreAngle(), ValueType::Gradient ) < snGradient )
             {
-                mIndexHorizon = i;
-                mCountHorizon++;
+                mLosValues->mIndexHorizon = i;
+                mLosValues->mCountHorizon++;
             }
         }
 
         if ( ln.centreDistance() < poi->centreDistance() )
         {
-            if ( mMaxGradientBefore < snGradient )
+            if ( mLosValues->mMaxGradientBefore < snGradient )
             {
-                mMaxGradientBefore = snGradient;
-                mIndexMaxGradientBefore = i;
+                mLosValues->mMaxGradientBefore = snGradient;
+                mLosValues->mIndexMaxGradientBefore = i;
             }
         }
 
-        if ( mMaxGradient < snGradient )
+        if ( mLosValues->mMaxGradient < snGradient )
         {
-            mMaxGradient = snGradient;
-            mIndexMaxGradient = i;
+            mLosValues->mMaxGradient = snGradient;
+            mLosValues->mIndexMaxGradient = i;
         }
     }
-
     mAlreadyParsed = true;
 }
 
@@ -82,22 +80,14 @@ void LoSEvaluator::calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> a
 
     for ( int i = 0; i < mAlgs.size(); i++ )
     {
-        mResultValues.values.push_back( mAlgs.at( i )->result( this, statusNodes, *poi.get(), point ) );
+        mResultValues.values.push_back( mAlgs.at( i )->result( mLosValues, statusNodes, *poi.get(), point ) );
     }
 }
 
 void LoSEvaluator::reset()
 {
-    mMaxGradientBefore = -180;
-    mMaxGradient = -180;
-    mIndexPoi = 0;
-    mIndexMaxGradientBefore = 0;
-    mIndexMaxGradient = 0;
-    mIndexHorizonBefore = 0;
-    mIndexHorizon = 0;
-    mCountHorizonBefore = 0;
-    mCountHorizon = 0;
     mResultValues = ViewshedValues();
+    mLosValues->reset();
 }
 
 double LoSEvaluator::resultAt( int i ) { return mResultValues.values[i]; }

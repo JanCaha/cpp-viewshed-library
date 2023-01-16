@@ -1,6 +1,5 @@
 #include <limits>
 
-#include "losevaluator.h"
 #include "viewshedangledifferencetoglobalhorizon.h"
 
 using viewshed::ViewshedAngleDifferenceToGlobalHorizon;
@@ -10,15 +9,15 @@ ViewshedAngleDifferenceToGlobalHorizon::ViewshedAngleDifferenceToGlobalHorizon( 
 {
 }
 
-double ViewshedAngleDifferenceToGlobalHorizon::result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes,
-                                                       LoSNode &poi, std::shared_ptr<IPoint> vp )
+double ViewshedAngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
+                                                       std::vector<LoSNode> &statusNodes, LoSNode &poi,
+                                                       std::shared_ptr<IPoint> vp )
 {
     double difference;
-    if ( losevaluator->mIndexHorizon != 0 )
+    if ( losValues->mIndexHorizon != 0 )
     {
-        difference =
-            poi.centreGradient() -
-            statusNodes.at( losevaluator->mIndexHorizon ).valueAtAngle( poi.centreAngle(), ValueType::Gradient );
+        difference = poi.centreGradient() -
+                     statusNodes.at( losValues->mIndexHorizon ).valueAtAngle( poi.centreAngle(), ValueType::Gradient );
     }
     else
     {
@@ -31,7 +30,7 @@ double ViewshedAngleDifferenceToGlobalHorizon::result( LoSEvaluator *losevaluato
     }
     else
     {
-        if ( poi.centreGradient() < losevaluator->mMaxGradientBefore )
+        if ( poi.centreGradient() < losValues->mMaxGradientBefore )
             return invisible();
         else
             return difference;

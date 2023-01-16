@@ -1,6 +1,5 @@
 #include "math.h"
 
-#include "losevaluator.h"
 #include "viewshedelevationdifferencetoglobalhorizon.h"
 
 using viewshed::ViewshedElevationDifferenceToGlobalHorizon;
@@ -11,7 +10,7 @@ ViewshedElevationDifferenceToGlobalHorizon::ViewshedElevationDifferenceToGlobalH
 {
 }
 
-double ViewshedElevationDifferenceToGlobalHorizon::result( LoSEvaluator *losevaluator,
+double ViewshedElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
                                                            std::vector<LoSNode> &statusNodes, LoSNode &poi,
                                                            std::shared_ptr<IPoint> vp )
 {
@@ -19,12 +18,12 @@ double ViewshedElevationDifferenceToGlobalHorizon::result( LoSEvaluator *loseval
     double difference;
     double distance;
 
-    LoSNode horizon = statusNodes.at( losevaluator->mIndexHorizon );
+    LoSNode horizon = statusNodes.at( losValues->mIndexHorizon );
 
-    if ( losevaluator->mIndexHorizonBefore != 0 )
+    if ( losValues->mIndexHorizonBefore != 0 )
     {
         distance = poi.centreDistance() - horizon.valueAtAngle( poi.centreAngle(), ValueType::Distance );
-        change = std::tan( ( M_PI / 180 ) * losevaluator->mMaxGradient ) * distance;
+        change = std::tan( ( M_PI / 180 ) * losValues->mMaxGradient ) * distance;
         difference =
             poi.centreElevation() - ( horizon.valueAtAngle( poi.centreAngle(), ValueType::Elevation ) + change );
     }
@@ -39,7 +38,7 @@ double ViewshedElevationDifferenceToGlobalHorizon::result( LoSEvaluator *loseval
     }
     else
     {
-        if ( poi.centreGradient() < losevaluator->mMaxGradientBefore )
+        if ( poi.centreGradient() < losValues->mMaxGradientBefore )
             return invisible();
         else
             return difference;

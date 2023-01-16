@@ -1,9 +1,9 @@
 #include "viewshedelevationdifference.h"
-#include "losevaluator.h"
 
 using viewshed::ViewshedElevationDifference;
 
-double ViewshedElevationDifference::result( LoSEvaluator *losevaluator, std::vector<LoSNode> &statusNodes, LoSNode &poi,
+double ViewshedElevationDifference::result( std::shared_ptr<LoSImportantValues> losValues,
+                                            std::vector<LoSNode> &statusNodes, LoSNode &poi,
                                             std::shared_ptr<IPoint> vp )
 {
     return poi.elevs[CellPosition::CENTER] - vp->totalElevation();
