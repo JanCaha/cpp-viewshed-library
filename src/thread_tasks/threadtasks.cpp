@@ -9,14 +9,14 @@ using viewshed::LoSEvaluator;
 using viewshed::ViewshedValues;
 
 ViewshedValues viewshed::evaluateLoSForPoI( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
-                                            std::vector<LoSNode> statusList, std::shared_ptr<LoSNode> poi,
+                                            std::shared_ptr<std::vector<LoSNode>> los, std::shared_ptr<LoSNode> poi,
                                             std::shared_ptr<IPoint> point )
 {
-    std::sort( statusList.begin(), statusList.end() );
+    std::sort( los->begin(), los->end() );
 
-    LoSEvaluator losEval;
+    LoSEvaluator losEval( los, algs );
 
-    losEval.calculate( algs, statusList, poi, point );
+    losEval.calculate( poi, point );
 
     return losEval.mResultValues;
 }
