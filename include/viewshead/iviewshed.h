@@ -7,7 +7,6 @@
 #include "BS_thread_pool.hpp"
 
 #include "cellevent.h"
-#include "iviewshedalgorithm.h"
 #include "losnode.h"
 #include "memoryraster.h"
 #include "rasterposition.h"
