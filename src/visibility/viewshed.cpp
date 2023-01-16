@@ -35,10 +35,10 @@ Viewshed::Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLaye
 
 std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool onlyToPoint )
 {
-    prefillStatusList();
-
     LoSNode poi = statusNodeFromPoint( point );
     LoSNode ln;
+
+    statusList.clear();
 
     for ( CellEvent e : eventList )
     {
@@ -132,8 +132,6 @@ void Viewshed::calculate( std::function<void( std::string, double )> stepsTiming
     sortEventList();
 
     stepsTimingCallback( "Sort event list lasted: ", timer.elapsed() / 1000.0 );
-
-    prefillStatusList();
 
     timer.restart();
 

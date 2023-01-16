@@ -79,15 +79,7 @@ void IViewshed::initEventList()
                                                      Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ),
                                                      angleExit, elevs );
 
-                        if ( mPoint->row == row && mPoint->col < column )
-                        {
-                            viewPointRowEventList.push_back( eCenter );
-                        }
-                        else
-                        {
-                            eventList.push_back( eEnter );
-                        }
-
+                        eventList.push_back( eEnter );
                         eventList.push_back( eCenter );
                         eventList.push_back( eExit );
                     }
@@ -148,20 +140,6 @@ bool IViewshed::checkInsideAngle( double eventEnterAngle, double eventExitAngle 
 }
 
 void IViewshed::sortEventList() { std::sort( eventList.begin(), eventList.end() ); }
-
-void IViewshed::prefillStatusList()
-{
-    if ( 0 < statusList.size() )
-    {
-        statusList.clear();
-    }
-
-    for ( CellEvent e : viewPointRowEventList )
-    {
-        LoSNode ln( mPoint, &e, mCellSize );
-        statusList.push_back( ln );
-    }
-}
 
 void IViewshed::parseEventList( std::function<void( int size, int current )> progressCallback )
 {
