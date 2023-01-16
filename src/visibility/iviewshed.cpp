@@ -185,9 +185,10 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
             case CellPosition::CENTER:
             {
                 std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint, &e, mCellSize );
+                std::shared_ptr<std::vector<LoSNode>> los =
+                    std::make_shared<std::vector<LoSNode>>( mLosNodes.begin(), mLosNodes.end() );
 
-                mResultPixels.push_back(
-                    mThreadPool.submit( viewshed::evaluateLoSForPoI, mAlgs, mLosNodes, poi, mPoint ) );
+                mResultPixels.push_back( mThreadPool.submit( viewshed::evaluateLoSForPoI, mAlgs, los, poi, mPoint ) );
 
                 break;
             }
