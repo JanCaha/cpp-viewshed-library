@@ -79,9 +79,9 @@ void IViewshed::initEventList()
                                                      Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ),
                                                      angleExit, elevs );
 
-                        eventList.push_back( eEnter );
-                        eventList.push_back( eCenter );
-                        eventList.push_back( eExit );
+                        mCellEvents.push_back( eEnter );
+                        mCellEvents.push_back( eCenter );
+                        mCellEvents.push_back( eExit );
                     }
                 }
             }
@@ -139,7 +139,7 @@ bool IViewshed::checkInsideAngle( double eventEnterAngle, double eventExitAngle 
     return false;
 }
 
-void IViewshed::sortEventList() { std::sort( eventList.begin(), eventList.end() ); }
+void IViewshed::sortEventList() { std::sort( mCellEvents.begin(), mCellEvents.end() ); }
 
 void IViewshed::parseEventList( std::function<void( int size, int current )> progressCallback )
 {
@@ -148,9 +148,9 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
     ViewshedValues rasterValues;
 
     int i = 0;
-    for ( CellEvent e : eventList )
+    for ( CellEvent e : mCellEvents )
     {
-        progressCallback( eventList.size(), i );
+        progressCallback( mCellEvents.size(), i );
 
         LoSNode ln;
         switch ( e.eventType )
@@ -163,7 +163,7 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
                 }
 
                 ln = LoSNode( mPoint, &e, mCellSize );
-                statusList.push_back( ln );
+                mLosNodes.push_back( ln );
                 break;
             }
             case CellPosition::EXIT:
@@ -175,10 +175,10 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
 
                 ln = LoSNode( e.row, e.col );
 
-                std::vector<LoSNode>::iterator index = std::find( statusList.begin(), statusList.end(), ln );
-                if ( index != statusList.end() )
+                std::vector<LoSNode>::iterator index = std::find( mLosNodes.begin(), mLosNodes.end(), ln );
+                if ( index != mLosNodes.end() )
                 {
-                    statusList.erase( index );
+                    mLosNodes.erase( index );
                 }
                 break;
             }
@@ -187,7 +187,7 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
                 std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint, &e, mCellSize );
 
                 mResultPixels.push_back(
-                    mThreadPool.submit( viewshed::evaluateLoSForPoI, mAlgs, statusList, poi, mPoint ) );
+                    mThreadPool.submit( viewshed::evaluateLoSForPoI, mAlgs, mLosNodes, poi, mPoint ) );
 
                 break;
             }
@@ -237,7 +237,7 @@ void IViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_
     MemoryRaster result = MemoryRaster( dem_ );
 
     int i = 0;
-    for ( CellEvent event : eventList )
+    for ( CellEvent event : mCellEvents )
     {
         if ( event.eventType == CellPosition::CENTER )
         {
@@ -305,7 +305,7 @@ LoSNode IViewshed::statusNodeFromPoint( QgsPoint point )
 
     LoSNode ln;
 
-    for ( CellEvent e : eventList )
+    for ( CellEvent e : mCellEvents )
     {
         if ( e.eventType == CellPosition::CENTER && e.col == col && e.row == row )
         {
@@ -315,4 +315,18 @@ LoSNode IViewshed::statusNodeFromPoint( QgsPoint point )
     }
 
     return ln;
+}
+
+void IViewshed::setMaxConcurentTaks( int maxTasks ) { mMaxNumberOfTasks = maxTasks; }
+
+void IViewshed::setMaxResultsInMemory( int maxResults ) { mMaxNumberOfResults = maxResults; }
+
+void IViewshed::setMaxThreads( int threads )
+{
+    if ( mThreadPool.get_thread_count() < threads )
+    {
+        return;
+    }
+
+    mThreadPool.reset( threads );
 }

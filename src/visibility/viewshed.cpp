@@ -38,9 +38,9 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
     LoSNode poi = statusNodeFromPoint( point );
     LoSNode ln;
 
-    statusList.clear();
+    mLosNodes.clear();
 
-    for ( CellEvent e : eventList )
+    for ( CellEvent e : mCellEvents )
     {
         switch ( e.eventType )
         {
@@ -51,7 +51,7 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
                     break;
                 }
                 ln = LoSNode( mPoint, &e, mCellSize );
-                statusList.push_back( ln );
+                mLosNodes.push_back( ln );
                 break;
             }
 
@@ -62,10 +62,10 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
                     break;
                 }
                 ln = LoSNode( e.row, e.col );
-                std::vector<LoSNode>::iterator index = std::find( statusList.begin(), statusList.end(), ln );
-                if ( index != statusList.end() )
+                std::vector<LoSNode>::iterator index = std::find( mLosNodes.begin(), mLosNodes.end(), ln );
+                if ( index != mLosNodes.end() )
                 {
-                    statusList.erase( index );
+                    mLosNodes.erase( index );
                 }
                 break;
             }
@@ -90,9 +90,9 @@ SharedLoSNodeList Viewshed::getLoS( LoSNode poi, bool onlyToPoi )
 {
     SharedLoSNodeList losToReturn = std::make_shared<LoSNodeList>();
 
-    for ( int j = 0; j < statusList.size(); j++ )
+    for ( int j = 0; j < mLosNodes.size(); j++ )
     {
-        LoSNode node = statusList.at( j );
+        LoSNode node = mLosNodes.at( j );
 
         if ( node.angle[CellPosition::ENTER] <= poi.centreAngle() &&
              poi.centreAngle() <= node.angle[CellPosition::EXIT] )
