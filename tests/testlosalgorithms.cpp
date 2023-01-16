@@ -30,7 +30,7 @@ class TestLosAlgorithms : public QObject
     std::vector<CellEvent> eventList;
     std::shared_ptr<std::vector<LoSNode>> statusList = std::make_unique<std::vector<LoSNode>>();
     std::shared_ptr<ViewPoint> vp = std::make_shared<ViewPoint>( 0, 0, 0, 0.001 );
-    std::vector<std::shared_ptr<IViewshedAlgorithm>> algs;
+    std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs;
 
   private slots:
 
@@ -130,9 +130,9 @@ class TestLosAlgorithms : public QObject
 
     void isVisibile()
     {
-        algs.clear();
+        algs->clear();
 
-        algs.push_back( std::make_shared<ViewshedVisibility>() );
+        algs->push_back( std::make_shared<ViewshedVisibility>() );
 
         LoSEvaluator losEval = LoSEvaluator( statusList, algs );
 
@@ -160,9 +160,9 @@ class TestLosAlgorithms : public QObject
 
     void isHorizon()
     {
-        algs.clear();
+        algs->clear();
 
-        algs.push_back( std::make_shared<ViewshedHorizons>() );
+        algs->push_back( std::make_shared<ViewshedHorizons>() );
 
         LoSEvaluator losEval = LoSEvaluator( statusList, algs );
 
@@ -199,10 +199,10 @@ class TestLosAlgorithms : public QObject
 
     void differenceLocalHorizon()
     {
-        algs.clear();
+        algs->clear();
 
-        algs.push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( false ) );
-        algs.push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( true ) );
+        algs->push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( false ) );
+        algs->push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( true ) );
 
         LoSEvaluator losEval = LoSEvaluator( statusList, algs );
 
@@ -249,10 +249,10 @@ class TestLosAlgorithms : public QObject
 
     void differenceGloballHorizon()
     {
-        algs.clear();
+        algs->clear();
 
-        algs.push_back( std::make_shared<ViewshedAngleDifferenceToGlobalHorizon>( false ) );
-        algs.push_back( std::make_shared<ViewshedAngleDifferenceToGlobalHorizon>( true ) );
+        algs->push_back( std::make_shared<ViewshedAngleDifferenceToGlobalHorizon>( false ) );
+        algs->push_back( std::make_shared<ViewshedAngleDifferenceToGlobalHorizon>( true ) );
 
         LoSEvaluator losEval = LoSEvaluator( statusList, algs );
 
@@ -279,14 +279,14 @@ class TestLosAlgorithms : public QObject
 
     void differenceElevationLocalHorizon()
     {
-        algs.clear();
+        algs->clear();
 
         double noHorizonBefore = -99;
         double invisible = -9999;
 
-        algs.push_back(
+        algs->push_back(
             std::make_shared<ViewshedElevationDifferenceToLocalHorizon>( false, invisible, noHorizonBefore ) );
-        algs.push_back(
+        algs->push_back(
             std::make_shared<ViewshedElevationDifferenceToLocalHorizon>( true, invisible, noHorizonBefore ) );
 
         LoSEvaluator losEval = LoSEvaluator( statusList, algs );
@@ -334,14 +334,14 @@ class TestLosAlgorithms : public QObject
 
     void differenceElevationGlobalHorizon()
     {
-        algs.clear();
+        algs->clear();
 
         double noHorizonBefore = -99;
         double invisible = -9999;
 
-        algs.push_back(
+        algs->push_back(
             std::make_shared<ViewshedElevationDifferenceToGlobalHorizon>( false, invisible, noHorizonBefore ) );
-        algs.push_back(
+        algs->push_back(
             std::make_shared<ViewshedElevationDifferenceToGlobalHorizon>( true, invisible, noHorizonBefore ) );
 
         LoSEvaluator losEval = LoSEvaluator( statusList, algs );
