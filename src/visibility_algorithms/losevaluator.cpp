@@ -5,14 +5,14 @@ using viewshed::IViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 
 LoSEvaluator::LoSEvaluator( std::shared_ptr<std::vector<LoSNode>> los,
-                            std::vector<std::shared_ptr<IViewshedAlgorithm>> algs )
+                            std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs )
     : mLos( los ), mAlgs( algs )
 {
 }
 
-int LoSEvaluator::size() { return mAlgs.size(); }
+int LoSEvaluator::size() { return mAlgs->size(); }
 
-std::shared_ptr<IViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { return mAlgs.at( i ); }
+std::shared_ptr<IViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { return mAlgs->at( i ); }
 
 void LoSEvaluator::parseNodes( std::shared_ptr<LoSNode> poi )
 {
@@ -81,9 +81,9 @@ void LoSEvaluator::calculate( std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoi
 
     mResultValues = ViewshedValues( poi->row, poi->col );
 
-    for ( int i = 0; i < mAlgs.size(); i++ )
+    for ( int i = 0; i < mAlgs->size(); i++ )
     {
-        mResultValues.values.push_back( mAlgs.at( i )->result( mLosValues, mLos, poi, point ) );
+        mResultValues.values.push_back( mAlgs->at( i )->result( mLosValues, mLos, poi, point ) );
     }
 }
 

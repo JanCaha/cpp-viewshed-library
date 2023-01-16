@@ -9,7 +9,7 @@ using viewshed::MemoryRaster;
 
 void IViewshed::prepareMemoryRasters()
 {
-    for ( int i = 0; i < mAlgs.size(); i++ )
+    for ( int i = 0; i < mAlgs->size(); i++ )
     {
         mResults.push_back( std::make_shared<MemoryRaster>( mInputDem, Qgis::DataType::Float32,
                                                             mInputDem->dataProvider()->sourceNoDataValue( 1 ) ) );
@@ -206,9 +206,9 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
     // parse results left after the algorithm finished
     parseCalculatedResults();
 
-    for ( int j = 0; j < mAlgs.size(); j++ )
+    for ( int j = 0; j < mAlgs->size(); j++ )
     {
-        mResults.at( j )->setValue( mAlgs.at( j )->viewpointValue(), mPoint->col, mPoint->row );
+        mResults.at( j )->setValue( mAlgs->at( j )->viewpointValue(), mPoint->col, mPoint->row );
     }
 }
 
@@ -289,9 +289,9 @@ std::shared_ptr<MemoryRaster> IViewshed::resultRaster( int index ) { return mRes
 
 void IViewshed::saveResults( QString location )
 {
-    for ( int i = 0; i < mAlgs.size(); i++ )
+    for ( int i = 0; i < mAlgs->size(); i++ )
     {
-        QString file = QString( "%1/%2.tif" ).arg( location ).arg( mAlgs.at( i )->name() );
+        QString file = QString( "%1/%2.tif" ).arg( location ).arg( mAlgs->at( i )->name() );
         mResults.at( i )->save( file );
     }
 }

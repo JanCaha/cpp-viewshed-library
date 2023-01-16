@@ -25,7 +25,7 @@ namespace viewshed
     {
       public:
         Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem,
-                  std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
+                  std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs,
                   double minimalAngle = std::numeric_limits<double>::quiet_NaN(),
                   double maximalAngle = std::numeric_limits<double>::quiet_NaN() );
 

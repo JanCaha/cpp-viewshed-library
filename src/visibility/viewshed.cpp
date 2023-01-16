@@ -6,6 +6,7 @@
 #include "visibility.h"
 
 using viewshed::IPoint;
+using viewshed::IViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 using viewshed::LoSNode;
 using viewshed::MemoryRaster;
@@ -14,7 +15,8 @@ using viewshed::Viewshed;
 using viewshed::ViewshedValues;
 
 Viewshed::Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem,
-                    std::vector<std::shared_ptr<IViewshedAlgorithm>> algs, double minimalAngle, double maximalAngle )
+                    std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs, double minimalAngle,
+                    double maximalAngle )
 {
     mValid = false;
 

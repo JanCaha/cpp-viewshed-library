@@ -44,7 +44,7 @@ namespace viewshed
         std::vector<CellEvent> mCellEvents;
         std::shared_ptr<QgsRasterLayer> mInputDem;
         std::shared_ptr<IPoint> mPoint;
-        std::vector<std::shared_ptr<IViewshedAlgorithm>> mAlgs;
+        std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> mAlgs;
         Qgis::DataType mDataType = Qgis::DataType::Float64;
         int mDefaultBand = 1;
 
