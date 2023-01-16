@@ -7,7 +7,8 @@
 
 using viewshed::Utils;
 
-void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation, std::shared_ptr<IPoint> vp, std::string fileName )
+void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation, std::shared_ptr<IPoint> vp,
+                       std::string fileName )
 {
     std::ofstream resultCsvFile;
 
@@ -17,7 +18,8 @@ void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation,
     double elevation;
 
     resultCsvFile << "distance,elevation\n";
-    resultCsvFile << "0" << "," << vp->totalElevation() << "\n";
+    resultCsvFile << "0"
+                  << "," << vp->totalElevation() << "\n";
 
     for ( int i = 0; i < distanceElevation.size(); i++ )
     {
@@ -39,7 +41,8 @@ void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation,
     resultCsvFile.close();
 }
 
-std::vector<std::pair<double, double>> Utils::distanceElevation( SharedLoSNodeList los, LoSNode poi )
+std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr<std::vector<LoSNode>> los,
+                                                                 LoSNode poi )
 {
     std::vector<std::pair<double, double>> data;
 
@@ -53,15 +56,15 @@ std::vector<std::pair<double, double>> Utils::distanceElevation( SharedLoSNodeLi
     return data;
 }
 
-std::vector<std::pair<double, double>> Utils::rasterCoordinates( SharedLoSNodeList los, LoSNode poi )
+std::vector<std::pair<double, double>> Utils::rasterCoordinates( std::shared_ptr<std::vector<LoSNode>> los,
+                                                                 LoSNode poi )
 {
     std::vector<std::pair<double, double>> data;
 
     for ( int i = 0; i < los->size(); i++ )
     {
         LoSNode ln = los->at( i );
-        data.push_back( std::make_pair<double, double>( ln.row,
-                                                        ln.col ) );
+        data.push_back( std::make_pair<double, double>( ln.row, ln.col ) );
     }
 
     return data;
