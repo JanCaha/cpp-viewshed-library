@@ -77,7 +77,7 @@ set(PUBLIC_HEADERS
     include/viewshead/losevaluator.h
     include/viewshead/memoryraster.h
     include/viewshead/points.h
-    include/viewshead/position.h
+    include/viewshead/rasterposition.h
     include/viewshead/losnode.h
     include/viewshead/viewshedangledifferencetoglobalhorizon.h
     include/viewshead/viewshedelevationdifferencetolocalhorizon.h
