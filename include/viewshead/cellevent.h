@@ -3,11 +3,9 @@
 
 #include "enums.h"
 
-// using viewshed::CellPosition;
-
 namespace viewshed
 {
-    struct Event
+    struct CellEvent
     {
         CellPosition eventType;
         int row, col;
@@ -15,9 +13,9 @@ namespace viewshed
         double angle;
         double elevation[3];
 
-        Event( CellPosition eventType_, int row_, int col_, double dist_, double angle_, double elevation_[3] );
+        CellEvent( CellPosition eventType_, int row_, int col_, double dist_, double angle_, double elevation_[3] );
 
-        bool operator<( const Event other ) const;
+        bool operator<( const CellEvent other ) const;
     };
 } // namespace viewshed
 

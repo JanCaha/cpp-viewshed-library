@@ -3,8 +3,8 @@
 
 #include "enums.h"
 #include "points.h"
-#include "position.h"
-#include "statusnode.h"
+#include "rasterposition.h"
+#include "losnode.h"
 #include "viewshed.h"
 
 namespace viewshed
@@ -12,18 +12,19 @@ namespace viewshed
     class Visibility
     {
       public:
-        static Position calculateEventPosition( CellPosition eventType, int row, int col,
+        static RasterPosition calculateEventPosition( CellPosition eventType, int row, int col,
                                                 std::shared_ptr<IPoint> point );
         static double calculateAngle( double row, double column, std::shared_ptr<IPoint> point );
-        static double calculateAngle( Position *pos, std::shared_ptr<IPoint> point );
+        static double calculateAngle( RasterPosition *pos, std::shared_ptr<IPoint> point );
         static double calculateDistance( int &row, int &column, std::shared_ptr<IPoint> point, double &cellSize );
         static double calculateDistance( double &row, double &column, std::shared_ptr<IPoint> point, double &cellSize );
-        static double calculateDistance( Position *pos, std::shared_ptr<IPoint> point, double &cellSize );
-        static double calculateGradient( std::shared_ptr<IPoint> point, Position *pos, double elevation,
+        static double calculateDistance( RasterPosition *pos, std::shared_ptr<IPoint> point, double &cellSize );
+        static double calculateGradient( std::shared_ptr<IPoint> point, RasterPosition *pos, double elevation,
                                          double &distance );
         static double calculateGradient( std::shared_ptr<IPoint> point, double &row, double &column, double elevation,
                                          double &distance );
-        static std::vector<std::pair<double, double>> distanceElevation( SharedStatusList los, StatusNode poi );
+        static std::vector<std::pair<double, double>> distanceElevation( std::shared_ptr<std::vector<LoSNode>> los,
+                                                                         LoSNode poi );
     };
 } // namespace viewshed
 

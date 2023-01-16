@@ -1,20 +1,18 @@
 #include <limits>
 
-#include "losevaluator.h"
 #include "viewshedvisibility.h"
 
 using viewshed::ViewshedVisibility;
 
-double ViewshedVisibility::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
+double ViewshedVisibility::result( std::shared_ptr<LoSImportantValues> losValues,
+                                   std::shared_ptr<std::vector<LoSNode>> los, std::shared_ptr<LoSNode> poi,
                                    std::shared_ptr<IPoint> vp )
 {
-    if ( poi.centreGradient() < losevaluator->mMaxGradientBefore )
+    if ( poi->centreGradient() < losValues->mMaxGradientBefore )
         return invisible();
     else
         return completlyVisible();
 }
-
-void ViewshedVisibility::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
 
 const double ViewshedVisibility::invisible() { return 0.0; }
 

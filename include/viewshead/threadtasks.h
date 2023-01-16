@@ -2,15 +2,16 @@
 #define VIEWSHEDLIB_THREADTASK_H
 
 #include "enums.h"
+#include "losnode.h"
 #include "points.h"
-#include "position.h"
-#include "statusnode.h"
+#include "rasterposition.h"
 #include "viewshed.h"
 
 namespace viewshed
 {
-    ViewshedValues evaluateLoSForPoI( ViewshedAlgorithms algs, std::vector<StatusNode> statusList,
-                                      std::shared_ptr<StatusNode> poi, std::shared_ptr<IPoint> point );
+    ViewshedValues evaluateLoSForPoI( std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs,
+                                      std::shared_ptr<std::vector<LoSNode>> los, std::shared_ptr<LoSNode> poi,
+                                      std::shared_ptr<IPoint> point );
 }
 
 #endif

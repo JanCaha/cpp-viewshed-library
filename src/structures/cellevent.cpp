@@ -1,8 +1,8 @@
-#include "event.h"
+#include "cellevent.h"
 
-using viewshed::Event;
+using viewshed::CellEvent;
 
-Event::Event( CellPosition eventType_, int row_, int col_, double dist_, double angle_, double elevation_[3] )
+CellEvent::CellEvent( CellPosition eventType_, int row_, int col_, double dist_, double angle_, double elevation_[3] )
 {
     eventType = eventType_;
     row = row_;
@@ -14,7 +14,7 @@ Event::Event( CellPosition eventType_, int row_, int col_, double dist_, double 
     elevation[CellPosition::EXIT] = elevation_[CellPosition::EXIT];
 }
 
-bool Event::operator<( const Event other ) const
+bool CellEvent::operator<( const CellEvent other ) const
 {
 
     if ( row == other.row && col == other.col && eventType == other.eventType )

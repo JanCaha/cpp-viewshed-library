@@ -1,6 +1,5 @@
 #include "math.h"
 
-#include "losevaluator.h"
 #include "viewshedelevationdifferencetolocalhorizon.h"
 
 using viewshed::ViewshedElevationDifferenceToLocalHorizon;
@@ -11,21 +10,21 @@ ViewshedElevationDifferenceToLocalHorizon::ViewshedElevationDifferenceToLocalHor
 {
 }
 
-double ViewshedElevationDifferenceToLocalHorizon::result( LoSEvaluator *losevaluator,
-                                                          std::vector<StatusNode> &statusNodes, StatusNode &poi,
-                                                          std::shared_ptr<IPoint> vp )
+double ViewshedElevationDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
+                                                          std::shared_ptr<std::vector<LoSNode>> los,
+                                                          std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> vp )
 {
     double change;
     double difference;
 
-    StatusNode horizon = statusNodes.at( losevaluator->mIndexHorizonBefore );
+    LoSNode horizon = los->at( losValues->mIndexHorizonBefore );
 
-    if ( losevaluator->mIndexHorizonBefore != 0 )
+    if ( losValues->mIndexHorizonBefore != 0 )
     {
-        change = std::tan( ( M_PI / 180 ) * losevaluator->mMaxGradientBefore ) *
-                 ( poi.centreDistance() - horizon.valueAtAngle( poi.centreAngle(), ValueType::Distance ) );
+        change = std::tan( ( M_PI / 180 ) * losValues->mMaxGradientBefore ) *
+                 ( poi->centreDistance() - horizon.valueAtAngle( poi->centreAngle(), ValueType::Distance ) );
         difference =
-            poi.centreElevation() - ( change + horizon.valueAtAngle( poi.centreAngle(), ValueType::Elevation ) );
+            poi->centreElevation() - ( change + horizon.valueAtAngle( poi->centreAngle(), ValueType::Elevation ) );
     }
     else
     {
@@ -38,14 +37,12 @@ double ViewshedElevationDifferenceToLocalHorizon::result( LoSEvaluator *losevalu
     }
     else
     {
-        if ( poi.centreGradient() < losevaluator->mMaxGradientBefore )
+        if ( poi->centreGradient() < losValues->mMaxGradientBefore )
             return invisible();
         else
             return difference;
     }
 }
-
-void ViewshedElevationDifferenceToLocalHorizon::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
 
 const double ViewshedElevationDifferenceToLocalHorizon::invisible() { return mInvisibleValue; }
 

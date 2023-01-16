@@ -6,17 +6,17 @@
 #include "visibility.h"
 
 using viewshed::IPoint;
+using viewshed::IViewshedAlgorithm;
 using viewshed::LoSEvaluator;
+using viewshed::LoSNode;
 using viewshed::MemoryRaster;
-using viewshed::SharedStatusList;
-using viewshed::StatusNode;
 using viewshed::ViewPoint;
 using viewshed::Viewshed;
-using viewshed::ViewshedAlgorithms;
 using viewshed::ViewshedValues;
 
-Viewshed::Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem, ViewshedAlgorithms algs,
-                    double minimalAngle, double maximalAngle )
+Viewshed::Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem,
+                    std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs, double minimalAngle,
+                    double maximalAngle )
 {
     mValid = false;
 
@@ -33,14 +33,14 @@ Viewshed::Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLaye
     mValid = true;
 }
 
-std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, bool onlyToPoint )
+std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool onlyToPoint )
 {
-    prefillStatusList();
+    LoSNode poi = statusNodeFromPoint( point );
+    LoSNode ln;
 
-    StatusNode poi = statusNodeFromPoint( point );
-    StatusNode sn;
+    mLosNodes.clear();
 
-    for ( Event e : eventList )
+    for ( CellEvent e : mCellEvents )
     {
         switch ( e.eventType )
         {
@@ -50,8 +50,8 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
                 {
                     break;
                 }
-                sn = StatusNode( mPoint, &e, mCellSize );
-                statusList.push_back( sn );
+                ln = LoSNode( mPoint, &e, mCellSize );
+                mLosNodes.push_back( ln );
                 break;
             }
 
@@ -61,19 +61,19 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
                 {
                     break;
                 }
-                sn = StatusNode( e.row, e.col );
-                std::vector<StatusNode>::iterator index = std::find( statusList.begin(), statusList.end(), sn );
-                if ( index != statusList.end() )
+                ln = LoSNode( e.row, e.col );
+                std::vector<LoSNode>::iterator index = std::find( mLosNodes.begin(), mLosNodes.end(), ln );
+                if ( index != mLosNodes.end() )
                 {
-                    statusList.erase( index );
+                    mLosNodes.erase( index );
                 }
                 break;
             }
 
             case CellPosition::CENTER:
             {
-                sn = StatusNode( mPoint, &e, mCellSize );
-                if ( sn.col == poi.col && sn.row == poi.row )
+                ln = LoSNode( mPoint, &e, mCellSize );
+                if ( ln.col == poi.col && ln.row == poi.row )
                 {
                     return getLoS( poi, onlyToPoint );
                 }
@@ -82,17 +82,17 @@ std::shared_ptr<std::vector<StatusNode>> Viewshed::LoSToPoint( QgsPoint point, b
         }
     }
 
-    SharedStatusList los;
+    std::shared_ptr<std::vector<LoSNode>> los;
     return los;
 }
 
-SharedStatusList Viewshed::getLoS( StatusNode poi, bool onlyToPoi )
+std::shared_ptr<std::vector<LoSNode>> Viewshed::getLoS( LoSNode poi, bool onlyToPoi )
 {
-    SharedStatusList losToReturn = std::make_shared<StatusList>();
+    std::shared_ptr<std::vector<LoSNode>> losToReturn = std::make_shared<std::vector<LoSNode>>();
 
-    for ( int j = 0; j < statusList.size(); j++ )
+    for ( int j = 0; j < mLosNodes.size(); j++ )
     {
-        StatusNode node = statusList.at( j );
+        LoSNode node = mLosNodes.at( j );
 
         if ( node.angle[CellPosition::ENTER] <= poi.centreAngle() &&
              poi.centreAngle() <= node.angle[CellPosition::EXIT] )
@@ -132,8 +132,6 @@ void Viewshed::calculate( std::function<void( std::string, double )> stepsTiming
     sortEventList();
 
     stepsTimingCallback( "Sort event list lasted: ", timer.elapsed() / 1000.0 );
-
-    prefillStatusList();
 
     timer.restart();
 

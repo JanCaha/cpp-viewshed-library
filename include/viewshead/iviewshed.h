@@ -6,20 +6,16 @@
 
 #include "BS_thread_pool.hpp"
 
-#include "event.h"
+#include "cellevent.h"
 #include "iviewshedalgorithm.h"
+#include "losnode.h"
 #include "memoryraster.h"
-#include "position.h"
-#include "statusnode.h"
+#include "rasterposition.h"
+
 #include "viewshedvalues.h"
 
 namespace viewshed
 {
-    typedef std::vector<Event> EventList;
-    typedef std::vector<StatusNode> StatusList;
-    typedef std::shared_ptr<std::vector<StatusNode>> SharedStatusList;
-    typedef std::vector<std::shared_ptr<IViewshedAlgorithm>> ViewshedAlgorithms;
-
     class IViewshed
     {
       public:
@@ -29,35 +25,36 @@ namespace viewshed
         void parseEventList( std::function<void( int, int )> progressCallback = []( int, int ) {} );
         void extractValuesFromEventList();
         void extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
-                                         std::function<double( StatusNode )> func );
+                                         std::function<double( LoSNode )> func );
         bool checkInsideAngle( double eventEnterAngle, double eventExitAngle );
 
         void setMaximalDistance( double distance );
         void setAngles( double minAngle, double maxAngle );
+        void setMaxConcurentTaks( int maxTasks );
+        void setMaxResultsInMemory( int maxResults );
+        void setMaxThreads( int threads );
 
         std::shared_ptr<MemoryRaster> resultRaster( int index = 0 );
 
         void saveResults( QString location );
-        StatusNode statusNodeFromPoint( QgsPoint point );
+        LoSNode statusNodeFromPoint( QgsPoint point );
 
       protected:
-        EventList viewPointRowEventList;
-        StatusList statusList;
-        EventList eventList;
+        std::vector<LoSNode> mLosNodes;
+        std::vector<CellEvent> mCellEvents;
         std::shared_ptr<QgsRasterLayer> mInputDem;
         std::shared_ptr<IPoint> mPoint;
-        ViewshedAlgorithms mAlgs;
-        Qgis::DataType dataType = Qgis::DataType::Float64;
+        std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> mAlgs;
+        Qgis::DataType mDataType = Qgis::DataType::Float64;
         int mDefaultBand = 1;
 
+        double mMaxDistance = std::numeric_limits<double>::max();
         double mMinAngle = -360.0;
         double mMaxAngle = 720.0;
-        double mMaxDistance = std::numeric_limits<double>::max();
-        double mCellSize;
-        double mValid;
-
         int mMaxNumberOfTasks = 100;
         int mMaxNumberOfResults = 500;
+        double mCellSize;
+        double mValid;
 
         void prepareMemoryRasters();
         void setPixelData( ViewshedValues values );
@@ -68,7 +65,8 @@ namespace viewshed
 
         std::vector<std::shared_ptr<MemoryRaster>> mResults;
 
-        double getCornerValue( const Position &pos, const std::unique_ptr<QgsRasterBlock> &block, double defaultValue );
+        double getCornerValue( const RasterPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
+                               double defaultValue );
     };
 
 } // namespace viewshed

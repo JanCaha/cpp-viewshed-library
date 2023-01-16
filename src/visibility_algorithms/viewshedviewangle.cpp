@@ -1,17 +1,15 @@
 #include <limits>
 
-#include "losevaluator.h"
 #include "viewshedviewangle.h"
 
 using viewshed::ViewshedViewAngle;
 
-double ViewshedViewAngle::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
+double ViewshedViewAngle::result( std::shared_ptr<LoSImportantValues> losValues,
+                                  std::shared_ptr<std::vector<LoSNode>> los, std::shared_ptr<LoSNode> poi,
                                   std::shared_ptr<IPoint> vp )
 {
-    return poi.gradient[CellPosition::CENTER];
+    return poi->gradient[CellPosition::CENTER];
 }
-
-void ViewshedViewAngle::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
 
 const double ViewshedViewAngle::invisible() { return -91.0; }
 

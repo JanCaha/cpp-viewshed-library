@@ -1,21 +1,22 @@
 #include "threadtasks.h"
 #include "iviewshed.h"
 #include "losevaluator.h"
+#include "losnode.h"
 #include "points.h"
-#include "statusnode.h"
 #include "viewshedvalues.h"
 
 using viewshed::LoSEvaluator;
 using viewshed::ViewshedValues;
 
-ViewshedValues viewshed::evaluateLoSForPoI( ViewshedAlgorithms algs, std::vector<StatusNode> statusList,
-                                            std::shared_ptr<StatusNode> poi, std::shared_ptr<IPoint> point )
+ViewshedValues viewshed::evaluateLoSForPoI( std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs,
+                                            std::shared_ptr<std::vector<LoSNode>> los, std::shared_ptr<LoSNode> poi,
+                                            std::shared_ptr<IPoint> point )
 {
-    std::sort( statusList.begin(), statusList.end() );
+    std::sort( los->begin(), los->end() );
 
-    LoSEvaluator losEval;
+    LoSEvaluator losEval( los, algs );
 
-    losEval.calculate( algs, statusList, poi, point );
+    losEval.calculate( poi, point );
 
     return losEval.mResultValues;
 }

@@ -1,6 +1,5 @@
 #include <limits>
 
-#include "losevaluator.h"
 #include "viewshedangledifferencetoglobalhorizon.h"
 
 using viewshed::ViewshedAngleDifferenceToGlobalHorizon;
@@ -10,19 +9,19 @@ ViewshedAngleDifferenceToGlobalHorizon::ViewshedAngleDifferenceToGlobalHorizon( 
 {
 }
 
-double ViewshedAngleDifferenceToGlobalHorizon::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes,
-                                                       StatusNode &poi, std::shared_ptr<IPoint> vp )
+double ViewshedAngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
+                                                       std::shared_ptr<std::vector<LoSNode>> los,
+                                                       std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> vp )
 {
     double difference;
-    if ( losevaluator->mIndexHorizon != 0 )
+    if ( losValues->mIndexHorizon != 0 )
     {
-        difference =
-            poi.centreGradient() -
-            statusNodes.at( losevaluator->mIndexHorizon ).valueAtAngle( poi.centreAngle(), ValueType::Gradient );
+        difference = poi->centreGradient() -
+                     los->at( losValues->mIndexHorizon ).valueAtAngle( poi->centreAngle(), ValueType::Gradient );
     }
     else
     {
-        difference = 90 + poi.centreGradient();
+        difference = 90 + poi->centreGradient();
     }
 
     if ( mAllPoints )
@@ -31,14 +30,12 @@ double ViewshedAngleDifferenceToGlobalHorizon::result( LoSEvaluator *losevaluato
     }
     else
     {
-        if ( poi.centreGradient() < losevaluator->mMaxGradientBefore )
+        if ( poi->centreGradient() < losValues->mMaxGradientBefore )
             return invisible();
         else
             return difference;
     }
 }
-
-void ViewshedAngleDifferenceToGlobalHorizon::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
 
 const double ViewshedAngleDifferenceToGlobalHorizon::invisible() { return mInvisibleValue; }
 
