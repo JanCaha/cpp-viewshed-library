@@ -1,13 +1,13 @@
 #include "viewshedelevationdifference.h"
-#include "losevaluator.h"
 
-double ViewshedElevationDifference::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes,
-                                            StatusNode &poi, std::shared_ptr<ViewPoint> vp )
+using viewshed::ViewshedElevationDifference;
+
+double ViewshedElevationDifference::result( std::shared_ptr<LoSImportantValues> losValues,
+                                            std::shared_ptr<std::vector<LoSNode>> los, std::shared_ptr<LoSNode> poi,
+                                            std::shared_ptr<IPoint> vp )
 {
-    return poi.elevs[CellPosition::CENTER] - vp->totalElevation();
+    return poi->elevs[CellPosition::CENTER] - vp->totalElevation();
 }
-
-void ViewshedElevationDifference::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
 
 const double ViewshedElevationDifference::invisible() { return 0.0; }
 

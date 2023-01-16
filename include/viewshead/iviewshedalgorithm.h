@@ -5,21 +5,23 @@
 
 #include "QString"
 
+#include "losimportantvalues.h"
+#include "losnode.h"
 #include "points.h"
-#include "statusnode.h"
 
-class LoSEvaluator;
-
-class IViewshedAlgorithm
+namespace viewshed
 {
-  public:
-    virtual double result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
-                           std::shared_ptr<ViewPoint> vp ) = 0;
-    virtual void extractValues( StatusNode &sn, StatusNode &poi, int &position ) = 0;
-    virtual const double viewpointValue() = 0;
-    virtual const double invisible() = 0;
-    virtual const double completlyVisible() = 0;
-    virtual const QString name() = 0;
-};
+    class IViewshedAlgorithm
+    {
+      public:
+        virtual double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<std::vector<LoSNode>> los,
+                               std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> vp ) = 0;
+        virtual const double viewpointValue() = 0;
+        virtual const double invisible() = 0;
+        virtual const double completlyVisible() = 0;
+        virtual const QString name() = 0;
+    };
+
+} // namespace viewshed
 
 #endif

@@ -1,26 +1,27 @@
 #include <limits>
 
-#include "losevaluator.h"
 #include "viewshedangledifferencetolocalhorizon.h"
+
+using viewshed::ViewshedAngleDifferenceToLocalHorizon;
 
 ViewshedAngleDifferenceToLocalHorizon::ViewshedAngleDifferenceToLocalHorizon( bool all, double invisibleValue )
     : mAllPoints( all ), mInvisibleValue( invisibleValue )
 {
 }
 
-double ViewshedAngleDifferenceToLocalHorizon::result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes,
-                                                      StatusNode &poi, std::shared_ptr<ViewPoint> vp )
+double ViewshedAngleDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
+                                                      std::shared_ptr<std::vector<LoSNode>> los,
+                                                      std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> vp )
 {
     double difference;
-    if ( losevaluator->mIndexHorizonBefore != 0 )
+    if ( losValues->mIndexHorizonBefore != 0 )
     {
-        difference =
-            poi.centreGradient() -
-            statusNodes.at( losevaluator->mIndexHorizonBefore ).valueAtAngle( poi.centreAngle(), ValueType::Gradient );
+        difference = poi->centreGradient() -
+                     los->at( losValues->mIndexHorizonBefore ).valueAtAngle( poi->centreAngle(), ValueType::Gradient );
     }
     else
     {
-        difference = 90 + poi.centreGradient();
+        difference = 90 + poi->centreGradient();
     }
 
     if ( mAllPoints )
@@ -29,14 +30,12 @@ double ViewshedAngleDifferenceToLocalHorizon::result( LoSEvaluator *losevaluator
     }
     else
     {
-        if ( poi.centreGradient() < losevaluator->mMaxGradientBefore )
+        if ( poi->centreGradient() < losValues->mMaxGradientBefore )
             return invisible();
         else
             return difference;
     }
 }
-
-void ViewshedAngleDifferenceToLocalHorizon::extractValues( StatusNode &sn, StatusNode &poi, int &position ) {}
 
 const double ViewshedAngleDifferenceToLocalHorizon::invisible() { return mInvisibleValue; }
 

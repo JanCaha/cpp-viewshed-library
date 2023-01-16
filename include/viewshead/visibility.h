@@ -3,23 +3,29 @@
 
 #include "enums.h"
 #include "points.h"
-#include "position.h"
-#include "statusnode.h"
+#include "rasterposition.h"
+#include "losnode.h"
 #include "viewshed.h"
 
-class Visibility
+namespace viewshed
 {
-  public:
-    static Position calculateEventPosition( CellPosition eventType, int row, int col, ViewPoint point );
-    static double calculateAngle( double row, double column, std::shared_ptr<ViewPoint> vp );
-    static double calculateAngle( Position *pos, std::shared_ptr<ViewPoint> vp );
-    static double calculateDistance( int &row, int &column, std::shared_ptr<ViewPoint> vp, double &cellSize );
-    static double calculateDistance( double &row, double &column, std::shared_ptr<ViewPoint> vp, double &cellSize );
-    static double calculateDistance( Position *pos, std::shared_ptr<ViewPoint> vp, double &cellSize );
-    static double calculateGradient( std::shared_ptr<ViewPoint> vp, Position *pos, double elevation, double &distance );
-    static double calculateGradient( std::shared_ptr<ViewPoint> vp, double &row, double &column, double elevation,
-                                     double &distance );
-    static std::vector<std::pair<double, double>> distanceElevation( SharedStatusList los, StatusNode poi );
-};
+    class Visibility
+    {
+      public:
+        static RasterPosition calculateEventPosition( CellPosition eventType, int row, int col,
+                                                std::shared_ptr<IPoint> point );
+        static double calculateAngle( double row, double column, std::shared_ptr<IPoint> point );
+        static double calculateAngle( RasterPosition *pos, std::shared_ptr<IPoint> point );
+        static double calculateDistance( int &row, int &column, std::shared_ptr<IPoint> point, double &cellSize );
+        static double calculateDistance( double &row, double &column, std::shared_ptr<IPoint> point, double &cellSize );
+        static double calculateDistance( RasterPosition *pos, std::shared_ptr<IPoint> point, double &cellSize );
+        static double calculateGradient( std::shared_ptr<IPoint> point, RasterPosition *pos, double elevation,
+                                         double &distance );
+        static double calculateGradient( std::shared_ptr<IPoint> point, double &row, double &column, double elevation,
+                                         double &distance );
+        static std::vector<std::pair<double, double>> distanceElevation( std::shared_ptr<std::vector<LoSNode>> los,
+                                                                         LoSNode poi );
+    };
+} // namespace viewshed
 
 #endif

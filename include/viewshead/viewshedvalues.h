@@ -3,6 +3,7 @@
 
 #include <vector>
 
+namespace viewshed{
 struct ViewshedValues
 {
     double row, col;
@@ -16,5 +17,6 @@ struct ViewshedValues
         col = col_;
     };
 };
+}
 
 #endif

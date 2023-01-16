@@ -5,7 +5,10 @@
 
 #include "utils.h"
 
-void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation, std::string fileName )
+using viewshed::Utils;
+
+void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation, std::shared_ptr<IPoint> vp,
+                       std::string fileName )
 {
     std::ofstream resultCsvFile;
 
@@ -14,7 +17,9 @@ void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation,
     double distance;
     double elevation;
 
-    resultCsvFile << "distance,elevation.\n";
+    resultCsvFile << "distance,elevation\n";
+    resultCsvFile << "0"
+                  << "," << vp->totalElevation() << "\n";
 
     for ( int i = 0; i < distanceElevation.size(); i++ )
     {
@@ -36,15 +41,30 @@ void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation,
     resultCsvFile.close();
 }
 
-std::vector<std::pair<double, double>> Utils::distanceElevation( SharedStatusList los, StatusNode poi )
+std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr<std::vector<LoSNode>> los,
+                                                                 LoSNode poi )
 {
     std::vector<std::pair<double, double>> data;
 
     for ( int i = 0; i < los->size(); i++ )
     {
-        StatusNode sn = los->at( i );
-        data.push_back( std::make_pair<double, double>( sn.valueAtAngle( poi.centreAngle(), ValueType::Distance ),
-                                                        sn.valueAtAngle( poi.centreAngle(), ValueType::Elevation ) ) );
+        LoSNode ln = los->at( i );
+        data.push_back( std::make_pair<double, double>( ln.valueAtAngle( poi.centreAngle(), ValueType::Distance ),
+                                                        ln.valueAtAngle( poi.centreAngle(), ValueType::Elevation ) ) );
+    }
+
+    return data;
+}
+
+std::vector<std::pair<double, double>> Utils::rasterCoordinates( std::shared_ptr<std::vector<LoSNode>> los,
+                                                                 LoSNode poi )
+{
+    std::vector<std::pair<double, double>> data;
+
+    for ( int i = 0; i < los->size(); i++ )
+    {
+        LoSNode ln = los->at( i );
+        data.push_back( std::make_pair<double, double>( ln.row, ln.col ) );
     }
 
     return data;

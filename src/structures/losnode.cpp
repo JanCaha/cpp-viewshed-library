@@ -1,22 +1,24 @@
 #include <iterator>
 #include <limits>
 
-#include "statusnode.h"
+#include "losnode.h"
 #include "visibility.h"
 
-StatusNode::StatusNode()
+using viewshed::LoSNode;
+
+LoSNode::LoSNode()
 {
     row = 0;
     col = 0;
 }
 
-StatusNode::StatusNode( int row_, int col_ )
+LoSNode::LoSNode( int row_, int col_ )
 {
     row = row_;
     col = col_;
 }
 
-StatusNode::StatusNode( std::shared_ptr<ViewPoint> vp, Event *e, double &cellSize )
+LoSNode::LoSNode( std::shared_ptr<IPoint> point, CellEvent *e, double &cellSize )
 {
     row = e->row;
     col = e->col;
@@ -24,10 +26,10 @@ StatusNode::StatusNode( std::shared_ptr<ViewPoint> vp, Event *e, double &cellSiz
     elevs[CellPosition::ENTER] = e->elevation[CellPosition::ENTER];
     elevs[CellPosition::EXIT] = e->elevation[CellPosition::EXIT];
 
-    angle[CellPosition::CENTER] = Visibility::calculateAngle( row, col, vp );
+    angle[CellPosition::CENTER] = Visibility::calculateAngle( row, col, point );
 
-    Position posEnter = Visibility::calculateEventPosition( CellPosition::ENTER, e->row, e->col, *vp );
-    double angleEnter = Visibility::calculateAngle( &posEnter, vp );
+    RasterPosition posEnter = Visibility::calculateEventPosition( CellPosition::ENTER, e->row, e->col, point );
+    double angleEnter = Visibility::calculateAngle( &posEnter, point );
 
     if ( angleEnter > angle[CellPosition::CENTER] )
     {
@@ -36,25 +38,25 @@ StatusNode::StatusNode( std::shared_ptr<ViewPoint> vp, Event *e, double &cellSiz
 
     angle[CellPosition::ENTER] = angleEnter;
 
-    Position posExit = Visibility::calculateEventPosition( CellPosition::EXIT, e->row, e->col, *vp );
-    angle[CellPosition::EXIT] = Visibility::calculateAngle( &posExit, vp );
+    RasterPosition posExit = Visibility::calculateEventPosition( CellPosition::EXIT, e->row, e->col, point );
+    angle[CellPosition::EXIT] = Visibility::calculateAngle( &posExit, point );
 
-    distances[CellPosition::CENTER] = Visibility::calculateDistance( row, col, vp, cellSize );
-    distances[CellPosition::ENTER] = Visibility::calculateDistance( &posEnter, vp, cellSize );
-    distances[CellPosition::EXIT] = Visibility::calculateDistance( &posExit, vp, cellSize );
+    distances[CellPosition::CENTER] = Visibility::calculateDistance( row, col, point, cellSize );
+    distances[CellPosition::ENTER] = Visibility::calculateDistance( &posEnter, point, cellSize );
+    distances[CellPosition::EXIT] = Visibility::calculateDistance( &posExit, point, cellSize );
 
     double dRow = (double)row;
     double dCol = (double)col;
 
-    gradient[CellPosition::CENTER] =
-        Visibility::calculateGradient( vp, dRow, dCol, elevs[CellPosition::CENTER], distances[CellPosition::CENTER] );
+    gradient[CellPosition::CENTER] = Visibility::calculateGradient( point, dRow, dCol, elevs[CellPosition::CENTER],
+                                                                    distances[CellPosition::CENTER] );
     gradient[CellPosition::ENTER] =
-        Visibility::calculateGradient( vp, &posEnter, elevs[CellPosition::ENTER], distances[CellPosition::ENTER] );
+        Visibility::calculateGradient( point, &posEnter, elevs[CellPosition::ENTER], distances[CellPosition::ENTER] );
     gradient[CellPosition::EXIT] =
-        Visibility::calculateGradient( vp, &posExit, elevs[CellPosition::EXIT], distances[CellPosition::EXIT] );
+        Visibility::calculateGradient( point, &posExit, elevs[CellPosition::EXIT], distances[CellPosition::EXIT] );
 }
 
-double StatusNode::value( int position, ValueType valueType )
+double LoSNode::value( CellPosition position, ValueType valueType )
 {
     switch ( valueType )
     {
@@ -81,7 +83,7 @@ double StatusNode::value( int position, ValueType valueType )
     }
 }
 
-double StatusNode::valueAtAngle( const double &specificAngle, ValueType valueType )
+double LoSNode::valueAtAngle( const double &specificAngle, ValueType valueType )
 {
     if ( specificAngle == angle[CellPosition::CENTER] )
         return value( CellPosition::CENTER, valueType );
@@ -109,15 +111,15 @@ double StatusNode::valueAtAngle( const double &specificAngle, ValueType valueTyp
     }
 }
 
-double StatusNode::centreAngle() { return angle[CellPosition::CENTER]; }
+double LoSNode::centreAngle() { return angle[CellPosition::CENTER]; }
 
-double StatusNode::centreGradient() { return gradient[CellPosition::CENTER]; }
+double LoSNode::centreGradient() { return gradient[CellPosition::CENTER]; }
 
-double StatusNode::centreElevation() { return elevs[CellPosition::CENTER]; }
+double LoSNode::centreElevation() { return elevs[CellPosition::CENTER]; }
 
-double StatusNode::centreDistance() { return distances[CellPosition::CENTER]; }
+double LoSNode::centreDistance() { return distances[CellPosition::CENTER]; }
 
-bool StatusNode::operator==( const StatusNode &other )
+bool LoSNode::operator==( const LoSNode &other )
 {
     if ( row == other.row && col == other.col )
         return true;
@@ -125,7 +127,7 @@ bool StatusNode::operator==( const StatusNode &other )
         return false;
 }
 
-bool StatusNode::operator!=( const StatusNode &other )
+bool LoSNode::operator!=( const LoSNode &other )
 {
     if ( row == other.row && col == other.col )
         return false;
@@ -133,7 +135,7 @@ bool StatusNode::operator!=( const StatusNode &other )
         return true;
 }
 
-bool StatusNode::operator<( const StatusNode other )
+bool LoSNode::operator<( const LoSNode other )
 {
     return distances[CellPosition::CENTER] < other.distances[CellPosition::CENTER];
 }

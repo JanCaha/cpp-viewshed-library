@@ -1,33 +1,53 @@
 #include "points.h"
+#include "visibility.h"
 
-ViewPoint::ViewPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offset_, int rasterBand )
+using viewshed::IPoint;
+using viewshed::TargetPoint;
+using viewshed::ViewPoint;
+using viewshed::Visibility;
+
+void IPoint::setUp( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, int rasterBand )
 {
-    mValid = false;
-
     x = point.x();
     y = point.y();
 
-    std::shared_ptr<bool> ok = std::make_shared<bool>( true );
-    elevation = dem->dataProvider()->sample( QgsPointXY( point.x(), point.y() ), rasterBand, ok.get() );
-
-    if ( *ok == false )
-    {
-        return;
-    }
+    bool ok;
+    elevation = dem->dataProvider()->sample( QgsPointXY( point.x(), point.y() ), rasterBand, &ok );
 
     QgsPoint pointRaster =
         dem->dataProvider()->transformCoordinates( point, QgsRasterDataProvider::TransformType::TransformLayerToImage );
 
-    if ( pointRaster.isEmpty() )
-    {
-        return;
-    }
+    mValid = ok && !pointRaster.isEmpty();
 
     col = pointRaster.x();
     row = pointRaster.y();
-    offset = offset_;
+}
 
-    mValid = true;
+void IPoint::setUp( int row_, int col_, std::shared_ptr<QgsRasterLayer> dem, int rasterBand )
+{
+    row = row_;
+    col = col_;
+
+    QgsPoint pointRaster( col_, row_ );
+
+    QgsPoint point = dem->dataProvider()->transformCoordinates(
+        pointRaster, QgsRasterDataProvider::TransformType::TransformImageToLayer );
+
+    bool ok;
+    elevation = dem->dataProvider()->sample( QgsPointXY( point.x(), point.y() ), rasterBand, &ok );
+
+    mValid = ok;
+}
+
+double IPoint::totalElevation() { return elevation + offset; }
+
+bool IPoint::isValid() { return mValid; }
+
+ViewPoint::ViewPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offset_, int rasterBand )
+{
+    setUp( point, dem, rasterBand );
+
+    offset = offset_;
 }
 
 ViewPoint::ViewPoint( int row_, int col_, double elevation_, double offset_ )
@@ -39,6 +59,16 @@ ViewPoint::ViewPoint( int row_, int col_, double elevation_, double offset_ )
     mValid = true;
 }
 
-double ViewPoint::totalElevation() { return elevation + offset; }
+TargetPoint::TargetPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double cellSize_, double offset_,
+                          int rasterBand )
+{
+    setUp( point, dem, rasterBand );
 
-bool ViewPoint::isValid() { return mValid; }
+    offset = offset_;
+    cellSize = cellSize_;
+}
+
+double TargetPoint::distance( std::shared_ptr<IPoint> point )
+{
+    return Visibility::calculateDistance( row, col, point, cellSize );
+}

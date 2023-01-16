@@ -46,15 +46,21 @@ set(UTILS
 )
 
 set(STRUCTURES
-    src/structures/event.cpp
+    src/structures/cellevent.cpp
     src/structures/points.cpp
-    src/structures/position.cpp
-    src/structures/statusnode.cpp
+    src/structures/rasterposition.cpp
+    src/structures/losnode.cpp
+    src/structures/losimportantvalues.cpp
 )
 
 set(VISIBILITY
     src/visibility/visibility.cpp
     src/visibility/viewshed.cpp
+    src/visibility/iviewshed.cpp
+)
+
+set(THREAD_TASKS
+    src/thread_tasks/threadtasks.cpp
 )
 
 set(MINIMAL_QGIS_LIBS
@@ -67,18 +73,20 @@ set(MINIMAL_QGIS_LIBS
 
 set(PUBLIC_HEADERS
     include/viewshead/enums.h
-    include/viewshead/event.h
+    include/viewshead/cellevent.h
     include/viewshead/iviewshedalgorithm.h
     include/viewshead/losevaluator.h
     include/viewshead/memoryraster.h
     include/viewshead/points.h
-    include/viewshead/position.h
-    include/viewshead/statusnode.h
+    include/viewshead/rasterposition.h
+    include/viewshead/losnode.h
+    include/viewshead/losimportantvalues.h
     include/viewshead/viewshedangledifferencetoglobalhorizon.h
     include/viewshead/viewshedelevationdifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifferencetoglobalhorizon.h
     include/viewshead/viewshedangledifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifference.h
+    include/viewshead/iviewshed.h
     include/viewshead/viewshed.h
     include/viewshead/viewshedhorizons.h
     include/viewshead/viewshedviewangle.h
@@ -86,6 +94,7 @@ set(PUBLIC_HEADERS
     include/viewshead/visibility.h
     include/viewshead/viewshedvalues.h
     include/viewshead/utils.h
+    include/viewshead/threadtasks.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
 
@@ -95,6 +104,7 @@ add_library(${LIB_NAME} SHARED
     ${VISIBILITY_ALGS}
     ${VISIBILITY}
     ${UTILS}
+    ${THREAD_TASKS}
 
     # ${EXTERNAL_HEADERS}
 )
@@ -114,13 +124,19 @@ target_link_libraries(${LIB_NAME}
     bs_thread_pool
 )
 
-include(GNUInstallDirs)
+message(STATUS "${CMAKE_BUILD_TYPE}")
 
-install(TARGETS ${LIB_NAME}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/viewshed
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+IF(CMAKE_BUILD_TYPE MATCHES Release)
+    message(STATUS "Release mode will try install")
+
+    include(GNUInstallDirs)
+
+    install(TARGETS ${LIB_NAME}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/viewshed
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    )
+endif()
 
 include(Packing)
 

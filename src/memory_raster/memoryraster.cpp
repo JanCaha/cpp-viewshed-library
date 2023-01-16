@@ -4,6 +4,8 @@
 
 #include "memoryraster.h"
 
+using viewshed::MemoryRaster;
+
 MemoryRaster::MemoryRaster( std::shared_ptr<QgsRasterLayer> rasterTemplate, Qgis::DataType dataType,
                             double defaultValue )
 {

@@ -4,39 +4,38 @@
 #include <limits>
 
 #include "iviewshedalgorithm.h"
+#include "losimportantvalues.h"
+#include "losnode.h"
 #include "points.h"
-#include "statusnode.h"
 #include "viewshedvalues.h"
 
-class LoSEvaluator
+namespace viewshed
 {
-  public:
-    void calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs, std::vector<StatusNode> &statusNodes,
-                    std::shared_ptr<StatusNode> poi, std::shared_ptr<ViewPoint> vp );
-    void reset();
+    class LoSEvaluator
+    {
+      public:
+        LoSEvaluator( std::shared_ptr<std::vector<LoSNode>> los,
+                      std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs );
 
-    int size();
-    std::shared_ptr<IViewshedAlgorithm> algorithmAt( int i );
-    double resultAt( int i );
+        void calculate( std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> point );
 
-    double mMaxGradientBefore = -180;
-    double mMaxGradient = -180;
-    int mIndexPoi = 0;
-    int mIndexMaxGradientBefore = 0;
-    int mIndexMaxGradient = 0;
-    int mIndexHorizonBefore = 0;
-    int mIndexHorizon = 0;
-    int mCountHorizonBefore = 0;
-    int mCountHorizon = 0;
+        void reset();
 
-    bool mAlreadyParsed = false;
+        int size();
+        std::shared_ptr<IViewshedAlgorithm> algorithmAt( int i );
+        double resultAt( int i );
 
-    ViewshedValues mResultValues;
+        bool mAlreadyParsed = false;
 
-  private:
-    std::vector<std::shared_ptr<IViewshedAlgorithm>> mAlgs;
+        ViewshedValues mResultValues;
+        std::shared_ptr<LoSImportantValues> mLosValues = std::make_shared<LoSImportantValues>();
 
-    void parseNodes( std::vector<StatusNode> &statusNodes, std::shared_ptr<StatusNode> poi );
-};
+      private:
+        std::shared_ptr<std::vector<LoSNode>> mLos;
+        std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> mAlgs;
+
+        void parseNodes( std::shared_ptr<LoSNode> poi );
+    };
+} // namespace viewshed
 
 #endif

@@ -3,24 +3,27 @@
 
 #include "iviewshedalgorithm.h"
 
-class ViewshedElevationDifferenceToGlobalHorizon : public IViewshedAlgorithm
+namespace viewshed
 {
+    class ViewshedElevationDifferenceToGlobalHorizon : public IViewshedAlgorithm
+    {
 
-  public:
-    ViewshedElevationDifferenceToGlobalHorizon( bool all = false, double invisibleValue = -9999,
-                                                double differenceWithoutHorizon = 0 );
-    double result( LoSEvaluator *losevaluator, std::vector<StatusNode> &statusNodes, StatusNode &poi,
-                   std::shared_ptr<ViewPoint> vp ) override;
-    const double viewpointValue() override;
-    const double invisible() override;
-    const double completlyVisible() override;
-    const QString name() override;
-    void extractValues( StatusNode &sn, StatusNode &poi, int &position ) override;
+      public:
+        ViewshedElevationDifferenceToGlobalHorizon( bool all = false, double invisibleValue = -9999,
+                                                    double differenceWithoutHorizon = 0 );
 
-  private:
-    bool mAllPoints = false;
-    double mInvisibleValue;
-    double mDifferenceWithoutHorizon;
-};
+        double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<std::vector<LoSNode>> los,
+                       std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> vp ) override;
+        const double viewpointValue() override;
+        const double invisible() override;
+        const double completlyVisible() override;
+        const QString name() override;
+
+      private:
+        bool mAllPoints = false;
+        double mInvisibleValue;
+        double mDifferenceWithoutHorizon;
+    };
+} // namespace viewshed
 
 #endif
