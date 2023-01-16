@@ -9,14 +9,12 @@ using viewshed::IPoint;
 using viewshed::LoSEvaluator;
 using viewshed::LoSNode;
 using viewshed::MemoryRaster;
-using viewshed::SharedLoSNodeList;
 using viewshed::ViewPoint;
 using viewshed::Viewshed;
-using viewshed::ViewshedAlgorithms;
 using viewshed::ViewshedValues;
 
-Viewshed::Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem, ViewshedAlgorithms algs,
-                    double minimalAngle, double maximalAngle )
+Viewshed::Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem,
+                    std::vector<std::shared_ptr<IViewshedAlgorithm>> algs, double minimalAngle, double maximalAngle )
 {
     mValid = false;
 
@@ -82,13 +80,13 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
         }
     }
 
-    SharedLoSNodeList los;
+    std::shared_ptr<std::vector<LoSNode>> los;
     return los;
 }
 
-SharedLoSNodeList Viewshed::getLoS( LoSNode poi, bool onlyToPoi )
+std::shared_ptr<std::vector<LoSNode>> Viewshed::getLoS( LoSNode poi, bool onlyToPoi )
 {
-    SharedLoSNodeList losToReturn = std::make_shared<LoSNodeList>();
+    std::shared_ptr<std::vector<LoSNode>> losToReturn = std::make_shared<std::vector<LoSNode>>();
 
     for ( int j = 0; j < mLosNodes.size(); j++ )
     {
