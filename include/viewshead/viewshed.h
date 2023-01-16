@@ -24,7 +24,8 @@ namespace viewshed
     class Viewshed : public IViewshed
     {
       public:
-        Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem, ViewshedAlgorithms algs,
+        Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem,
+                  std::vector<std::shared_ptr<IViewshedAlgorithm>> algs,
                   double minimalAngle = std::numeric_limits<double>::quiet_NaN(),
                   double maximalAngle = std::numeric_limits<double>::quiet_NaN() );
 
@@ -33,10 +34,10 @@ namespace viewshed
             { qDebug() << QString::fromStdString( text ) << time; },
             std::function<void( int, int )> progressCallback = []( int, int ) {} );
 
-        SharedLoSNodeList LoSToPoint( QgsPoint point, bool onlyToPoint = false );
+        std::shared_ptr<std::vector<LoSNode>> LoSToPoint( QgsPoint point, bool onlyToPoint = false );
 
       private:
-        SharedLoSNodeList getLoS( LoSNode poi, bool onlyToPoi = false );
+        std::shared_ptr<std::vector<LoSNode>> getLoS( LoSNode poi, bool onlyToPoi = false );
     };
 
 } // namespace viewshed
