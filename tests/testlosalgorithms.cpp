@@ -28,9 +28,10 @@ class TestLosAlgorithms : public QObject
 
   private:
     std::vector<CellEvent> eventList;
-    std::shared_ptr<std::vector<LoSNode>> statusList = std::make_unique<std::vector<LoSNode>>();
+    std::shared_ptr<std::vector<LoSNode>> statusList = std::make_shared<std::vector<LoSNode>>();
     std::shared_ptr<ViewPoint> vp = std::make_shared<ViewPoint>( 0, 0, 0, 0.001 );
-    std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs;
+    std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs =
+        std::make_shared<std::vector<std::shared_ptr<IViewshedAlgorithm>>>();
 
   private slots:
 
