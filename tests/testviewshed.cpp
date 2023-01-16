@@ -23,7 +23,8 @@ class TestViewshed : public QObject
   private:
     std::shared_ptr<QgsRasterLayer> dem;
     std::shared_ptr<ViewPoint> vp;
-    std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs;
+    std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs =
+        std::make_shared<std::vector<std::shared_ptr<IViewshedAlgorithm>>>();
 
   private slots:
 
