@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.18.0)
 
-option(INSTALL_LIB "INSTALL_LIB" OFF)
-message(STATUS "Install library is set to ${INSTALL_LIB}.")
-
 project(viewshed VERSION 1.1.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 set(LIB_NAME viewshed)
@@ -53,6 +50,7 @@ set(STRUCTURES
     src/structures/points.cpp
     src/structures/rasterposition.cpp
     src/structures/losnode.cpp
+    src/structures/losimportantvalues.cpp
 )
 
 set(VISIBILITY
@@ -82,6 +80,7 @@ set(PUBLIC_HEADERS
     include/viewshead/points.h
     include/viewshead/rasterposition.h
     include/viewshead/losnode.h
+    include/viewshead/losimportantvalues.h
     include/viewshead/viewshedangledifferencetoglobalhorizon.h
     include/viewshead/viewshedelevationdifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifferencetoglobalhorizon.h
@@ -125,7 +124,11 @@ target_link_libraries(${LIB_NAME}
     bs_thread_pool
 )
 
-if(INSTALL_LIB)
+message(${CMAKE_BUILD_TYPE})
+
+IF(CMAKE_BUILD_TYPE MATCHES Release)
+    message(STATUS "Release mode will try install")
+
     include(GNUInstallDirs)
 
     install(TARGETS ${LIB_NAME}
