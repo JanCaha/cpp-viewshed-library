@@ -124,7 +124,7 @@ target_link_libraries(${LIB_NAME}
     bs_thread_pool
 )
 
-message(${CMAKE_BUILD_TYPE})
+message(STATUS "${CMAKE_BUILD_TYPE}")
 
 IF(CMAKE_BUILD_TYPE MATCHES Release)
     message(STATUS "Release mode will try install")
