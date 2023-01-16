@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.18.0)
 
+option(INSTALL_LIB "INSTALL_LIB" OFF)
+message(STATUS "Install library is set to ${INSTALL_LIB}.")
+
 project(viewshed VERSION 1.1.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 set(LIB_NAME viewshed)
@@ -48,7 +51,7 @@ set(UTILS
 set(STRUCTURES
     src/structures/cellevent.cpp
     src/structures/points.cpp
-    src/structures/position.cpp
+    src/structures/rasterposition.cpp
     src/structures/losnode.cpp
 )
 
@@ -122,13 +125,15 @@ target_link_libraries(${LIB_NAME}
     bs_thread_pool
 )
 
-include(GNUInstallDirs)
+if(INSTALL_LIB)
+    include(GNUInstallDirs)
 
-install(TARGETS ${LIB_NAME}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/viewshed
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+    install(TARGETS ${LIB_NAME}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/viewshed
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    )
+endif()
 
 include(Packing)
 
