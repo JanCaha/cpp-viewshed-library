@@ -16,7 +16,7 @@
 #include "losnode.h"
 #include "memoryraster.h"
 #include "points.h"
-#include "position.h"
+#include "rasterposition.h"
 #include "viewshedvalues.h"
 
 namespace viewshed

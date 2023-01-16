@@ -3,7 +3,7 @@
 
 #include "enums.h"
 #include "points.h"
-#include "position.h"
+#include "rasterposition.h"
 #include "losnode.h"
 #include "viewshed.h"
 

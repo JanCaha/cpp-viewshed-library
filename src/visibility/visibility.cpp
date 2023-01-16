@@ -2,10 +2,10 @@
 
 #include "visibility.h"
 
-using viewshed::Position;
+using viewshed::RasterPosition;
 using viewshed::Visibility;
 
-double Visibility::calculateAngle( Position *pos, std::shared_ptr<IPoint> point )
+double Visibility::calculateAngle( RasterPosition *pos, std::shared_ptr<IPoint> point )
 {
     return calculateAngle( pos->row, pos->col, point );
 }
@@ -57,7 +57,7 @@ double Visibility::calculateAngle( double row, double column, std::shared_ptr<IP
     return 0;
 }
 
-double Visibility::calculateDistance( Position *pos, std::shared_ptr<IPoint> point, double &cellSize )
+double Visibility::calculateDistance( RasterPosition *pos, std::shared_ptr<IPoint> point, double &cellSize )
 {
     return calculateDistance( pos->row, pos->col, point, cellSize );
 }
@@ -74,7 +74,7 @@ double Visibility::calculateDistance( int &row, int &column, std::shared_ptr<IPo
     return calculateDistance( r, c, point, cellSize );
 }
 
-double Visibility::calculateGradient( std::shared_ptr<IPoint> point, Position *pos, double elevation, double &distance )
+double Visibility::calculateGradient( std::shared_ptr<IPoint> point, RasterPosition *pos, double elevation, double &distance )
 {
     return calculateGradient( point, pos->row, pos->col, elevation, distance );
 }
@@ -93,7 +93,7 @@ double Visibility::calculateGradient( std::shared_ptr<IPoint> point, double &row
     return atan( elevationDifference / distance ) * ( 180 / M_PI );
 }
 
-Position Visibility::calculateEventPosition( CellPosition eventType, int row, int col, std::shared_ptr<IPoint> point )
+RasterPosition Visibility::calculateEventPosition( CellPosition eventType, int row, int col, std::shared_ptr<IPoint> point )
 {
 
     double rRow, rCol;
@@ -238,5 +238,5 @@ Position Visibility::calculateEventPosition( CellPosition eventType, int row, in
         rRow = row;
     }
 
-    return Position( rRow, rCol );
+    return RasterPosition( rRow, rCol );
 }

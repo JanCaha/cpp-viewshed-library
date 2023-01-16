@@ -10,7 +10,7 @@
 #include "iviewshedalgorithm.h"
 #include "losnode.h"
 #include "memoryraster.h"
-#include "position.h"
+#include "rasterposition.h"
 #include "viewshedvalues.h"
 
 namespace viewshed
@@ -68,7 +68,7 @@ namespace viewshed
 
         std::vector<std::shared_ptr<MemoryRaster>> mResults;
 
-        double getCornerValue( const Position &pos, const std::unique_ptr<QgsRasterBlock> &block, double defaultValue );
+        double getCornerValue( const RasterPosition &pos, const std::unique_ptr<QgsRasterBlock> &block, double defaultValue );
     };
 
 } // namespace viewshed

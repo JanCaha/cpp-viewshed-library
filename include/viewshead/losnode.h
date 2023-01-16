@@ -24,7 +24,7 @@ namespace viewshed
         bool operator<( const LoSNode other );
 
         double valueAtAngle( const double &angle, ValueType valueType = ValueType::Gradient );
-        double value( int position, ValueType valueType = ValueType::Gradient );
+        double value( CellPosition position, ValueType valueType = ValueType::Gradient );
         double centreAngle();
         double centreGradient();
         double centreElevation();

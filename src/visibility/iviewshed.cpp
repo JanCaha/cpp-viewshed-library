@@ -49,10 +49,10 @@ void IViewshed::initEventList()
 
                     double elevs[3];
                     elevs[CellPosition::CENTER] = pixelValue;
-                    Position tempPosEnter =
+                    RasterPosition tempPosEnter =
                         Visibility::calculateEventPosition( CellPosition::ENTER, row, column, mPoint );
                     elevs[CellPosition::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
-                    Position tempPosExit =
+                    RasterPosition tempPosExit =
                         Visibility::calculateEventPosition( CellPosition::EXIT, row, column, mPoint );
                     elevs[CellPosition::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
 
@@ -272,7 +272,7 @@ void IViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_
     result.save( fileName );
 }
 
-double IViewshed::getCornerValue( const Position &pos, const std::unique_ptr<QgsRasterBlock> &block,
+double IViewshed::getCornerValue( const RasterPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
                                   double defaultValue )
 {
 

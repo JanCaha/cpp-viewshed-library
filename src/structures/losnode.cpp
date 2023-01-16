@@ -28,7 +28,7 @@ LoSNode::LoSNode( std::shared_ptr<IPoint> point, CellEvent *e, double &cellSize 
 
     angle[CellPosition::CENTER] = Visibility::calculateAngle( row, col, point );
 
-    Position posEnter = Visibility::calculateEventPosition( CellPosition::ENTER, e->row, e->col, point );
+    RasterPosition posEnter = Visibility::calculateEventPosition( CellPosition::ENTER, e->row, e->col, point );
     double angleEnter = Visibility::calculateAngle( &posEnter, point );
 
     if ( angleEnter > angle[CellPosition::CENTER] )
@@ -38,7 +38,7 @@ LoSNode::LoSNode( std::shared_ptr<IPoint> point, CellEvent *e, double &cellSize 
 
     angle[CellPosition::ENTER] = angleEnter;
 
-    Position posExit = Visibility::calculateEventPosition( CellPosition::EXIT, e->row, e->col, point );
+    RasterPosition posExit = Visibility::calculateEventPosition( CellPosition::EXIT, e->row, e->col, point );
     angle[CellPosition::EXIT] = Visibility::calculateAngle( &posExit, point );
 
     distances[CellPosition::CENTER] = Visibility::calculateDistance( row, col, point, cellSize );
@@ -56,7 +56,7 @@ LoSNode::LoSNode( std::shared_ptr<IPoint> point, CellEvent *e, double &cellSize 
         Visibility::calculateGradient( point, &posExit, elevs[CellPosition::EXIT], distances[CellPosition::EXIT] );
 }
 
-double LoSNode::value( int position, ValueType valueType )
+double LoSNode::value( CellPosition position, ValueType valueType )
 {
     switch ( valueType )
     {
