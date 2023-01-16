@@ -1,4 +1,8 @@
 sudo apt purge -y viewshed
+cd build
+cmake -DINSTALL_LIB=ON .. 
+cd ..
+
 sudo /usr/bin/cmake --build /home/cahik/Codes/C++/ViewshedLibrary/build --config Release # --target install --
 cd build
 cpack -G DEB
