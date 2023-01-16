@@ -45,7 +45,6 @@ class TestViewshed : public QObject
         Viewshed v( vp, dem, algs );
         v.initEventList();
         v.sortEventList();
-        v.prefillStatusList();
 
         LoSNode poi = v.statusNodeFromPoint( poiPoint );
 
@@ -58,7 +57,7 @@ class TestViewshed : public QObject
         std::vector<std::pair<double, double>> data = Utils::distanceElevation( los, poi );
         QVERIFY( data.size() == 71 );
 
-        Utils::saveToCsv( data, TEST_DATA_LOS );
+        Utils::saveToCsv( data, vp, TEST_DATA_LOS );
     }
 
     void test()
