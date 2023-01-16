@@ -14,8 +14,10 @@ namespace viewshed
     class LoSEvaluator
     {
       public:
-        void calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs, std::vector<LoSNode> &statusNodes,
-                        std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> point );
+        LoSEvaluator( std::shared_ptr<std::vector<LoSNode>> los,
+                      std::vector<std::shared_ptr<IViewshedAlgorithm>> algs );
+
+        void calculate( std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> point );
 
         void reset();
 
@@ -29,9 +31,10 @@ namespace viewshed
         std::shared_ptr<LoSImportantValues> mLosValues = std::make_shared<LoSImportantValues>();
 
       private:
+        std::shared_ptr<std::vector<LoSNode>> mLos;
         std::vector<std::shared_ptr<IViewshedAlgorithm>> mAlgs;
 
-        void parseNodes( std::vector<LoSNode> &statusNodes, std::shared_ptr<LoSNode> poi );
+        void parseNodes( std::shared_ptr<LoSNode> poi );
     };
 } // namespace viewshed
 

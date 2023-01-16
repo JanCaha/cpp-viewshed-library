@@ -4,19 +4,25 @@
 using viewshed::IViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 
+LoSEvaluator::LoSEvaluator( std::shared_ptr<std::vector<LoSNode>> los,
+                            std::vector<std::shared_ptr<IViewshedAlgorithm>> algs )
+    : mLos( los ), mAlgs( algs )
+{
+}
+
 int LoSEvaluator::size() { return mAlgs.size(); }
 
 std::shared_ptr<IViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { return mAlgs.at( i ); }
 
-void LoSEvaluator::parseNodes( std::vector<LoSNode> &statusNodes, std::shared_ptr<LoSNode> poi )
+void LoSEvaluator::parseNodes( std::shared_ptr<LoSNode> poi )
 {
     LoSNode ln;
     LoSNode lnNext;
     double snGradient;
 
-    for ( int i = 0; i < statusNodes.size(); i++ )
+    for ( int i = 0; i < mLos->size(); i++ )
     {
-        ln = statusNodes.at( i );
+        ln = mLos->at( i );
 
         if ( ln == *poi.get() )
         {
@@ -25,9 +31,9 @@ void LoSEvaluator::parseNodes( std::vector<LoSNode> &statusNodes, std::shared_pt
 
         snGradient = ln.valueAtAngle( poi->centreAngle(), ValueType::Gradient );
 
-        if ( i + 1 < statusNodes.size() )
+        if ( i + 1 < mLos->size() )
         {
-            lnNext = statusNodes.at( i + 1 );
+            lnNext = mLos->at( i + 1 );
 
             if ( lnNext.centreDistance() <= poi->centreDistance() )
             {
@@ -65,22 +71,19 @@ void LoSEvaluator::parseNodes( std::vector<LoSNode> &statusNodes, std::shared_pt
     mAlreadyParsed = true;
 }
 
-void LoSEvaluator::calculate( std::vector<std::shared_ptr<IViewshedAlgorithm>> algs, std::vector<LoSNode> &statusNodes,
-                              std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> point )
+void LoSEvaluator::calculate( std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> point )
 {
-
-    mAlgs = algs;
 
     if ( mAlreadyParsed )
         reset();
 
-    parseNodes( statusNodes, poi );
+    parseNodes( poi );
 
     mResultValues = ViewshedValues( poi->row, poi->col );
 
     for ( int i = 0; i < mAlgs.size(); i++ )
     {
-        mResultValues.values.push_back( mAlgs.at( i )->result( mLosValues, statusNodes, *poi.get(), point ) );
+        mResultValues.values.push_back( mAlgs.at( i )->result( mLosValues, mLos, poi, point ) );
     }
 }
 
