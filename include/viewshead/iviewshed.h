@@ -7,18 +7,15 @@
 #include "BS_thread_pool.hpp"
 
 #include "cellevent.h"
+#include "iviewshedalgorithm.h"
 #include "losnode.h"
 #include "memoryraster.h"
 #include "rasterposition.h"
+
 #include "viewshedvalues.h"
 
 namespace viewshed
 {
-    typedef std::vector<CellEvent> CellEventList;
-    typedef std::vector<LoSNode> LoSNodeList;
-    typedef std::shared_ptr<std::vector<LoSNode>> SharedLoSNodeList;
-    typedef std::vector<std::shared_ptr<IViewshedAlgorithm>> ViewshedAlgorithms;
-
     class IViewshed
     {
       public:
@@ -43,11 +40,11 @@ namespace viewshed
         LoSNode statusNodeFromPoint( QgsPoint point );
 
       protected:
-        LoSNodeList mLosNodes;
-        CellEventList mCellEvents;
+        std::vector<LoSNode> mLosNodes;
+        std::vector<CellEvent> mCellEvents;
         std::shared_ptr<QgsRasterLayer> mInputDem;
         std::shared_ptr<IPoint> mPoint;
-        ViewshedAlgorithms mAlgs;
+        std::vector<std::shared_ptr<IViewshedAlgorithm>> mAlgs;
         Qgis::DataType mDataType = Qgis::DataType::Float64;
         int mDefaultBand = 1;
 
