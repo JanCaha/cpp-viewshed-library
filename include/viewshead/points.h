@@ -7,14 +7,27 @@
 namespace viewshed
 {
 
-    class IPoint
+    class RasterPosition
     {
       public:
+        RasterPosition(){};
+
         int row, col;
+    };
+
+    class Point : public RasterPosition
+    {
+      public:
+        Point();
+        Point( int row_, int col_, double elevation_, double offset_, double cellSize_ );
+        Point( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offsetAtPoint = 1.6, int rasterBand = 1 );
+
         double x, y;
         double elevation, offset;
+        double cellSize;
 
         double totalElevation();
+        double distance( std::shared_ptr<Point> point );
         bool isValid();
 
       protected:
@@ -22,24 +35,6 @@ namespace viewshed
 
         void setUp( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, int rasterBand = 1 );
         void setUp( int row_, int col_, std::shared_ptr<QgsRasterLayer> dem, int rasterBand = 1 );
-    };
-
-    class ViewPoint : public IPoint
-    {
-      public:
-        ViewPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offset = 1.6, int rasterBand = 1 );
-        ViewPoint( int row_, int col_, double elevation_, double offset_ );
-    };
-
-    class TargetPoint : public IPoint
-    {
-      public:
-        TargetPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double cellSize_, double offset_ = 0,
-                     int rasterBand = 1 );
-        double distance( std::shared_ptr<IPoint> point );
-
-      private:
-        double cellSize;
     };
 
 } // namespace viewshed

@@ -1,0 +1,86 @@
+#ifndef VIEWSHEDLIB_LOS_H
+#define VIEWSHEDLIB_LOS_H
+
+#include "cellevent.h"
+#include "enums.h"
+#include "losnode.h"
+#include "points.h"
+#include "visibility.h"
+
+using viewshed::CellEvent;
+using viewshed::LoSNode;
+using viewshed::Point;
+using viewshed::ValueType;
+
+// using viewshed::Visibility;
+
+namespace viewshed
+{
+
+    class ILoS
+    {
+      public:
+        virtual double gradient( int i ) = 0;
+        virtual double distance( int i ) = 0;
+        virtual bool isValid() = 0;
+
+        void setViewPoint( std::shared_ptr<Point> vp );
+
+        void setViewPoint( std::shared_ptr<LoSNode> poi, double observerOffset = 0 );
+
+        void setTargetPoint( std::shared_ptr<Point> tp );
+
+        void setTargetPoint( std::shared_ptr<LoSNode> poi, double targetOffset = 0 );
+
+        void setAngle( double angle );
+
+        double horizontalAngle();
+        double targetDistance();
+        double targetGradient();
+        double targetElevation();
+
+        std::shared_ptr<Point> vp();
+
+        int targetRow();
+        int targetCol();
+
+      protected:
+        ILoS();
+        double mAngleHorizontal;
+        double mPointDistance;
+        std::shared_ptr<Point> mVp = std::make_shared<Point>();
+        std::shared_ptr<Point> mTp = std::make_shared<Point>();
+    };
+
+    class LoS : public std::vector<LoSNode>, public ILoS
+    {
+      public:
+        void setLoSNodes( std::vector<LoSNode> losNodes );
+
+        double gradient( int i ) override;
+
+        double distance( int i ) override;
+
+        bool isValid() override;
+
+        void setTargetPoint( std::shared_ptr<LoSNode> poi, double targetOffset = 0 );
+
+        int targetPointIndex();
+
+      private:
+        int mTargetIndex;
+    };
+
+    class InverseLoS : public LoS
+    {
+      public:
+        InverseLoS( std::shared_ptr<Point> vp, std::shared_ptr<Point> tp );
+
+        double distance( int i ) override;
+
+        double gradient( int i ) override;
+    };
+
+} // namespace viewshed
+
+#endif

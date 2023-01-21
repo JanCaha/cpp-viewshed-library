@@ -22,7 +22,7 @@ class TestViewshed : public QObject
 
   private:
     std::shared_ptr<QgsRasterLayer> dem;
-    std::shared_ptr<ViewPoint> vp;
+    std::shared_ptr<Point> vp;
     std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs =
         std::make_shared<std::vector<std::shared_ptr<IViewshedAlgorithm>>>();
 
@@ -31,7 +31,7 @@ class TestViewshed : public QObject
     void initTestCase()
     {
         dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM, "dsm", "gdal" );
-        vp = std::make_shared<ViewPoint>( QgsPoint( -336364.021, -1189108.615 ), dem );
+        vp = std::make_shared<Point>( QgsPoint( -336364.021, -1189108.615 ), dem );
         algs->push_back( std::make_shared<ViewshedVisibility>() );
         algs->push_back( std::make_shared<ViewshedHorizons>() );
         algs->push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( true ) );

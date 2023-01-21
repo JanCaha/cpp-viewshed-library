@@ -11,7 +11,7 @@ namespace viewshed
         Gradient
     };
 
-    enum CellPosition
+    enum CellEventPositionType
     {
         ENTER = 0,
         CENTER = 1,

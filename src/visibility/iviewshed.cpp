@@ -48,19 +48,18 @@ void IViewshed::initEventList()
                     int row = blockRow + iterTop;
 
                     double elevs[3];
-                    elevs[CellPosition::CENTER] = pixelValue;
-                    RasterPosition tempPosEnter =
-                        Visibility::calculateEventPosition( CellPosition::ENTER, row, column, mPoint );
-                    elevs[CellPosition::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
-                    RasterPosition tempPosExit =
-                        Visibility::calculateEventPosition( CellPosition::EXIT, row, column, mPoint );
-                    elevs[CellPosition::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
+                    elevs[CellEventPositionType::CENTER] = pixelValue;
+                    CellEventPosition tempPosEnter =
+                        Visibility::calculateEventPosition( CellEventPositionType::ENTER, row, column, mPoint );
+                    elevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
+                    CellEventPosition tempPosExit =
+                        Visibility::calculateEventPosition( CellEventPositionType::EXIT, row, column, mPoint );
+                    elevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
 
                     double angleCenter = Visibility::calculateAngle( row, column, mPoint );
                     double angleEnter = Visibility::calculateAngle( &tempPosEnter, mPoint );
                     double angleExit = Visibility::calculateAngle( &tempPosExit, mPoint );
 
-                    // ??? probably not necessary here ???
                     if ( angleEnter > angleCenter )
                     {
                         angleEnter -= 2 * M_PI;
@@ -68,20 +67,36 @@ void IViewshed::initEventList()
 
                     double eventDistance = Visibility::calculateDistance( row, column, mPoint, mCellSize );
 
-                    if ( eventDistance < mMaxDistance && checkInsideAngle( angleEnter, angleExit ) )
+                    if ( eventDistance < mMaxDistance && isInsideAngles( angleEnter, angleExit ) )
                     {
                         CellEvent eCenter =
-                            CellEvent( CellPosition::CENTER, row, column, eventDistance, angleCenter, elevs );
-                        CellEvent eEnter = CellEvent( CellPosition::ENTER, row, column,
+                            CellEvent( CellEventPositionType::CENTER, row, column, eventDistance, angleCenter, elevs );
+                        CellEvent eEnter = CellEvent( CellEventPositionType::ENTER, row, column,
                                                       Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
                                                       angleEnter, elevs );
-                        CellEvent eExit = CellEvent( CellPosition::EXIT, row, column,
+                        CellEvent eExit = CellEvent( CellEventPositionType::EXIT, row, column,
                                                      Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ),
                                                      angleExit, elevs );
+
+                        // Target or ViewPoint are not part CellEvents - handled separately
+                        if ( mPoint->row == row && mPoint->col == column )
+                        {
+                            mLosNodePoint = LoSNode( mPoint, &eCenter, mCellSize );
+                            continue;
+                        }
 
                         mCellEvents.push_back( eEnter );
                         mCellEvents.push_back( eCenter );
                         mCellEvents.push_back( eExit );
+
+                        if ( mPoint->row == row && mPoint->col < column )
+                        {
+                            CellEvent eEnter2 =
+                                CellEvent( CellEventPositionType::ENTER, row, column,
+                                           Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
+                                           angleEnter + ( 2 * M_PI ), elevs );
+                            mCellEvents.push_back( eEnter2 );
+                        }
                     }
                 }
             }
@@ -96,47 +111,57 @@ void IViewshed::setAngles( double minAngle, double maxAngle )
     if ( !std::isnan( minAngle ) )
     {
         mMinAngle = minAngle * ( M_PI / 180 );
+
+        if ( mMinAngle < -M_PI )
+        {
+            mMinAngle = -M_PI;
+        }
     }
 
     if ( !std::isnan( maxAngle ) )
     {
         mMaxAngle = maxAngle * ( M_PI / 180 );
-    }
 
-    if ( mMinAngle > mMaxAngle )
-    {
-        mMinAngle = -360.0;
-        mMaxAngle = 720.0;
-    }
-
-    if ( mMinAngle < -360 )
-    {
-        mMinAngle = -360.0;
-    }
-
-    if ( 720 < mMaxAngle )
-    {
-        mMaxAngle = 720.0;
-    }
-}
-
-bool IViewshed::checkInsideAngle( double eventEnterAngle, double eventExitAngle )
-{
-
-    if ( mMinAngle <= eventEnterAngle && eventExitAngle <= mMaxAngle )
-    {
-        return true;
-    }
-
-    if ( mMinAngle < 0 )
-    {
-        if ( mMinAngle <= ( eventEnterAngle - 2 * M_PI ) && ( eventExitAngle - 2 * M_PI ) <= mMaxAngle )
+        if ( M_2_PI < mMaxAngle )
         {
-            return true;
+            mMaxAngle = M_2_PI;
         }
     }
 
-    return false;
+    if ( !std::isnan( mMinAngle ) && !std::isnan( mMaxAngle ) )
+    {
+        if ( mMinAngle > mMaxAngle )
+        {
+            mMinAngle = std::numeric_limits<double>::quiet_NaN();
+            mMaxAngle = std::numeric_limits<double>::quiet_NaN();
+        }
+    }
+}
+
+bool IViewshed::validAngles() { return !( std::isnan( mMinAngle ) || std::isnan( mMaxAngle ) ); }
+
+bool IViewshed::isInsideAngles( double eventEnterAngle, double eventExitAngle )
+{
+    if ( validAngles() )
+    {
+        if ( ( mMinAngle <= eventExitAngle && eventExitAngle <= mMaxAngle ) ||
+             ( mMinAngle <= eventEnterAngle && eventEnterAngle <= mMaxAngle ) )
+        {
+            return true;
+        }
+
+        if ( mMinAngle < 0 && M_PI < eventEnterAngle )
+        {
+            if ( mMinAngle <= ( eventExitAngle - 2 * M_PI ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    return true;
 }
 
 void IViewshed::sortEventList() { std::sort( mCellEvents.begin(), mCellEvents.end() ); }
@@ -155,7 +180,7 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
         LoSNode ln;
         switch ( e.eventType )
         {
-            case CellPosition::ENTER:
+            case CellEventPositionType::ENTER:
             {
                 if ( mPoint->row == e.row && mPoint->col == e.col )
                 {
@@ -166,7 +191,7 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
                 mLosNodes.push_back( ln );
                 break;
             }
-            case CellPosition::EXIT:
+            case CellEventPositionType::EXIT:
             {
                 if ( mPoint->row == e.row && mPoint->col == e.col )
                 {
@@ -182,13 +207,10 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
                 }
                 break;
             }
-            case CellPosition::CENTER:
+            case CellEventPositionType::CENTER:
             {
-                std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint, &e, mCellSize );
-                std::shared_ptr<std::vector<LoSNode>> los =
-                    std::make_shared<std::vector<LoSNode>>( mLosNodes.begin(), mLosNodes.end() );
 
-                mResultPixels.push_back( mThreadPool.submit( viewshed::evaluateLoSForPoI, mAlgs, los, poi, mPoint ) );
+                submitToThreadpool( e );
 
                 break;
             }
@@ -240,7 +262,7 @@ void IViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_
     int i = 0;
     for ( CellEvent event : mCellEvents )
     {
-        if ( event.eventType == CellPosition::CENTER )
+        if ( event.eventType == CellEventPositionType::CENTER )
         {
             LoSNode ln( mPoint, &event, mCellSize );
             result.setValue( func( ln ), ln.col, ln.row );
@@ -251,7 +273,7 @@ void IViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_
     result.save( fileName );
 }
 
-double IViewshed::getCornerValue( const RasterPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
+double IViewshed::getCornerValue( const CellEventPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
                                   double defaultValue )
 {
 
@@ -287,13 +309,32 @@ double IViewshed::getCornerValue( const RasterPosition &pos, const std::unique_p
 
 std::shared_ptr<MemoryRaster> IViewshed::resultRaster( int index ) { return mResults.at( index ); }
 
-void IViewshed::saveResults( QString location )
+void IViewshed::saveResults( QString location, QString fileNamePrefix )
 {
     for ( int i = 0; i < mAlgs->size(); i++ )
     {
-        QString file = QString( "%1/%2.tif" ).arg( location ).arg( mAlgs->at( i )->name() );
-        mResults.at( i )->save( file );
+        QString filePath = QString( "%1/%2" );
+
+        QString fileName;
+
+        if ( fileNamePrefix.isEmpty() )
+        {
+            fileName = QString( "%1.tif" ).arg( mAlgs->at( i )->name() );
+        }
+        else
+        {
+            fileName = QString( "%1 %2.tif" ).arg( fileNamePrefix, mAlgs->at( i )->name() );
+        }
+        mResults.at( i )->save( filePath.arg( location, fileName ) );
     }
+}
+
+QgsPoint IViewshed::point( int row, int col )
+{
+    QgsPoint p = mInputDem->dataProvider()->transformCoordinates(
+        QgsPoint( col + 0.5, row + 0.5 ), QgsRasterDataProvider::TransformType::TransformImageToLayer );
+
+    return p;
 }
 
 LoSNode IViewshed::statusNodeFromPoint( QgsPoint point )
@@ -308,7 +349,7 @@ LoSNode IViewshed::statusNodeFromPoint( QgsPoint point )
 
     for ( CellEvent e : mCellEvents )
     {
-        if ( e.eventType == CellPosition::CENTER && e.col == col && e.row == row )
+        if ( e.eventType == CellEventPositionType::CENTER && e.col == col && e.row == row )
         {
             ln = LoSNode( mPoint, &e, mCellSize );
             return ln;

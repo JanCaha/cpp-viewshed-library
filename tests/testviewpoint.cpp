@@ -7,7 +7,7 @@
 
 #include "points.h"
 
-using viewshed::ViewPoint;
+using viewshed::Point;
 
 class TestViewpoint : public QObject
 {
@@ -22,7 +22,7 @@ class TestViewpoint : public QObject
 
     void constructOk()
     {
-        ViewPoint vp( QgsPoint( -336404.98, -1189162.66 ), dem, 1.6 );
+        Point vp( QgsPoint( -336404.98, -1189162.66 ), dem, 1.6 );
         QVERIFY( vp.isValid() );
         QVERIFY( vp.x == -336404.98 );
         QVERIFY( vp.y == -1189162.66 );
@@ -35,7 +35,7 @@ class TestViewpoint : public QObject
 
     void constructOutside()
     {
-        ViewPoint vp( QgsPoint( -336699.62, -1189319.20 ), dem, 1.6 );
+        Point vp( QgsPoint( -336699.62, -1189319.20 ), dem, 1.6 );
         QVERIFY( vp.isValid() == false );
     }
 };

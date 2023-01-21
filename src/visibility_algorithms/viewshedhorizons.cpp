@@ -4,19 +4,17 @@
 
 using viewshed::ViewshedHorizons;
 
-double ViewshedHorizons::result( std::shared_ptr<LoSImportantValues> losValues,
-                                 std::shared_ptr<std::vector<LoSNode>> los, std::shared_ptr<LoSNode> poi,
-                                 std::shared_ptr<IPoint> vp )
+double ViewshedHorizons::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<LoS> los )
 {
 
     bool isHorizon = false;
 
-    if ( losValues->mIndexPoi + 1 < los->size() && losValues->mMaxGradientBefore < poi->centreGradient() )
+    if ( losValues->mIndexPoi + 1 < los->size() && losValues->mMaxGradientBefore < los->targetGradient() )
     {
         double gradientBehind =
-            los->at( losValues->mIndexPoi + 1 ).valueAtAngle( poi->centreAngle(), ValueType::Gradient );
+            los->at( losValues->mIndexPoi + 1 ).valueAtAngle( los->horizontalAngle(), ValueType::Gradient );
 
-        if ( gradientBehind < poi->centreGradient() )
+        if ( gradientBehind < los->targetGradient() )
         {
             return completlyVisible();
         }

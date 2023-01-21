@@ -35,7 +35,6 @@ set(VISIBILITY_ALGS
     src/visibility_algorithms/viewshedelevationdifferencetoglobalhorizon.cpp
     src/visibility_algorithms/viewshedangledifferencetolocalhorizon.cpp
     src/visibility_algorithms/viewshedangledifferencetoglobalhorizon.cpp
-    src/visibility_algorithms/losevaluator.cpp
 )
 
 set(MEMORY_RASTER
@@ -48,7 +47,7 @@ set(UTILS
 set(STRUCTURES
     src/structures/cellevent.cpp
     src/structures/points.cpp
-    src/structures/rasterposition.cpp
+    src/structures/celleventposition.cpp
     src/structures/losnode.cpp
     src/structures/losimportantvalues.cpp
 )
@@ -61,6 +60,11 @@ set(VISIBILITY
 
 set(THREAD_TASKS
     src/thread_tasks/threadtasks.cpp
+)
+
+set(LOS
+    src/los/los.cpp
+    src/los/losevaluator.cpp
 )
 
 set(MINIMAL_QGIS_LIBS
@@ -78,7 +82,8 @@ set(PUBLIC_HEADERS
     include/viewshead/losevaluator.h
     include/viewshead/memoryraster.h
     include/viewshead/points.h
-    include/viewshead/rasterposition.h
+    include/viewshead/celleventposition.h
+    include/viewshead/los.h
     include/viewshead/losnode.h
     include/viewshead/losimportantvalues.h
     include/viewshead/viewshedangledifferencetoglobalhorizon.h
@@ -95,6 +100,7 @@ set(PUBLIC_HEADERS
     include/viewshead/viewshedvalues.h
     include/viewshead/utils.h
     include/viewshead/threadtasks.h
+    include/viewshead/los.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
 
@@ -105,6 +111,7 @@ add_library(${LIB_NAME} SHARED
     ${VISIBILITY}
     ${UTILS}
     ${THREAD_TASKS}
+    ${LOS}
 
     # ${EXTERNAL_HEADERS}
 )

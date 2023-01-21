@@ -11,8 +11,7 @@ ViewshedElevationDifferenceToGlobalHorizon::ViewshedElevationDifferenceToGlobalH
 }
 
 double ViewshedElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
-                                                           std::shared_ptr<std::vector<LoSNode>> los,
-                                                           std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> vp )
+                                                           std::shared_ptr<LoS> los )
 {
     double change;
     double difference;
@@ -22,10 +21,10 @@ double ViewshedElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSIm
 
     if ( losValues->mIndexHorizonBefore != 0 )
     {
-        distance = poi->centreDistance() - horizon.valueAtAngle( poi->centreAngle(), ValueType::Distance );
+        distance = los->targetDistance() - horizon.valueAtAngle( los->horizontalAngle(), ValueType::Distance );
         change = std::tan( ( M_PI / 180 ) * losValues->mMaxGradient ) * distance;
         difference =
-            poi->centreElevation() - ( horizon.valueAtAngle( poi->centreAngle(), ValueType::Elevation ) + change );
+            los->targetElevation() - ( horizon.valueAtAngle( los->horizontalAngle(), ValueType::Elevation ) + change );
     }
     else
     {
@@ -38,7 +37,7 @@ double ViewshedElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSIm
     }
     else
     {
-        if ( poi->centreGradient() < losValues->mMaxGradientBefore )
+        if ( los->targetGradient() < losValues->mMaxGradientBefore )
             return invisible();
         else
             return difference;

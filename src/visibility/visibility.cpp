@@ -2,15 +2,21 @@
 
 #include "visibility.h"
 
+using viewshed::CellEventPosition;
 using viewshed::RasterPosition;
 using viewshed::Visibility;
 
-double Visibility::calculateAngle( RasterPosition *pos, std::shared_ptr<IPoint> point )
+double Visibility::calculateAngle( RasterPosition *pos, std::shared_ptr<Point> point )
+{
+    return calculateAngle( (double)pos->row, (double)pos->col, point );
+}
+
+double Visibility::calculateAngle( CellEventPosition *pos, std::shared_ptr<Point> point )
 {
     return calculateAngle( pos->row, pos->col, point );
 }
 
-double Visibility::calculateAngle( double row, double column, std::shared_ptr<IPoint> point )
+double Visibility::calculateAngle( double row, double column, std::shared_ptr<Point> point )
 {
     double angle = atan( fabs( row - point->row ) / fabs( column - point->col ) );
 
@@ -57,34 +63,36 @@ double Visibility::calculateAngle( double row, double column, std::shared_ptr<IP
     return 0;
 }
 
-double Visibility::calculateDistance( RasterPosition *pos, std::shared_ptr<IPoint> point, double &cellSize )
+double Visibility::calculateDistance( const double &x1, const double &y1, const double &x2, const double &y2,
+                                      double &cellSize )
 {
-    return calculateDistance( pos->row, pos->col, point, cellSize );
+    return sqrt( pow( x1 - x2, 2 ) + pow( y1 - y2, 2 ) ) * cellSize;
 }
 
-double Visibility::calculateDistance( double &row, double &column, std::shared_ptr<IPoint> point, double &cellSize )
+double Visibility::calculateDistance( CellEventPosition *pos, std::shared_ptr<Point> point, double &cellSize )
 {
-    return sqrt( pow( row - point->row, 2 ) + pow( column - point->col, 2 ) ) * cellSize;
+    return calculateDistance( pos->col, pos->row, point->col, point->row, cellSize );
 }
 
-double Visibility::calculateDistance( int &row, int &column, std::shared_ptr<IPoint> point, double &cellSize )
+double Visibility::calculateDistance( double &row, double &column, std::shared_ptr<Point> point, double &cellSize )
+{
+    return calculateDistance( column, row, point->col, point->row, cellSize );
+}
+
+double Visibility::calculateDistance( std::shared_ptr<Point> point1, std::shared_ptr<Point> point2, double &cellSize )
+{
+    return calculateDistance( point1->col, point1->row, point2->col, point2->row, cellSize );
+}
+
+double Visibility::calculateDistance( int &row, int &column, std::shared_ptr<Point> point, double &cellSize )
 {
     double r = (double)row;
     double c = (double)column;
     return calculateDistance( r, c, point, cellSize );
 }
 
-double Visibility::calculateGradient( std::shared_ptr<IPoint> point, RasterPosition *pos, double elevation, double &distance )
+double Visibility::calculateGradient( std::shared_ptr<Point> point, double elevation, double &distance )
 {
-    return calculateGradient( point, pos->row, pos->col, elevation, distance );
-}
-
-double Visibility::calculateGradient( std::shared_ptr<IPoint> point, double &row, double &column, double elevation,
-                                      double &distance )
-{
-    double dx = point->col - column;
-    double dy = point->row - row;
-
     double elevationDifference = elevation - point->totalElevation();
 
     if ( elevationDifference == 0 )
@@ -93,12 +101,12 @@ double Visibility::calculateGradient( std::shared_ptr<IPoint> point, double &row
     return atan( elevationDifference / distance ) * ( 180 / M_PI );
 }
 
-RasterPosition Visibility::calculateEventPosition( CellPosition eventType, int row, int col, std::shared_ptr<IPoint> point )
+CellEventPosition Visibility::calculateEventPosition( CellEventPositionType eventType, int row, int col,
+                                                      std::shared_ptr<Point> point )
 {
-
     double rRow, rCol;
 
-    if ( eventType == CellPosition::CENTER )
+    if ( eventType == CellEventPositionType::CENTER )
     {
         /*FOR CENTER_EVENTS */
         rRow = row;
@@ -108,7 +116,7 @@ RasterPosition Visibility::calculateEventPosition( CellPosition eventType, int r
     if ( row < point->row && col < point->col )
     {
         /*first quadrant */
-        if ( eventType == CellPosition::ENTER )
+        if ( eventType == CellEventPositionType::ENTER )
         {
             /*if it is ENTERING_EVENT */
             rRow = row - 0.5;
@@ -124,7 +132,7 @@ RasterPosition Visibility::calculateEventPosition( CellPosition eventType, int r
     else if ( col == point->col && row < point->row )
     {
         /*between the first and second quadrant */
-        if ( eventType == CellPosition::ENTER )
+        if ( eventType == CellEventPositionType::ENTER )
         {
             /*if it is ENTERING_EVENT */
             rRow = row + 0.5;
@@ -140,7 +148,7 @@ RasterPosition Visibility::calculateEventPosition( CellPosition eventType, int r
     else if ( col > point->col && row < point->row )
     {
         /*second quadrant */
-        if ( eventType == CellPosition::ENTER )
+        if ( eventType == CellEventPositionType::ENTER )
         {
             /*if it is ENTERING_EVENT */
             rRow = row + 0.5;
@@ -155,7 +163,7 @@ RasterPosition Visibility::calculateEventPosition( CellPosition eventType, int r
     else if ( row == point->row && col > point->col )
     {
         /*between the second and the fourth quadrant */
-        if ( eventType == CellPosition::ENTER )
+        if ( eventType == CellEventPositionType::ENTER )
         {
             /*if it is ENTERING_EVENT */
             rRow = row + 0.5;
@@ -171,7 +179,7 @@ RasterPosition Visibility::calculateEventPosition( CellPosition eventType, int r
     else if ( col > point->col && row > point->row )
     {
         /*fourth quadrant */
-        if ( eventType == CellPosition::ENTER )
+        if ( eventType == CellEventPositionType::ENTER )
         {
             /*if it is ENTERING_EVENT */
             rRow = row + 0.5;
@@ -187,7 +195,7 @@ RasterPosition Visibility::calculateEventPosition( CellPosition eventType, int r
     else if ( col == point->col && row > point->row )
     {
         /*between the third and fourth quadrant */
-        if ( eventType == CellPosition::ENTER )
+        if ( eventType == CellEventPositionType::ENTER )
         {
             /*if it is ENTERING_EVENT */
             rRow = row - 0.5;
@@ -203,7 +211,7 @@ RasterPosition Visibility::calculateEventPosition( CellPosition eventType, int r
     else if ( col < point->col && row > point->row )
     {
         /*third quadrant */
-        if ( eventType == CellPosition::ENTER )
+        if ( eventType == CellEventPositionType::ENTER )
         {
             /*if it is ENTERING_EVENT */
             rRow = row - 0.5;
@@ -219,7 +227,7 @@ RasterPosition Visibility::calculateEventPosition( CellPosition eventType, int r
     else if ( row == point->row && col < point->col )
     {
         /*between first and third quadrant */
-        if ( eventType == CellPosition::ENTER )
+        if ( eventType == CellEventPositionType::ENTER )
         { /*if it is ENTERING_EVENT */
             rRow = row - 0.5;
             rCol = col + 0.5;
@@ -238,5 +246,5 @@ RasterPosition Visibility::calculateEventPosition( CellPosition eventType, int r
         rRow = row;
     }
 
-    return RasterPosition( rRow, rCol );
+    return CellEventPosition( rRow, rCol );
 }

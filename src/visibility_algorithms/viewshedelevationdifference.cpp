@@ -2,11 +2,9 @@
 
 using viewshed::ViewshedElevationDifference;
 
-double ViewshedElevationDifference::result( std::shared_ptr<LoSImportantValues> losValues,
-                                            std::shared_ptr<std::vector<LoSNode>> los, std::shared_ptr<LoSNode> poi,
-                                            std::shared_ptr<IPoint> vp )
+double ViewshedElevationDifference::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<LoS> los )
 {
-    return poi->elevs[CellPosition::CENTER] - vp->totalElevation();
+    return los->targetElevation() - los->vp()->totalElevation();
 }
 
 const double ViewshedElevationDifference::invisible() { return 0.0; }

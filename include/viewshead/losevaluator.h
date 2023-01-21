@@ -4,20 +4,23 @@
 #include <limits>
 
 #include "iviewshedalgorithm.h"
+#include "los.h"
 #include "losimportantvalues.h"
 #include "losnode.h"
 #include "points.h"
 #include "viewshedvalues.h"
+
+using viewshed::LoS;
 
 namespace viewshed
 {
     class LoSEvaluator
     {
       public:
-        LoSEvaluator( std::shared_ptr<std::vector<LoSNode>> los,
+        LoSEvaluator( std::shared_ptr<LoS> los,
                       std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs );
 
-        void calculate( std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> point );
+        void calculate();
 
         void reset();
 
@@ -31,10 +34,10 @@ namespace viewshed
         std::shared_ptr<LoSImportantValues> mLosValues = std::make_shared<LoSImportantValues>();
 
       private:
-        std::shared_ptr<std::vector<LoSNode>> mLos;
+        std::shared_ptr<LoS> mLos;
         std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> mAlgs;
 
-        void parseNodes( std::shared_ptr<LoSNode> poi );
+        void parseNodes();
     };
 } // namespace viewshed
 

@@ -10,18 +10,16 @@ ViewshedAngleDifferenceToGlobalHorizon::ViewshedAngleDifferenceToGlobalHorizon( 
 }
 
 double ViewshedAngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
-                                                       std::shared_ptr<std::vector<LoSNode>> los,
-                                                       std::shared_ptr<LoSNode> poi, std::shared_ptr<IPoint> vp )
+                                                       std::shared_ptr<LoS> los )
 {
     double difference;
     if ( losValues->mIndexHorizon != 0 )
     {
-        difference = poi->centreGradient() -
-                     los->at( losValues->mIndexHorizon ).valueAtAngle( poi->centreAngle(), ValueType::Gradient );
+        difference = los->targetGradient() - los->gradient( losValues->mIndexHorizon );
     }
     else
     {
-        difference = 90 + poi->centreGradient();
+        difference = 90 + los->targetGradient();
     }
 
     if ( mAllPoints )
@@ -30,7 +28,7 @@ double ViewshedAngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImport
     }
     else
     {
-        if ( poi->centreGradient() < losValues->mMaxGradientBefore )
+        if ( los->targetGradient() < losValues->mMaxGradientBefore )
             return invisible();
         else
             return difference;

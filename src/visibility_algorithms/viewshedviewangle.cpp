@@ -4,11 +4,9 @@
 
 using viewshed::ViewshedViewAngle;
 
-double ViewshedViewAngle::result( std::shared_ptr<LoSImportantValues> losValues,
-                                  std::shared_ptr<std::vector<LoSNode>> los, std::shared_ptr<LoSNode> poi,
-                                  std::shared_ptr<IPoint> vp )
+double ViewshedViewAngle::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<LoS> los )
 {
-    return poi->gradient[CellPosition::CENTER];
+    return los->targetGradient();
 }
 
 const double ViewshedViewAngle::invisible() { return -91.0; }

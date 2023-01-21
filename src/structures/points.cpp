@@ -1,12 +1,30 @@
 #include "points.h"
 #include "visibility.h"
 
-using viewshed::IPoint;
-using viewshed::TargetPoint;
-using viewshed::ViewPoint;
+using viewshed::Point;
 using viewshed::Visibility;
 
-void IPoint::setUp( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, int rasterBand )
+Point::Point() {}
+
+Point::Point( int row_, int col_, double elevation_, double offset_, double cellSize_ )
+{
+    row = row_;
+    col = col_;
+    elevation = elevation_;
+    offset = offset_;
+    cellSize = cellSize_;
+
+    mValid = true;
+}
+
+Point::Point( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offsetAtPoint, int rasterBand )
+{
+
+    setUp( point, dem, rasterBand );
+    offset = offsetAtPoint;
+}
+
+void Point::setUp( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, int rasterBand )
 {
     x = point.x();
     y = point.y();
@@ -21,12 +39,16 @@ void IPoint::setUp( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, int ras
 
     col = pointRaster.x();
     row = pointRaster.y();
+
+    cellSize = dem->rasterUnitsPerPixelX();
 }
 
-void IPoint::setUp( int row_, int col_, std::shared_ptr<QgsRasterLayer> dem, int rasterBand )
+void Point::setUp( int row_, int col_, std::shared_ptr<QgsRasterLayer> dem, int rasterBand )
 {
     row = row_;
     col = col_;
+
+    cellSize = dem->rasterUnitsPerPixelX();
 
     QgsPoint pointRaster( col_, row_ );
 
@@ -39,36 +61,11 @@ void IPoint::setUp( int row_, int col_, std::shared_ptr<QgsRasterLayer> dem, int
     mValid = ok;
 }
 
-double IPoint::totalElevation() { return elevation + offset; }
+double Point::totalElevation() { return elevation + offset; }
 
-bool IPoint::isValid() { return mValid; }
+bool Point::isValid() { return mValid; }
 
-ViewPoint::ViewPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offset_, int rasterBand )
-{
-    setUp( point, dem, rasterBand );
-
-    offset = offset_;
-}
-
-ViewPoint::ViewPoint( int row_, int col_, double elevation_, double offset_ )
-{
-    row = row_;
-    col = col_;
-    elevation = elevation_;
-    offset = offset_;
-    mValid = true;
-}
-
-TargetPoint::TargetPoint( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double cellSize_, double offset_,
-                          int rasterBand )
-{
-    setUp( point, dem, rasterBand );
-
-    offset = offset_;
-    cellSize = cellSize_;
-}
-
-double TargetPoint::distance( std::shared_ptr<IPoint> point )
+double Point::distance( std::shared_ptr<Point> point )
 {
     return Visibility::calculateDistance( row, col, point, cellSize );
 }

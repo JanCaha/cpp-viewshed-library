@@ -1,26 +1,27 @@
-#include <functional>
+#include <cmath>
 
 #include <QElapsedTimer>
 
+#include "los.h"
+#include "threadtasks.h"
 #include "viewshed.h"
 #include "visibility.h"
 
-using viewshed::IPoint;
 using viewshed::IViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 using viewshed::LoSNode;
 using viewshed::MemoryRaster;
-using viewshed::ViewPoint;
+using viewshed::Point;
 using viewshed::Viewshed;
 using viewshed::ViewshedValues;
 
-Viewshed::Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem,
+Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterLayer> dem,
                     std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs, double minimalAngle,
                     double maximalAngle )
 {
     mValid = false;
 
-    mPoint = point;
+    mPoint = viewPoint;
     mInputDem = dem;
     mAlgs = algs;
 
@@ -44,7 +45,7 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
     {
         switch ( e.eventType )
         {
-            case CellPosition::ENTER:
+            case CellEventPositionType::ENTER:
             {
                 if ( mPoint->row == e.row && mPoint->col == e.col )
                 {
@@ -55,7 +56,7 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
                 break;
             }
 
-            case CellPosition::EXIT:
+            case CellEventPositionType::EXIT:
             {
                 if ( mPoint->row == e.row && mPoint->col == e.col )
                 {
@@ -70,7 +71,7 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool
                 break;
             }
 
-            case CellPosition::CENTER:
+            case CellEventPositionType::CENTER:
             {
                 ln = LoSNode( mPoint, &e, mCellSize );
                 if ( ln.col == poi.col && ln.row == poi.row )
@@ -94,8 +95,8 @@ std::shared_ptr<std::vector<LoSNode>> Viewshed::getLoS( LoSNode poi, bool onlyTo
     {
         LoSNode node = mLosNodes.at( j );
 
-        if ( node.angle[CellPosition::ENTER] <= poi.centreAngle() &&
-             poi.centreAngle() <= node.angle[CellPosition::EXIT] )
+        if ( node.angle[CellEventPositionType::ENTER] <= poi.centreAngle() &&
+             poi.centreAngle() <= node.angle[CellEventPositionType::EXIT] )
         {
             if ( onlyToPoi )
             {
@@ -138,4 +139,15 @@ void Viewshed::calculate( std::function<void( std::string, double )> stepsTiming
     parseEventList( progressCallback );
 
     stepsTimingCallback( "Parsing of event list lasted: ", timer.elapsed() / 1000.0 );
+}
+
+void Viewshed::submitToThreadpool( CellEvent &e )
+{
+    std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint, &e, mCellSize );
+
+    std::shared_ptr<LoS> los = std::make_shared<LoS>( mLosNodes );
+    los->setViewPoint( mPoint );
+    los->setTargetPoint( poi );
+
+    mResultPixels.push_back( mThreadPool.submit( viewshed::evaluateLoSForPoI, los, mAlgs ) );
 }

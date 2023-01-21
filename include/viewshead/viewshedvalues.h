@@ -3,20 +3,24 @@
 
 #include <vector>
 
-namespace viewshed{
-struct ViewshedValues
+#include "points.h"
+
+namespace viewshed
 {
-    double row, col;
-    std::vector<double> values;
 
-    ViewshedValues(){};
-
-    ViewshedValues( double row_, double col_ )
+    class ViewshedValues : public RasterPosition
     {
-        row = row_;
-        col = col_;
+      public:
+        std::vector<double> values;
+
+        ViewshedValues(){};
+
+        ViewshedValues( int row_, int col_ )
+        {
+            row = row_;
+            col = col_;
+        };
     };
-};
-}
+} // namespace viewshed
 
 #endif

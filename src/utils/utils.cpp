@@ -7,7 +7,7 @@
 
 using viewshed::Utils;
 
-void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation, std::shared_ptr<IPoint> vp,
+void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation, std::shared_ptr<Point> vp,
                        std::string fileName )
 {
     std::ofstream resultCsvFile;
@@ -49,11 +49,17 @@ std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr
     for ( int i = 0; i < los->size(); i++ )
     {
         LoSNode ln = los->at( i );
+        double dist = ln.valueAtAngle( poi.centreAngle(), ValueType::Distance );
         data.push_back( std::make_pair<double, double>( ln.valueAtAngle( poi.centreAngle(), ValueType::Distance ),
                                                         ln.valueAtAngle( poi.centreAngle(), ValueType::Elevation ) ) );
     }
 
     return data;
+}
+
+std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr<std::vector<LoSNode>> los )
+{
+    return Utils::distanceElevation( los, los->at( los->size() - 1 ) );
 }
 
 std::vector<std::pair<double, double>> Utils::rasterCoordinates( std::shared_ptr<std::vector<LoSNode>> los,

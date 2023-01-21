@@ -1,30 +1,28 @@
 #ifndef VIEWSHEDLIB_VISIBILITY_H
 #define VIEWSHEDLIB_VISIBILITY_H
 
+#include "celleventposition.h"
 #include "enums.h"
 #include "points.h"
-#include "rasterposition.h"
-#include "losnode.h"
-#include "viewshed.h"
 
 namespace viewshed
 {
     class Visibility
     {
       public:
-        static RasterPosition calculateEventPosition( CellPosition eventType, int row, int col,
-                                                std::shared_ptr<IPoint> point );
-        static double calculateAngle( double row, double column, std::shared_ptr<IPoint> point );
-        static double calculateAngle( RasterPosition *pos, std::shared_ptr<IPoint> point );
-        static double calculateDistance( int &row, int &column, std::shared_ptr<IPoint> point, double &cellSize );
-        static double calculateDistance( double &row, double &column, std::shared_ptr<IPoint> point, double &cellSize );
-        static double calculateDistance( RasterPosition *pos, std::shared_ptr<IPoint> point, double &cellSize );
-        static double calculateGradient( std::shared_ptr<IPoint> point, RasterPosition *pos, double elevation,
-                                         double &distance );
-        static double calculateGradient( std::shared_ptr<IPoint> point, double &row, double &column, double elevation,
-                                         double &distance );
-        static std::vector<std::pair<double, double>> distanceElevation( std::shared_ptr<std::vector<LoSNode>> los,
-                                                                         LoSNode poi );
+        static CellEventPosition calculateEventPosition( CellEventPositionType eventType, int row, int col,
+                                                         std::shared_ptr<Point> point );
+        static double calculateAngle( double row, double column, std::shared_ptr<Point> point );
+        static double calculateAngle( CellEventPosition *pos, std::shared_ptr<Point> point );
+        static double calculateAngle( RasterPosition *pos, std::shared_ptr<Point> point );
+        static double calculateDistance( const double &x1, const double &y1, const double &x2, const double &y2,
+                                         double &cellSize );
+        static double calculateDistance( int &row, int &column, std::shared_ptr<Point> point, double &cellSize );
+        static double calculateDistance( std::shared_ptr<Point> point1, std::shared_ptr<Point> point2,
+                                         double &cellSize );
+        static double calculateDistance( double &row, double &column, std::shared_ptr<Point> point, double &cellSize );
+        static double calculateDistance( CellEventPosition *pos, std::shared_ptr<Point> point, double &cellSize );
+        static double calculateGradient( std::shared_ptr<Point> point, double elevation, double &distance );
     };
 } // namespace viewshed
 

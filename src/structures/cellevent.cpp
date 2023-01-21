@@ -1,17 +1,19 @@
 #include "cellevent.h"
 
 using viewshed::CellEvent;
+using viewshed::CellEventPositionType;
 
-CellEvent::CellEvent( CellPosition eventType_, int row_, int col_, double dist_, double angle_, double elevation_[3] )
+CellEvent::CellEvent( CellEventPositionType eventType_, int row_, int col_, double dist_, double angle_,
+                      double elevation_[3] )
 {
     eventType = eventType_;
     row = row_;
     col = col_;
     angle = angle_;
     dist2vp = dist_;
-    elevation[CellPosition::ENTER] = elevation_[CellPosition::ENTER];
-    elevation[CellPosition::CENTER] = elevation_[CellPosition::CENTER];
-    elevation[CellPosition::EXIT] = elevation_[CellPosition::EXIT];
+    elevation[CellEventPositionType::ENTER] = elevation_[CellEventPositionType::ENTER];
+    elevation[CellEventPositionType::CENTER] = elevation_[CellEventPositionType::CENTER];
+    elevation[CellEventPositionType::EXIT] = elevation_[CellEventPositionType::EXIT];
 }
 
 bool CellEvent::operator<( const CellEvent other ) const
@@ -31,13 +33,13 @@ bool CellEvent::operator<( const CellEvent other ) const
     else
     {
         /*a.angle == b.angle */
-        if ( eventType == CellPosition::EXIT )
+        if ( eventType == CellEventPositionType::EXIT )
             return true;
-        if ( other.eventType == CellPosition::EXIT )
+        if ( other.eventType == CellEventPositionType::EXIT )
             return false;
-        if ( eventType == CellPosition::ENTER )
+        if ( eventType == CellEventPositionType::ENTER )
             return false;
-        if ( other.eventType == CellPosition::ENTER )
+        if ( other.eventType == CellEventPositionType::ENTER )
             return true;
         return false;
     }

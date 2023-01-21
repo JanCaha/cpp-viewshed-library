@@ -1,30 +1,21 @@
 #ifndef VIEWSHEDLIB_VIEWSHED_H
 #define VIEWSHEDLIB_VIEWSHED_H
 
-#include <cmath>
+#include <functional>
 #include <limits>
 
-#include <qgsrasterlayer.h>
-
-#include "BS_thread_pool.hpp"
-
-#include "cellevent.h"
 #include "enums.h"
 #include "iviewshed.h"
-#include "iviewshedalgorithm.h"
+#include "los.h"
 #include "losevaluator.h"
-#include "losnode.h"
-#include "memoryraster.h"
 #include "points.h"
-#include "rasterposition.h"
-#include "viewshedvalues.h"
 
 namespace viewshed
 {
     class Viewshed : public IViewshed
     {
       public:
-        Viewshed( std::shared_ptr<IPoint> point, std::shared_ptr<QgsRasterLayer> dem,
+        Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterLayer> dem,
                   std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs,
                   double minimalAngle = std::numeric_limits<double>::quiet_NaN(),
                   double maximalAngle = std::numeric_limits<double>::quiet_NaN() );
@@ -35,6 +26,8 @@ namespace viewshed
             std::function<void( int, int )> progressCallback = []( int, int ) {} );
 
         std::shared_ptr<std::vector<LoSNode>> LoSToPoint( QgsPoint point, bool onlyToPoint = false );
+
+        void submitToThreadpool( CellEvent &e ) override;
 
       private:
         std::shared_ptr<std::vector<LoSNode>> getLoS( LoSNode poi, bool onlyToPoi = false );
