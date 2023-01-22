@@ -46,7 +46,7 @@ namespace viewshed
         QgsPoint point( int row, int col );
 
       protected:
-        LoS mLosNodes;
+        std::vector<LoSNode> mLosNodes;
         std::vector<CellEvent> mCellEvents;
         std::shared_ptr<QgsRasterLayer> mInputDem;
         std::shared_ptr<Point> mPoint;
