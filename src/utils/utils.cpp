@@ -7,8 +7,7 @@
 
 using viewshed::Utils;
 
-void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation, std::shared_ptr<Point> vp,
-                       std::string fileName )
+void Utils::saveToCsv( std::vector<std::pair<double, double>> data, std::string header, std::string fileName )
 {
     std::ofstream resultCsvFile;
 
@@ -17,19 +16,14 @@ void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation,
     double distance;
     double elevation;
 
-    resultCsvFile << "distance,elevation\n";
-    resultCsvFile << "0"
-                  << "," << vp->totalElevation() << "\n";
+    resultCsvFile << header;
 
-    for ( int i = 0; i < distanceElevation.size(); i++ )
+    for ( int i = 0; i < data.size(); i++ )
     {
         std::ostringstream dist, elev;
 
-        dist << distanceElevation.at( i ).first;
-        elev << distanceElevation.at( i ).second;
-
-        std::string a = dist.str();
-        std::string b = elev.str();
+        dist << data.at( i ).first;
+        elev << data.at( i ).second;
 
         resultCsvFile << dist.str();
         resultCsvFile << ",";
@@ -41,37 +35,19 @@ void Utils::saveToCsv( std::vector<std::pair<double, double>> distanceElevation,
     resultCsvFile.close();
 }
 
-std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr<std::vector<LoSNode>> los,
-                                                                 LoSNode poi )
+std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr<LoS> los )
 {
     std::vector<std::pair<double, double>> data;
+
+    data.push_back( std::make_pair<double, double>( 0, los->vp()->totalElevation() ) );
 
     for ( int i = 0; i < los->size(); i++ )
     {
         LoSNode ln = los->at( i );
-        double dist = ln.valueAtAngle( poi.centreAngle(), ValueType::Distance );
-        data.push_back( std::make_pair<double, double>( ln.valueAtAngle( poi.centreAngle(), ValueType::Distance ),
-                                                        ln.valueAtAngle( poi.centreAngle(), ValueType::Elevation ) ) );
+        data.push_back( std::make_pair<double, double>( los->distance( i ), los->elevation( i ) ) );
     }
 
-    return data;
-}
-
-std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr<std::vector<LoSNode>> los )
-{
-    return Utils::distanceElevation( los, los->at( los->size() - 1 ) );
-}
-
-std::vector<std::pair<double, double>> Utils::rasterCoordinates( std::shared_ptr<std::vector<LoSNode>> los,
-                                                                 LoSNode poi )
-{
-    std::vector<std::pair<double, double>> data;
-
-    for ( int i = 0; i < los->size(); i++ )
-    {
-        LoSNode ln = los->at( i );
-        data.push_back( std::make_pair<double, double>( ln.row, ln.col ) );
-    }
+    data.push_back( std::make_pair<double, double>( los->targetDistance(), los->targetElevation() ) );
 
     return data;
 }
