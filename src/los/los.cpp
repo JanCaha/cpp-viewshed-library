@@ -44,11 +44,19 @@ int ILoS::targetRow() { return mTp->row; }
 
 std::shared_ptr<Point> ILoS::vp() { return mVp; }
 
+LoS::LoS() : std::vector<LoSNode>() {}
+
+LoS::LoS( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
+
+void LoS::sort() { std::sort( begin(), end() ); }
+
 void LoS::setLoSNodes( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
 
 double LoS::gradient( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Gradient ); }
 
 double LoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
+
+double LoS::elevation( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ); }
 
 bool LoS::isValid() { return mVp->isValid(); }
 

@@ -22,6 +22,7 @@ namespace viewshed
       public:
         virtual double gradient( int i ) = 0;
         virtual double distance( int i ) = 0;
+        virtual double elevation( int i ) = 0;
         virtual bool isValid() = 0;
 
         void setViewPoint( std::shared_ptr<Point> vp );
@@ -55,17 +56,24 @@ namespace viewshed
     class LoS : public std::vector<LoSNode>, public ILoS
     {
       public:
+        LoS();
+        LoS( std::vector<LoSNode> losNodes );
+
         void setLoSNodes( std::vector<LoSNode> losNodes );
 
         double gradient( int i ) override;
 
         double distance( int i ) override;
 
+        double elevation( int i ) override;
+
         bool isValid() override;
 
         void setTargetPoint( std::shared_ptr<LoSNode> poi, double targetOffset = 0 );
 
         int targetPointIndex();
+
+        void sort();
 
       private:
         int mTargetIndex;
