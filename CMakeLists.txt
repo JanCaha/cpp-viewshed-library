@@ -63,7 +63,9 @@ set(THREAD_TASKS
 )
 
 set(LOS
+    src/los/ilos.cpp
     src/los/los.cpp
+    src/los/inverselos.cpp
     src/los/losevaluator.cpp
 )
 

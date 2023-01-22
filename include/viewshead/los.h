@@ -51,6 +51,7 @@ namespace viewshed
         double mPointDistance;
         std::shared_ptr<Point> mVp = std::make_shared<Point>();
         std::shared_ptr<Point> mTp = std::make_shared<Point>();
+        int mTargetIndex;
     };
 
     class LoS : public std::vector<LoSNode>, public ILoS
@@ -74,19 +75,25 @@ namespace viewshed
         int targetPointIndex();
 
         void sort();
-
-      private:
-        int mTargetIndex;
     };
 
     class InverseLoS : public LoS
     {
       public:
-        InverseLoS( std::shared_ptr<Point> vp, std::shared_ptr<Point> tp );
+        InverseLoS( std::vector<LoSNode> losNodes );
+
+        void setViewPoint( std::shared_ptr<Point> vp ) = delete;
+        void setTargetPoint( std::shared_ptr<Point> tp ) = delete;
+
+        void setTargetPoint( std::shared_ptr<Point> tp, double targetOffset = 0 );
+
+        void setViewPoint( std::shared_ptr<LoSNode> vp, double observerOffset );
 
         double distance( int i ) override;
 
         double gradient( int i ) override;
+
+        double elevation( int i ) override;
     };
 
 } // namespace viewshed
