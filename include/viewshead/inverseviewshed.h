@@ -6,6 +6,7 @@
 
 #include "enums.h"
 #include "iviewshed.h"
+#include "los.h"
 #include "losevaluator.h"
 #include "points.h"
 
@@ -14,25 +15,22 @@ namespace viewshed
     class InverseViewshed : public IViewshed
     {
       public:
-        InverseViewshed( std::shared_ptr<Point> targetPoint, std::shared_ptr<QgsRasterLayer> dem,
+        InverseViewshed( std::shared_ptr<Point> targetPoint, double observerOffset, std::shared_ptr<QgsRasterLayer> dem,
                          std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs,
-                         double observerOffset );
+                         double minimalAngle = std::numeric_limits<double>::quiet_NaN(),
+                         double maximalAngle = std::numeric_limits<double>::quiet_NaN() );
 
         void calculate(
             std::function<void( std::string, double )> stepsTimingCallback = []( std::string text, double time )
             { qDebug() << QString::fromStdString( text ) << time; },
             std::function<void( int, int )> progressCallback = []( int, int ) {} );
 
-        void parseEventList( std::function<void( int, int )> progressCallback = []( int, int ) {} );
+        std::shared_ptr<LoS> getLoS( QgsPoint point, bool onlyToPoint = false );
+
         void submitToThreadpool( CellEvent &e ) override;
-
-        std::shared_ptr<std::vector<LoSNode>> LoSToPoint( QgsPoint point, bool onlyToPoint = false );
-
-        std::shared_ptr<std::vector<LoSNode>> prepareLoS( std::shared_ptr<Point> vp );
 
       private:
         double mObserverOffset;
-        //     std::shared_ptr<std::vector<LoSNode>> getLoS( LoSNode poi, bool onlyToPoi = false );
     };
 
 } // namespace viewshed

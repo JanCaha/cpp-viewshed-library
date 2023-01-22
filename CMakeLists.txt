@@ -55,6 +55,7 @@ set(STRUCTURES
 set(VISIBILITY
     src/visibility/visibility.cpp
     src/visibility/viewshed.cpp
+    src/visibility/inverseviewshed.cpp
     src/visibility/iviewshed.cpp
 )
 
@@ -94,6 +95,7 @@ set(PUBLIC_HEADERS
     include/viewshead/viewshedangledifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifference.h
     include/viewshead/iviewshed.h
+    include/viewshead/inverseviewshed.h
     include/viewshead/viewshed.h
     include/viewshead/viewshedhorizons.h
     include/viewshead/viewshedviewangle.h

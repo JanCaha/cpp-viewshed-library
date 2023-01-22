@@ -35,6 +35,8 @@ namespace viewshed
 
         void setAngle( double angle );
 
+        void prepareForCalculation();
+
         double horizontalAngle();
         double targetDistance();
         double targetGradient();
@@ -80,6 +82,7 @@ namespace viewshed
     class InverseLoS : public LoS
     {
       public:
+        InverseLoS();
         InverseLoS( std::vector<LoSNode> losNodes );
 
         void setViewPoint( std::shared_ptr<Point> vp ) = delete;

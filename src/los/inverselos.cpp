@@ -5,6 +5,8 @@ using viewshed::ILoS;
 using viewshed::InverseLoS;
 using viewshed::Visibility;
 
+InverseLoS::InverseLoS() {}
+
 InverseLoS::InverseLoS( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
 
 double InverseLoS::distance( int i )

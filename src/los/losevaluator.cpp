@@ -69,6 +69,8 @@ void LoSEvaluator::calculate()
     if ( mAlreadyParsed )
         reset();
 
+    mLos->prepareForCalculation();
+
     parseNodes();
 
     mResultValues = ViewshedValues( mLos->targetRow(), mLos->targetCol() );
