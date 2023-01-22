@@ -10,7 +10,6 @@ LoSEvaluator::LoSEvaluator( std::shared_ptr<LoS> los,
                             std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs )
     : mLos( los ), mAlgs( algs )
 {
-    std::sort( mLos->begin(), mLos->end() );
 }
 
 int LoSEvaluator::size() { return mAlgs->size(); }
