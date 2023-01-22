@@ -25,12 +25,10 @@ namespace viewshed
             { qDebug() << QString::fromStdString( text ) << time; },
             std::function<void( int, int )> progressCallback = []( int, int ) {} );
 
-        std::shared_ptr<std::vector<LoSNode>> LoSToPoint( QgsPoint point, bool onlyToPoint = false );
+        std::shared_ptr<LoS> getLoS( QgsPoint point, bool onlyToPoint = false );
 
         void submitToThreadpool( CellEvent &e ) override;
 
-      private:
-        std::shared_ptr<std::vector<LoSNode>> getLoS( LoSNode poi, bool onlyToPoi = false );
     };
 
 } // namespace viewshed

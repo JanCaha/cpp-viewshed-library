@@ -34,87 +34,29 @@ Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterL
     mValid = true;
 }
 
-std::shared_ptr<std::vector<LoSNode>> Viewshed::LoSToPoint( QgsPoint point, bool onlyToPoint )
+std::shared_ptr<LoS> Viewshed::getLoS( QgsPoint point, bool onlyToPoi )
 {
-    LoSNode poi = statusNodeFromPoint( point );
-    LoSNode ln;
 
-    mLosNodes.clear();
+    std::vector<LoSNode> losNodes = prepareLoSWithPoint( point );
 
-    for ( CellEvent e : mCellEvents )
+    std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( statusNodeFromPoint( point ) );
+
+    if ( onlyToPoi )
     {
-        switch ( e.eventType )
-        {
-            case CellEventPositionType::ENTER:
-            {
-                if ( mPoint->row == e.row && mPoint->col == e.col )
-                {
-                    break;
-                }
-                ln = LoSNode( mPoint, &e, mCellSize );
-                mLosNodes.push_back( ln );
-                break;
-            }
+        double poiDistance = poi->centreDistance();
 
-            case CellEventPositionType::EXIT:
-            {
-                if ( mPoint->row == e.row && mPoint->col == e.col )
-                {
-                    break;
-                }
-                ln = LoSNode( e.row, e.col );
-                std::vector<LoSNode>::iterator index = std::find( mLosNodes.begin(), mLosNodes.end(), ln );
-                if ( index != mLosNodes.end() )
-                {
-                    mLosNodes.erase( index );
-                }
-                break;
-            }
-
-            case CellEventPositionType::CENTER:
-            {
-                ln = LoSNode( mPoint, &e, mCellSize );
-                if ( ln.col == poi.col && ln.row == poi.row )
-                {
-                    return getLoS( poi, onlyToPoint );
-                }
-                break;
-            }
-        }
+        losNodes.erase( std::remove_if( losNodes.begin(), losNodes.end(),
+                                        [&poiDistance]( LoSNode &node )
+                                        { return poiDistance <= node.centreDistance(); } ),
+                        losNodes.end() );
     }
 
-    std::shared_ptr<std::vector<LoSNode>> los;
+    std::shared_ptr<LoS> los = std::make_shared<LoS>( losNodes );
+    los->sort();
+    los->setViewPoint( mPoint );
+    los->setTargetPoint( poi );
+
     return los;
-}
-
-std::shared_ptr<std::vector<LoSNode>> Viewshed::getLoS( LoSNode poi, bool onlyToPoi )
-{
-    std::shared_ptr<std::vector<LoSNode>> losToReturn = std::make_shared<std::vector<LoSNode>>();
-
-    for ( int j = 0; j < mLosNodes.size(); j++ )
-    {
-        LoSNode node = mLosNodes.at( j );
-
-        if ( node.angle[CellEventPositionType::ENTER] <= poi.centreAngle() &&
-             poi.centreAngle() <= node.angle[CellEventPositionType::EXIT] )
-        {
-            if ( onlyToPoi )
-            {
-                if ( node.centreDistance() <= poi.centreDistance() )
-                {
-                    losToReturn->push_back( node );
-                }
-            }
-            else
-            {
-                losToReturn->push_back( node );
-            }
-        }
-    }
-
-    std::sort( losToReturn->begin(), losToReturn->end() );
-
-    return losToReturn;
 }
 
 void Viewshed::calculate( std::function<void( std::string, double )> stepsTimingCallback,
