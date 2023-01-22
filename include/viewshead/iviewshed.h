@@ -64,8 +64,8 @@ namespace viewshed
 
         LoSNode mLosNodePoint;
 
+        std::vector<LoSNode> prepareLoSWithPoint( QgsPoint point );
         bool validAngles();
-
         void prepareMemoryRasters();
         void setPixelData( ViewshedValues values );
         void parseCalculatedResults();

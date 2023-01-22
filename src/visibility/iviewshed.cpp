@@ -372,3 +372,55 @@ void IViewshed::setMaxThreads( int threads )
 
     mThreadPool.reset( threads );
 }
+
+std::vector<LoSNode> IViewshed::prepareLoSWithPoint( QgsPoint point )
+{
+
+    LoSNode poi = statusNodeFromPoint( point );
+    LoSNode ln;
+
+    std::vector<LoSNode> losNodes;
+
+    for ( CellEvent e : mCellEvents )
+    {
+        switch ( e.eventType )
+        {
+            case CellEventPositionType::ENTER:
+            {
+                if ( mPoint->row == e.row && mPoint->col == e.col )
+                {
+                    break;
+                }
+                ln = LoSNode( mPoint, &e, mCellSize );
+                losNodes.push_back( ln );
+                break;
+            }
+
+            case CellEventPositionType::EXIT:
+            {
+                if ( mPoint->row == e.row && mPoint->col == e.col )
+                {
+                    break;
+                }
+                ln = LoSNode( e.row, e.col );
+                std::vector<LoSNode>::iterator index = std::find( losNodes.begin(), losNodes.end(), ln );
+                if ( index != losNodes.end() )
+                {
+                    losNodes.erase( index );
+                }
+                break;
+            }
+
+            case CellEventPositionType::CENTER:
+            {
+                ln = LoSNode( mPoint, &e, mCellSize );
+                if ( ln.col == poi.col && ln.row == poi.row )
+                {
+                    return losNodes;
+                }
+                break;
+            }
+        }
+    }
+    return losNodes;
+}
