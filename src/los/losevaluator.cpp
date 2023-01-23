@@ -73,7 +73,7 @@ void LoSEvaluator::calculate()
 
     parseNodes();
 
-    mResultValues = ViewshedValues( mLos->targetRow(), mLos->targetCol() );
+    mResultValues = ViewshedValues( mLos->resultRow(), mLos->resultCol() );
 
     for ( int i = 0; i < mAlgs->size(); i++ )
     {
