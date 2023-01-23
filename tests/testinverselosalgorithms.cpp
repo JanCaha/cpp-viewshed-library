@@ -79,8 +79,10 @@ class TestInverseLosAlgorithms : public QObject
 
     double losEvalForPoint( int position, int result = 0 )
     {
-        los->setTargetPoint( tp, tp->offset );
-        los->setViewPoint( getPointLoS( position ), 0.001 );
+        std::shared_ptr<InverseLoS> tmpLos = std::make_shared<InverseLoS>( *los );
+        losEval = LoSEvaluator( tmpLos, algs );
+        tmpLos->setTargetPoint( tp, tp->offset );
+        tmpLos->setViewPoint( getPointLoS( position ), 0.001 );
         losEval.calculate();
         return losEval.resultAt( result );
     }
@@ -90,8 +92,6 @@ class TestInverseLosAlgorithms : public QObject
         algs->clear();
 
         algs->push_back( std::make_shared<ViewshedVisibility>() );
-
-        losEval = LoSEvaluator( los, algs );
 
         QVERIFY( losEvalForPoint( 0 ) == 1.0 );
 
