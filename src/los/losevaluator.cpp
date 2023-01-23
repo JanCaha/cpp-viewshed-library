@@ -6,7 +6,7 @@ using viewshed::IViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 using viewshed::Visibility;
 
-LoSEvaluator::LoSEvaluator( std::shared_ptr<LoS> los,
+LoSEvaluator::LoSEvaluator( std::shared_ptr<ILoS> los,
                             std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs )
     : mLos( los ), mAlgs( algs )
 {
@@ -21,13 +21,13 @@ void LoSEvaluator::parseNodes()
 
     double snGradient;
 
-    for ( int i = 0; i < mLos->size(); i++ )
+    for ( int i = 0; i < mLos->numberOfNodes(); i++ )
     {
         mLosValues->mIndexPoi = mLos->targetPointIndex();
 
         snGradient = mLos->gradient( i );
 
-        if ( i + 1 < mLos->size() )
+        if ( i + 1 < mLos->numberOfNodes() )
         {
             if ( mLos->distance( i + 1 ) <= mLos->targetDistance() )
             {
