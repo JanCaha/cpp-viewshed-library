@@ -9,13 +9,9 @@
 
 namespace viewshed
 {
-    ViewshedValues evaluateLoSForPoI( std::shared_ptr<LoS> los,
+    ViewshedValues evaluateLoSForPoI( std::shared_ptr<ILoS> los,
                                       std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs );
 
-    ViewshedValues
-    evaluateSimplifiedInvertedLoS( std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs,
-                                   std::shared_ptr<std::vector<LoSNode>> los, std::shared_ptr<Point> tp,
-                                   std::shared_ptr<Point> vp );
 } // namespace viewshed
 
 #endif

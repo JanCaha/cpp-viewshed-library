@@ -7,7 +7,7 @@
 using viewshed::LoSEvaluator;
 using viewshed::ViewshedValues;
 
-ViewshedValues viewshed::evaluateLoSForPoI( std::shared_ptr<LoS> los,
+ViewshedValues viewshed::evaluateLoSForPoI( std::shared_ptr<ILoS> los,
                                             std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs )
 {
     LoSEvaluator losEval( los, algs );
