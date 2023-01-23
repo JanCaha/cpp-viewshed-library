@@ -414,6 +414,7 @@ std::vector<LoSNode> IViewshed::prepareLoSWithPoint( QgsPoint point )
             case CellEventPositionType::CENTER:
             {
                 ln = LoSNode( mPoint, &e, mCellSize );
+                // TODO change distances of LoS Node
                 if ( ln.col == poi.col && ln.row == poi.row )
                 {
                     return losNodes;

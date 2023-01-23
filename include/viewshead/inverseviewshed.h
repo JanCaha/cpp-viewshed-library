@@ -29,6 +29,8 @@ namespace viewshed
 
         void submitToThreadpool( CellEvent &e ) override;
 
+        void initEventList();
+
       private:
         double mObserverOffset;
     };

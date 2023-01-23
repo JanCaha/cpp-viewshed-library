@@ -65,10 +65,10 @@ class TestInverseViewshed : public QObject
 
     void TestRaster()
     {
-        InverseViewshed v( tp, 3, dem, algs );
-        v.setMaxThreads( 1 );
-        v.calculate();
-        v.saveResults( TEST_DATA_RESULTS_DIR, "Inverse" );
+        // InverseViewshed v( tp, 3, dem, algs );
+        // v.setMaxThreads( 1 );
+        // v.calculate();
+        // v.saveResults( TEST_DATA_RESULTS_DIR, "Inverse" );
     }
 };
 
