@@ -4,7 +4,7 @@
 
 using viewshed::ViewshedViewAngle;
 
-double ViewshedViewAngle::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<LoS> los )
+double ViewshedViewAngle::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<ILoS> los )
 {
     return los->targetGradient();
 }

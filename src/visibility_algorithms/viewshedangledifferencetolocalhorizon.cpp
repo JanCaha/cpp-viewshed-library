@@ -11,14 +11,14 @@ ViewshedAngleDifferenceToLocalHorizon::ViewshedAngleDifferenceToLocalHorizon( bo
 }
 
 double ViewshedAngleDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
-                                                      std::shared_ptr<LoS> los )
+                                                      std::shared_ptr<ILoS> los )
 {
     double difference;
     if ( losValues->mIndexHorizonBefore != 0 )
     {
         difference =
             los->targetGradient() -
-            los->at( losValues->mIndexHorizonBefore ).valueAtAngle( los->horizontalAngle(), ValueType::Gradient );
+            los->nodeAt( losValues->mIndexHorizonBefore ).valueAtAngle( los->horizontalAngle(), ValueType::Gradient );
     }
     else
     {

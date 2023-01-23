@@ -4,15 +4,15 @@
 
 using viewshed::ViewshedHorizons;
 
-double ViewshedHorizons::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<LoS> los )
+double ViewshedHorizons::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<ILoS> los )
 {
 
     bool isHorizon = false;
 
-    if ( losValues->mIndexPoi + 1 < los->size() && losValues->mMaxGradientBefore < los->targetGradient() )
+    if ( losValues->mIndexPoi + 1 < los->numberOfNodes() && losValues->mMaxGradientBefore < los->targetGradient() )
     {
         double gradientBehind =
-            los->at( losValues->mIndexPoi + 1 ).valueAtAngle( los->horizontalAngle(), ValueType::Gradient );
+            los->nodeAt( losValues->mIndexPoi + 1 ).valueAtAngle( los->horizontalAngle(), ValueType::Gradient );
 
         if ( gradientBehind < los->targetGradient() )
         {

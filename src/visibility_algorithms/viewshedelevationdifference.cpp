@@ -2,7 +2,7 @@
 
 using viewshed::ViewshedElevationDifference;
 
-double ViewshedElevationDifference::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<LoS> los )
+double ViewshedElevationDifference::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<ILoS> los )
 {
     return los->targetElevation() - los->vp()->totalElevation();
 }

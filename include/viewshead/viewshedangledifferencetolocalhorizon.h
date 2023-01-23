@@ -13,7 +13,7 @@ namespace viewshed
       public:
         ViewshedAngleDifferenceToLocalHorizon( bool all = false, double invisibleValue = -91 );
 
-        double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<LoS> los ) override;
+        double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<ILoS> los ) override;
         const double viewpointValue() override;
         const double invisible() override;
         const double completlyVisible() override;

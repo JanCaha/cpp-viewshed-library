@@ -10,7 +10,7 @@ ViewshedAngleDifferenceToGlobalHorizon::ViewshedAngleDifferenceToGlobalHorizon( 
 }
 
 double ViewshedAngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
-                                                       std::shared_ptr<LoS> los )
+                                                       std::shared_ptr<ILoS> los )
 {
     double difference;
     if ( losValues->mIndexHorizon != 0 )
