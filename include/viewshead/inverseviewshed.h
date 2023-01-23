@@ -25,7 +25,7 @@ namespace viewshed
             { qDebug() << QString::fromStdString( text ) << time; },
             std::function<void( int, int )> progressCallback = []( int, int ) {} );
 
-        std::shared_ptr<LoS> getLoS( QgsPoint point, bool onlyToPoint = false );
+        std::shared_ptr<InverseLoS> getLoS( QgsPoint point, bool onlyToPoint = false );
 
         void submitToThreadpool( CellEvent &e ) override;
 

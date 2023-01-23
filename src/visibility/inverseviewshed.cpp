@@ -7,6 +7,7 @@
 #include "threadtasks.h"
 #include "visibility.h"
 
+using viewshed::InverseLoS;
 using viewshed::InverseViewshed;
 using viewshed::IViewshedAlgorithm;
 using viewshed::LoSEvaluator;
@@ -37,7 +38,7 @@ InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double obs
     mValid = true;
 }
 
-std::shared_ptr<LoS> InverseViewshed::getLoS( QgsPoint point, bool onlyToPoi )
+std::shared_ptr<InverseLoS> InverseViewshed::getLoS( QgsPoint point, bool onlyToPoi )
 {
 
     std::vector<LoSNode> losNodes = prepareLoSWithPoint( point );
