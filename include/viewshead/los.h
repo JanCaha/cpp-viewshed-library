@@ -24,6 +24,11 @@ namespace viewshed
         virtual double distance( int i ) = 0;
         virtual double elevation( int i ) = 0;
         virtual bool isValid() = 0;
+        virtual int numberOfNodes() = 0;
+        virtual int targetPointIndex() = 0;
+        virtual void sort() = 0;
+        virtual LoSNode nodeAt( int i ) = 0;
+        virtual void prepareForCalculation() = 0;
 
         void setViewPoint( std::shared_ptr<Point> vp );
 
@@ -34,8 +39,6 @@ namespace viewshed
         void setTargetPoint( std::shared_ptr<LoSNode> poi, double targetOffset = 0 );
 
         void setAngle( double angle );
-
-        void prepareForCalculation();
 
         double horizontalAngle();
         double targetDistance();
@@ -72,18 +75,27 @@ namespace viewshed
 
         bool isValid() override;
 
+        LoSNode nodeAt( int i ) override;
+
         void setTargetPoint( std::shared_ptr<LoSNode> poi, double targetOffset = 0 );
 
-        int targetPointIndex();
+        int targetPointIndex() override;
 
-        void sort();
+        int numberOfNodes() override;
+
+        void prepareForCalculation() override;
+
+        void sort() override;
     };
 
-    class InverseLoS : public LoS
+    class InverseLoS : public std::vector<LoSNode>, public ILoS
     {
       public:
         InverseLoS();
         InverseLoS( std::vector<LoSNode> losNodes );
+
+        void setLoSNodes( std::vector<LoSNode> losNodes );
+        void setLoSNodes( LoS los );
 
         void setViewPoint( std::shared_ptr<Point> vp ) = delete;
         void setTargetPoint( std::shared_ptr<Point> tp ) = delete;
@@ -97,6 +109,21 @@ namespace viewshed
         double gradient( int i ) override;
 
         double elevation( int i ) override;
+
+        LoSNode nodeAt( int i ) override;
+
+        int numberOfNodes() override;
+
+        int targetPointIndex() override;
+
+        void prepareForCalculation() override;
+
+        void sort() override;
+
+        bool isValid() override;
+
+      private:
+        void removePointsAfterViewPoint();
     };
 
 } // namespace viewshed
