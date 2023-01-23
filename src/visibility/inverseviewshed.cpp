@@ -56,9 +56,9 @@ std::shared_ptr<InverseLoS> InverseViewshed::getLoS( QgsPoint point, bool onlyTo
     }
 
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( losNodes );
-    los->sort();
     los->setTargetPoint( mPoint, mPoint->offset );
     los->setViewPoint( poi, mObserverOffset );
+    los->prepareForCalculation();
 
     return los;
 }
@@ -92,7 +92,6 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
     std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint, &e, mCellSize );
 
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( mLosNodes );
-    los->sort();
     los->setTargetPoint( mPoint, mPoint->offset );
     los->setViewPoint( poi, mObserverOffset );
 
