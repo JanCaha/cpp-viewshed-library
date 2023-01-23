@@ -36,8 +36,12 @@ void LoS::setTargetPoint( std::shared_ptr<LoSNode> poi, double targetOffset )
 
 int LoS::targetPointIndex() { return mTargetIndex; }
 
-void LoS::prepareForCalculation(){};
+void LoS::prepareForCalculation() { sort(); };
 
 int LoS::numberOfNodes() { return size(); };
 
 LoSNode LoS::nodeAt( int i ) { return at( i ); }
+
+int LoS::resultRow() { return mTp->row; }
+
+int LoS::resultCol() { return mTp->col; }

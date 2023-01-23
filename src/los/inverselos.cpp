@@ -44,9 +44,17 @@ int InverseLoS::numberOfNodes() { return size(); };
 
 int InverseLoS::targetPointIndex() { return mTargetIndex; }
 
-void InverseLoS::sort() { std::sort( begin(), end() ); }
+void InverseLoS::sort()
+{
+    std::sort( begin(), end() );
+    std::reverse( begin(), end() );
+}
 
-void InverseLoS::prepareForCalculation() { removePointsAfterViewPoint(); };
+void InverseLoS::prepareForCalculation()
+{
+    removePointsAfterViewPoint();
+    sort();
+};
 
 void InverseLoS::removePointsAfterViewPoint()
 {
@@ -56,6 +64,10 @@ void InverseLoS::removePointsAfterViewPoint()
 }
 
 LoSNode InverseLoS::nodeAt( int i ) { return at( i ); }
+
+int InverseLoS::resultRow() { return mVp->row; }
+
+int InverseLoS::resultCol() { return mVp->col; }
 
 // TODO fix !!!!!
 bool InverseLoS::isValid() { return true; }

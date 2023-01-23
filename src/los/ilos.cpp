@@ -42,5 +42,3 @@ int ILoS::targetCol() { return mTp->col; }
 int ILoS::targetRow() { return mTp->row; }
 
 std::shared_ptr<Point> ILoS::vp() { return mVp; }
-
-void ILoS::prepareForCalculation() {}
