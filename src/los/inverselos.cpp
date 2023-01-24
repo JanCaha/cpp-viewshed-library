@@ -53,6 +53,7 @@ void InverseLoS::sort()
 void InverseLoS::prepareForCalculation()
 {
     removePointsAfterViewPoint();
+    fixDistances();
     sort();
 };
 
@@ -71,3 +72,19 @@ int InverseLoS::resultCol() { return mVp->col; }
 
 // TODO fix !!!!!
 bool InverseLoS::isValid() { return true; }
+
+void InverseLoS::fixDistances()
+{
+    for ( int i = 0; i < size(); i++ )
+    {
+        if ( 0 > at( i ).distances[CellEventPositionType::CENTER] )
+        {
+            at( i ).distances[CellEventPositionType::ENTER] =
+                mPointDistance + ( -1 ) * at( i ).distances[CellEventPositionType::ENTER];
+            at( i ).distances[CellEventPositionType::CENTER] =
+                mPointDistance + ( -1 ) * at( i ).distances[CellEventPositionType::CENTER];
+            at( i ).distances[CellEventPositionType::EXIT] =
+                mPointDistance + ( -1 ) * at( i ).distances[CellEventPositionType::EXIT];
+        }
+    }
+}
