@@ -44,12 +44,18 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
         Visibility::calculateEventPosition( CellEventPositionType::EXIT, e->row, e->col, point );
     angle[CellEventPositionType::EXIT] = Visibility::calculateAngle( &posExit, point );
 
-    distances[CellEventPositionType::CENTER] = Visibility::calculateDistance( row, col, point, cellSize );
-    distances[CellEventPositionType::ENTER] = Visibility::calculateDistance( &posEnter, point, cellSize );
-    distances[CellEventPositionType::EXIT] = Visibility::calculateDistance( &posExit, point, cellSize );
-
-    double dRow = (double)row;
-    double dCol = (double)col;
+    if ( 0 > e->dist2vp )
+    {
+        distances[CellEventPositionType::CENTER] = ( -1 ) * Visibility::calculateDistance( row, col, point, cellSize );
+        distances[CellEventPositionType::ENTER] = ( -1 ) * Visibility::calculateDistance( &posEnter, point, cellSize );
+        distances[CellEventPositionType::EXIT] = ( -1 ) * Visibility::calculateDistance( &posExit, point, cellSize );
+    }
+    else
+    {
+        distances[CellEventPositionType::CENTER] = Visibility::calculateDistance( row, col, point, cellSize );
+        distances[CellEventPositionType::ENTER] = Visibility::calculateDistance( &posEnter, point, cellSize );
+        distances[CellEventPositionType::EXIT] = Visibility::calculateDistance( &posExit, point, cellSize );
+    }
 
     gradient[CellEventPositionType::CENTER] = Visibility::calculateGradient(
         point, elevs[CellEventPositionType::CENTER], distances[CellEventPositionType::CENTER] );
