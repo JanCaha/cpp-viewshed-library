@@ -178,3 +178,5 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigConfigVersion.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
 )
+
+add_subdirectory(docs)
