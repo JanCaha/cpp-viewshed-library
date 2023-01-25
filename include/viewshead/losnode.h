@@ -14,6 +14,7 @@ namespace viewshed
         double angle[3];
         double elevs[3];
         double distances[3];
+        bool inverseLoSBehindTarget = false;
 
         LoSNode();
         LoSNode( int row_, int col_ );
