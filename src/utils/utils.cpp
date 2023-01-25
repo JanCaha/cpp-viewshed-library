@@ -35,7 +35,6 @@ void Utils::saveToCsv( std::vector<std::pair<double, double>> data, std::string 
     resultCsvFile.close();
 }
 
-// TODO InverseViewshed needs special treatment
 std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr<ILoS> los )
 {
     std::vector<std::pair<double, double>> data;
