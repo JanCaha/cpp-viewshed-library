@@ -96,5 +96,14 @@ void InverseLoS::fixDistancesAngles()
             at( i ).angle[CellEventPositionType::CENTER] += addValue;
             at( i ).angle[CellEventPositionType::EXIT] += addValue;
         }
+        else
+        {
+            at( i ).distances[CellEventPositionType::ENTER] =
+                mPointDistance - at( i ).distances[CellEventPositionType::ENTER];
+            at( i ).distances[CellEventPositionType::CENTER] =
+                mPointDistance - at( i ).distances[CellEventPositionType::CENTER];
+            at( i ).distances[CellEventPositionType::EXIT] =
+                mPointDistance - at( i ).distances[CellEventPositionType::EXIT];
+        }
     }
 }
