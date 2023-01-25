@@ -66,6 +66,12 @@ class TestInverseLosAlgorithms : public QObject
         eventList.push_back( CellEvent( CellEventPositionType::CENTER, 0, 9, 9.0, 0.0, elevs ) );
         resetArray( elevs, 10.0 );
         eventList.push_back( CellEvent( CellEventPositionType::CENTER, 0, 10, 10.0, 0.0, elevs ) );
+        resetArray( elevs, 2.0 - 0.2 );
+        eventList.push_back( CellEvent( CellEventPositionType::CENTER, 0, -1, -1.0, 0.0, elevs ) );
+        resetArray( elevs, 3.0 - 0.1 );
+        eventList.push_back( CellEvent( CellEventPositionType::CENTER, 0, -2, -2.0, 0.0, elevs ) );
+        resetArray( elevs, 1.0 );
+        eventList.push_back( CellEvent( CellEventPositionType::CENTER, 0, -3, -3.0, 0.0, elevs ) );
 
         double cellSize = 1.0;
         for ( int i = 0; i < eventList.size(); i++ )
