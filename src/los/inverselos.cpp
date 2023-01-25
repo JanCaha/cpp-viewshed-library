@@ -9,10 +9,7 @@ InverseLoS::InverseLoS() {}
 
 InverseLoS::InverseLoS( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
 
-double InverseLoS::distance( int i )
-{
-    return mPointDistance - at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance );
-}
+double InverseLoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
 
 double InverseLoS::gradient( int i )
 {
@@ -44,11 +41,7 @@ int InverseLoS::numberOfNodes() { return size(); };
 
 int InverseLoS::targetPointIndex() { return mTargetIndex; }
 
-void InverseLoS::sort()
-{
-    std::sort( begin(), end() );
-    std::reverse( begin(), end() );
-}
+void InverseLoS::sort() { std::sort( begin(), end() ); }
 
 void InverseLoS::prepareForCalculation()
 {
