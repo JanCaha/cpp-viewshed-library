@@ -60,7 +60,9 @@ void InverseLoS::prepareForCalculation()
 void InverseLoS::removePointsAfterViewPoint()
 {
     double dist = mPointDistance;
-    erase( std::remove_if( begin(), end(), [&dist]( LoSNode &node ) { return dist <= node.centreDistance(); } ),
+    erase( std::remove_if( begin(), end(),
+                           [&dist]( LoSNode &node )
+                           { return ( dist <= node.centreDistance() && !node.inverseLoSBehindTarget ); } ),
            end() );
 }
 
@@ -77,14 +79,11 @@ void InverseLoS::fixDistances()
 {
     for ( int i = 0; i < size(); i++ )
     {
-        if ( 0 > at( i ).distances[CellEventPositionType::CENTER] )
+        if ( at( i ).inverseLoSBehindTarget )
         {
-            at( i ).distances[CellEventPositionType::ENTER] =
-                mPointDistance + ( -1 ) * at( i ).distances[CellEventPositionType::ENTER];
-            at( i ).distances[CellEventPositionType::CENTER] =
-                mPointDistance + ( -1 ) * at( i ).distances[CellEventPositionType::CENTER];
-            at( i ).distances[CellEventPositionType::EXIT] =
-                mPointDistance + ( -1 ) * at( i ).distances[CellEventPositionType::EXIT];
+            at( i ).distances[CellEventPositionType::ENTER] += mPointDistance;
+            at( i ).distances[CellEventPositionType::CENTER] += mPointDistance;
+            at( i ).distances[CellEventPositionType::EXIT] += mPointDistance;
         }
     }
 }
