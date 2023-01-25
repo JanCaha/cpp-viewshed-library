@@ -14,7 +14,7 @@ double ViewshedAngleDifferenceToLocalHorizon::result( std::shared_ptr<LoSImporta
                                                       std::shared_ptr<ILoS> los )
 {
     double difference;
-    if ( losValues->mIndexHorizonBefore != 0 )
+    if ( losValues->horizonBeforeExist() )
     {
         difference =
             los->targetGradient() -
