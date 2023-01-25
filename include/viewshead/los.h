@@ -122,7 +122,7 @@ namespace viewshed
 
       private:
         void removePointsAfterViewPoint();
-        void fixDistances();
+        void fixDistancesAngles();
     };
 
 } // namespace viewshed

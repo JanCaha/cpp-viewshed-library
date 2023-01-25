@@ -53,7 +53,7 @@ void InverseLoS::sort()
 void InverseLoS::prepareForCalculation()
 {
     removePointsAfterViewPoint();
-    fixDistances();
+    fixDistancesAngles();
     sort();
 };
 
@@ -75,7 +75,7 @@ int InverseLoS::resultCol() { return mVp->col; }
 // TODO fix !!!!!
 bool InverseLoS::isValid() { return true; }
 
-void InverseLoS::fixDistances()
+void InverseLoS::fixDistancesAngles()
 {
     for ( int i = 0; i < size(); i++ )
     {
@@ -84,6 +84,17 @@ void InverseLoS::fixDistances()
             at( i ).distances[CellEventPositionType::ENTER] += mPointDistance;
             at( i ).distances[CellEventPositionType::CENTER] += mPointDistance;
             at( i ).distances[CellEventPositionType::EXIT] += mPointDistance;
+
+            double addValue = -M_PI;
+
+            if ( at( i ).angle[CellEventPositionType::CENTER] < M_PI )
+            {
+                addValue = +M_PI;
+            }
+
+            at( i ).angle[CellEventPositionType::ENTER] += addValue;
+            at( i ).angle[CellEventPositionType::CENTER] += addValue;
+            at( i ).angle[CellEventPositionType::EXIT] += addValue;
         }
     }
 }
