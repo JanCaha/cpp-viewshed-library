@@ -11,7 +11,8 @@ namespace viewshed
     {
 
       public:
-        ViewshedAngleDifferenceToGlobalHorizon( bool all = false, double invisibleValue = -91 );
+        ViewshedAngleDifferenceToGlobalHorizon( bool all = false, double invisibleValue = -181,
+                                                double differenceWithoutHorizon = -180 );
 
         double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<ILoS> los ) override;
         const double viewpointValue() override;
@@ -22,6 +23,7 @@ namespace viewshed
       private:
         bool mAllPoints = false;
         double mInvisibleValue;
+        double mDifferenceWithoutHorizon;
     };
 } // namespace viewshed
 

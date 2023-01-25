@@ -4,10 +4,10 @@
 
 using viewshed::ViewshedAngleDifferenceToLocalHorizon;
 
-ViewshedAngleDifferenceToLocalHorizon::ViewshedAngleDifferenceToLocalHorizon( bool all, double invisibleValue )
-    : mInvisibleValue( invisibleValue )
+ViewshedAngleDifferenceToLocalHorizon::ViewshedAngleDifferenceToLocalHorizon( bool all, double invisibleValue,
+                                                                              double differenceWithoutHorizon )
+    : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon )
 {
-    mAllPoints = all;
 }
 
 double ViewshedAngleDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
@@ -22,7 +22,7 @@ double ViewshedAngleDifferenceToLocalHorizon::result( std::shared_ptr<LoSImporta
     }
     else
     {
-        difference = 90 + los->targetGradient();
+        difference = mDifferenceWithoutHorizon;
     }
 
     if ( mAllPoints )

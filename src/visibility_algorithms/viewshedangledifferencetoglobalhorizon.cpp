@@ -4,8 +4,9 @@
 
 using viewshed::ViewshedAngleDifferenceToGlobalHorizon;
 
-ViewshedAngleDifferenceToGlobalHorizon::ViewshedAngleDifferenceToGlobalHorizon( bool all, double invisibleValue )
-    : mAllPoints( all ), mInvisibleValue( invisibleValue )
+ViewshedAngleDifferenceToGlobalHorizon::ViewshedAngleDifferenceToGlobalHorizon( bool all, double invisibleValue,
+                                                                                double differenceWithoutHorizon )
+    : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon )
 {
 }
 
@@ -19,7 +20,7 @@ double ViewshedAngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImport
     }
     else
     {
-        difference = 90 + los->targetGradient();
+        difference = mDifferenceWithoutHorizon;
     }
 
     if ( mAllPoints )
