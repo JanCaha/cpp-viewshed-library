@@ -21,9 +21,8 @@ double ViewshedElevationDifferenceToLocalHorizon::result( std::shared_ptr<LoSImp
         LoSNode horizon = los->nodeAt( losValues->mIndexHorizonBefore );
 
         change = std::tan( ( M_PI / 180 ) * losValues->mMaxGradientBefore ) *
-                 ( los->targetDistance() - horizon.valueAtAngle( los->horizontalAngle(), ValueType::Distance ) );
-        difference =
-            los->targetElevation() - ( change + horizon.valueAtAngle( los->horizontalAngle(), ValueType::Elevation ) );
+                 ( los->targetDistance() - los->distance( losValues->mIndexHorizonBefore ) );
+        difference = los->targetElevation() - ( change + los->elevation( losValues->mIndexHorizonBefore ) );
     }
     else
     {
