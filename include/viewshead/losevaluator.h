@@ -3,8 +3,8 @@
 
 #include <limits>
 
+#include "abstractlos.h"
 #include "abstractviewshedalgorithm.h"
-#include "los.h"
 #include "losimportantvalues.h"
 #include "losnode.h"
 #include "point.h"

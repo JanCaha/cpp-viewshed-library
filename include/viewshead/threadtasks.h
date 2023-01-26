@@ -1,8 +1,8 @@
 #ifndef VIEWSHEDLIB_THREADTASK_H
 #define VIEWSHEDLIB_THREADTASK_H
 
+#include "abstractlos.h"
 #include "enums.h"
-#include "los.h"
 #include "losnode.h"
 #include "point.h"
 #include "viewshed.h"

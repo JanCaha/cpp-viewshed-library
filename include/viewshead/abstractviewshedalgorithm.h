@@ -5,7 +5,7 @@
 
 #include "QString"
 
-#include "los.h"
+#include "abstractlos.h"
 #include "losimportantvalues.h"
 #include "losnode.h"
 #include "point.h"

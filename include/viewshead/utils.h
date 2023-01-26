@@ -1,7 +1,7 @@
 #ifndef VIEWSHEDLIB_UTILS_H
 #define VIEWSHEDLIB_UTILS_H
 
-#include "los.h"
+#include "abstractlos.h"
 #include "losnode.h"
 #include "viewshed.h"
 

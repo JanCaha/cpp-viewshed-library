@@ -87,6 +87,8 @@ set(PUBLIC_HEADERS
     include/viewshead/points.h
     include/viewshead/celleventposition.h
     include/viewshead/los.h
+    include/viewshead/inverselos.h
+    include/viewshead/abstractlos.h
     include/viewshead/losnode.h
     include/viewshead/losimportantvalues.h
     include/viewshead/viewshedangledifferencetoglobalhorizon.h
@@ -104,7 +106,6 @@ set(PUBLIC_HEADERS
     include/viewshead/viewshedvalues.h
     include/viewshead/utils.h
     include/viewshead/threadtasks.h
-    include/viewshead/los.h
     include/viewshead/rasterposition.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )

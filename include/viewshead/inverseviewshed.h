@@ -4,9 +4,9 @@
 #include <functional>
 #include <limits>
 
-#include "enums.h"
 #include "abstractviewshed.h"
-#include "los.h"
+#include "enums.h"
+#include "inverselos.h"
 #include "losevaluator.h"
 #include "point.h"
 

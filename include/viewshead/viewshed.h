@@ -4,8 +4,8 @@
 #include <functional>
 #include <limits>
 
-#include "enums.h"
 #include "abstractviewshed.h"
+#include "enums.h"
 #include "los.h"
 #include "losevaluator.h"
 #include "point.h"
@@ -28,7 +28,6 @@ namespace viewshed
         std::shared_ptr<LoS> getLoS( QgsPoint point, bool onlyToPoint = false );
 
         void submitToThreadpool( CellEvent &e ) override;
-
     };
 
 } // namespace viewshed

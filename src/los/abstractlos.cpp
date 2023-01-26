@@ -1,8 +1,7 @@
-#include "los.h"
+#include "abstractlos.h"
 #include "visibility.h"
 
 using viewshed::AbstractLoS;
-using viewshed::LoS;
 using viewshed::Visibility;
 
 AbstractLoS::AbstractLoS(){};
@@ -16,7 +15,10 @@ void AbstractLoS::setViewPoint( std::shared_ptr<LoSNode> poi, double observerOff
 
 double AbstractLoS::targetDistance() { return mPointDistance; }
 
-double AbstractLoS::targetGradient() { return Visibility::calculateGradient( mVp, mTp->totalElevation(), mPointDistance ); }
+double AbstractLoS::targetGradient()
+{
+    return Visibility::calculateGradient( mVp, mTp->totalElevation(), mPointDistance );
+}
 
 double AbstractLoS::targetElevation() { return mTp->totalElevation(); }
 

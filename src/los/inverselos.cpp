@@ -1,4 +1,5 @@
-#include "los.h"
+#include "inverselos.h"
+#include "abstractlos.h"
 #include "visibility.h"
 
 using viewshed::AbstractLoS;

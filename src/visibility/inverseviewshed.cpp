@@ -2,14 +2,15 @@
 
 #include <QElapsedTimer>
 
+#include "abstractviewshedalgorithm.h"
+#include "inverselos.h"
 #include "inverseviewshed.h"
-#include "los.h"
 #include "threadtasks.h"
 #include "visibility.h"
 
+using viewshed::AbstractViewshedAlgorithm;
 using viewshed::InverseLoS;
 using viewshed::InverseViewshed;
-using viewshed::AbstractViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 using viewshed::LoSNode;
 using viewshed::MemoryRaster;

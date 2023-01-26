@@ -3,8 +3,10 @@
 #include <sstream>
 #include <string>
 
+#include "inverselos.h"
 #include "utils.h"
 
+using viewshed::InverseLoS;
 using viewshed::Utils;
 
 void Utils::saveToCsv( std::vector<std::pair<double, double>> data, std::string header, std::string fileName )

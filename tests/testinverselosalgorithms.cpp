@@ -5,9 +5,10 @@
 
 #include "testsettings.h"
 
+#include "abstractviewshedalgorithm.h"
 #include "cellevent.h"
 #include "enums.h"
-#include "abstractviewshedalgorithm.h"
+#include "inverselos.h"
 #include "losevaluator.h"
 #include "losnode.h"
 #include "memoryraster.h"
