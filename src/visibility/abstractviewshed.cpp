@@ -1,13 +1,13 @@
-#include "iviewshed.h"
+#include "abstractviewshed.h"
 #include "memoryraster.h"
 #include "threadtasks.h"
 #include "visibility.h"
 
-using viewshed::IViewshed;
+using viewshed::AbstractViewshed;
 using viewshed::LoSNode;
 using viewshed::MemoryRaster;
 
-void IViewshed::prepareMemoryRasters()
+void AbstractViewshed::prepareMemoryRasters()
 {
     for ( int i = 0; i < mAlgs->size(); i++ )
     {
@@ -16,7 +16,7 @@ void IViewshed::prepareMemoryRasters()
     }
 }
 
-void IViewshed::initEventList()
+void AbstractViewshed::initEventList()
 {
 
     std::unique_ptr<QgsRasterInterface> rInterface;
@@ -104,9 +104,9 @@ void IViewshed::initEventList()
     }
 }
 
-void IViewshed::setMaximalDistance( double distance ) { mMaxDistance = distance; }
+void AbstractViewshed::setMaximalDistance( double distance ) { mMaxDistance = distance; }
 
-void IViewshed::setAngles( double minAngle, double maxAngle )
+void AbstractViewshed::setAngles( double minAngle, double maxAngle )
 {
     if ( !std::isnan( minAngle ) )
     {
@@ -138,9 +138,9 @@ void IViewshed::setAngles( double minAngle, double maxAngle )
     }
 }
 
-bool IViewshed::validAngles() { return !( std::isnan( mMinAngle ) || std::isnan( mMaxAngle ) ); }
+bool AbstractViewshed::validAngles() { return !( std::isnan( mMinAngle ) || std::isnan( mMaxAngle ) ); }
 
-bool IViewshed::isInsideAngles( double eventEnterAngle, double eventExitAngle )
+bool AbstractViewshed::isInsideAngles( double eventEnterAngle, double eventExitAngle )
 {
     if ( validAngles() )
     {
@@ -164,9 +164,9 @@ bool IViewshed::isInsideAngles( double eventEnterAngle, double eventExitAngle )
     return true;
 }
 
-void IViewshed::sortEventList() { std::sort( mCellEvents.begin(), mCellEvents.end() ); }
+void AbstractViewshed::sortEventList() { std::sort( mCellEvents.begin(), mCellEvents.end() ); }
 
-void IViewshed::parseEventList( std::function<void( int size, int current )> progressCallback )
+void AbstractViewshed::parseEventList( std::function<void( int size, int current )> progressCallback )
 {
     prepareMemoryRasters();
 
@@ -234,7 +234,7 @@ void IViewshed::parseEventList( std::function<void( int size, int current )> pro
     }
 }
 
-void IViewshed::parseCalculatedResults()
+void AbstractViewshed::parseCalculatedResults()
 {
     mThreadPool.wait_for_tasks();
 
@@ -246,7 +246,7 @@ void IViewshed::parseCalculatedResults()
     mResultPixels = BS::multi_future<ViewshedValues>();
 }
 
-void IViewshed::setPixelData( ViewshedValues values )
+void AbstractViewshed::setPixelData( ViewshedValues values )
 {
     for ( int j = 0; j < values.values.size(); j++ )
     {
@@ -254,7 +254,7 @@ void IViewshed::setPixelData( ViewshedValues values )
     }
 }
 
-void IViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
+void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
                                             std::function<double( LoSNode )> func )
 {
     MemoryRaster result = MemoryRaster( dem_ );
@@ -273,7 +273,7 @@ void IViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_
     result.save( fileName );
 }
 
-double IViewshed::getCornerValue( const CellEventPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
+double AbstractViewshed::getCornerValue( const CellEventPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
                                   double defaultValue )
 {
 
@@ -307,9 +307,9 @@ double IViewshed::getCornerValue( const CellEventPosition &pos, const std::uniqu
     return ( value1 + value2 + value3 + value4 ) / 4;
 }
 
-std::shared_ptr<MemoryRaster> IViewshed::resultRaster( int index ) { return mResults.at( index ); }
+std::shared_ptr<MemoryRaster> AbstractViewshed::resultRaster( int index ) { return mResults.at( index ); }
 
-void IViewshed::saveResults( QString location, QString fileNamePrefix )
+void AbstractViewshed::saveResults( QString location, QString fileNamePrefix )
 {
     for ( int i = 0; i < mAlgs->size(); i++ )
     {
@@ -329,7 +329,7 @@ void IViewshed::saveResults( QString location, QString fileNamePrefix )
     }
 }
 
-QgsPoint IViewshed::point( int row, int col )
+QgsPoint AbstractViewshed::point( int row, int col )
 {
     QgsPoint p = mInputDem->dataProvider()->transformCoordinates(
         QgsPoint( col + 0.5, row + 0.5 ), QgsRasterDataProvider::TransformType::TransformImageToLayer );
@@ -337,7 +337,7 @@ QgsPoint IViewshed::point( int row, int col )
     return p;
 }
 
-LoSNode IViewshed::statusNodeFromPoint( QgsPoint point )
+LoSNode AbstractViewshed::statusNodeFromPoint( QgsPoint point )
 {
     QgsPoint pointRaster = mInputDem->dataProvider()->transformCoordinates(
         point, QgsRasterDataProvider::TransformType::TransformLayerToImage );
@@ -359,11 +359,11 @@ LoSNode IViewshed::statusNodeFromPoint( QgsPoint point )
     return ln;
 }
 
-void IViewshed::setMaxConcurentTaks( int maxTasks ) { mMaxNumberOfTasks = maxTasks; }
+void AbstractViewshed::setMaxConcurentTaks( int maxTasks ) { mMaxNumberOfTasks = maxTasks; }
 
-void IViewshed::setMaxResultsInMemory( int maxResults ) { mMaxNumberOfResults = maxResults; }
+void AbstractViewshed::setMaxResultsInMemory( int maxResults ) { mMaxNumberOfResults = maxResults; }
 
-void IViewshed::setMaxThreads( int threads )
+void AbstractViewshed::setMaxThreads( int threads )
 {
     if ( mThreadPool.get_thread_count() < threads )
     {
@@ -373,7 +373,7 @@ void IViewshed::setMaxThreads( int threads )
     mThreadPool.reset( threads );
 }
 
-std::vector<LoSNode> IViewshed::prepareLoSWithPoint( QgsPoint point )
+std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( QgsPoint point )
 {
 
     LoSNode poi = statusNodeFromPoint( point );

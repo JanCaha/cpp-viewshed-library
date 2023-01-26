@@ -9,7 +9,7 @@
 
 using viewshed::InverseLoS;
 using viewshed::InverseViewshed;
-using viewshed::IViewshedAlgorithm;
+using viewshed::AbstractViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 using viewshed::LoSNode;
 using viewshed::MemoryRaster;
@@ -18,7 +18,7 @@ using viewshed::ViewshedValues;
 
 InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double observerOffset,
                                   std::shared_ptr<QgsRasterLayer> dem,
-                                  std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs,
+                                  std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
                                   double minimalAngle, double maximalAngle )
 {
     mValid = false;

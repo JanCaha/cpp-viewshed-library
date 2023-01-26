@@ -11,7 +11,7 @@ ViewshedElevationDifferenceToGlobalHorizon::ViewshedElevationDifferenceToGlobalH
 }
 
 double ViewshedElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
-                                                           std::shared_ptr<ILoS> los )
+                                                           std::shared_ptr<AbstractLoS> los )
 {
     double change;
     double difference;

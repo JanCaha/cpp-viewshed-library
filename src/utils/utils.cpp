@@ -35,7 +35,7 @@ void Utils::saveToCsv( std::vector<std::pair<double, double>> data, std::string 
     resultCsvFile.close();
 }
 
-std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr<ILoS> los )
+std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr<AbstractLoS> los )
 {
     std::vector<std::pair<double, double>> data;
 

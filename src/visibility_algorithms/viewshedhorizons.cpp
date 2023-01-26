@@ -4,7 +4,7 @@
 
 using viewshed::ViewshedHorizons;
 
-double ViewshedHorizons::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<ILoS> los )
+double ViewshedHorizons::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los )
 {
 
     bool isHorizon = false;

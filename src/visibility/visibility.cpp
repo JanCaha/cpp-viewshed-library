@@ -1,5 +1,6 @@
 #include "math.h"
 
+#include "rasterposition.h"
 #include "visibility.h"
 
 using viewshed::CellEventPosition;

@@ -5,18 +5,18 @@
 #include <limits>
 
 #include "enums.h"
-#include "iviewshed.h"
+#include "abstractviewshed.h"
 #include "los.h"
 #include "losevaluator.h"
-#include "points.h"
+#include "point.h"
 
 namespace viewshed
 {
-    class InverseViewshed : public IViewshed
+    class InverseViewshed : public AbstractViewshed
     {
       public:
         InverseViewshed( std::shared_ptr<Point> targetPoint, double observerOffset, std::shared_ptr<QgsRasterLayer> dem,
-                         std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs,
+                         std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
                          double minimalAngle = std::numeric_limits<double>::quiet_NaN(),
                          double maximalAngle = std::numeric_limits<double>::quiet_NaN() );
 

@@ -4,7 +4,7 @@
 #include "cellevent.h"
 #include "enums.h"
 #include "losnode.h"
-#include "points.h"
+#include "point.h"
 #include "visibility.h"
 
 using viewshed::CellEvent;
@@ -17,7 +17,7 @@ using viewshed::ValueType;
 namespace viewshed
 {
 
-    class ILoS
+    class AbstractLoS
     {
       public:
         void setViewPoint( std::shared_ptr<Point> vp );
@@ -52,7 +52,7 @@ namespace viewshed
         std::shared_ptr<Point> vp();
 
       protected:
-        ILoS();
+        AbstractLoS();
 
         double mAngleHorizontal;
         double mPointDistance;
@@ -63,7 +63,7 @@ namespace viewshed
         virtual void sort() = 0;
     };
 
-    class LoS : public std::vector<LoSNode>, public ILoS
+    class LoS : public std::vector<LoSNode>, public AbstractLoS
     {
       public:
         LoS();
@@ -90,7 +90,7 @@ namespace viewshed
         void sort() override;
     };
 
-    class InverseLoS : public std::vector<LoSNode>, public ILoS
+    class InverseLoS : public std::vector<LoSNode>, public AbstractLoS
     {
       public:
         InverseLoS();

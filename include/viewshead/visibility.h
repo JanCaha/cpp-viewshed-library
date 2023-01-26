@@ -3,7 +3,8 @@
 
 #include "celleventposition.h"
 #include "enums.h"
-#include "points.h"
+#include "point.h"
+#include "rasterposition.h"
 
 namespace viewshed
 {

@@ -1,14 +1,14 @@
 #include "threadtasks.h"
-#include "iviewshed.h"
+#include "abstractviewshed.h"
 #include "losnode.h"
-#include "points.h"
+#include "point.h"
 #include "viewshedvalues.h"
 
 using viewshed::LoSEvaluator;
 using viewshed::ViewshedValues;
 
-ViewshedValues viewshed::evaluateLoSForPoI( std::shared_ptr<ILoS> los,
-                                            std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs )
+ViewshedValues viewshed::evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
+                                            std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs )
 {
     los->prepareForCalculation();
 

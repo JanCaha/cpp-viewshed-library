@@ -1,20 +1,20 @@
 #include "losevaluator.h"
-#include "iviewshed.h"
+#include "abstractviewshed.h"
 #include "visibility.h"
 
-using viewshed::IViewshedAlgorithm;
+using viewshed::AbstractViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 using viewshed::Visibility;
 
-LoSEvaluator::LoSEvaluator( std::shared_ptr<ILoS> los,
-                            std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs )
+LoSEvaluator::LoSEvaluator( std::shared_ptr<AbstractLoS> los,
+                            std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs )
     : mLos( los ), mAlgs( algs )
 {
 }
 
 int LoSEvaluator::size() { return mAlgs->size(); }
 
-std::shared_ptr<IViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { return mAlgs->at( i ); }
+std::shared_ptr<AbstractViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { return mAlgs->at( i ); }
 
 void LoSEvaluator::parseNodes()
 {

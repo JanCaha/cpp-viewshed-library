@@ -7,11 +7,11 @@
 
 #include "cellevent.h"
 #include "enums.h"
-#include "iviewshedalgorithm.h"
+#include "abstractviewshedalgorithm.h"
 #include "losevaluator.h"
 #include "losnode.h"
 #include "memoryraster.h"
-#include "points.h"
+#include "point.h"
 #include "viewshedangledifferencetoglobalhorizon.h"
 #include "viewshedangledifferencetolocalhorizon.h"
 #include "viewshedelevationdifferencetoglobalhorizon.h"
@@ -30,8 +30,8 @@ class TestLosAlgorithms : public QObject
     std::vector<CellEvent> eventList;
     std::shared_ptr<LoS> los = std::make_shared<LoS>();
     std::shared_ptr<Point> vp = std::make_shared<Point>( 0, 0, 0, 0.001, 1 );
-    std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs =
-        std::make_shared<std::vector<std::shared_ptr<IViewshedAlgorithm>>>();
+    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs =
+        std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
     LoSEvaluator losEval = LoSEvaluator( los, algs );
 
   private slots:

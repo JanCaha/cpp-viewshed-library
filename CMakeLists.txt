@@ -46,7 +46,7 @@ set(UTILS
 
 set(STRUCTURES
     src/structures/cellevent.cpp
-    src/structures/points.cpp
+    src/structures/point.cpp
     src/structures/celleventposition.cpp
     src/structures/losnode.cpp
     src/structures/losimportantvalues.cpp
@@ -56,7 +56,7 @@ set(VISIBILITY
     src/visibility/visibility.cpp
     src/visibility/viewshed.cpp
     src/visibility/inverseviewshed.cpp
-    src/visibility/iviewshed.cpp
+    src/visibility/abstractviewshed.cpp
 )
 
 set(THREAD_TASKS
@@ -64,7 +64,7 @@ set(THREAD_TASKS
 )
 
 set(LOS
-    src/los/ilos.cpp
+    src/los/abstractlos.cpp
     src/los/los.cpp
     src/los/inverselos.cpp
     src/los/losevaluator.cpp
@@ -105,6 +105,7 @@ set(PUBLIC_HEADERS
     include/viewshead/utils.h
     include/viewshead/threadtasks.h
     include/viewshead/los.h
+    include/viewshead/rasterposition.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
 
