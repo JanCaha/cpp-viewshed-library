@@ -137,25 +137,9 @@ target_link_libraries(${LIB_NAME}
     bs_thread_pool
 )
 
-message(STATUS "${CMAKE_BUILD_TYPE}")
-
-IF(CMAKE_BUILD_TYPE MATCHES Release)
-    message(STATUS "Release mode will try install")
-
-    include(GNUInstallDirs)
-
-    install(TARGETS ${LIB_NAME}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/viewshed
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    )
-endif()
-
-include(Packing)
-
-include(CTest)
-enable_testing(true)
-add_subdirectory(tests)
+if(BUILD_TESTS)
+    add_subdirectory(tests)
+endif(BUILD_TESTS)
 
 # https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
 set(INCLUDE_INSTALL_DIR include/viewshed)
@@ -171,12 +155,24 @@ configure_package_config_file(${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
 )
 
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
 )
+
+include(GNUInstallDirs)
+
+install(TARGETS ${LIB_NAME}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/viewshed
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+if(PACK_DEB)
+    include(Packing)
+endif(PACK_DEB)
