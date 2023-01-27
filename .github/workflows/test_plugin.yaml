@@ -48,4 +48,4 @@ jobs:
         id: unittests
         run: | 
            cd build
-           ctest
+           ctest -VV
