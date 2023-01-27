@@ -177,6 +177,7 @@ install(TARGETS ${LIB_NAME}
 )
 
 if(PACK_DEB)
+    message("Preparing for building DEB package.")
     include(Packing)
     add_custom_command(
         TARGET ${LIB_NAME}
