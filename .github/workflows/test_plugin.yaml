@@ -27,6 +27,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt upgrade -y
+          sudo apt install ninja-build
 
       - name: Install QGIS
         run: |
