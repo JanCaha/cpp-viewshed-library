@@ -179,3 +179,15 @@ install(TARGETS ${LIB_NAME}
 if(PACK_DEB)
     include(Packing)
 endif(PACK_DEB)
+
+# ############################################################
+# Add uninstall :
+add_custom_target(uninstall)
+
+add_custom_target(delete_lib COMMAND rm ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libviewshed*)
+add_custom_target(delete_include COMMAND rm -rf ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/viewshed)
+add_custom_target(delete_cmake COMMAND rm -rf ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/cmake/viewshed)
+
+add_dependencies(uninstall delete_lib)
+add_dependencies(uninstall delete_include)
+add_dependencies(uninstall delete_cmake)
