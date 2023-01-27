@@ -81,7 +81,7 @@ set(MINIMAL_QGIS_LIBS
 set(PUBLIC_HEADERS
     include/viewshead/enums.h
     include/viewshead/cellevent.h
-    include/viewshead/iviewshedalgorithm.h
+    include/viewshead/abstractviewshedalgorithm.h
     include/viewshead/losevaluator.h
     include/viewshead/memoryraster.h
     include/viewshead/points.h
@@ -96,7 +96,7 @@ set(PUBLIC_HEADERS
     include/viewshead/viewshedelevationdifferencetoglobalhorizon.h
     include/viewshead/viewshedangledifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifference.h
-    include/viewshead/iviewshed.h
+    include/viewshead/abstractviewshed.h
     include/viewshead/inverseviewshed.h
     include/viewshead/viewshed.h
     include/viewshead/viewshedhorizons.h
