@@ -1,14 +1,13 @@
-sudo apt purge -y viewshed
-sudo rm /usr/local/lib/libviewshed*
-sudo rm -rf /usr/local/include/viewshed
-sudo rm -rf /usr/local/lib/cmake/viewshed
+# sudo apt purge -y viewshed
+
+sudo cmake --build build --target uninstall
 
 cmake -S. -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Release
-cmake --build build --config Release --target all
+cmake --build build --config Release --target viewshed
 
-cd build/tests 
-ctest -VV
-cd ../..
+# testing
+cmake --build build --config Release --target build_tests
+cmake --build build --config Release --target run_tests
 
 cd build
 cpack -G DEB -C Release
@@ -16,4 +15,5 @@ cpack -G DEB -C Release
 # sudo dpkg -i viewshed_*_amd64.deb
 cd ..
 
-sudo cmake --install build --config Release
+# install
+cmake --build build --config Release --target install
