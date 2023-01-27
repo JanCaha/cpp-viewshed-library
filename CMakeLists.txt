@@ -178,6 +178,12 @@ install(TARGETS ${LIB_NAME}
 
 if(PACK_DEB)
     include(Packing)
+    add_custom_command(
+        TARGET ${LIB_NAME}
+        POST_BUILD
+        COMMAND rm ../_packages/viewshed_*.deb
+        COMMAND cpack -G DEB -C Release
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif(PACK_DEB)
 
 # ############################################################
