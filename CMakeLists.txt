@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.18.0)
 
-project(viewshed VERSION 1.5.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 1.6.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+
+option(BUILD_TESTS "Build tests." ON)
+option(PACK_DEB "Create config for packing." ON)
 
 set(LIB_NAME viewshed)
 
