@@ -37,15 +37,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Configure and Build
+      - name: Configure
         run: | 
            mkdir build
-           cd build
-           cmake ..
-           cmake --build .
+           cmake -S. -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Debug -DPACK_DEB=off
+
+      - name: Build
+        run: | 
+           cmake --build build --config Debug --target viewshed
+
+      - name: Test install
+        run: |
+          cmake --build build --config Debug --target install
 
       - name: Run Tests
         id: unittests
         run: | 
-           cd build
-           ctest -VV
+           cmake --build build --config Debug --target build_tests
+           cmake --build build --config Debug --target run_tests
