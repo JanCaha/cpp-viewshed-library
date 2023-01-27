@@ -84,7 +84,7 @@ set(PUBLIC_HEADERS
     include/viewshead/abstractviewshedalgorithm.h
     include/viewshead/losevaluator.h
     include/viewshead/memoryraster.h
-    include/viewshead/points.h
+    include/viewshead/point.h
     include/viewshead/celleventposition.h
     include/viewshead/los.h
     include/viewshead/inverselos.h
