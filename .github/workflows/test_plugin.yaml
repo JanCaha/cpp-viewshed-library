@@ -49,7 +49,7 @@ jobs:
 
       - name: Test install
         run: |
-          cmake --build build --config Debug --target install
+          sudo cmake --build build --config Debug --target install
 
       - name: Run Tests
         id: unittests
