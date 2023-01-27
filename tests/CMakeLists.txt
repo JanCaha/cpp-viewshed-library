@@ -14,6 +14,20 @@ include_directories(SYSTEM
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+# ############################################################
+# Prepare targets for tests:
+add_custom_target(build_tests)
+
+# 'run_tests' triggers 'ctest'.
+add_custom_target(run_tests COMMAND ${CMAKE_CTEST_COMMAND} "-VV")
+
+# 'run_tests' implies 'build_tests'
+add_dependencies(run_tests build_tests)
+
+# ############################################################
+
+# ############################################################
+# Macro to add a test:
 macro(ADD_LIBRARY_TEST testname)
     add_executable(${testname} "${testname}.cpp")
     set_target_properties(${testname} PROPERTIES AUTOMOC TRUE)
@@ -29,7 +43,10 @@ macro(ADD_LIBRARY_TEST testname)
         ${LIB_NAME}
     )
     add_test(${testname} ${testname} -maxwarnings 10000)
+    add_dependencies(build_tests ${testname})
 endmacro(ADD_LIBRARY_TEST)
+
+# ############################################################
 
 # ############################################################
 # Tests:
