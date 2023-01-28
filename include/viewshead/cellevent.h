@@ -2,7 +2,8 @@
 #define VIEWSHEDLIB_EVENT_H
 
 #include "enums.h"
-#include "points.h"
+#include "point.h"
+#include "rasterposition.h"
 
 namespace viewshed
 {

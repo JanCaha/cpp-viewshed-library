@@ -1,5 +1,5 @@
-#ifndef VIEWSHEDLIB_IVIEWSHED_H
-#define VIEWSHEDLIB_IVIEWSHED_H
+#ifndef VIEWSHEDLIB_ABSTRACTVIEWSHED_H
+#define VIEWSHEDLIB_ABSTRACTVIEWSHED_H
 
 #include <limits>
 
@@ -8,9 +8,9 @@
 
 #include "BS_thread_pool.hpp"
 
+#include "abstractviewshedalgorithm.h"
 #include "cellevent.h"
 #include "celleventposition.h"
-#include "iviewshedalgorithm.h"
 #include "los.h"
 #include "losnode.h"
 #include "memoryraster.h"
@@ -20,7 +20,7 @@ using viewshed::LoS;
 
 namespace viewshed
 {
-    class IViewshed
+    class AbstractViewshed
     {
       public:
         void initEventList();
@@ -50,7 +50,7 @@ namespace viewshed
         std::vector<CellEvent> mCellEvents;
         std::shared_ptr<QgsRasterLayer> mInputDem;
         std::shared_ptr<Point> mPoint;
-        std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> mAlgs;
+        std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
         Qgis::DataType mDataType = Qgis::DataType::Float64;
         int mDefaultBand = 1;
 

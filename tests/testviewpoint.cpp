@@ -5,7 +5,7 @@
 
 #include "testsettings.h"
 
-#include "points.h"
+#include "point.h"
 
 using viewshed::Point;
 

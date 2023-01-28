@@ -5,8 +5,8 @@
 
 #include "testsettings.h"
 
-#include "iviewshedalgorithm.h"
-#include "points.h"
+#include "abstractviewshedalgorithm.h"
+#include "point.h"
 #include "utils.h"
 #include "viewshed.h"
 #include "viewshedangledifferencetolocalhorizon.h"
@@ -23,8 +23,8 @@ class TestViewshed : public QObject
   private:
     std::shared_ptr<QgsRasterLayer> dem;
     std::shared_ptr<Point> vp;
-    std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs =
-        std::make_shared<std::vector<std::shared_ptr<IViewshedAlgorithm>>>();
+    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs =
+        std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
 
   private slots:
 

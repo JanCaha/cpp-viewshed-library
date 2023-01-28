@@ -3,7 +3,8 @@
 
 #include "cellevent.h"
 #include "enums.h"
-#include "points.h"
+#include "point.h"
+#include "rasterposition.h"
 
 namespace viewshed
 {
@@ -14,6 +15,7 @@ namespace viewshed
         double angle[3];
         double elevs[3];
         double distances[3];
+        bool inverseLoSBehindTarget = false;
 
         LoSNode();
         LoSNode( int row_, int col_ );

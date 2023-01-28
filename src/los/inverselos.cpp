@@ -1,7 +1,8 @@
-#include "los.h"
+#include "inverselos.h"
+#include "abstractlos.h"
 #include "visibility.h"
 
-using viewshed::ILoS;
+using viewshed::AbstractLoS;
 using viewshed::InverseLoS;
 using viewshed::Visibility;
 
@@ -9,10 +10,7 @@ InverseLoS::InverseLoS() {}
 
 InverseLoS::InverseLoS( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
 
-double InverseLoS::distance( int i )
-{
-    return mPointDistance - at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance );
-}
+double InverseLoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
 
 double InverseLoS::gradient( int i )
 {
@@ -44,22 +42,21 @@ int InverseLoS::numberOfNodes() { return size(); };
 
 int InverseLoS::targetPointIndex() { return mTargetIndex; }
 
-void InverseLoS::sort()
-{
-    std::sort( begin(), end() );
-    std::reverse( begin(), end() );
-}
+void InverseLoS::sort() { std::sort( begin(), end() ); }
 
 void InverseLoS::prepareForCalculation()
 {
     removePointsAfterViewPoint();
+    fixDistancesAngles();
     sort();
 };
 
 void InverseLoS::removePointsAfterViewPoint()
 {
     double dist = mPointDistance;
-    erase( std::remove_if( begin(), end(), [&dist]( LoSNode &node ) { return dist <= node.centreDistance(); } ),
+    erase( std::remove_if( begin(), end(),
+                           [&dist]( LoSNode &node )
+                           { return ( dist <= node.centreDistance() && !node.inverseLoSBehindTarget ); } ),
            end() );
 }
 
@@ -71,3 +68,36 @@ int InverseLoS::resultCol() { return mVp->col; }
 
 // TODO fix !!!!!
 bool InverseLoS::isValid() { return true; }
+
+void InverseLoS::fixDistancesAngles()
+{
+    for ( int i = 0; i < size(); i++ )
+    {
+        if ( at( i ).inverseLoSBehindTarget )
+        {
+            at( i ).distances[CellEventPositionType::ENTER] += mPointDistance;
+            at( i ).distances[CellEventPositionType::CENTER] += mPointDistance;
+            at( i ).distances[CellEventPositionType::EXIT] += mPointDistance;
+
+            double addValue = -M_PI;
+
+            if ( at( i ).angle[CellEventPositionType::CENTER] < M_PI )
+            {
+                addValue = +M_PI;
+            }
+
+            at( i ).angle[CellEventPositionType::ENTER] += addValue;
+            at( i ).angle[CellEventPositionType::CENTER] += addValue;
+            at( i ).angle[CellEventPositionType::EXIT] += addValue;
+        }
+        else
+        {
+            at( i ).distances[CellEventPositionType::ENTER] =
+                mPointDistance - at( i ).distances[CellEventPositionType::ENTER];
+            at( i ).distances[CellEventPositionType::CENTER] =
+                mPointDistance - at( i ).distances[CellEventPositionType::CENTER];
+            at( i ).distances[CellEventPositionType::EXIT] =
+                mPointDistance - at( i ).distances[CellEventPositionType::EXIT];
+        }
+    }
+}

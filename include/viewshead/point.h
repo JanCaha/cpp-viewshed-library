@@ -1,20 +1,13 @@
-#ifndef VIEWSHEDLIB_POINTS_H
-#define VIEWSHEDLIB_POINTS_H
+#ifndef VIEWSHEDLIB_POINT_H
+#define VIEWSHEDLIB_POINT_H
 
 #include "qgspoint.h"
 #include "qgsrasterlayer.h"
 
+#include "rasterposition.h"
+
 namespace viewshed
 {
-
-    class RasterPosition
-    {
-      public:
-        RasterPosition(){};
-
-        int row, col;
-    };
-
     class Point : public RasterPosition
     {
       public:

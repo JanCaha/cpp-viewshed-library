@@ -4,7 +4,7 @@
 
 using viewshed::ViewshedVisibility;
 
-double ViewshedVisibility::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<ILoS> los )
+double ViewshedVisibility::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los )
 {
     if ( los->targetGradient() < losValues->mMaxGradientBefore )
         return invisible();

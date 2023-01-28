@@ -3,15 +3,15 @@
 
 #include "limits"
 
-#include "iviewshedalgorithm.h"
+#include "abstractviewshedalgorithm.h"
 
 namespace viewshed
 {
-    class ViewshedVisibility : public IViewshedAlgorithm
+    class ViewshedVisibility : public AbstractViewshedAlgorithm
     {
 
       public:
-        double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<ILoS> los ) override;
+        double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
         const double viewpointValue() override;
         const double invisible() override;
         const double completlyVisible() override;

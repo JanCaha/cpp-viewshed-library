@@ -4,19 +4,19 @@
 #include <functional>
 #include <limits>
 
+#include "abstractviewshed.h"
 #include "enums.h"
-#include "iviewshed.h"
 #include "los.h"
 #include "losevaluator.h"
-#include "points.h"
+#include "point.h"
 
 namespace viewshed
 {
-    class Viewshed : public IViewshed
+    class Viewshed : public AbstractViewshed
     {
       public:
         Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterLayer> dem,
-                  std::shared_ptr<std::vector<std::shared_ptr<IViewshedAlgorithm>>> algs,
+                  std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
                   double minimalAngle = std::numeric_limits<double>::quiet_NaN(),
                   double maximalAngle = std::numeric_limits<double>::quiet_NaN() );
 
@@ -28,7 +28,6 @@ namespace viewshed
         std::shared_ptr<LoS> getLoS( QgsPoint point, bool onlyToPoint = false );
 
         void submitToThreadpool( CellEvent &e ) override;
-
     };
 
 } // namespace viewshed

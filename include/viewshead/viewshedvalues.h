@@ -3,7 +3,8 @@
 
 #include <vector>
 
-#include "points.h"
+#include "point.h"
+#include "rasterposition.h"
 
 namespace viewshed
 {

@@ -11,13 +11,16 @@ namespace viewshed
 
         double mMaxGradientBefore = -180;
         double mMaxGradient = -180;
-        int mIndexPoi = 0;
-        int mIndexMaxGradientBefore = 0;
-        int mIndexMaxGradient = 0;
-        int mIndexHorizonBefore = 0;
-        int mIndexHorizon = 0;
+        int mIndexPoi = -1;
+        int mIndexMaxGradientBefore = -1;
+        int mIndexMaxGradient = -1;
+        int mIndexHorizonBefore = -1;
+        int mIndexHorizon = -1;
         int mCountHorizonBefore = 0;
         int mCountHorizon = 0;
+
+        bool horizonBeforeExist();
+        bool horizonExist();
     };
 } // namespace viewshed
 

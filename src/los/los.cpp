@@ -1,7 +1,8 @@
 #include "los.h"
+#include "abstractlos.h"
 #include "visibility.h"
 
-using viewshed::ILoS;
+using viewshed::AbstractLoS;
 using viewshed::LoS;
 using viewshed::Visibility;
 

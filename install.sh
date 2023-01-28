@@ -1,12 +1,13 @@
-sudo apt purge -y viewshed
+# sudo apt purge -y viewshed
 
-sudo /usr/bin/cmake --build /home/cahik/Codes/C++/ViewshedLibrary/build --config Release # --target install --
-cd build
-cpack -G DEB
-cd ../_packages
-sudo dpkg -i viewshed_*_amd64.deb
+sudo cmake --build build --target uninstall
 
-# cd build
-# cmake .. 
-# make 
-# sudo make install
+cmake -S. -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release -DPACK_DEB=off
+cmake --build build --config Release --target viewshed
+
+# testing
+cmake --build build --config Release --target build_tests
+cmake --build build --config Release --target run_tests
+
+# install
+cmake --build build --config Release --target install

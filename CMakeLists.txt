@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.18.0)
 
-project(viewshed VERSION 1.5.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 1.6.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+
+option(BUILD_TESTS "Build tests." ON)
+option(PACK_DEB "Create config for packing." ON)
 
 set(LIB_NAME viewshed)
 
@@ -46,7 +49,7 @@ set(UTILS
 
 set(STRUCTURES
     src/structures/cellevent.cpp
-    src/structures/points.cpp
+    src/structures/point.cpp
     src/structures/celleventposition.cpp
     src/structures/losnode.cpp
     src/structures/losimportantvalues.cpp
@@ -56,7 +59,7 @@ set(VISIBILITY
     src/visibility/visibility.cpp
     src/visibility/viewshed.cpp
     src/visibility/inverseviewshed.cpp
-    src/visibility/iviewshed.cpp
+    src/visibility/abstractviewshed.cpp
 )
 
 set(THREAD_TASKS
@@ -64,7 +67,7 @@ set(THREAD_TASKS
 )
 
 set(LOS
-    src/los/ilos.cpp
+    src/los/abstractlos.cpp
     src/los/los.cpp
     src/los/inverselos.cpp
     src/los/losevaluator.cpp
@@ -81,12 +84,14 @@ set(MINIMAL_QGIS_LIBS
 set(PUBLIC_HEADERS
     include/viewshead/enums.h
     include/viewshead/cellevent.h
-    include/viewshead/iviewshedalgorithm.h
+    include/viewshead/abstractviewshedalgorithm.h
     include/viewshead/losevaluator.h
     include/viewshead/memoryraster.h
-    include/viewshead/points.h
+    include/viewshead/point.h
     include/viewshead/celleventposition.h
     include/viewshead/los.h
+    include/viewshead/inverselos.h
+    include/viewshead/abstractlos.h
     include/viewshead/losnode.h
     include/viewshead/losimportantvalues.h
     include/viewshead/viewshedangledifferencetoglobalhorizon.h
@@ -94,7 +99,7 @@ set(PUBLIC_HEADERS
     include/viewshead/viewshedelevationdifferencetoglobalhorizon.h
     include/viewshead/viewshedangledifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifference.h
-    include/viewshead/iviewshed.h
+    include/viewshead/abstractviewshed.h
     include/viewshead/inverseviewshed.h
     include/viewshead/viewshed.h
     include/viewshead/viewshedhorizons.h
@@ -104,7 +109,7 @@ set(PUBLIC_HEADERS
     include/viewshead/viewshedvalues.h
     include/viewshead/utils.h
     include/viewshead/threadtasks.h
-    include/viewshead/los.h
+    include/viewshead/rasterposition.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
 
@@ -135,25 +140,9 @@ target_link_libraries(${LIB_NAME}
     bs_thread_pool
 )
 
-message(STATUS "${CMAKE_BUILD_TYPE}")
-
-IF(CMAKE_BUILD_TYPE MATCHES Release)
-    message(STATUS "Release mode will try install")
-
-    include(GNUInstallDirs)
-
-    install(TARGETS ${LIB_NAME}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/viewshed
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    )
-endif()
-
-include(Packing)
-
-include(CTest)
-enable_testing(true)
-add_subdirectory(tests)
+if(BUILD_TESTS)
+    add_subdirectory(tests)
+endif(BUILD_TESTS)
 
 # https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
 set(INCLUDE_INSTALL_DIR include/viewshed)
@@ -169,14 +158,49 @@ configure_package_config_file(${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
 )
 
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
 )
 
+include(GNUInstallDirs)
+
+install(TARGETS ${LIB_NAME}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/viewshed
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+if(PACK_DEB)
+    message("Preparing for building DEB package.")
+    include(Packing)
+    add_custom_command(
+        TARGET ${LIB_NAME}
+        POST_BUILD
+        COMMAND rm ../_packages/viewshed_*.deb
+        COMMAND cpack -G DEB -C Release
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endif(PACK_DEB)
+
+# ############################################################
+# Add uninstall :
+add_custom_target(uninstall)
+
+add_custom_target(delete_lib COMMAND rm ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libviewshed*)
+add_custom_target(delete_include COMMAND rm -rf ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/viewshed)
+add_custom_target(delete_cmake COMMAND rm -rf ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/cmake/viewshed)
+
+add_dependencies(uninstall delete_lib)
+add_dependencies(uninstall delete_include)
+add_dependencies(uninstall delete_cmake)
+
+# ############################################################
+
+# ############################################################
+# Add docs :
 add_subdirectory(docs)

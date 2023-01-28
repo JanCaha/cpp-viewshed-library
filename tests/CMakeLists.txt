@@ -1,3 +1,6 @@
+include(CTest)
+enable_testing(true)
+
 find_package(Qt5Test REQUIRED)
 
 set(TEST_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data")
@@ -11,8 +14,22 @@ include_directories(SYSTEM
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-macro(ADD_MY_TEST testname testsrc)
-    add_executable(${testname} ${testsrc})
+# ############################################################
+# Prepare targets for tests:
+add_custom_target(build_tests)
+
+# 'run_tests' triggers 'ctest'.
+add_custom_target(run_tests COMMAND ${CMAKE_CTEST_COMMAND} "-VV")
+
+# 'run_tests' implies 'build_tests'
+add_dependencies(run_tests build_tests)
+
+# ############################################################
+
+# ############################################################
+# Macro to add a test:
+macro(ADD_LIBRARY_TEST testname)
+    add_executable(${testname} "${testname}.cpp")
     set_target_properties(${testname} PROPERTIES AUTOMOC TRUE)
 
     target_link_libraries(${testname}
@@ -26,13 +43,16 @@ macro(ADD_MY_TEST testname testsrc)
         ${LIB_NAME}
     )
     add_test(${testname} ${testname} -maxwarnings 10000)
-endmacro(ADD_MY_TEST)
+    add_dependencies(build_tests ${testname})
+endmacro(ADD_LIBRARY_TEST)
+
+# ############################################################
 
 # ############################################################
 # Tests:
-ADD_MY_TEST(testviewpoint testviewpoint.cpp)
-ADD_MY_TEST(testmemoryraster testmemoryraster.cpp)
-ADD_MY_TEST(testlosalgorithms testlosalgorithms.cpp)
-ADD_MY_TEST(testviewshed testviewshed.cpp)
-ADD_MY_TEST(testinverselosalgorithms testinverselosalgorithms.cpp)
-ADD_MY_TEST(testinverseviewshed testinverseviewshed.cpp)
+ADD_LIBRARY_TEST(testviewpoint)
+ADD_LIBRARY_TEST(testmemoryraster)
+ADD_LIBRARY_TEST(testlosalgorithms)
+ADD_LIBRARY_TEST(testviewshed)
+ADD_LIBRARY_TEST(testinverselosalgorithms)
+ADD_LIBRARY_TEST(testinverseviewshed)

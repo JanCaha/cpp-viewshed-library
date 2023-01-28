@@ -1,4 +1,4 @@
-#include "points.h"
+#include "point.h"
 #include "visibility.h"
 
 using viewshed::Point;

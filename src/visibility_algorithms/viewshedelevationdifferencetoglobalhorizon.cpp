@@ -11,20 +11,17 @@ ViewshedElevationDifferenceToGlobalHorizon::ViewshedElevationDifferenceToGlobalH
 }
 
 double ViewshedElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
-                                                           std::shared_ptr<ILoS> los )
+                                                           std::shared_ptr<AbstractLoS> los )
 {
     double change;
     double difference;
     double distance;
 
-    LoSNode horizon = los->nodeAt( losValues->mIndexHorizon );
-
-    if ( losValues->mIndexHorizonBefore != 0 )
+    if ( losValues->horizonExist() )
     {
-        distance = los->targetDistance() - horizon.valueAtAngle( los->horizontalAngle(), ValueType::Distance );
+        distance = los->targetDistance() - los->distance( losValues->mIndexHorizon );
         change = std::tan( ( M_PI / 180 ) * losValues->mMaxGradient ) * distance;
-        difference =
-            los->targetElevation() - ( horizon.valueAtAngle( los->horizontalAngle(), ValueType::Elevation ) + change );
+        difference = los->targetElevation() - ( los->elevation( losValues->mIndexHorizon ) + change );
     }
     else
     {

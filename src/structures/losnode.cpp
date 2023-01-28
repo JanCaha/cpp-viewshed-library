@@ -44,12 +44,14 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
         Visibility::calculateEventPosition( CellEventPositionType::EXIT, e->row, e->col, point );
     angle[CellEventPositionType::EXIT] = Visibility::calculateAngle( &posExit, point );
 
+    if ( 0 > e->dist2vp )
+    {
+        inverseLoSBehindTarget = true;
+    }
+
     distances[CellEventPositionType::CENTER] = Visibility::calculateDistance( row, col, point, cellSize );
     distances[CellEventPositionType::ENTER] = Visibility::calculateDistance( &posEnter, point, cellSize );
     distances[CellEventPositionType::EXIT] = Visibility::calculateDistance( &posExit, point, cellSize );
-
-    double dRow = (double)row;
-    double dCol = (double)col;
 
     gradient[CellEventPositionType::CENTER] = Visibility::calculateGradient(
         point, elevs[CellEventPositionType::CENTER], distances[CellEventPositionType::CENTER] );
