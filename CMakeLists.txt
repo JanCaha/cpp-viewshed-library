@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.18.0)
 project(viewshed VERSION 1.6.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." ON)
+option(BUILD_DOXYGEN "Build documentation." ON)
 option(PACK_DEB "Create config for packing." ON)
 
 set(LIB_NAME viewshed)
@@ -176,16 +177,27 @@ install(TARGETS ${LIB_NAME}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-if(PACK_DEB)
-    message("Preparing for building DEB package.")
-    include(Packing)
-    add_custom_command(
-        TARGET ${LIB_NAME}
-        POST_BUILD
-        COMMAND rm ../_packages/viewshed_*.deb
-        COMMAND cpack -G DEB -C Release
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-endif(PACK_DEB)
+# ############################################################
+# Pack :
+if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    if(PACK_DEB)
+        include(Packing)
+
+        file(GLOB old_versions "${CMAKE_SOURCE_DIR}/_packages/*.deb")
+
+        if(${old_versions})
+            file(REMOVE ${old_versions})
+        endif()
+
+        add_custom_command(
+            TARGET ${LIB_NAME}
+            PRE_BUILD
+            COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+endif()
+
+# ############################################################
 
 # ############################################################
 # Add uninstall :
@@ -203,4 +215,6 @@ add_dependencies(uninstall delete_cmake)
 
 # ############################################################
 # Add docs :
-add_subdirectory(docs)
+if(BUILD_DOXYGEN)
+    add_subdirectory(docs)
+endif(BUILD_DOXYGEN)
