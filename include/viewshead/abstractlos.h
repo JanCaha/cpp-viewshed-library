@@ -16,13 +16,39 @@ using viewshed::ValueType;
 
 namespace viewshed
 {
-
+    /**
+     * @brief Class that represent line-of-sight. Consists of LoSNodes, view point and target point (both with potential
+     * offset from the surface).
+     *
+     */
     class AbstractLoS
     {
       public:
+        /**
+         * @brief Set the View Point object directly from Point with offset specified as part of this object.
+         *
+         * @param vp
+         */
         void setViewPoint( std::shared_ptr<Point> vp );
+        /**
+         * @brief Set the View Point object from LoSNode point, specifying offset of the observer.
+         *
+         * @param poi
+         * @param observerOffset
+         */
         void setViewPoint( std::shared_ptr<LoSNode> poi, double observerOffset = 0 );
+        /**
+         * @brief Set the Target Point object directly from Point with offset specified as part of this object.
+         *
+         * @param vp
+         */
         void setTargetPoint( std::shared_ptr<Point> tp );
+        /**
+         * @brief Set the Target Point object from LoSNode point, specifying offset of the target.
+         *
+         * @param poi
+         * @param observerOffset
+         */
         void setTargetPoint( std::shared_ptr<LoSNode> poi, double targetOffset = 0 );
         void setAngle( double angle );
 
