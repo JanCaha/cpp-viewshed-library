@@ -4,7 +4,6 @@ project(viewshed VERSION 1.6.0 DESCRIPTION "Viewshed Library based on QGIS/Qt an
 
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOXYGEN "Build documentation." ON)
-option(PACK_DEB "Create config for packing." ON)
 
 set(LIB_NAME viewshed)
 
@@ -180,21 +179,22 @@ install(TARGETS ${LIB_NAME}
 # ############################################################
 # Pack :
 if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    if(PACK_DEB)
-        include(Packing)
+    message(STATUS "Will pack DEB file.")
 
-        file(GLOB old_versions "${CMAKE_SOURCE_DIR}/_packages/*.deb")
+    include(Packing)
 
-        if(${old_versions})
-            file(REMOVE ${old_versions})
-        endif()
+    file(GLOB old_versions "${CMAKE_SOURCE_DIR}/_packages/*.deb")
 
-        add_custom_command(
-            TARGET ${LIB_NAME}
-            PRE_BUILD
-            COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    if(old_versions)
+        file(REMOVE ${old_versions})
     endif()
+
+    add_custom_target(pack_deb
+        COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+
+    add_dependencies(pack_deb ${LIB_NAME})
 endif()
 
 # ############################################################
