@@ -83,34 +83,34 @@ set(MINIMAL_QGIS_LIBS
 )
 
 set(PUBLIC_HEADERS
-    include/viewshead/enums.h
-    include/viewshead/cellevent.h
+    include/viewshead/abstractlos.h
+    include/viewshead/abstractviewshed.h
     include/viewshead/abstractviewshedalgorithm.h
+    include/viewshead/cellevent.h
+    include/viewshead/celleventposition.h
+    include/viewshead/enums.h
+    include/viewshead/inverselos.h
+    include/viewshead/inverseviewshed.h
+    include/viewshead/los.h
     include/viewshead/losevaluator.h
+    include/viewshead/losimportantvalues.h
+    include/viewshead/losnode.h
     include/viewshead/memoryraster.h
     include/viewshead/point.h
-    include/viewshead/celleventposition.h
-    include/viewshead/los.h
-    include/viewshead/inverselos.h
-    include/viewshead/abstractlos.h
-    include/viewshead/losnode.h
-    include/viewshead/losimportantvalues.h
+    include/viewshead/rasterposition.h
+    include/viewshead/threadtasks.h
+    include/viewshead/utils.h
+    include/viewshead/viewshed.h
     include/viewshead/viewshedangledifferencetoglobalhorizon.h
-    include/viewshead/viewshedelevationdifferencetolocalhorizon.h
-    include/viewshead/viewshedelevationdifferencetoglobalhorizon.h
     include/viewshead/viewshedangledifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifference.h
-    include/viewshead/abstractviewshed.h
-    include/viewshead/inverseviewshed.h
-    include/viewshead/viewshed.h
+    include/viewshead/viewshedelevationdifferencetolocalhorizon.h
+    include/viewshead/viewshedelevationdifferencetoglobalhorizon.h
     include/viewshead/viewshedhorizons.h
+    include/viewshead/viewshedvalues.h
     include/viewshead/viewshedviewangle.h
     include/viewshead/viewshedvisibility.h
     include/viewshead/visibility.h
-    include/viewshead/viewshedvalues.h
-    include/viewshead/utils.h
-    include/viewshead/threadtasks.h
-    include/viewshead/rasterposition.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
 
