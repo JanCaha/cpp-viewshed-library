@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.18.0)
 project(viewshed VERSION 1.6.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." ON)
-option(BUILD_DOXYGEN "Build documentation." ON)
+option(BUILD_DOCUMENTATION "Build documentation." ON)
 
 set(LIB_NAME viewshed)
 
@@ -215,6 +215,4 @@ add_dependencies(uninstall delete_cmake)
 
 # ############################################################
 # Add docs :
-if(BUILD_DOXYGEN)
-    add_subdirectory(docs)
-endif(BUILD_DOXYGEN)
+add_subdirectory(docs)
