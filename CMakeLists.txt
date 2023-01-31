@@ -38,6 +38,7 @@ set(VISIBILITY_ALGS
     src/visibility_algorithms/viewshedelevationdifferencetoglobalhorizon.cpp
     src/visibility_algorithms/viewshedangledifferencetolocalhorizon.cpp
     src/visibility_algorithms/viewshedangledifferencetoglobalhorizon.cpp
+    src/visibility_algorithms/viewshedhorizondistance.cpp
 )
 
 set(MEMORY_RASTER
@@ -99,6 +100,7 @@ set(PUBLIC_HEADERS
     include/viewshead/viewshedelevationdifferencetoglobalhorizon.h
     include/viewshead/viewshedangledifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifference.h
+    include/viewshead/viewshedhorizondistance.h
     include/viewshead/abstractviewshed.h
     include/viewshead/inverseviewshed.h
     include/viewshead/viewshed.h
