@@ -17,10 +17,4 @@ double ViewshedHorizonDistance::result( std::shared_ptr<LoSImportantValues> losV
     }
 }
 
-const double ViewshedHorizonDistance::invisible() { return 0.0; }
-
-const double ViewshedHorizonDistance::completlyVisible() { return 1.0; }
-
-const double ViewshedHorizonDistance::viewpointValue() { return 1.0; }
-
-const QString ViewshedHorizonDistance::name() { return QString( "Horizon Distance" ); }
+const QString ViewshedHorizonDistance::name() { return QString( "Horizon_Distance" ); }

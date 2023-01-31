@@ -5,8 +5,10 @@
 using viewshed::ViewshedAngleDifferenceToGlobalHorizon;
 
 ViewshedAngleDifferenceToGlobalHorizon::ViewshedAngleDifferenceToGlobalHorizon( bool all, double invisibleValue,
-                                                                                double differenceWithoutHorizon )
-    : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon )
+                                                                                double differenceWithoutHorizon,
+                                                                                double pointValue )
+    : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon ),
+      mPointValue( pointValue )
 {
 }
 
@@ -30,17 +32,11 @@ double ViewshedAngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImport
     else
     {
         if ( los->targetGradient() < losValues->mMaxGradientBefore )
-            return invisible();
+            return mInvisibleValue;
         else
             return difference;
     }
 }
-
-const double ViewshedAngleDifferenceToGlobalHorizon::invisible() { return mInvisibleValue; }
-
-const double ViewshedAngleDifferenceToGlobalHorizon::completlyVisible() { return 0; }
-
-const double ViewshedAngleDifferenceToGlobalHorizon::viewpointValue() { return 90.0; }
 
 const QString ViewshedAngleDifferenceToGlobalHorizon::name()
 {
@@ -48,5 +44,5 @@ const QString ViewshedAngleDifferenceToGlobalHorizon::name()
     if ( mAllPoints )
         allPoints = QString::fromStdString( "True" );
 
-    return QString( "Angle Difference To Global Horizon All Points - %1" ).arg( allPoints );
+    return QString( "Angle_Difference_To_Global_Horizon_All_Points_-_%1" ).arg( allPoints );
 }

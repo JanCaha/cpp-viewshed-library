@@ -5,8 +5,10 @@
 using viewshed::ViewshedAngleDifferenceToLocalHorizon;
 
 ViewshedAngleDifferenceToLocalHorizon::ViewshedAngleDifferenceToLocalHorizon( bool all, double invisibleValue,
-                                                                              double differenceWithoutHorizon )
-    : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon )
+                                                                              double differenceWithoutHorizon,
+                                                                              double pointValue )
+    : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon ),
+      mPointValue( pointValue )
 {
 }
 
@@ -30,17 +32,11 @@ double ViewshedAngleDifferenceToLocalHorizon::result( std::shared_ptr<LoSImporta
     else
     {
         if ( los->targetGradient() < losValues->mMaxGradientBefore )
-            return invisible();
+            return mInvisibleValue;
         else
             return difference;
     }
 }
-
-const double ViewshedAngleDifferenceToLocalHorizon::invisible() { return mInvisibleValue; }
-
-const double ViewshedAngleDifferenceToLocalHorizon::completlyVisible() { return 0; }
-
-const double ViewshedAngleDifferenceToLocalHorizon::viewpointValue() { return 90.0; }
 
 const QString ViewshedAngleDifferenceToLocalHorizon::name()
 {
@@ -48,5 +44,5 @@ const QString ViewshedAngleDifferenceToLocalHorizon::name()
     if ( mAllPoints )
         allPoints = QString::fromStdString( "True" );
 
-    return QString( "Angle Difference To Local Horizon All Points - %1" ).arg( allPoints );
+    return QString( "Angle_Difference_To_Local_Horizon_All_Points_-_%1" ).arg( allPoints );
 }

@@ -5,8 +5,10 @@
 using viewshed::ViewshedElevationDifferenceToLocalHorizon;
 
 ViewshedElevationDifferenceToLocalHorizon::ViewshedElevationDifferenceToLocalHorizon( bool all, double invisibleValue,
-                                                                                      double differenceWithoutHorizon )
-    : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon )
+                                                                                      double differenceWithoutHorizon,
+                                                                                      double pointValue )
+    : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon ),
+      mPointValue( pointValue )
 {
 }
 
@@ -36,17 +38,11 @@ double ViewshedElevationDifferenceToLocalHorizon::result( std::shared_ptr<LoSImp
     else
     {
         if ( los->targetGradient() < losValues->mMaxGradientBefore )
-            return invisible();
+            return mInvisibleValue;
         else
             return difference;
     }
 }
-
-const double ViewshedElevationDifferenceToLocalHorizon::invisible() { return mInvisibleValue; }
-
-const double ViewshedElevationDifferenceToLocalHorizon::completlyVisible() { return 0; }
-
-const double ViewshedElevationDifferenceToLocalHorizon::viewpointValue() { return 0.0; }
 
 const QString ViewshedElevationDifferenceToLocalHorizon::name()
 {
@@ -54,5 +50,5 @@ const QString ViewshedElevationDifferenceToLocalHorizon::name()
     if ( mAllPoints )
         allPoints = QString::fromStdString( "True" );
 
-    return QString( "Elevation Difference To Local Horizon All Points - %1" ).arg( allPoints );
+    return QString( "Elevation_Difference_To_Local_Horizon_All_Points_-_%1" ).arg( allPoints );
 }

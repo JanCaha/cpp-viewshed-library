@@ -16,9 +16,7 @@ namespace viewshed
     {
       public:
         virtual double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) = 0;
-        virtual const double viewpointValue() = 0;
-        virtual const double invisible() = 0;
-        virtual const double completlyVisible() = 0;
+        virtual double pointValue() = 0;
         virtual const QString name() = 0;
     };
 

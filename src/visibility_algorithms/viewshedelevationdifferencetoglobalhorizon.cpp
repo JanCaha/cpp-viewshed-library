@@ -4,9 +4,11 @@
 
 using viewshed::ViewshedElevationDifferenceToGlobalHorizon;
 
-ViewshedElevationDifferenceToGlobalHorizon::ViewshedElevationDifferenceToGlobalHorizon(
-    bool all, double invisibleValue, double differenceWithoutHorizon )
-    : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon )
+ViewshedElevationDifferenceToGlobalHorizon::ViewshedElevationDifferenceToGlobalHorizon( bool all, double invisibleValue,
+                                                                                        double differenceWithoutHorizon,
+                                                                                        double pointValue )
+    : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon ),
+      mPointValue( mPointValue )
 {
 }
 
@@ -35,17 +37,11 @@ double ViewshedElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSIm
     else
     {
         if ( los->targetGradient() < losValues->mMaxGradientBefore )
-            return invisible();
+            return mInvisibleValue;
         else
             return difference;
     }
 }
-
-const double ViewshedElevationDifferenceToGlobalHorizon::invisible() { return mInvisibleValue; }
-
-const double ViewshedElevationDifferenceToGlobalHorizon::completlyVisible() { return 0; }
-
-const double ViewshedElevationDifferenceToGlobalHorizon::viewpointValue() { return 0.0; }
 
 const QString ViewshedElevationDifferenceToGlobalHorizon::name()
 {
@@ -53,5 +49,5 @@ const QString ViewshedElevationDifferenceToGlobalHorizon::name()
     if ( mAllPoints )
         allPoints = QString::fromStdString( "True" );
 
-    return QString( "Elevation Difference To Global Horizon All Points - %1" ).arg( allPoints );
+    return QString( "Elevation_Difference_To_Global_Horizon_All_Points_-_%1" ).arg( allPoints );
 }

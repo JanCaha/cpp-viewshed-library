@@ -12,18 +12,19 @@ namespace viewshed
 
       public:
         ViewshedAngleDifferenceToLocalHorizon( bool all = false, double invisibleValue = -181,
-                                               double differenceWithoutHorizon = -180 );
+                                               double differenceWithoutHorizon = -180, double pointValue = 0 );
 
         double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
-        const double viewpointValue() override;
-        const double invisible() override;
-        const double completlyVisible() override;
+
+        double pointValue() override { return mPointValue; };
+
         const QString name() override;
 
       private:
         bool mAllPoints = false;
         double mInvisibleValue;
         double mDifferenceWithoutHorizon;
+        double mPointValue;
     };
 } // namespace viewshed
 

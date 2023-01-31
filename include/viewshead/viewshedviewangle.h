@@ -9,12 +9,16 @@ namespace viewshed
     {
 
       public:
+        ViewshedViewAngle( double pointValue = 180 );
+
         double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
-        const double viewpointValue() override;
-        const double invisible() override;
-        const double completlyVisible() override;
+        double pointValue() override { return mPointValue; };
+
         const QString name() override;
+
+      private:
+        double mPointValue;
     };
 } // namespace viewshed
 

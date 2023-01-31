@@ -10,18 +10,19 @@ namespace viewshed
 
       public:
         ViewshedElevationDifferenceToGlobalHorizon( bool all = false, double invisibleValue = -9999,
-                                                    double differenceWithoutHorizon = 0 );
+                                                    double differenceWithoutHorizon = 0, double pointValue = 0 );
 
         double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
-        const double viewpointValue() override;
-        const double invisible() override;
-        const double completlyVisible() override;
+
+        double pointValue() override { return mPointValue; };
+
         const QString name() override;
 
       private:
         bool mAllPoints = false;
         double mInvisibleValue;
         double mDifferenceWithoutHorizon;
+        double mPointValue;
     };
 } // namespace viewshed
 

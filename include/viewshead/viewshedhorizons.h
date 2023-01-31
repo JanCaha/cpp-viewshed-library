@@ -11,12 +11,17 @@ namespace viewshed
     {
 
       public:
+        ViewshedHorizons( double horizon = 1, double notHorizon = 0 );
+
         double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
-        const double viewpointValue() override;
-        const double invisible() override;
-        const double completlyVisible() override;
+        double pointValue() override { return mNotHorizon; };
+
         const QString name() override;
+
+      private:
+        double mNotHorizon;
+        double mHorizon;
     };
 } // namespace viewshed
 
