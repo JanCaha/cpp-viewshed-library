@@ -31,8 +31,6 @@ namespace viewshed
         double centreGradient();
         double centreElevation();
         double centreDistance();
-
-        void setInverse( std::shared_ptr<Point> vp, double &cellSize );
     };
 } // namespace viewshed
 

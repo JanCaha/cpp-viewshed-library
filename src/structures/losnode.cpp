@@ -61,39 +61,6 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
                                                                            distances[CellEventPositionType::EXIT] );
 }
 
-void LoSNode::setInverse( std::shared_ptr<Point> vp, double &cellSize )
-{
-    double temp = elevs[CellEventPositionType::ENTER];
-    elevs[CellEventPositionType::ENTER] = elevs[CellEventPositionType::EXIT];
-    elevs[CellEventPositionType::EXIT] = temp;
-
-    angle[CellEventPositionType::CENTER] = Visibility::calculateAngle( row, col, vp );
-
-    CellEventPosition posEnter = Visibility::calculateEventPosition( CellEventPositionType::ENTER, row, col, vp );
-    double angleEnter = Visibility::calculateAngle( &posEnter, vp );
-
-    if ( angleEnter > angle[CellEventPositionType::CENTER] )
-    {
-        angleEnter = angleEnter - ( 2 * M_PI );
-    }
-
-    angle[CellEventPositionType::ENTER] = angleEnter;
-
-    CellEventPosition posExit = Visibility::calculateEventPosition( CellEventPositionType::EXIT, row, col, vp );
-    angle[CellEventPositionType::EXIT] = Visibility::calculateAngle( &posExit, vp );
-
-    distances[CellEventPositionType::CENTER] = Visibility::calculateDistance( row, col, vp, cellSize );
-    distances[CellEventPositionType::ENTER] = Visibility::calculateDistance( &posEnter, vp, cellSize );
-    distances[CellEventPositionType::EXIT] = Visibility::calculateDistance( &posExit, vp, cellSize );
-
-    gradient[CellEventPositionType::CENTER] = Visibility::calculateGradient( vp, elevs[CellEventPositionType::CENTER],
-                                                                             distances[CellEventPositionType::CENTER] );
-    gradient[CellEventPositionType::ENTER] = Visibility::calculateGradient( vp, elevs[CellEventPositionType::ENTER],
-                                                                            distances[CellEventPositionType::ENTER] );
-    gradient[CellEventPositionType::EXIT] =
-        Visibility::calculateGradient( vp, elevs[CellEventPositionType::EXIT], distances[CellEventPositionType::EXIT] );
-}
-
 double LoSNode::value( CellEventPositionType position, ValueType valueType )
 {
     switch ( valueType )
