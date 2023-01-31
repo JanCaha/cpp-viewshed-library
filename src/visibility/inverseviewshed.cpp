@@ -46,20 +46,21 @@ std::shared_ptr<InverseLoS> InverseViewshed::getLoS( QgsPoint point, bool onlyTo
 
     std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( statusNodeFromPoint( point ) );
 
-    if ( onlyToPoi )
-    {
-        double poiDistance = poi->centreDistance();
-
-        losNodes.erase( std::remove_if( losNodes.begin(), losNodes.end(),
-                                        [&poiDistance]( LoSNode &node )
-                                        { return poiDistance <= node.centreDistance(); } ),
-                        losNodes.end() );
-    }
-
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( losNodes );
     los->setTargetPoint( mPoint, mPoint->offset );
     los->setViewPoint( poi, mObserverOffset );
     los->prepareForCalculation();
+
+    // TODO not yet implemented
+    // if ( onlyToPoi )
+    // {
+    //     double poiDistance = poi->centreDistance();
+
+    //     losNodes.erase( std::remove_if( losNodes.begin(), losNodes.end(),
+    //                                     [&poiDistance]( LoSNode &node )
+    //                                     { return poiDistance <= node.centreDistance(); } ),
+    //                     losNodes.end() );
+    // }
 
     return los;
 }
@@ -163,19 +164,22 @@ void InverseViewshed::initEventList()
 
                         double addValue = M_PI;
 
-                        if ( angleCenter >= M_PI )
+                        if ( mPoint->row == row && column < mPoint->col )
                         {
                             addValue = -M_PI;
                         }
 
                         CellEvent eEnterOpposite =
                             CellEvent( CellEventPositionType::ENTER, row, column,
-                                       -Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
+                                       Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
                                        addValue + angleEnter, elevs );
+                        eEnterOpposite.behindTargetForInverseLoS = true;
+
                         CellEvent eExitOpposite =
                             CellEvent( CellEventPositionType::EXIT, row, column,
-                                       -Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ),
+                                       Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ),
                                        addValue + angleExit, elevs );
+                        eExitOpposite.behindTargetForInverseLoS = true;
 
                         // // TODO is this it?
                         // if ( eventEnter1.distance < 0 && eventEnter1.angle > 2 * Math.PI )
@@ -190,21 +194,28 @@ void InverseViewshed::initEventList()
                             continue;
                         }
 
+                        if ( mPoint->row == row )
+                        {
+                            LoSNode ln;
+
+                            if ( mPoint->col < column )
+                            {
+                                ln = LoSNode( mPoint, &eEnter, mCellSize );
+                                mLosNodes.push_back( ln );
+                            }
+                            else
+                            {
+                                ln = LoSNode( mPoint, &eEnterOpposite, mCellSize );
+                                mLosNodes.push_back( ln );
+                            }
+                        }
+
                         mCellEvents.push_back( eEnterOpposite );
                         mCellEvents.push_back( eExitOpposite );
 
                         mCellEvents.push_back( eEnter );
                         mCellEvents.push_back( eCenter );
                         mCellEvents.push_back( eExit );
-
-                        if ( mPoint->row == row && mPoint->col < column )
-                        {
-                            CellEvent eEnter2 =
-                                CellEvent( CellEventPositionType::ENTER, row, column,
-                                           Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
-                                           angleEnter + ( 2 * M_PI ), elevs );
-                            mCellEvents.push_back( eEnter2 );
-                        }
                     }
                 }
             }
