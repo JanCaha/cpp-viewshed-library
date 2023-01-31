@@ -5,3 +5,4 @@ tests/data/*.aux.xml
 _packages
 tests/data/results/*
 tests/data/*.qgz
+documentation/*

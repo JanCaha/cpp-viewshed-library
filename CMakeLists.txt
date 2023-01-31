@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.20.0)
 project(viewshed VERSION 1.7.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." ON)
-option(PACK_DEB "Create config for packing." ON)
+option(BUILD_DOCUMENTATION "Build documentation." ON)
+option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." ON)
 
 set(LIB_NAME viewshed)
 
@@ -83,35 +84,35 @@ set(MINIMAL_QGIS_LIBS
 )
 
 set(PUBLIC_HEADERS
-    include/viewshead/enums.h
-    include/viewshead/cellevent.h
+    include/viewshead/abstractlos.h
+    include/viewshead/abstractviewshed.h
     include/viewshead/abstractviewshedalgorithm.h
+    include/viewshead/cellevent.h
+    include/viewshead/celleventposition.h
+    include/viewshead/enums.h
+    include/viewshead/inverselos.h
+    include/viewshead/inverseviewshed.h
+    include/viewshead/los.h
     include/viewshead/losevaluator.h
+    include/viewshead/losimportantvalues.h
+    include/viewshead/losnode.h
     include/viewshead/memoryraster.h
     include/viewshead/point.h
-    include/viewshead/celleventposition.h
-    include/viewshead/los.h
-    include/viewshead/inverselos.h
-    include/viewshead/abstractlos.h
-    include/viewshead/losnode.h
-    include/viewshead/losimportantvalues.h
+    include/viewshead/rasterposition.h
+    include/viewshead/threadtasks.h
+    include/viewshead/utils.h
+    include/viewshead/viewshed.h
     include/viewshead/viewshedangledifferencetoglobalhorizon.h
-    include/viewshead/viewshedelevationdifferencetolocalhorizon.h
-    include/viewshead/viewshedelevationdifferencetoglobalhorizon.h
     include/viewshead/viewshedangledifferencetolocalhorizon.h
     include/viewshead/viewshedelevationdifference.h
     include/viewshead/viewshedhorizondistance.h
-    include/viewshead/abstractviewshed.h
-    include/viewshead/inverseviewshed.h
-    include/viewshead/viewshed.h
+    include/viewshead/viewshedelevationdifferencetolocalhorizon.h
+    include/viewshead/viewshedelevationdifferencetoglobalhorizon.h
     include/viewshead/viewshedhorizons.h
+    include/viewshead/viewshedvalues.h
     include/viewshead/viewshedviewangle.h
     include/viewshead/viewshedvisibility.h
     include/viewshead/visibility.h
-    include/viewshead/viewshedvalues.h
-    include/viewshead/utils.h
-    include/viewshead/threadtasks.h
-    include/viewshead/rasterposition.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
 
@@ -178,16 +179,30 @@ install(TARGETS ${LIB_NAME}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-# if(PACK_DEB)
-# message("Preparing for building DEB package.")
-# include(Packing)
-# add_custom_command(
-# TARGET ${LIB_NAME}
-# POST_BUILD
-# COMMAND rm ../_packages/viewshed_*.deb
-# COMMAND cpack -G DEB -C Release
-# WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-# endif(PACK_DEB)
+# ############################################################
+# Pack :
+if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    if(PACK_DEB)
+        message(STATUS "Will pack DEB file.")
+
+        include(Packing)
+
+        file(GLOB old_versions "${CMAKE_SOURCE_DIR}/_packages/*.deb")
+
+        if(old_versions)
+            file(REMOVE ${old_versions})
+        endif()
+
+        add_custom_target(pack_deb
+            COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        )
+
+        add_dependencies(pack_deb ${LIB_NAME})
+    endif()
+endif()
+
+# ############################################################
 
 # ############################################################
 # Add uninstall :
@@ -200,3 +215,9 @@ add_custom_target(delete_cmake COMMAND rm -rf ${CMAKE_INSTALL_PREFIX}/${CMAKE_IN
 add_dependencies(uninstall delete_lib)
 add_dependencies(uninstall delete_include)
 add_dependencies(uninstall delete_cmake)
+
+# ############################################################
+
+# ############################################################
+# Add docs :
+add_subdirectory(docs)
