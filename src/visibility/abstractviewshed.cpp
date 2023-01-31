@@ -60,11 +60,6 @@ void AbstractViewshed::initEventList()
                     double angleEnter = Visibility::calculateAngle( &tempPosEnter, mPoint );
                     double angleExit = Visibility::calculateAngle( &tempPosExit, mPoint );
 
-                    if ( angleEnter > angleCenter )
-                    {
-                        angleEnter -= 2 * M_PI;
-                    }
-
                     double eventDistance = Visibility::calculateDistance( row, column, mPoint, mCellSize );
 
                     if ( eventDistance < mMaxDistance && isInsideAngles( angleEnter, angleExit ) )
@@ -85,18 +80,16 @@ void AbstractViewshed::initEventList()
                             continue;
                         }
 
+                        // LosNode prefill
+                        if ( mPoint->row == row && mPoint->col < column )
+                        {
+                            LoSNode ln = LoSNode( mPoint, &eEnter, mCellSize );
+                            mLosNodes.push_back( ln );
+                        }
+
                         mCellEvents.push_back( eEnter );
                         mCellEvents.push_back( eCenter );
                         mCellEvents.push_back( eExit );
-
-                        if ( mPoint->row == row && mPoint->col < column )
-                        {
-                            CellEvent eEnter2 =
-                                CellEvent( CellEventPositionType::ENTER, row, column,
-                                           Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
-                                           angleEnter + ( 2 * M_PI ), elevs );
-                            mCellEvents.push_back( eEnter2 );
-                        }
                     }
                 }
             }
