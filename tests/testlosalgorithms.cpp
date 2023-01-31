@@ -152,6 +152,10 @@ class TestLosAlgorithms : public QObject
 
         los->setViewPoint( vp );
 
+        QVERIFY( losEvalForPoint( 0 ) == 1.0 );
+
+        QVERIFY( losEvalForPoint( 1 ) == 1.0 );
+
         QVERIFY( losEvalForPoint( 2 ) == 1.0 );
 
         QVERIFY( losEvalForPoint( 3 ) == 0.0 );
