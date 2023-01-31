@@ -222,7 +222,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
 
     for ( int j = 0; j < mAlgs->size(); j++ )
     {
-        mResults.at( j )->setValue( mAlgs->at( j )->viewpointValue(), mPoint->col, mPoint->row );
+        mResults.at( j )->setValue( mAlgs->at( j )->pointValue(), mPoint->col, mPoint->row );
     }
 }
 
