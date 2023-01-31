@@ -202,7 +202,6 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
             }
             case CellEventPositionType::CENTER:
             {
-
                 submitToThreadpool( e );
 
                 break;
@@ -248,7 +247,7 @@ void AbstractViewshed::setPixelData( ViewshedValues values )
 }
 
 void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
-                                            std::function<double( LoSNode )> func )
+                                                   std::function<double( LoSNode )> func )
 {
     MemoryRaster result = MemoryRaster( dem_ );
 
@@ -267,7 +266,7 @@ void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLaye
 }
 
 double AbstractViewshed::getCornerValue( const CellEventPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
-                                  double defaultValue )
+                                         double defaultValue )
 {
 
     double xL = pos.col - 0.5;
