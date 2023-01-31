@@ -44,7 +44,7 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
         Visibility::calculateEventPosition( CellEventPositionType::EXIT, e->row, e->col, point );
     angle[CellEventPositionType::EXIT] = Visibility::calculateAngle( &posExit, point );
 
-    if ( 0 > e->dist2vp )
+    if ( e->behindTargetForInverseLoS )
     {
         inverseLoSBehindTarget = true;
     }

@@ -14,6 +14,7 @@ namespace viewshed
         double dist2vp;
         double angle;
         double elevation[3];
+        bool behindTargetForInverseLoS = false;
 
         CellEvent( CellEventPositionType eventType_, int row_, int col_, double dist_, double angle_,
                    double elevation_[3] );
