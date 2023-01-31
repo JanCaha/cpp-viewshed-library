@@ -23,12 +23,20 @@ void LoSEvaluator::parseNodes()
 
     for ( int i = 0; i < mLos->numberOfNodes(); i++ )
     {
-        mLosValues->mIndexPoi = mLos->targetPointIndex();
-
         snGradient = mLos->gradient( i );
 
         if ( i + 1 < mLos->numberOfNodes() )
         {
+            // is current PoI horizon?
+            if ( i == mLos->targetPointIndex() )
+            {
+                if ( mLos->gradient( i + 1 ) < snGradient && mLosValues->mMaxGradientBefore < snGradient )
+                {
+                    mLosValues->mHorizon = true;
+                }
+            }
+
+            // is LoSNode horizon before PoI?
             if ( mLos->distance( i + 1 ) <= mLos->targetDistance() )
             {
                 if ( mLosValues->mMaxGradientBefore < snGradient && mLos->gradient( i + 1 ) < snGradient )
@@ -38,6 +46,7 @@ void LoSEvaluator::parseNodes()
                 }
             }
 
+            // is this LoSNode horizon?
             if ( mLosValues->mMaxGradient < snGradient && mLos->gradient( i + 1 ) < snGradient )
             {
                 mLosValues->mIndexHorizon = i;
