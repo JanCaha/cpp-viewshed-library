@@ -54,7 +54,7 @@ namespace viewshed
       protected:
         AbstractLoS();
 
-        virtual void findTargetPointIndex();
+        virtual void findTargetPointIndex() = 0;
 
         double mAngleHorizontal;
         double mPointDistance;
