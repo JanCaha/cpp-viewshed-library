@@ -49,10 +49,10 @@ class TestViewshed : public QObject
 
         LoSNode poi = v.statusNodeFromPoint( poiPoint );
 
-        // std::shared_ptr<LoS> los = v.getLoS( poiPoint );
-        // QVERIFY( los->size() == 182 );
+        std::shared_ptr<LoS> los = v.getLoS( poiPoint );
+        QVERIFY( los->size() == 182 );
 
-        std::shared_ptr<LoS> los = v.getLoS( poiPoint, true );
+        los = v.getLoS( poiPoint, true );
         QVERIFY( los->size() == 70 );
 
         std::vector<std::pair<double, double>> data = Utils::distanceElevation( los );
@@ -61,7 +61,7 @@ class TestViewshed : public QObject
         Utils::saveToCsv( data, "distance,elevation\n", TEST_DATA_LOS );
     }
 
-    void test()
+    void testViewshedCalculation()
     {
         Viewshed v( vp, dem, algs );
         v.calculate();
