@@ -8,7 +8,7 @@ ViewshedElevationDifferenceToGlobalHorizon::ViewshedElevationDifferenceToGlobalH
                                                                                         double differenceWithoutHorizon,
                                                                                         double pointValue )
     : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon ),
-      mPointValue( mPointValue )
+      mPointValue( pointValue )
 {
 }
 
