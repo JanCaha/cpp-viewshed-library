@@ -48,6 +48,7 @@ namespace viewshed
 
       protected:
         void sort() override;
+        void findTargetPointIndex() override;
 
       private:
         void removePointsAfterViewPoint();

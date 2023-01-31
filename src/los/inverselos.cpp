@@ -49,6 +49,7 @@ void InverseLoS::prepareForCalculation()
     removePointsAfterViewPoint();
     fixDistancesAngles();
     sort();
+    findTargetPointIndex();
 };
 
 void InverseLoS::removePointsAfterViewPoint()
@@ -98,6 +99,25 @@ void InverseLoS::fixDistancesAngles()
                 mPointDistance - at( i ).distances[CellEventPositionType::CENTER];
             at( i ).distances[CellEventPositionType::EXIT] =
                 mPointDistance - at( i ).distances[CellEventPositionType::EXIT];
+        }
+    }
+}
+
+void InverseLoS::findTargetPointIndex()
+{
+    for ( int i = 0; i < numberOfNodes(); i++ )
+    {
+        if ( i + 1 < numberOfNodes() )
+        {
+            if ( at( i ).distances[CellEventPositionType::CENTER] < targetDistance() &&
+                 targetDistance() < at( i + 1 ).distances[CellEventPositionType::CENTER] )
+            {
+                mTargetIndex = i;
+            }
+        }
+        else
+        {
+            mTargetIndex = i;
         }
     }
 }

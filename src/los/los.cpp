@@ -24,20 +24,29 @@ bool LoS::isValid() { return mVp->isValid(); }
 
 void LoS::setTargetPoint( std::shared_ptr<LoSNode> poi, double targetOffset )
 {
-    std::vector<LoSNode>::iterator index = std::find( begin(), end(), *poi );
-    if ( index != end() )
-    {
-        mTargetIndex = std::distance( begin(), index );
-    }
-
     mAngleHorizontal = poi->centreAngle();
     mTp = std::make_shared<Point>( poi->row, poi->col, poi->centreElevation(), targetOffset, 0 );
     mPointDistance = mVp->distance( mTp );
 }
 
+void LoS::findTargetPointIndex()
+{
+    LoSNode ln = LoSNode( mTp->row, mTp->col );
+
+    std::vector<LoSNode>::iterator index = std::find( begin(), end(), ln );
+    if ( index != end() )
+    {
+        mTargetIndex = std::distance( begin(), index );
+    }
+}
+
 int LoS::targetPointIndex() { return mTargetIndex; }
 
-void LoS::prepareForCalculation() { sort(); };
+void LoS::prepareForCalculation()
+{
+    sort();
+    findTargetPointIndex();
+};
 
 int LoS::numberOfNodes() { return size(); };
 

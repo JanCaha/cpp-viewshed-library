@@ -42,6 +42,7 @@ namespace viewshed
 
       protected:
         void sort() override;
+        void findTargetPointIndex() override;
     };
 
 } // namespace viewshed

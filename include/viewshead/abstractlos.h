@@ -54,6 +54,8 @@ namespace viewshed
       protected:
         AbstractLoS();
 
+        virtual void findTargetPointIndex();
+
         double mAngleHorizontal;
         double mPointDistance;
         std::shared_ptr<Point> mVp = std::make_shared<Point>();
