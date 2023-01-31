@@ -5,8 +5,8 @@
 
 #include "testsettings.h"
 
-#include "inverseviewshed.h"
 #include "abstractviewshedalgorithm.h"
+#include "inverseviewshed.h"
 #include "point.h"
 #include "utils.h"
 #include "viewshedangledifferencetolocalhorizon.h"
@@ -32,13 +32,15 @@ class TestInverseViewshed : public QObject
     {
         dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM, "dsm", "gdal" );
         tp = std::make_shared<Point>( QgsPoint( -336364.021, -1189108.615 ), dem, 0 );
+        double noData = dem->dataProvider()->sourceNoDataValue( 1 );
         algs->push_back( std::make_shared<ViewshedVisibility>() );
+        algs->push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( true ) );
+        algs->push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( false, noData, noData ) );
     }
 
     void testLoS()
     {
 
-        // QgsPoint poiPoint = QgsPoint( -336428.767, -1189102.785 );
         QgsPoint poiPoint = QgsPoint( -336409.028, -1189172.056 );
 
         InverseViewshed v( tp, 3, dem, algs );
@@ -52,23 +54,23 @@ class TestInverseViewshed : public QObject
         LoSEvaluator loseval = LoSEvaluator( los, algs );
         loseval.calculate();
 
-        // QVERIFY( los->size() == 182 );
+        QVERIFY( los->size() == 182 );
 
-        //     std::shared_ptr<LoS> los = v.getLoS( poiPoint, true );
-        //     QVERIFY( los->size() == 70 );
+        los = v.getLoS( poiPoint, true );
+        QVERIFY( los->size() == 70 );
 
         std::vector<std::pair<double, double>> data = Utils::distanceElevation( los );
-        //     QVERIFY( data.size() == 72 );
+        QVERIFY( data.size() == 72 );
 
         Utils::saveToCsv( data, "distance,elevation\n", TEST_DATA_LOS );
     }
 
-    void TestRaster()
+    void testInverseViewshedCalculation()
     {
-        // InverseViewshed v( tp, 3, dem, algs );
-        // v.setMaxThreads( 1 );
-        // v.calculate();
-        // v.saveResults( TEST_DATA_RESULTS_DIR, "Inverse" );
+        InverseViewshed v( tp, 2, dem, algs );
+        v.setMaxThreads( 1 );
+        v.calculate();
+        v.saveResults( TEST_DATA_RESULTS_DIR, "Inverse" );
     }
 };
 
