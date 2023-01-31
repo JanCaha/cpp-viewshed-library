@@ -1,3 +1,4 @@
+#include <cmath>
 #include <limits>
 
 #include "viewshedhorizons.h"
@@ -7,17 +8,9 @@ using viewshed::ViewshedHorizons;
 double ViewshedHorizons::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los )
 {
 
-    bool isHorizon = false;
-
-    if ( losValues->mIndexPoi + 1 < los->numberOfNodes() && losValues->mMaxGradientBefore < los->targetGradient() )
+    if ( losValues->isTargetHorizon() )
     {
-        double gradientBehind =
-            los->nodeAt( losValues->mIndexPoi + 1 ).valueAtAngle( los->horizontalAngle(), ValueType::Gradient );
-
-        if ( gradientBehind < los->targetGradient() )
-        {
-            return completlyVisible();
-        }
+        return completlyVisible();
     }
 
     return invisible();
