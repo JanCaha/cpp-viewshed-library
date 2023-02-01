@@ -16,6 +16,12 @@ CellEvent::CellEvent( CellEventPositionType eventType_, int row_, int col_, doub
     elevation[CellEventPositionType::EXIT] = elevation_[CellEventPositionType::EXIT];
 }
 
+bool CellEvent::operator==( const CellEvent other ) const
+{
+    return row == other.row && col == other.col && eventType == other.eventType &&
+           behindTargetForInverseLoS == other.behindTargetForInverseLoS;
+}
+
 bool CellEvent::operator<( const CellEvent other ) const
 {
 

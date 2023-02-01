@@ -20,6 +20,7 @@ namespace viewshed
                    double elevation_[3] );
 
         bool operator<( const CellEvent other ) const;
+        bool operator==( const CellEvent other ) const;
     };
 } // namespace viewshed
 
