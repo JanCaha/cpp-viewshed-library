@@ -41,18 +41,25 @@ jobs:
       - name: Configure
         run: | 
            mkdir build
-           cmake -S. -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Debug -DPACK_DEB=off
+           cmake \
+             -S. \
+            -Bbuild \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPACK_DEB:bool=off \
+            -DBUILD_DOCUMENTATION:bool=on \
+            -DBUILD_TESTS:bool=on
 
       - name: Build
         run: | 
-           cmake --build build --config Debug --target viewshed
+           cmake --build build --config Release --target viewshed
 
       - name: Test install
         run: |
-          sudo cmake --build build --config Debug --target install
+          sudo cmake --build build --config Release --target install
 
       - name: Run Tests
         id: unittests
         run: | 
-           cmake --build build --config Debug --target build_tests
-           cmake --build build --config Debug --target run_tests
+           cmake --build build --config Release --target build_tests
+           cmake --build build --config Release --target run_tests
