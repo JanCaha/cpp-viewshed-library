@@ -112,6 +112,14 @@ double LoSNode::valueAtAngle( const double &specificAngle, ValueType valueType )
         return ( ratio * value( CellEventPositionType::CENTER, valueType ) +
                  ( 1 - ratio ) * value( CellEventPositionType::EXIT, valueType ) );
     }
+    // special case for rotation ending LoS
+    else if ( specificAngle > ( M_PI * 1.5 ) && angle[CellEventPositionType::ENTER] < specificAngle - ( 2 * M_PI ) )
+    {
+        double difference = angle[CellEventPositionType::CENTER] - angle[CellEventPositionType::ENTER];
+        double ratio = ( ( specificAngle - ( 2 * M_PI ) ) - angle[CellEventPositionType::ENTER] ) / difference;
+        return ( ratio * value( CellEventPositionType::CENTER, valueType ) +
+                 ( 1 - ratio ) * value( CellEventPositionType::ENTER, valueType ) );
+    }
     else
     {
         return std::numeric_limits<double>::max() * ( -1 );
