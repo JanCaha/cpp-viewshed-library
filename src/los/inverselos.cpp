@@ -82,7 +82,8 @@ void InverseLoS::fixDistancesAngles()
 
             double addValue = -M_PI;
 
-            if ( at( i ).angle[CellEventPositionType::CENTER] < M_PI )
+            if ( at( i ).angle[CellEventPositionType::CENTER] < M_PI ||
+                 at( i ).angle[CellEventPositionType::CENTER] == 0 )
             {
                 addValue = +M_PI;
             }
