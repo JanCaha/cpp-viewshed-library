@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 1.7.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 1.9.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." ON)
@@ -124,8 +124,6 @@ add_library(${LIB_NAME} SHARED
     ${UTILS}
     ${THREAD_TASKS}
     ${LOS}
-
-    # ${EXTERNAL_HEADERS}
 )
 
 add_subdirectory(external)
@@ -143,10 +141,14 @@ target_link_libraries(${LIB_NAME}
     bs_thread_pool
 )
 
-if(BUILD_TESTS)
-    add_subdirectory(tests)
-endif(BUILD_TESTS)
+# ############################################################
+# add tests :
+add_subdirectory(tests)
 
+# ############################################################
+
+# ############################################################
+# install :
 # https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
 set(INCLUDE_INSTALL_DIR include/viewshed)
 set(SYSCONFIG_INSTALL_DIR lib/libviewshed.so)
@@ -180,10 +182,12 @@ install(TARGETS ${LIB_NAME}
 )
 
 # ############################################################
+
+# ############################################################
 # Pack :
 if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     if(PACK_DEB)
-        message(STATUS "Will pack DEB file.")
+        message(STATUS "VIEWSHED LIBRARY: DEB will be packed file.")
 
         include(Packing)
 
