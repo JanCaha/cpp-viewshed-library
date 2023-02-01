@@ -25,7 +25,8 @@ bool CellEvent::operator==( const CellEvent other ) const
 bool CellEvent::operator<( const CellEvent other ) const
 {
 
-    if ( row == other.row && col == other.col && eventType == other.eventType )
+    if ( row == other.row && col == other.col && eventType == other.eventType && behindTargetForInverseLoS &&
+         other.behindTargetForInverseLoS )
         return false;
 
     if ( angle > other.angle )
