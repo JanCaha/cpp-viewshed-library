@@ -144,11 +144,6 @@ void InverseViewshed::initEventList()
                     double angleEnter = Visibility::calculateAngle( &tempPosEnter, mPoint );
                     double angleExit = Visibility::calculateAngle( &tempPosExit, mPoint );
 
-                    if ( angleEnter > angleCenter )
-                    {
-                        angleEnter -= 2 * M_PI;
-                    }
-
                     double eventDistance = Visibility::calculateDistance( row, column, mPoint, mCellSize );
 
                     if ( eventDistance < mMaxDistance && isInsideAngles( angleEnter, angleExit ) )
@@ -162,30 +157,38 @@ void InverseViewshed::initEventList()
                                                      Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ),
                                                      angleExit, elevs );
 
-                        double addValue = M_PI;
+                        double oppositeAngleEnter = angleEnter;
+                        double oppositeAngleExit = angleExit;
 
-                        if ( mPoint->row == row && column < mPoint->col )
+                        if ( oppositeAngleEnter < M_PI )
                         {
-                            addValue = -M_PI;
+                            oppositeAngleEnter = M_PI + oppositeAngleEnter;
+                        }
+                        else
+                        {
+                            oppositeAngleEnter = oppositeAngleEnter - M_PI;
+                        }
+
+                        if ( oppositeAngleExit < M_PI )
+                        {
+                            oppositeAngleExit = M_PI + oppositeAngleExit;
+                        }
+                        else
+                        {
+                            oppositeAngleExit = oppositeAngleExit - M_PI;
                         }
 
                         CellEvent eEnterOpposite =
                             CellEvent( CellEventPositionType::ENTER, row, column,
                                        Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
-                                       addValue + angleEnter, elevs );
+                                       oppositeAngleEnter, elevs );
                         eEnterOpposite.behindTargetForInverseLoS = true;
 
                         CellEvent eExitOpposite =
                             CellEvent( CellEventPositionType::EXIT, row, column,
                                        Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ),
-                                       addValue + angleExit, elevs );
+                                       oppositeAngleExit, elevs );
                         eExitOpposite.behindTargetForInverseLoS = true;
-
-                        // // TODO is this it?
-                        // if ( eventEnter1.distance < 0 && eventEnter1.angle > 2 * Math.PI )
-                        // {
-                        //     eventEnter1.angle = eventEnter1.angle - 2 * Math.PI;
-                        // }
 
                         // Target or ViewPoint are not part CellEvents - handled separately
                         if ( mPoint->row == row && mPoint->col == column )
