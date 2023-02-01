@@ -30,12 +30,14 @@ class TestInverseViewshed : public QObject
 
     void initTestCase()
     {
+        // dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM_SMALL, "dsm", "gdal" );
+        // tp = std::make_shared<Point>( QgsPoint( -336312.978, -1189034.372 ), dem, 0 );
         dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM, "dsm", "gdal" );
         tp = std::make_shared<Point>( QgsPoint( -336364.021, -1189108.615 ), dem, 0 );
         double noData = dem->dataProvider()->sourceNoDataValue( 1 );
         algs->push_back( std::make_shared<ViewshedVisibility>() );
         algs->push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( true ) );
-        algs->push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( false, noData, noData, noData ) );
+        algs->push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( false, noData, noData, 0 ) );
     }
 
     void testLoS()
@@ -53,12 +55,12 @@ class TestInverseViewshed : public QObject
 
         QVERIFY( los->size() == 218 );
 
-        // TODO !!! not yet implemented
-        // los = v.getLoS( poiPoint, true );
-        // QVERIFY( los->size() == 70 );
+        // // TODO !!! not yet implemented
+        // // los = v.getLoS( poiPoint, true );
+        // // QVERIFY( los->size() == 70 );
 
         std::vector<std::pair<double, double>> data = Utils::distanceElevation( los );
-        // QVERIFY( data.size() == 72 );
+        // // QVERIFY( data.size() == 72 );
 
         Utils::saveToCsv( data, "distance,elevation\n", TEST_DATA_LOS );
     }
