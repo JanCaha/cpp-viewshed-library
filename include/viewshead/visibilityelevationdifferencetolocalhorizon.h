@@ -6,12 +6,12 @@
 
 namespace viewshed
 {
-    class ViewshedElevationDifferenceToLocalHorizon : public AbstractViewshedAlgorithm
+    class VisibilityElevationDifferenceToLocalHorizon : public AbstractViewshedAlgorithm
     {
 
       public:
-        ViewshedElevationDifferenceToLocalHorizon( bool all = false, double invisibleValue = -9999,
-                                                   double differenceWithoutHorizon = 0, double pointValue = 0 );
+        VisibilityElevationDifferenceToLocalHorizon( bool all = false, double invisibleValue = -9999,
+                                                     double differenceWithoutHorizon = 0, double pointValue = 0 );
         double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
         double pointValue() override { return mPointValue; };

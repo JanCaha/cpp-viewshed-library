@@ -5,11 +5,11 @@
 
 namespace viewshed
 {
-    class ViewshedViewAngle : public AbstractViewshedAlgorithm
+    class VisibilityViewAngle : public AbstractViewshedAlgorithm
     {
 
       public:
-        ViewshedViewAngle( double pointValue = 180 );
+        VisibilityViewAngle( double pointValue = 180 );
 
         double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 

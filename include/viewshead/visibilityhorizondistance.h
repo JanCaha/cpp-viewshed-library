@@ -1,17 +1,17 @@
-#ifndef VIEWSHEDLIB_VIEWSHEDELEVDIFF_H
-#define VIEWSHEDLIB_VIEWSHEDELEVDIFF_H
+#ifndef VIEWSHEDLIB_VIEWSHEDHORIZONDISTANCE_H
+#define VIEWSHEDLIB_VIEWSHEDHORIZONDISTANCE_H
 
 #include "abstractviewshedalgorithm.h"
 
 namespace viewshed
 {
-    class ViewshedElevationDifference : public AbstractViewshedAlgorithm
+    class VisibilityHorizonDistance : public AbstractViewshedAlgorithm
     {
 
       public:
         double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
-        double pointValue() override;
+        double pointValue() override { return 0; };
 
         const QString name() override;
     };

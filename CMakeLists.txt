@@ -31,15 +31,15 @@ include_directories(
 )
 
 set(VISIBILITY_ALGS
-    src/visibility_algorithms/viewshedvisibility.cpp
-    src/visibility_algorithms/viewshedviewangle.cpp
-    src/visibility_algorithms/viewshedelevationdifference.cpp
-    src/visibility_algorithms/viewshedhorizons.cpp
-    src/visibility_algorithms/viewshedelevationdifferencetolocalhorizon.cpp
-    src/visibility_algorithms/viewshedelevationdifferencetoglobalhorizon.cpp
-    src/visibility_algorithms/viewshedangledifferencetolocalhorizon.cpp
-    src/visibility_algorithms/viewshedangledifferencetoglobalhorizon.cpp
-    src/visibility_algorithms/viewshedhorizondistance.cpp
+    src/visibility_algorithms/visibilityboolean.cpp
+    src/visibility_algorithms/visibilityviewangle.cpp
+    src/visibility_algorithms/visibilityelevationdifference.cpp
+    src/visibility_algorithms/visibilityhorizons.cpp
+    src/visibility_algorithms/visibilityelevationdifferencetolocalhorizon.cpp
+    src/visibility_algorithms/visibilityelevationdifferencetoglobalhorizon.cpp
+    src/visibility_algorithms/visibilityangledifferencetolocalhorizon.cpp
+    src/visibility_algorithms/visibilityangledifferencetoglobalhorizon.cpp
+    src/visibility_algorithms/visibilityhorizondistance.cpp
 )
 
 set(MEMORY_RASTER
@@ -102,16 +102,16 @@ set(PUBLIC_HEADERS
     include/viewshead/threadtasks.h
     include/viewshead/utils.h
     include/viewshead/viewshed.h
-    include/viewshead/viewshedangledifferencetoglobalhorizon.h
-    include/viewshead/viewshedangledifferencetolocalhorizon.h
-    include/viewshead/viewshedelevationdifference.h
-    include/viewshead/viewshedhorizondistance.h
-    include/viewshead/viewshedelevationdifferencetolocalhorizon.h
-    include/viewshead/viewshedelevationdifferencetoglobalhorizon.h
-    include/viewshead/viewshedhorizons.h
-    include/viewshead/viewshedvalues.h
-    include/viewshead/viewshedviewangle.h
-    include/viewshead/viewshedvisibility.h
+    include/viewshead/visibilityangledifferencetoglobalhorizon.h
+    include/viewshead/visibilityangledifferencetolocalhorizon.h
+    include/viewshead/visibilityelevationdifference.h
+    include/viewshead/visibilityhorizondistance.h
+    include/viewshead/visibilityelevationdifferencetolocalhorizon.h
+    include/viewshead/visibilityelevationdifferencetoglobalhorizon.h
+    include/viewshead/visibilityhorizons.h
+    include/viewshead/visibilityvalues.h
+    include/viewshead/visibilityviewangle.h
+    include/viewshead/visibilityboolean.h
     include/viewshead/visibility.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )

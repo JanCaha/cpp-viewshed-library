@@ -1,18 +1,16 @@
-#ifndef VIEWSHEDLIB_VIEWSHEDANGLEDIFFGLOBAL_H
-#define VIEWSHEDLIB_VIEWSHEDANGLEDIFFGLOBAL_H
-
-#include "limits"
+#ifndef VIEWSHEDLIB_VIEWSHEDELEVDIFFGLOBAL_H
+#define VIEWSHEDLIB_VIEWSHEDELEVDIFFGLOBAL_H
 
 #include "abstractviewshedalgorithm.h"
 
 namespace viewshed
 {
-    class ViewshedAngleDifferenceToGlobalHorizon : public AbstractViewshedAlgorithm
+    class VisibilityElevationDifferenceToGlobalHorizon : public AbstractViewshedAlgorithm
     {
 
       public:
-        ViewshedAngleDifferenceToGlobalHorizon( bool all = false, double invisibleValue = -181,
-                                                double differenceWithoutHorizon = -180, double pointValue = 0 );
+        VisibilityElevationDifferenceToGlobalHorizon( bool all = false, double invisibleValue = -9999,
+                                                      double differenceWithoutHorizon = 0, double pointValue = 0 );
 
         double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 

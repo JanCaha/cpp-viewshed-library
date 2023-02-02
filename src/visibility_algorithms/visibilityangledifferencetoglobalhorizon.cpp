@@ -1,19 +1,19 @@
 #include <limits>
 
-#include "viewshedangledifferencetoglobalhorizon.h"
+#include "visibilityangledifferencetoglobalhorizon.h"
 
-using viewshed::ViewshedAngleDifferenceToGlobalHorizon;
+using viewshed::VisibilityAngleDifferenceToGlobalHorizon;
 
-ViewshedAngleDifferenceToGlobalHorizon::ViewshedAngleDifferenceToGlobalHorizon( bool all, double invisibleValue,
-                                                                                double differenceWithoutHorizon,
-                                                                                double pointValue )
+VisibilityAngleDifferenceToGlobalHorizon::VisibilityAngleDifferenceToGlobalHorizon( bool all, double invisibleValue,
+                                                                                    double differenceWithoutHorizon,
+                                                                                    double pointValue )
     : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon ),
       mPointValue( pointValue )
 {
 }
 
-double ViewshedAngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
-                                                       std::shared_ptr<AbstractLoS> los )
+double VisibilityAngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
+                                                         std::shared_ptr<AbstractLoS> los )
 {
     double difference;
     if ( losValues->horizonExist() )
@@ -38,7 +38,7 @@ double ViewshedAngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImport
     }
 }
 
-const QString ViewshedAngleDifferenceToGlobalHorizon::name()
+const QString VisibilityAngleDifferenceToGlobalHorizon::name()
 {
     QString allPoints = QString::fromStdString( "False" );
     if ( mAllPoints )

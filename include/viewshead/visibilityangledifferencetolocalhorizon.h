@@ -7,12 +7,12 @@
 
 namespace viewshed
 {
-    class ViewshedAngleDifferenceToLocalHorizon : public AbstractViewshedAlgorithm
+    class VisibilityAngleDifferenceToLocalHorizon : public AbstractViewshedAlgorithm
     {
 
       public:
-        ViewshedAngleDifferenceToLocalHorizon( bool all = false, double invisibleValue = -181,
-                                               double differenceWithoutHorizon = -180, double pointValue = 0 );
+        VisibilityAngleDifferenceToLocalHorizon( bool all = false, double invisibleValue = -181,
+                                                 double differenceWithoutHorizon = -180, double pointValue = 0 );
 
         double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 

@@ -7,11 +7,11 @@
 
 namespace viewshed
 {
-    class ViewshedHorizons : public AbstractViewshedAlgorithm
+    class VisibilityHorizons : public AbstractViewshedAlgorithm
     {
 
       public:
-        ViewshedHorizons( double horizon = 1, double notHorizon = 0 );
+        VisibilityHorizons( double horizon = 1, double notHorizon = 0 );
 
         double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
