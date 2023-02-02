@@ -9,10 +9,10 @@
 #include "inverseviewshed.h"
 #include "point.h"
 #include "utils.h"
-#include "viewshedangledifferencetolocalhorizon.h"
-#include "viewshedhorizons.h"
-#include "viewshedvisibility.h"
 #include "visibility.h"
+#include "visibilityangledifferencetolocalhorizon.h"
+#include "visibilityboolean.h"
+#include "visibilityhorizons.h"
 
 using namespace viewshed;
 
@@ -35,9 +35,9 @@ class TestInverseViewshed : public QObject
         dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM, "dsm", "gdal" );
         tp = std::make_shared<Point>( QgsPoint( -336364.021, -1189108.615 ), dem, 0 );
         double noData = dem->dataProvider()->sourceNoDataValue( 1 );
-        algs->push_back( std::make_shared<ViewshedVisibility>() );
-        algs->push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( true ) );
-        algs->push_back( std::make_shared<ViewshedAngleDifferenceToLocalHorizon>( false, noData, noData, 0 ) );
+        algs->push_back( std::make_shared<VisibilityBoolean>() );
+        algs->push_back( std::make_shared<VisibilityAngleDifferenceToLocalHorizon>( true ) );
+        algs->push_back( std::make_shared<VisibilityAngleDifferenceToLocalHorizon>( false, noData, noData, 0 ) );
     }
 
     void testLoS()
