@@ -102,6 +102,8 @@ set(PUBLIC_HEADERS
     include/viewshead/threadtasks.h
     include/viewshead/utils.h
     include/viewshead/viewshed.h
+    include/viewshead/viewshedvalues.h
+    include/viewshead/visibility.h
     include/viewshead/visibilityangledifferencetoglobalhorizon.h
     include/viewshead/visibilityangledifferencetolocalhorizon.h
     include/viewshead/visibilityelevationdifference.h
@@ -109,10 +111,8 @@ set(PUBLIC_HEADERS
     include/viewshead/visibilityelevationdifferencetolocalhorizon.h
     include/viewshead/visibilityelevationdifferencetoglobalhorizon.h
     include/viewshead/visibilityhorizons.h
-    include/viewshead/visibilityvalues.h
     include/viewshead/visibilityviewangle.h
     include/viewshead/visibilityboolean.h
-    include/viewshead/visibility.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
 
