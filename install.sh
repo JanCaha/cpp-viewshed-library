@@ -6,6 +6,7 @@ cmake -S. -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=off -DBUIL
 cmake --build build --config Release --target viewshed
 
 # testing
+# cmake --build build --config Debug --target run_tests
 cmake --build build --config Release --target run_tests
 
 # install
