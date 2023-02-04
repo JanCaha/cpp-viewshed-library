@@ -112,7 +112,7 @@ set(PUBLIC_HEADERS
     include/viewshed/visibilityviewangle.h
     include/viewshed/visibilityboolean.h
     include/viewshed/visibilityalgorithms.h
-    "${CMAKE_BINARYDIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
+    ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
 )
 add_library(library_viewshed SHARED
     ${MEMORY_RASTER}
@@ -175,7 +175,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
 
 include(GNUInstallDirs)
 
-install(TARGETS ${LIB_NAME}
+install(TARGETS library_viewshed
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/viewshed
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
