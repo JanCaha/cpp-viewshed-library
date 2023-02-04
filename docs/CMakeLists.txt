@@ -24,7 +24,7 @@ if(DOXYGEN_FOUND)
 
         if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
             if(BUILD_DOCUMENTATION)
-                add_dependencies(${LIB_NAME} build_documentation)
+                add_dependencies(library_viewshed build_documentation)
             endif()
         endif()
     endif()

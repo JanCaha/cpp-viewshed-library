@@ -237,7 +237,7 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         )
 
-        add_dependencies(pack_deb ${LIB_NAME})
+        add_dependencies(pack_deb library_viewshed)
     endif()
 endif()
 
