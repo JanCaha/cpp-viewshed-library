@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 1.9.0 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 1.9.1 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." ON)
@@ -31,15 +31,15 @@ include_directories(
 )
 
 set(VISIBILITY_ALGS
-    src/visibility_algorithms/visibilityboolean.cpp
-    src/visibility_algorithms/visibilityviewangle.cpp
-    src/visibility_algorithms/visibilityelevationdifference.cpp
-    src/visibility_algorithms/visibilityhorizons.cpp
-    src/visibility_algorithms/visibilityelevationdifferencetolocalhorizon.cpp
-    src/visibility_algorithms/visibilityelevationdifferencetoglobalhorizon.cpp
-    src/visibility_algorithms/visibilityangledifferencetolocalhorizon.cpp
-    src/visibility_algorithms/visibilityangledifferencetoglobalhorizon.cpp
-    src/visibility_algorithms/visibilityhorizondistance.cpp
+    src/visibility_algorithms/boolean.cpp
+    src/visibility_algorithms/viewangle.cpp
+    src/visibility_algorithms/elevationdifference.cpp
+    src/visibility_algorithms/horizons.cpp
+    src/visibility_algorithms/elevationdifferencetolocalhorizon.cpp
+    src/visibility_algorithms/elevationdifferencetoglobalhorizon.cpp
+    src/visibility_algorithms/angledifferencetolocalhorizon.cpp
+    src/visibility_algorithms/angledifferencetoglobalhorizon.cpp
+    src/visibility_algorithms/horizondistance.cpp
 )
 
 set(MEMORY_RASTER
@@ -113,6 +113,7 @@ set(PUBLIC_HEADERS
     include/viewshead/visibilityhorizons.h
     include/viewshead/visibilityviewangle.h
     include/viewshead/visibilityboolean.h
+    include/viewshead/visibilityalgorithms.h
     "${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
 
