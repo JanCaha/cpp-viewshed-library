@@ -15,6 +15,7 @@
 #include "visibilityhorizons.h"
 
 using namespace viewshed;
+using namespace viewshed::visibilityalgorithm;
 
 class TestViewshed : public QObject
 {
@@ -32,10 +33,10 @@ class TestViewshed : public QObject
     {
         dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM, "dsm", "gdal" );
         vp = std::make_shared<Point>( QgsPoint( -336364.021, -1189108.615 ), dem );
-        algs->push_back( std::make_shared<VisibilityBoolean>() );
-        algs->push_back( std::make_shared<VisibilityHorizons>() );
-        algs->push_back( std::make_shared<VisibilityAngleDifferenceToLocalHorizon>( true ) );
-        algs->push_back( std::make_shared<VisibilityAngleDifferenceToLocalHorizon>( false ) );
+        algs->push_back( std::make_shared<Boolean>() );
+        algs->push_back( std::make_shared<Horizons>() );
+        algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
+        algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false ) );
     }
 
     void testLoS()

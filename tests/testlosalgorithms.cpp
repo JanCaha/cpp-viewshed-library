@@ -21,6 +21,7 @@
 #include "visibilityhorizons.h"
 
 using namespace viewshed;
+using namespace viewshed::visibilityalgorithm;
 
 class TestLosAlgorithms : public QObject
 {
@@ -145,7 +146,7 @@ class TestLosAlgorithms : public QObject
     {
         algs->clear();
 
-        algs->push_back( std::make_shared<VisibilityBoolean>() );
+        algs->push_back( std::make_shared<Boolean>() );
 
         losEval = LoSEvaluator( los, algs );
 
@@ -174,7 +175,7 @@ class TestLosAlgorithms : public QObject
     {
         algs->clear();
 
-        algs->push_back( std::make_shared<VisibilityHorizons>() );
+        algs->push_back( std::make_shared<Horizons>() );
 
         losEval = LoSEvaluator( los, algs );
 
@@ -206,8 +207,8 @@ class TestLosAlgorithms : public QObject
         double invisible = -181;
         double noHorizon = -180;
 
-        algs->push_back( std::make_shared<VisibilityAngleDifferenceToLocalHorizon>( false, invisible, noHorizon ) );
-        algs->push_back( std::make_shared<VisibilityAngleDifferenceToLocalHorizon>( true, invisible, noHorizon ) );
+        algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false, invisible, noHorizon ) );
+        algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true, invisible, noHorizon ) );
 
         QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), noHorizon, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), noHorizon, 0.1 ) );
@@ -246,8 +247,8 @@ class TestLosAlgorithms : public QObject
 
         double invisible = -91;
 
-        algs->push_back( std::make_shared<VisibilityAngleDifferenceToGlobalHorizon>( false, invisible ) );
-        algs->push_back( std::make_shared<VisibilityAngleDifferenceToGlobalHorizon>( true, invisible ) );
+        algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( false, invisible ) );
+        algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( true, invisible ) );
 
         QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), -20.4, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), -20.4, 0.1 ) );
@@ -272,10 +273,8 @@ class TestLosAlgorithms : public QObject
         double noHorizonBefore = -99;
         double invisible = -9999;
 
-        algs->push_back(
-            std::make_shared<VisibilityElevationDifferenceToLocalHorizon>( false, invisible, noHorizonBefore ) );
-        algs->push_back(
-            std::make_shared<VisibilityElevationDifferenceToLocalHorizon>( true, invisible, noHorizonBefore ) );
+        algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false, invisible, noHorizonBefore ) );
+        algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true, invisible, noHorizonBefore ) );
 
         LoSEvaluator losEval = LoSEvaluator( los, algs );
 
@@ -317,10 +316,8 @@ class TestLosAlgorithms : public QObject
         double noHorizonBefore = -99;
         double invisible = -9999;
 
-        algs->push_back(
-            std::make_shared<VisibilityElevationDifferenceToGlobalHorizon>( false, invisible, noHorizonBefore ) );
-        algs->push_back(
-            std::make_shared<VisibilityElevationDifferenceToGlobalHorizon>( true, invisible, noHorizonBefore ) );
+        algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false, invisible, noHorizonBefore ) );
+        algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true, invisible, noHorizonBefore ) );
 
         QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), -0.8, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), -0.8, 0.1 ) );
