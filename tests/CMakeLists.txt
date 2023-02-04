@@ -13,7 +13,7 @@ if(BUILD_TESTS)
     include_directories(SYSTEM
         ${QT_INCLUDE_DIR}
         ${QGIS_INCLUDE_DIR}
-        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/include/viewshed
         ${CMAKE_CURRENT_BINARY_DIR}
     )
 
@@ -43,8 +43,9 @@ if(BUILD_TESTS)
             Qt5::Xml
             Qt5::Widgets
             Qt5::Test
-            ${LIB_NAME}
+            library_viewshed
         )
+
         add_test(${testname} ${testname} -maxwarnings 10000)
         add_dependencies(build_tests ${testname})
     endmacro(ADD_LIBRARY_TEST)
