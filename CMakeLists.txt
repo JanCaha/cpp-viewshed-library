@@ -6,8 +6,6 @@ option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." ON)
 option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." ON)
 
-set(LIB_NAME viewshed)
-
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 set(CMAKE_CXX_STANDARD 17)
@@ -116,8 +114,7 @@ set(PUBLIC_HEADERS
     include/viewshed/visibilityalgorithms.h
     "${CMAKE_BINARYDIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp"
 )
-
-add_library(${LIB_NAME} SHARED
+add_library(library_viewshed SHARED
     ${MEMORY_RASTER}
     ${STRUCTURES}
     ${VISIBILITY_ALGS}
@@ -127,17 +124,19 @@ add_library(${LIB_NAME} SHARED
     ${LOS}
 )
 
+set_target_properties(library_viewshed PROPERTIES OUTPUT_NAME "viewshed")
+
 add_subdirectory(external)
 
-set_target_properties(${LIB_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(${LIB_NAME} PROPERTIES SOVERSION 1)
+set_target_properties(library_viewshed PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(library_viewshed PROPERTIES SOVERSION 1)
 
-set_target_properties(${LIB_NAME} PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
+set_target_properties(library_viewshed PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
 
-target_include_directories(${LIB_NAME} PUBLIC include/viewshead)
-target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
+target_include_directories(library_viewshed PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/viewshed)
+target_include_directories(library_viewshed PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
 
-target_link_libraries(${LIB_NAME}
+target_link_libraries(library_viewshed
     ${MINIMAL_QGIS_LIBS}
     bs_thread_pool
 )
