@@ -5,25 +5,28 @@
 
 namespace viewshed
 {
-    class VisibilityElevationDifferenceToGlobalHorizon : public AbstractViewshedAlgorithm
+    namespace visibilityalgorithm
     {
+        class ElevationDifferenceToGlobalHorizon : public AbstractViewshedAlgorithm
+        {
 
-      public:
-        VisibilityElevationDifferenceToGlobalHorizon( bool all = false, double invisibleValue = -9999,
-                                                      double differenceWithoutHorizon = 0, double pointValue = 0 );
+          public:
+            ElevationDifferenceToGlobalHorizon( bool all = false, double invisibleValue = -9999,
+                                                double differenceWithoutHorizon = 0, double pointValue = 0 );
 
-        double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
+            double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
-        double pointValue() override { return mPointValue; };
+            double pointValue() override { return mPointValue; };
 
-        const QString name() override;
+            const QString name() override;
 
-      private:
-        bool mAllPoints = false;
-        double mInvisibleValue;
-        double mDifferenceWithoutHorizon;
-        double mPointValue;
-    };
+          private:
+            bool mAllPoints = false;
+            double mInvisibleValue;
+            double mDifferenceWithoutHorizon;
+            double mPointValue;
+        };
+    } // namespace visibilityalgorithm
 } // namespace viewshed
 
 #endif

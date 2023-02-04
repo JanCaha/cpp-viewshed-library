@@ -7,23 +7,26 @@
 
 namespace viewshed
 {
-    class VisibilityBoolean : public AbstractViewshedAlgorithm
+    namespace visibilityalgorithm
     {
+        class Boolean : public AbstractViewshedAlgorithm
+        {
 
-      public:
-        VisibilityBoolean( double visible = 1, double invisible = 0, double pointValue = 1 );
+          public:
+            Boolean( double visible = 1, double invisible = 0, double pointValue = 1 );
 
-        double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
+            double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
-        double pointValue() override { return mPointValue; };
+            double pointValue() override { return mPointValue; };
 
-        const QString name() override;
+            const QString name() override;
 
-      private:
-        double mVisibile;
-        double mInvisibile;
-        double mPointValue;
-    };
+          private:
+            double mVisibile;
+            double mInvisibile;
+            double mPointValue;
+        };
+    } // namespace visibilityalgorithm
 } // namespace viewshed
 
 #endif

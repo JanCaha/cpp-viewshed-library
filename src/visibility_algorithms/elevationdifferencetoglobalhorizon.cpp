@@ -2,18 +2,18 @@
 
 #include "visibilityelevationdifferencetoglobalhorizon.h"
 
-using viewshed::VisibilityElevationDifferenceToGlobalHorizon;
+using viewshed::visibilityalgorithm::ElevationDifferenceToGlobalHorizon;
 
-VisibilityElevationDifferenceToGlobalHorizon::VisibilityElevationDifferenceToGlobalHorizon( bool all, double invisibleValue,
-                                                                                        double differenceWithoutHorizon,
-                                                                                        double pointValue )
+ElevationDifferenceToGlobalHorizon::ElevationDifferenceToGlobalHorizon( bool all, double invisibleValue,
+                                                                        double differenceWithoutHorizon,
+                                                                        double pointValue )
     : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon ),
       mPointValue( pointValue )
 {
 }
 
-double VisibilityElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
-                                                           std::shared_ptr<AbstractLoS> los )
+double ElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
+                                                   std::shared_ptr<AbstractLoS> los )
 {
     double change;
     double difference;
@@ -43,7 +43,7 @@ double VisibilityElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoS
     }
 }
 
-const QString VisibilityElevationDifferenceToGlobalHorizon::name()
+const QString ElevationDifferenceToGlobalHorizon::name()
 {
     QString allPoints = QString::fromStdString( "False" );
     if ( mAllPoints )

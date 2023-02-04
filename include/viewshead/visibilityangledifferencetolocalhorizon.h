@@ -7,25 +7,28 @@
 
 namespace viewshed
 {
-    class VisibilityAngleDifferenceToLocalHorizon : public AbstractViewshedAlgorithm
+    namespace visibilityalgorithm
     {
+        class AngleDifferenceToLocalHorizon : public AbstractViewshedAlgorithm
+        {
 
-      public:
-        VisibilityAngleDifferenceToLocalHorizon( bool all = false, double invisibleValue = -181,
-                                                 double differenceWithoutHorizon = -180, double pointValue = 0 );
+          public:
+            AngleDifferenceToLocalHorizon( bool all = false, double invisibleValue = -181,
+                                           double differenceWithoutHorizon = -180, double pointValue = 0 );
 
-        double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
+            double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
-        double pointValue() override { return mPointValue; };
+            double pointValue() override { return mPointValue; };
 
-        const QString name() override;
+            const QString name() override;
 
-      private:
-        bool mAllPoints = false;
-        double mInvisibleValue;
-        double mDifferenceWithoutHorizon;
-        double mPointValue;
-    };
+          private:
+            bool mAllPoints = false;
+            double mInvisibleValue;
+            double mDifferenceWithoutHorizon;
+            double mPointValue;
+        };
+    } // namespace visibilityalgorithm
 } // namespace viewshed
 
 #endif

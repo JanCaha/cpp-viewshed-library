@@ -5,16 +5,19 @@
 
 namespace viewshed
 {
-    class VisibilityElevationDifference : public AbstractViewshedAlgorithm
+    namespace visibilityalgorithm
     {
+        class ElevationDifference : public AbstractViewshedAlgorithm
+        {
 
-      public:
-        double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
+          public:
+            double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
-        double pointValue() override;
+            double pointValue() override;
 
-        const QString name() override;
-    };
+            const QString name() override;
+        };
+    } // namespace visibilityalgorithm
 } // namespace viewshed
 
 #endif

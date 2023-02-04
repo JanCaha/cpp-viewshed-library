@@ -2,18 +2,17 @@
 
 #include "visibilityangledifferencetolocalhorizon.h"
 
-using viewshed::VisibilityAngleDifferenceToLocalHorizon;
+using viewshed::visibilityalgorithm::AngleDifferenceToLocalHorizon;
 
-VisibilityAngleDifferenceToLocalHorizon::VisibilityAngleDifferenceToLocalHorizon( bool all, double invisibleValue,
-                                                                                  double differenceWithoutHorizon,
-                                                                                  double pointValue )
+AngleDifferenceToLocalHorizon::AngleDifferenceToLocalHorizon( bool all, double invisibleValue,
+                                                              double differenceWithoutHorizon, double pointValue )
     : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon ),
       mPointValue( pointValue )
 {
 }
 
-double VisibilityAngleDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
-                                                        std::shared_ptr<AbstractLoS> los )
+double AngleDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
+                                              std::shared_ptr<AbstractLoS> los )
 {
     double difference;
     if ( losValues->horizonBeforeExist() )
@@ -38,7 +37,7 @@ double VisibilityAngleDifferenceToLocalHorizon::result( std::shared_ptr<LoSImpor
     }
 }
 
-const QString VisibilityAngleDifferenceToLocalHorizon::name()
+const QString AngleDifferenceToLocalHorizon::name()
 {
     QString allPoints = QString::fromStdString( "False" );
     if ( mAllPoints )

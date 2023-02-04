@@ -5,21 +5,24 @@
 
 namespace viewshed
 {
-    class VisibilityViewAngle : public AbstractViewshedAlgorithm
+    namespace visibilityalgorithm
     {
+        class ViewAngle : public AbstractViewshedAlgorithm
+        {
 
-      public:
-        VisibilityViewAngle( double pointValue = 180 );
+          public:
+            ViewAngle( double pointValue = 180 );
 
-        double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
+            double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
-        double pointValue() override { return mPointValue; };
+            double pointValue() override { return mPointValue; };
 
-        const QString name() override;
+            const QString name() override;
 
-      private:
-        double mPointValue;
-    };
+          private:
+            double mPointValue;
+        };
+    } // namespace visibilityalgorithm
 } // namespace viewshed
 
 #endif
