@@ -184,6 +184,41 @@ install(TARGETS ${LIB_NAME}
 # ############################################################
 
 # ############################################################
+# Binaries :
+macro(create_binary bin_name filename)
+    add_executable(${bin_name} ${filename})
+
+    set_target_properties(${bin_name} PROPERTIES AUTOMOC TRUE)
+
+    target_include_directories(${bin_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/viewshed)
+    target_include_directories(${bin_name} PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
+
+    target_link_libraries(${bin_name}
+        ${MINIMAL_QGIS_LIBS}
+        ${QGIS_GUI_LIBRARY}
+        bs_thread_pool
+        library_viewshed
+    )
+endmacro(create_binary)
+
+create_binary(viewshed src/bin/viewshed.cpp)
+
+create_binary(inverseviewshed src/bin/inverseviewshed.cpp)
+create_binary(viewshedcalculator src/bin/viewshedcalculator.cpp)
+add_custom_target(create_binaries)
+
+add_dependencies(create_binaries viewshed)
+
+add_dependencies(create_binaries viewshed inverseviewshed viewshedcalculator)
+
+install(TARGETS
+    viewshed inverseviewshed viewshedcalculator
+    RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+    PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+
+# ############################################################
+
+# ############################################################
 # Pack :
 if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     if(PACK_DEB)
