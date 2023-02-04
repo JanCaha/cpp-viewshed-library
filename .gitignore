@@ -1,6 +1,5 @@
 build
 .vscode/c_cpp_properties.json
-.vscode/tasks.json
 tests/data/*.aux.xml
 _packages
 tests/data/results/*
