@@ -7,12 +7,27 @@
 
 namespace viewshed
 {
+
+    struct DataTriplet
+    {
+        DataTriplet( double f, double s, bool t )
+        {
+            first = f;
+            second = s;
+            third = t;
+        };
+
+        double first;
+        double second;
+        bool third;
+    };
+
     class Utils
     {
       public:
-        static void saveToCsv( std::vector<std::pair<double, double>> data, std::string header, std::string fileName );
+        static void saveToCsv( std::vector<DataTriplet> data, std::string header, std::string fileName );
 
-        static std::vector<std::pair<double, double>> distanceElevation( std::shared_ptr<AbstractLoS> los );
+        static std::vector<DataTriplet> distanceElevation( std::shared_ptr<AbstractLoS> los );
 
         static std::vector<std::pair<double, double>> rasterCoordinates( std::shared_ptr<std::vector<LoSNode>> los,
                                                                          LoSNode poi );
