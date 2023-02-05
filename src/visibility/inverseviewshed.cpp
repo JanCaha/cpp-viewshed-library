@@ -49,18 +49,10 @@ std::shared_ptr<InverseLoS> InverseViewshed::getLoS( QgsPoint point, bool onlyTo
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( losNodes );
     los->setTargetPoint( mPoint, mPoint->offset );
     los->setViewPoint( poi, mObserverOffset );
+
+    los->setRemovePointsAfterTarget( onlyToPoi );
+
     los->prepareForCalculation();
-
-    // TODO not yet implemented
-    // if ( onlyToPoi )
-    // {
-    //     double poiDistance = poi->centreDistance();
-
-    //     losNodes.erase( std::remove_if( losNodes.begin(), losNodes.end(),
-    //                                     [&poiDistance]( LoSNode &node )
-    //                                     { return poiDistance <= node.centreDistance(); } ),
-    //                     losNodes.end() );
-    // }
 
     return los;
 }
