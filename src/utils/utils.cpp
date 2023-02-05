@@ -42,6 +42,7 @@ std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr
     std::vector<std::pair<double, double>> data;
 
     auto inverseLoS = std::dynamic_pointer_cast<InverseLoS>( los );
+    bool inverseLoSEndingAtTarget = los->distance( los->numberOfNodes() - 1 ) <= los->targetDistance();
 
     data.push_back( std::make_pair<double, double>( 0, los->vp()->totalElevation() ) );
 
@@ -54,7 +55,7 @@ std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr
 
         data.push_back( std::make_pair<double, double>( los->distance( i ), los->elevation( i ) ) );
 
-        if ( i + 1 < los->numberOfNodes() && inverseLoS )
+        if ( inverseLoS && i + 1 < los->numberOfNodes() )
         {
             if ( los->distance( i ) < los->targetDistance() && los->targetDistance() < los->distance( i + 1 ) )
             {
@@ -63,7 +64,7 @@ std::vector<std::pair<double, double>> Utils::distanceElevation( std::shared_ptr
         }
     }
 
-    if ( !inverseLoS )
+    if ( !inverseLoS || inverseLoSEndingAtTarget )
     {
         data.push_back( std::make_pair<double, double>( los->targetDistance(), los->targetElevation() ) );
     }
