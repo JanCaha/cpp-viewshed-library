@@ -57,11 +57,11 @@ class TestInverseViewshed : public QObject
         QVERIFY( los->size() == 218 );
 
         // // TODO !!! not yet implemented
-        // // los = v.getLoS( poiPoint, true );
-        // // QVERIFY( los->size() == 70 );
+        los = v.getLoS( poiPoint, true );
+        QVERIFY( los->size() == 98 );
 
         std::vector<std::pair<double, double>> data = Utils::distanceElevation( los );
-        // // QVERIFY( data.size() == 72 );
+        // QVERIFY( data.size() == 100 );
 
         Utils::saveToCsv( data, "distance,elevation\n", TEST_DATA_LOS );
     }
