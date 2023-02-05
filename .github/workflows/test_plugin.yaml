@@ -66,6 +66,8 @@ jobs:
 
       - name: Prepare for docker build
         run: |
+          cmake --build build --config Release --target pack_deb 
+          cd docker
           mkdir install
           cp ../_packages/viewshed_*.deb install/
 
