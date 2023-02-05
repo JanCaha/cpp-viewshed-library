@@ -203,12 +203,16 @@ endmacro(create_binary)
 create_binary(viewshed src/bin/viewshed.cpp)
 
 create_binary(inverseviewshed src/bin/inverseviewshed.cpp)
+
 create_binary(viewshedcalculator src/bin/viewshedcalculator.cpp)
+
+create_binary(losextractor src/bin/losextractor.cpp)
+
 add_custom_target(create_binaries)
 
 add_dependencies(create_binaries viewshed)
 
-add_dependencies(create_binaries viewshed inverseviewshed viewshedcalculator)
+add_dependencies(create_binaries viewshed inverseviewshed viewshedcalculator losextractor)
 
 install(TARGETS
     viewshed inverseviewshed viewshedcalculator
