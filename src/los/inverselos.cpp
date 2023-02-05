@@ -50,6 +50,11 @@ void InverseLoS::prepareForCalculation()
     fixDistancesAngles();
     sort();
     findTargetPointIndex();
+
+    if ( mRemovePointsAfterTarget )
+    {
+        removePointsAfterTarget();
+    }
 };
 
 void InverseLoS::removePointsAfterViewPoint()
@@ -121,4 +126,13 @@ void InverseLoS::findTargetPointIndex()
             mTargetIndex = i;
         }
     }
+}
+
+void InverseLoS::setRemovePointsAfterTarget( bool remove ) { mRemovePointsAfterTarget = remove; }
+
+void InverseLoS::removePointsAfterTarget()
+{
+
+    erase( std::remove_if( begin(), end(), [=]( LoSNode &node ) { return mPointDistance <= node.centreDistance(); } ),
+           end() );
 }

@@ -31,6 +31,7 @@ namespace viewshed
         void setTargetPoint( std::shared_ptr<Point> tp ) = delete;
         void setTargetPoint( std::shared_ptr<Point> tp, double targetOffset = 0 );
         void setViewPoint( std::shared_ptr<LoSNode> vp, double observerOffset );
+        void setRemovePointsAfterTarget( bool remove );
         void prepareForCalculation() override;
 
         bool isValid() override;
@@ -53,6 +54,8 @@ namespace viewshed
       private:
         void removePointsAfterViewPoint();
         void fixDistancesAngles();
+        void removePointsAfterTarget();
+        bool mRemovePointsAfterTarget = false;
     };
 
 } // namespace viewshed
