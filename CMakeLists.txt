@@ -176,9 +176,9 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
 include(GNUInstallDirs)
 
 install(TARGETS library_viewshed
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/viewshed
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    LIBRARY DESTINATION lib
+    PUBLIC_HEADER DESTINATION include/viewshed
+    INCLUDES DESTINATION include
 )
 
 # ############################################################
@@ -197,8 +197,7 @@ macro(create_binary bin_name filename)
         ${MINIMAL_QGIS_LIBS}
         ${QGIS_GUI_LIBRARY}
         bs_thread_pool
-        library_viewshed
-    )
+        library_viewshed)
 endmacro(create_binary)
 
 create_binary(viewshed src/bin/viewshed.cpp)
@@ -213,8 +212,7 @@ add_dependencies(create_binaries viewshed inverseviewshed viewshedcalculator)
 
 install(TARGETS
     viewshed inverseviewshed viewshedcalculator
-    RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
-    PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+    RUNTIME DESTINATION bin)
 
 # ############################################################
 
@@ -238,6 +236,7 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
         )
 
         add_dependencies(pack_deb library_viewshed)
+        add_dependencies(pack_deb create_binaries)
     endif()
 endif()
 
