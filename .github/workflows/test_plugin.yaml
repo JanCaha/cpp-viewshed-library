@@ -80,7 +80,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .
+          file: docker/Dockerfile
+          context: docker/
           push: true
           tags: cahik/viewshed:latest
         
