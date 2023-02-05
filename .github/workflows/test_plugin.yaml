@@ -46,7 +46,7 @@ jobs:
             -Bbuild \
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
-            -DPACK_DEB:bool=off \
+            -DPACK_DEB:bool=on \
             -DBUILD_DOCUMENTATION:bool=on \
             -DBUILD_TESTS:bool=on
 
@@ -66,7 +66,6 @@ jobs:
 
       - name: Prepare for docker build
         run: |
-          cmake -S. -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=on
           cmake --build build --config Release --target pack_deb
           cd docker
           mkdir install
