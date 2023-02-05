@@ -66,7 +66,7 @@ jobs:
 
       - name: Prepare for docker build
         run: |
-          rm build
+          rm -rf build
           mkdir build
            cmake \
              -S. \
