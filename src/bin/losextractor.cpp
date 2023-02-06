@@ -27,6 +27,8 @@
 #include "viewshed.h"
 #include "visibilityalgorithms.h"
 
+#include "pointwidget.h"
+
 using namespace viewshed;
 using namespace viewshed::visibilityalgorithm;
 
@@ -43,7 +45,7 @@ class MainWindow : public QMainWindow
         TypeInverseViewshed,
     };
 
-    MainWindow() : mSettings( QSettings( this ) ), mDemValid( false ), mViewPointValid( false )
+    MainWindow() : mSettings( QSettings( this ) ), mDemValid( false )
     {
         initMenu();
         initGui();
@@ -102,8 +104,8 @@ class MainWindow : public QMainWindow
 
                      settings.setValue( QStringLiteral( "demFile" ), mFileWidget->filePath() );
                      settings.setValue( QStringLiteral( "resultsFolder" ), mCsvFileWidget->filePath() );
-                     settings.setValue( QStringLiteral( "observerX" ), mViewPointX->text() );
-                     settings.setValue( QStringLiteral( "observerY" ), mViewPointY->text() );
+                     settings.setValue( QStringLiteral( "viewPoint" ), mViewPoint.asWkt() );
+                     settings.setValue( QStringLiteral( "targetPoint" ), mTargetPoint.asWkt() );
                      settings.setValue( QStringLiteral( "observerOffset" ), mObserverOffset->text() );
                      settings.setValue( QStringLiteral( "targetOffset" ), mTargetOffset->text() );
                      settings.setValue( QStringLiteral( "viewshedType" ), mViewshedType->currentData( Qt::UserRole ) );
@@ -115,31 +117,37 @@ class MainWindow : public QMainWindow
         QAction *loadFile = new QAction( "Load settings", this );
         menu->addAction( loadFile );
 
-        connect( loadFile, &QAction::triggered, this,
-                 [=]
-                 {
-                     QString lastUsedDir =
-                         mSettings.value( QStringLiteral( "lastUsedDirForSettings" ), QDir::homePath() ).toString();
+        connect(
+            loadFile, &QAction::triggered, this,
+            [=]
+            {
+                QString lastUsedDir =
+                    mSettings.value( QStringLiteral( "lastUsedDirForSettings" ), QDir::homePath() ).toString();
 
-                     QString inputFileName =
-                         QFileDialog::getOpenFileName( this, QStringLiteral( "Load settings" ), lastUsedDir,
-                                                       QStringLiteral( "Settings file (*.ini)" ) );
+                QString inputFileName = QFileDialog::getOpenFileName(
+                    this, QStringLiteral( "Load settings" ), lastUsedDir, QStringLiteral( "Settings file (*.ini)" ) );
 
-                     if ( inputFileName.isEmpty() )
-                         return;
+                if ( inputFileName.isEmpty() )
+                    return;
 
-                     QSettings settings = QSettings( inputFileName, QSettings::IniFormat, this );
+                QSettings settings = QSettings( inputFileName, QSettings::IniFormat, this );
 
-                     mFileWidget->setFilePath( settings.value( QStringLiteral( "demFile" ), "" ).toString() );
-                     mCsvFileWidget->setFilePath( settings.value( QStringLiteral( "resultsFolder" ), "" ).toString() );
-                     mViewPointX->setText( settings.value( QStringLiteral( "observerX" ), "" ).toString() );
-                     mViewPointY->setText( settings.value( QStringLiteral( "observerY" ), "" ).toString() );
-                     mObserverOffset->setText( settings.value( QStringLiteral( "observerOffset" ), "" ).toString() );
-                     mTargetOffset->setText( settings.value( QStringLiteral( "targetOffset" ), "" ).toString() );
-                     int index =
-                         mViewshedType->findData( settings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
-                     mViewshedType->setCurrentIndex( index );
-                 } );
+                mFileWidget->setFilePath( settings.value( QStringLiteral( "demFile" ), "" ).toString() );
+                mCsvFileWidget->setFilePath( settings.value( QStringLiteral( "resultsFolder" ), "" ).toString() );
+
+                mViewPoint.fromWkt(
+                    mSettings.value( QStringLiteral( "viewPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+                mViewPointWidget->setPoint( mViewPoint );
+
+                mTargetPoint.fromWkt(
+                    mSettings.value( QStringLiteral( "targetPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+                mTargetPointWidget->setPoint( mTargetPoint );
+
+                mObserverOffset->setText( settings.value( QStringLiteral( "observerOffset" ), "" ).toString() );
+                mTargetOffset->setText( settings.value( QStringLiteral( "targetOffset" ), "" ).toString() );
+                int index = mViewshedType->findData( settings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
+                mViewshedType->setCurrentIndex( index );
+            } );
     }
 
     void initGui()
@@ -187,30 +195,6 @@ class MainWindow : public QMainWindow
 
         mDoubleValidator = new QgsDoubleValidator( this );
 
-        mViewPointX = new QLineEdit( this );
-        mViewPointX->setValidator( mDoubleValidator );
-        mViewPointY = new QLineEdit( this );
-        mViewPointY->setValidator( mDoubleValidator );
-
-        connect( mViewPointX, &QLineEdit::textChanged, this, &MainWindow::updateViewPoint );
-        connect( mViewPointY, &QLineEdit::textChanged, this, &MainWindow::updateViewPoint );
-
-        mViewPointX->setText( QVariant( mViewPoint.x() ).toString() );
-        mViewPointY->setText( QVariant( mViewPoint.y() ).toString() );
-
-        //
-        mTargetPointX = new QLineEdit( this );
-        mTargetPointX->setValidator( mDoubleValidator );
-        mTargetPointY = new QLineEdit( this );
-        mTargetPointY->setValidator( mDoubleValidator );
-
-        connect( mTargetPointX, &QLineEdit::textChanged, this, &MainWindow::updateTargetPoint );
-        connect( mTargetPointY, &QLineEdit::textChanged, this, &MainWindow::updateTargetPoint );
-
-        mTargetPointX->setText( QVariant( mTargetPoint.x() ).toString() );
-        mTargetPointY->setText( QVariant( mTargetPoint.y() ).toString() );
-        //
-
         mObserverOffset = new QLineEdit( this );
         mObserverOffset->setValidator( mDoubleValidator );
 
@@ -230,21 +214,28 @@ class MainWindow : public QMainWindow
 
         connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
 
-        mProgressBar = new QProgressBar( this );
+        mViewPointWidget = new PointWidget( this );
+        mViewPointWidget->setPoint( mViewPoint );
+
+        connect( mViewPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateViewPoint );
+        connect( mViewPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateViewPointLabel );
+
+        mTargetPointWidget = new PointWidget( this );
+        mTargetPointWidget->setPoint( mTargetPoint );
+
+        connect( mTargetPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateTargetPoint );
+        connect( mTargetPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateTargetPointLabel );
 
         mLayout->addRow( QStringLiteral( "Type of viewshed:" ), mViewshedType );
         mLayout->addRow( QStringLiteral( "Select DEM file:" ), mFileWidget );
-        mLayout->addRow( QStringLiteral( "ViewPoint coord X:" ), mViewPointX );
-        mLayout->addRow( QStringLiteral( "ViewPoint coord Y:" ), mViewPointY );
+        mLayout->addRow( QStringLiteral( "ViewPoint Coordinates (x,y):" ), mViewPointWidget );
         mLayout->addRow( QStringLiteral( "ViewPoint:" ), mViewPointLabel );
-        mLayout->addRow( QStringLiteral( "TargetPoint coord X:" ), mTargetPointX );
-        mLayout->addRow( QStringLiteral( "TargetPoint coord Y:" ), mTargetPointY );
+        mLayout->addRow( QStringLiteral( "TargetPoint:" ), mTargetPointWidget );
         mLayout->addRow( QStringLiteral( "TargetPoint:" ), mTargetPointLabel );
         mLayout->addRow( QStringLiteral( "Observer offset:" ), mObserverOffset );
         mLayout->addRow( QStringLiteral( "Target offset:" ), mTargetOffset );
         mLayout->addRow( QStringLiteral( "Folder for results:" ), mCsvFileWidget );
         mLayout->addRow( mCalculateButton );
-        mLayout->addRow( mProgressBar );
     }
 
     void validateDem()
@@ -292,45 +283,31 @@ class MainWindow : public QMainWindow
         enableCalculation();
     }
 
-    void enableCalculation() { mCalculateButton->setEnabled( mDemValid && mViewPointValid && mTargetPointValid ); }
+    void enableCalculation()
+    {
+        mCalculateButton->setEnabled( mDemValid && mViewPointWidget->isPointValid() &&
+                                      mTargetPointWidget->isPointValid() );
+    }
 
     void updateResultFolder() { mSettings.setValue( QStringLiteral( "resultFolder" ), mCsvFileWidget->filePath() ); }
 
-    void updateViewPoint()
+    void updateViewPoint( QgsPoint point ) { mViewPoint = point; }
+
+    void updateViewPointLabel( QgsPointXY point )
     {
-        mViewPointValid = false;
-
-        QString text = mViewPointX->text();
-
-        if ( mDoubleValidator->validate( text ) == QgsDoubleValidator::Acceptable )
-        {
-            mViewPoint.setX( QgsDoubleValidator::toDouble( text ) );
-        }
-        else
-            return;
-
-        text = mViewPointY->text();
-
-        if ( mDoubleValidator->validate( text ) == QgsDoubleValidator::Acceptable )
-        {
-            mViewPoint.setY( QgsDoubleValidator::toDouble( text ) );
-        }
-        else
-            return;
-
         double elevation;
         bool sampledOk = false;
 
         if ( mDemValid )
         {
 
-            if ( !mDem->extent().contains( mViewPoint.x(), mViewPoint.y() ) )
+            if ( !mDem->extent().contains( point ) )
             {
                 mViewPointLabel->setText( QStringLiteral( "Point is located outside of the raster." ) );
                 return;
             }
 
-            elevation = mDem->dataProvider()->sample( QgsPointXY( mViewPoint.x(), mViewPoint.y() ), 1, &sampledOk );
+            elevation = mDem->dataProvider()->sample( point, 1, &sampledOk );
 
             if ( !sampledOk )
             {
@@ -350,45 +327,26 @@ class MainWindow : public QMainWindow
 
         mSettings.setValue( QStringLiteral( "viewpoint" ), mViewPoint.asWkt() );
 
-        mViewPointValid = true;
         enableCalculation();
     }
 
-    void updateTargetPoint()
+    void updateTargetPoint( QgsPoint point ) { mTargetPoint = point; }
+
+    void updateTargetPointLabel( QgsPointXY point )
     {
-        mTargetPointValid = false;
-
-        QString text = mTargetPointX->text();
-
-        if ( mDoubleValidator->validate( text ) == QgsDoubleValidator::Acceptable )
-        {
-            mTargetPoint.setX( QgsDoubleValidator::toDouble( text ) );
-        }
-        else
-            return;
-
-        text = mTargetPointY->text();
-
-        if ( mDoubleValidator->validate( text ) == QgsDoubleValidator::Acceptable )
-        {
-            mTargetPoint.setY( QgsDoubleValidator::toDouble( text ) );
-        }
-        else
-            return;
-
         double elevation;
         bool sampledOk = false;
 
         if ( mDemValid )
         {
 
-            if ( !mDem->extent().contains( mTargetPoint.x(), mTargetPoint.y() ) )
+            if ( !mDem->extent().contains( point ) )
             {
                 mTargetPointLabel->setText( QStringLiteral( "Point is located outside of the raster." ) );
                 return;
             }
 
-            elevation = mDem->dataProvider()->sample( QgsPointXY( mTargetPoint.x(), mTargetPoint.y() ), 1, &sampledOk );
+            elevation = mDem->dataProvider()->sample( point, 1, &sampledOk );
 
             if ( !sampledOk )
             {
@@ -408,7 +366,6 @@ class MainWindow : public QMainWindow
 
         mSettings.setValue( QStringLiteral( "targetpoint" ), mTargetPoint.asWkt() );
 
-        mTargetPointValid = true;
         enableCalculation();
     }
 
@@ -463,10 +420,6 @@ class MainWindow : public QMainWindow
     QWidget *mWidget = nullptr;
     QgsFileWidget *mFileWidget = nullptr;
     QgsFileWidget *mCsvFileWidget = nullptr;
-    QLineEdit *mViewPointX = nullptr;
-    QLineEdit *mViewPointY = nullptr;
-    QLineEdit *mTargetPointX = nullptr;
-    QLineEdit *mTargetPointY = nullptr;
     QLineEdit *mObserverOffset = nullptr;
     QLineEdit *mTargetOffset = nullptr;
     QLabel *mViewPointLabel = nullptr;
@@ -474,16 +427,15 @@ class MainWindow : public QMainWindow
     QgsDoubleValidator *mDoubleValidator = nullptr;
     QgsPoint mViewPoint;
     QgsPoint mTargetPoint;
-    QProgressBar *mProgressBar;
     QPushButton *mCalculateButton;
     QComboBox *mViewshedType;
     std::shared_ptr<QgsRasterLayer> mDem;
     QSettings mSettings;
     QMessageBox mErrorMessageBox;
+    PointWidget *mViewPointWidget = nullptr;
+    PointWidget *mTargetPointWidget = nullptr;
 
     bool mDemValid;
-    bool mViewPointValid;
-    bool mTargetPointValid;
 
     std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
 };
