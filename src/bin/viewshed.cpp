@@ -135,17 +135,5 @@ int main( int argc, char *argv[] )
 
     v.saveResults( output.absolutePath() );
 
-    // v.initEventList();
-    // v.sortEventList();
-
-    // QgsPoint poiPoint = QgsPoint( 459939.45, 303229.18 );
-    // LoSNode poi = v.statusNodeFromPoint( poiPoint );
-
-    // std::shared_ptr<LoS> los = v.getLoS( poiPoint );
-
-    // std::vector<std::pair<double, double>> data = Utils::distanceElevation( los );
-
-    // Utils::saveToCsv( data, "distance,elevation\n", "/home/cahik/los.csv" );
-
     return 0;
 }
