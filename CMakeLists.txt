@@ -244,7 +244,6 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
         )
 
         add_dependencies(pack_deb library_viewshed)
-        add_dependencies(pack_deb create_binaries)
     endif()
 endif()
 
