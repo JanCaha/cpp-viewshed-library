@@ -13,6 +13,7 @@
 #include <QResizeEvent>
 #include <QSettings>
 #include <QTextEdit>
+#include <QVariant>
 
 #include "qgsdoublevalidator.h"
 #include "qgsfilewidget.h"
@@ -103,7 +104,7 @@ class MainWindow : public QMainWindow
                      QSettings settings = QSettings( outputFileName, QSettings::IniFormat, this );
 
                      settings.setValue( QStringLiteral( "demFile" ), mFileWidget->filePath() );
-                     settings.setValue( QStringLiteral( "resultsFolder" ), mCsvFileWidget->filePath() );
+                     settings.setValue( QStringLiteral( "resultCsv" ), mCsvFileWidget->filePath() );
                      settings.setValue( QStringLiteral( "viewPoint" ), mViewPoint.asWkt() );
                      settings.setValue( QStringLiteral( "targetPoint" ), mTargetPoint.asWkt() );
                      settings.setValue( QStringLiteral( "observerOffset" ), mObserverOffset->text() );
@@ -117,42 +118,43 @@ class MainWindow : public QMainWindow
         QAction *loadFile = new QAction( "Load settings", this );
         menu->addAction( loadFile );
 
-        connect(
-            loadFile, &QAction::triggered, this,
-            [=]
-            {
-                QString lastUsedDir =
-                    mSettings.value( QStringLiteral( "lastUsedDirForSettings" ), QDir::homePath() ).toString();
+        connect( loadFile, &QAction::triggered, this,
+                 [=]
+                 {
+                     QString lastUsedDir =
+                         mSettings.value( QStringLiteral( "lastUsedDirForSettings" ), QDir::homePath() ).toString();
 
-                QString inputFileName = QFileDialog::getOpenFileName(
-                    this, QStringLiteral( "Load settings" ), lastUsedDir, QStringLiteral( "Settings file (*.ini)" ) );
+                     QString inputFileName =
+                         QFileDialog::getOpenFileName( this, QStringLiteral( "Load settings" ), lastUsedDir,
+                                                       QStringLiteral( "Settings file (*.ini)" ) );
 
-                if ( inputFileName.isEmpty() )
-                    return;
+                     if ( inputFileName.isEmpty() )
+                         return;
 
-                QSettings settings = QSettings( inputFileName, QSettings::IniFormat, this );
+                     QSettings settings = QSettings( inputFileName, QSettings::IniFormat, this );
 
-                mFileWidget->setFilePath( settings.value( QStringLiteral( "demFile" ), "" ).toString() );
-                mCsvFileWidget->setFilePath( settings.value( QStringLiteral( "resultsFolder" ), "" ).toString() );
+                     mFileWidget->setFilePath( settings.value( QStringLiteral( "demFile" ), "" ).toString() );
+                     mCsvFileWidget->setFilePath( settings.value( QStringLiteral( "resultCsv" ), "" ).toString() );
 
-                mViewPoint.fromWkt(
-                    mSettings.value( QStringLiteral( "viewPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
-                mViewPointWidget->setPoint( mViewPoint );
+                     mViewPoint.fromWkt(
+                         settings.value( QStringLiteral( "viewPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
 
-                mTargetPoint.fromWkt(
-                    mSettings.value( QStringLiteral( "targetPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
-                mTargetPointWidget->setPoint( mTargetPoint );
+                     mViewPointWidget->setPoint( mViewPoint );
 
-                mObserverOffset->setText( settings.value( QStringLiteral( "observerOffset" ), "" ).toString() );
-                mTargetOffset->setText( settings.value( QStringLiteral( "targetOffset" ), "" ).toString() );
-                int index = mViewshedType->findData( settings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
-                mViewshedType->setCurrentIndex( index );
-            } );
+                     mTargetPoint.fromWkt(
+                         settings.value( QStringLiteral( "targetPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+                     mTargetPointWidget->setPoint( mTargetPoint );
+
+                     mObserverOffset->setText( settings.value( QStringLiteral( "observerOffset" ), "" ).toString() );
+                     mTargetOffset->setText( settings.value( QStringLiteral( "targetOffset" ), "" ).toString() );
+                     int index =
+                         mViewshedType->findData( settings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
+                     mViewshedType->setCurrentIndex( index );
+                 } );
     }
 
     void initGui()
     {
-
         mWidget = new QWidget( this );
         setCentralWidget( mWidget );
 
@@ -171,6 +173,14 @@ class MainWindow : public QMainWindow
 
         mCalculateButton = new QPushButton( this );
         mCalculateButton->setText( QStringLiteral( "Extract!" ) );
+
+        mViewPointWidget = new PointWidget( this );
+
+        mTargetPointWidget = new PointWidget( this );
+
+        mCsvFileWidget = new QgsFileWidget( this );
+        mCsvFileWidget->setStorageMode( QgsFileWidget::StorageMode::SaveFile );
+        mCsvFileWidget->setFilter( "*.csv" );
 
         mFileWidget = new QgsFileWidget( this );
         mFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
@@ -204,23 +214,18 @@ class MainWindow : public QMainWindow
         mTargetOffset->setValidator( mDoubleValidator );
         mTargetOffset->setText( QStringLiteral( "0.0" ) );
 
-        mCsvFileWidget = new QgsFileWidget( this );
-        mCsvFileWidget->setStorageMode( QgsFileWidget::StorageMode::SaveFile );
-        mCsvFileWidget->setFilter( "*.csv" );
         mCsvFileWidget->setFilePath(
-            mSettings.value( QStringLiteral( "resultFolder" ), QStringLiteral( "" ) ).toString() );
+            mSettings.value( QStringLiteral( "resultCsv" ), QStringLiteral( "" ) ).toString() );
 
-        connect( mCsvFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updateResultFolder );
+        connect( mCsvFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updateResultCsv );
 
         connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
 
-        mViewPointWidget = new PointWidget( this );
         mViewPointWidget->setPoint( mViewPoint );
 
         connect( mViewPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateViewPoint );
         connect( mViewPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateViewPointLabel );
 
-        mTargetPointWidget = new PointWidget( this );
         mTargetPointWidget->setPoint( mTargetPoint );
 
         connect( mTargetPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateTargetPoint );
@@ -230,12 +235,14 @@ class MainWindow : public QMainWindow
         mLayout->addRow( QStringLiteral( "Select DEM file:" ), mFileWidget );
         mLayout->addRow( QStringLiteral( "ViewPoint Coordinates (x,y):" ), mViewPointWidget );
         mLayout->addRow( QStringLiteral( "ViewPoint:" ), mViewPointLabel );
-        mLayout->addRow( QStringLiteral( "TargetPoint:" ), mTargetPointWidget );
+        mLayout->addRow( QStringLiteral( "TargetPoint Coordinates (x,y):" ), mTargetPointWidget );
         mLayout->addRow( QStringLiteral( "TargetPoint:" ), mTargetPointLabel );
         mLayout->addRow( QStringLiteral( "Observer offset:" ), mObserverOffset );
         mLayout->addRow( QStringLiteral( "Target offset:" ), mTargetOffset );
         mLayout->addRow( QStringLiteral( "Folder for results:" ), mCsvFileWidget );
         mLayout->addRow( mCalculateButton );
+
+        enableCalculation();
     }
 
     void validateDem()
@@ -285,11 +292,16 @@ class MainWindow : public QMainWindow
 
     void enableCalculation()
     {
+        bool csvEmpty = mCsvFileWidget->filePath().isEmpty();
         mCalculateButton->setEnabled( mDemValid && mViewPointWidget->isPointValid() &&
-                                      mTargetPointWidget->isPointValid() );
+                                      mTargetPointWidget->isPointValid() && !csvEmpty );
     }
 
-    void updateResultFolder() { mSettings.setValue( QStringLiteral( "resultFolder" ), mCsvFileWidget->filePath() ); }
+    void updateResultCsv()
+    {
+        mSettings.setValue( QStringLiteral( "resultCsv" ), mCsvFileWidget->filePath() );
+        enableCalculation();
+    }
 
     void updateViewPoint( QgsPoint point ) { mViewPoint = point; }
 
