@@ -185,8 +185,12 @@ install(TARGETS library_viewshed
 
 # ############################################################
 # Binaries :
-macro(create_binary bin_name filename)
-    add_executable(${bin_name} ${filename})
+macro(create_binary bin_name filename add_widgets)
+    if(${add_widgets})
+        add_executable(${bin_name} ${filename} src/bin/pointwidget.h src/bin/pointwidget.cpp)
+    else()
+        add_executable(${bin_name} ${filename})
+    endif()
 
     set_target_properties(${bin_name} PROPERTIES AUTOMOC TRUE)
 
@@ -200,13 +204,13 @@ macro(create_binary bin_name filename)
         library_viewshed)
 endmacro(create_binary)
 
-create_binary(viewshed src/bin/viewshed.cpp)
+create_binary(viewshed src/bin/viewshed.cpp OFF)
 
-create_binary(inverseviewshed src/bin/inverseviewshed.cpp)
+create_binary(inverseviewshed src/bin/inverseviewshed.cpp OFF)
 
-create_binary(viewshedcalculator src/bin/viewshedcalculator.cpp)
+create_binary(viewshedcalculator src/bin/viewshedcalculator.cpp ON)
 
-create_binary(losextractor src/bin/losextractor.cpp)
+create_binary(losextractor src/bin/losextractor.cpp ON)
 
 add_custom_target(create_binaries)
 
