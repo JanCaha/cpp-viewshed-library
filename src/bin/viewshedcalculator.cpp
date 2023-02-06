@@ -49,7 +49,6 @@ class MainWindow : public QMainWindow
         initMenu();
         initGui();
         resize( mSettings.value( QStringLiteral( "UI/mainwindowsize" ), QSize( 600, 400 ) ).toSize() );
-        prepareAlgorithms();
     }
 
     void resizeEvent( QResizeEvent *event )
@@ -59,18 +58,20 @@ class MainWindow : public QMainWindow
 
     void prepareAlgorithms()
     {
+        double noData = mDem->dataProvider()->sourceNoDataValue( 1 );
+
         mAlgs = std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
 
         mAlgs->push_back( std::make_shared<Boolean>() );
         mAlgs->push_back( std::make_shared<Horizons>() );
         mAlgs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
-        mAlgs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false ) );
-        mAlgs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( false ) );
+        mAlgs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false, noData ) );
         mAlgs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( true ) );
+        mAlgs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( false, noData ) );
         mAlgs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true ) );
-        mAlgs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false ) );
+        mAlgs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false, noData ) );
         mAlgs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true ) );
-        mAlgs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false ) );
+        mAlgs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false, noData ) );
     };
 
     void initMenu()
@@ -319,6 +320,8 @@ class MainWindow : public QMainWindow
             QDir tmpDir;
             tmpDir.mkdir( mFolderWidget->filePath() );
         }
+
+        prepareAlgorithms();
 
         if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeClassicViewshed )
         {
