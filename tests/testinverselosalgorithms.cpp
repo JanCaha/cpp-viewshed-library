@@ -99,10 +99,6 @@ class TestInverseLosAlgorithms : public QObject
         tmpLos->setTargetPoint( tp, tp->offset );
         tmpLos->setViewPoint( getPointLoS( position ), 0.001 );
 
-        // tmpLos->prepareForCalculation();
-        // std::vector<std::pair<double, double>> data = Utils::distanceElevation( tmpLos );
-        // Utils::saveToCsv( data, "distance,elevation\n", TEST_DATA_LOS );
-
         losEval.calculate();
         return losEval.resultAt( result );
     }

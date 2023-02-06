@@ -56,7 +56,7 @@ class TestViewshed : public QObject
         los = v.getLoS( poiPoint, true );
         QVERIFY( los->size() == 70 );
 
-        std::vector<std::pair<double, double>> data = Utils::distanceElevation( los );
+        std::vector<DataTriplet> data = Utils::distanceElevation( los );
         QVERIFY( data.size() == 72 );
 
         Utils::saveToCsv( data, "distance,elevation\n", TEST_DATA_LOS );
