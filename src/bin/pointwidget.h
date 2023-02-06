@@ -32,7 +32,7 @@ class PointWidget : public QWidget
     QLineEdit *mPointY = nullptr;
     QgsDoubleValidator *mDoubleValidator = nullptr;
     QgsPoint mPoint;
-    bool mPointValid;
+    bool mPointValid = false;
 };
 
 #endif

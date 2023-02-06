@@ -1,10 +1,10 @@
 #include "QHBoxLayout"
+#include "QVariant"
 
 #include "pointwidget.h"
 
 PointWidget::PointWidget( QWidget *parent ) : QWidget( parent )
 {
-
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setContentsMargins( 0, 0, 0, 0 );
     setLayout( layout );
@@ -61,6 +61,11 @@ void PointWidget::setXY( double x, double y )
 {
     mPointX->setText( QVariant( x ).toString() );
     mPointY->setText( QVariant( y ).toString() );
+    mPointValid = true;
 }
 
-void PointWidget::setPoint( QgsPoint p ) { setXY( p.x(), p.y() ); }
+void PointWidget::setPoint( QgsPoint p )
+{
+    setXY( p.x(), p.y() );
+    mPointValid = true;
+}
