@@ -27,11 +27,10 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
     elevs[CellEventPositionType::ENTER] = e->elevation[CellEventPositionType::ENTER];
     elevs[CellEventPositionType::EXIT] = e->elevation[CellEventPositionType::EXIT];
 
-    angle[CellEventPositionType::CENTER] = Visibility::calculateAngle( row, col, point );
+    angle[CellEventPositionType::CENTER] = Visibility::angle( row, col, point );
 
-    CellEventPosition posEnter =
-        Visibility::calculateEventPosition( CellEventPositionType::ENTER, e->row, e->col, point );
-    double angleEnter = Visibility::calculateAngle( &posEnter, point );
+    CellEventPosition posEnter = Visibility::eventPosition( CellEventPositionType::ENTER, e->row, e->col, point );
+    double angleEnter = Visibility::angle( &posEnter, point );
 
     if ( angleEnter > angle[CellEventPositionType::CENTER] )
     {
@@ -40,25 +39,24 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
 
     angle[CellEventPositionType::ENTER] = angleEnter;
 
-    CellEventPosition posExit =
-        Visibility::calculateEventPosition( CellEventPositionType::EXIT, e->row, e->col, point );
-    angle[CellEventPositionType::EXIT] = Visibility::calculateAngle( &posExit, point );
+    CellEventPosition posExit = Visibility::eventPosition( CellEventPositionType::EXIT, e->row, e->col, point );
+    angle[CellEventPositionType::EXIT] = Visibility::angle( &posExit, point );
 
     if ( e->behindTargetForInverseLoS )
     {
         inverseLoSBehindTarget = true;
     }
 
-    distances[CellEventPositionType::CENTER] = Visibility::calculateDistance( row, col, point, cellSize );
-    distances[CellEventPositionType::ENTER] = Visibility::calculateDistance( &posEnter, point, cellSize );
-    distances[CellEventPositionType::EXIT] = Visibility::calculateDistance( &posExit, point, cellSize );
+    distances[CellEventPositionType::CENTER] = Visibility::distance( row, col, point, cellSize );
+    distances[CellEventPositionType::ENTER] = Visibility::distance( &posEnter, point, cellSize );
+    distances[CellEventPositionType::EXIT] = Visibility::distance( &posExit, point, cellSize );
 
-    gradient[CellEventPositionType::CENTER] = Visibility::calculateGradient(
-        point, elevs[CellEventPositionType::CENTER], distances[CellEventPositionType::CENTER] );
-    gradient[CellEventPositionType::ENTER] = Visibility::calculateGradient( point, elevs[CellEventPositionType::ENTER],
-                                                                            distances[CellEventPositionType::ENTER] );
-    gradient[CellEventPositionType::EXIT] = Visibility::calculateGradient( point, elevs[CellEventPositionType::EXIT],
-                                                                           distances[CellEventPositionType::EXIT] );
+    gradient[CellEventPositionType::CENTER] =
+        Visibility::gradient( point, elevs[CellEventPositionType::CENTER], distances[CellEventPositionType::CENTER] );
+    gradient[CellEventPositionType::ENTER] =
+        Visibility::gradient( point, elevs[CellEventPositionType::ENTER], distances[CellEventPositionType::ENTER] );
+    gradient[CellEventPositionType::EXIT] =
+        Visibility::gradient( point, elevs[CellEventPositionType::EXIT], distances[CellEventPositionType::EXIT] );
 }
 
 double LoSNode::value( CellEventPositionType position, ValueType valueType )

@@ -50,28 +50,28 @@ void AbstractViewshed::initEventList()
                     double elevs[3];
                     elevs[CellEventPositionType::CENTER] = pixelValue;
                     CellEventPosition tempPosEnter =
-                        Visibility::calculateEventPosition( CellEventPositionType::ENTER, row, column, mPoint );
+                        Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint );
                     elevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
                     CellEventPosition tempPosExit =
-                        Visibility::calculateEventPosition( CellEventPositionType::EXIT, row, column, mPoint );
+                        Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint );
                     elevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
 
-                    double angleCenter = Visibility::calculateAngle( row, column, mPoint );
-                    double angleEnter = Visibility::calculateAngle( &tempPosEnter, mPoint );
-                    double angleExit = Visibility::calculateAngle( &tempPosExit, mPoint );
+                    double angleCenter = Visibility::angle( row, column, mPoint );
+                    double angleEnter = Visibility::angle( &tempPosEnter, mPoint );
+                    double angleExit = Visibility::angle( &tempPosExit, mPoint );
 
-                    double eventDistance = Visibility::calculateDistance( row, column, mPoint, mCellSize );
+                    double eventDistance = Visibility::distance( row, column, mPoint, mCellSize );
 
                     if ( eventDistance < mMaxDistance && isInsideAngles( angleEnter, angleExit ) )
                     {
                         CellEvent eCenter =
                             CellEvent( CellEventPositionType::CENTER, row, column, eventDistance, angleCenter, elevs );
-                        CellEvent eEnter = CellEvent( CellEventPositionType::ENTER, row, column,
-                                                      Visibility::calculateDistance( &tempPosEnter, mPoint, mCellSize ),
-                                                      angleEnter, elevs );
-                        CellEvent eExit = CellEvent( CellEventPositionType::EXIT, row, column,
-                                                     Visibility::calculateDistance( &tempPosExit, mPoint, mCellSize ),
-                                                     angleExit, elevs );
+                        CellEvent eEnter =
+                            CellEvent( CellEventPositionType::ENTER, row, column,
+                                       Visibility::distance( &tempPosEnter, mPoint, mCellSize ), angleEnter, elevs );
+                        CellEvent eExit =
+                            CellEvent( CellEventPositionType::EXIT, row, column,
+                                       Visibility::distance( &tempPosExit, mPoint, mCellSize ), angleExit, elevs );
 
                         // Target or ViewPoint are not part CellEvents - handled separately
                         if ( mPoint->row == row && mPoint->col == column )

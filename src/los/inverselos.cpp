@@ -15,7 +15,7 @@ double InverseLoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizo
 double InverseLoS::gradient( int i )
 {
     double dist = distance( i );
-    return Visibility::calculateGradient( mVp, at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ), dist );
+    return Visibility::gradient( mVp, at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ), dist );
 }
 
 double InverseLoS::elevation( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ); }
