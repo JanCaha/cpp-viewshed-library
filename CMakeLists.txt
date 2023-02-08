@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 1.9.2 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 1.9.3 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." ON)
@@ -23,54 +23,12 @@ find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
 
 find_package(Threads REQUIRED)
 
-include_directories(
+set(MINIMAL_QGIS_INCLUDES
     ${QGIS_INCLUDE_DIR}
-    ${QT_INCLUDE_DIR}
-)
-
-set(VISIBILITY_ALGS
-    src/visibility_algorithms/boolean.cpp
-    src/visibility_algorithms/viewangle.cpp
-    src/visibility_algorithms/elevationdifference.cpp
-    src/visibility_algorithms/horizons.cpp
-    src/visibility_algorithms/elevationdifferencetolocalhorizon.cpp
-    src/visibility_algorithms/elevationdifferencetoglobalhorizon.cpp
-    src/visibility_algorithms/angledifferencetolocalhorizon.cpp
-    src/visibility_algorithms/angledifferencetoglobalhorizon.cpp
-    src/visibility_algorithms/horizondistance.cpp
-)
-
-set(MEMORY_RASTER
-    src/memory_raster/memoryraster.cpp
-)
-set(UTILS
-    src/utils/utils.cpp
-)
-
-set(STRUCTURES
-    src/structures/cellevent.cpp
-    src/structures/point.cpp
-    src/structures/celleventposition.cpp
-    src/structures/losnode.cpp
-    src/structures/losimportantvalues.cpp
-)
-
-set(VISIBILITY
-    src/visibility/visibility.cpp
-    src/visibility/viewshed.cpp
-    src/visibility/inverseviewshed.cpp
-    src/visibility/abstractviewshed.cpp
-)
-
-set(THREAD_TASKS
-    src/thread_tasks/threadtasks.cpp
-)
-
-set(LOS
-    src/los/abstractlos.cpp
-    src/los/los.cpp
-    src/los/inverselos.cpp
-    src/los/losevaluator.cpp
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Widgets_INCLUDE_DIRS}
+    ${Qt5Xml_INCLUDE_DIRS}
+    ${Qt5Gui_INCLUDE_DIRS}
 )
 
 set(MINIMAL_QGIS_LIBS
@@ -81,7 +39,11 @@ set(MINIMAL_QGIS_LIBS
     Qt5::Widgets
 )
 
-set(PUBLIC_HEADERS
+set(LIBRARY_VIEWSHED_PRIVATE_HEADERS
+    ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
+)
+
+set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/abstractlos.h
     include/viewshed/abstractviewshed.h
     include/viewshed/abstractviewshedalgorithm.h
@@ -112,40 +74,11 @@ set(PUBLIC_HEADERS
     include/viewshed/visibilityviewangle.h
     include/viewshed/visibilityboolean.h
     include/viewshed/visibilityalgorithms.h
-    ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
-)
-add_library(library_viewshed SHARED
-    ${MEMORY_RASTER}
-    ${STRUCTURES}
-    ${VISIBILITY_ALGS}
-    ${VISIBILITY}
-    ${UTILS}
-    ${THREAD_TASKS}
-    ${LOS}
 )
 
-set_target_properties(library_viewshed PROPERTIES OUTPUT_NAME "viewshed")
+add_subdirectory(src)
 
 add_subdirectory(external)
-
-set_target_properties(library_viewshed PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(library_viewshed PROPERTIES SOVERSION 1)
-
-set_target_properties(library_viewshed PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
-
-target_include_directories(library_viewshed PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/viewshed)
-target_include_directories(library_viewshed PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
-
-target_link_libraries(library_viewshed
-    ${MINIMAL_QGIS_LIBS}
-    bs_thread_pool
-)
-
-# ############################################################
-# add tests :
-add_subdirectory(tests)
-
-# ############################################################
 
 # ############################################################
 # install :
@@ -153,7 +86,6 @@ add_subdirectory(tests)
 set(INCLUDE_INSTALL_DIR include/viewshed)
 set(SYSCONFIG_INSTALL_DIR lib/libviewshed.so)
 
-# ...
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
@@ -173,56 +105,12 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
 )
 
-include(GNUInstallDirs)
-
+# include(GNUInstallDirs)
 install(TARGETS library_viewshed
     LIBRARY DESTINATION lib
     PUBLIC_HEADER DESTINATION include/viewshed
     INCLUDES DESTINATION include
 )
-
-# ############################################################
-
-# ############################################################
-# Binaries :
-macro(create_binary bin_name filename add_widgets)
-    if(${add_widgets})
-        add_executable(${bin_name} ${filename} src/bin/pointwidget.h src/bin/pointwidget.cpp)
-    else()
-        add_executable(${bin_name} ${filename})
-    endif()
-
-    set_target_properties(${bin_name} PROPERTIES AUTOMOC TRUE)
-
-    target_include_directories(${bin_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/viewshed)
-    target_include_directories(${bin_name} PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
-
-    target_link_libraries(${bin_name}
-        ${MINIMAL_QGIS_LIBS}
-        ${QGIS_GUI_LIBRARY}
-        bs_thread_pool
-        library_viewshed)
-endmacro(create_binary)
-
-create_binary(viewshed src/bin/viewshed.cpp OFF)
-
-create_binary(inverseviewshed src/bin/inverseviewshed.cpp OFF)
-
-create_binary(viewshedcalculator src/bin/viewshedcalculator.cpp ON)
-
-create_binary(losextractor src/bin/losextractor.cpp ON)
-
-add_custom_target(create_binaries)
-
-add_dependencies(create_binaries viewshed)
-
-add_dependencies(create_binaries viewshed inverseviewshed viewshedcalculator losextractor)
-
-install(TARGETS
-    viewshed inverseviewshed viewshedcalculator
-    RUNTIME DESTINATION bin)
-
-# ############################################################
 
 # ############################################################
 # Pack :
@@ -248,21 +136,9 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
 endif()
 
 # ############################################################
-
-# ############################################################
-# Add uninstall :
-add_custom_target(uninstall)
-
-add_custom_target(delete_lib COMMAND rm ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libviewshed*)
-add_custom_target(delete_include COMMAND rm -rf ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/viewshed)
-add_custom_target(delete_cmake COMMAND rm -rf ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/cmake/viewshed)
-
-add_dependencies(uninstall delete_lib)
-add_dependencies(uninstall delete_include)
-add_dependencies(uninstall delete_cmake)
-
-# ############################################################
-
-# ############################################################
 # Add docs :
 add_subdirectory(docs)
+
+# ############################################################
+# add tests :
+add_subdirectory(tests)
