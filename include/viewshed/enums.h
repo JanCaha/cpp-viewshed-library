@@ -3,6 +3,10 @@
 
 namespace viewshed
 {
+    /**
+     * @brief Enum that specifies types of data, that can be extracted from LoSNode.
+     *
+     */
     enum class ValueType
     {
         Angle,
@@ -11,6 +15,10 @@ namespace viewshed
         Gradient
     };
 
+    /**
+     * @brief Enum that specifies cell event position.
+     *
+     */
     enum CellEventPositionType
     {
         ENTER = 0,

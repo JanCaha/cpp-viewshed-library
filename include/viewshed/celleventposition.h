@@ -3,6 +3,10 @@
 
 namespace viewshed
 {
+    /**
+     * @brief Simple tuple representing cell event position in term of row and col (as double).
+     *
+     */
     struct CellEventPosition
     {
         double row, col;

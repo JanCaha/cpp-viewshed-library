@@ -7,6 +7,12 @@
 
 namespace viewshed
 {
+    /**
+     * @brief Class representing cell events for Van Kreveld's plane sweep algorithm. Stores cell position (row and
+     * column), type of event (Enter, Center, Exit), elevation of all three points associated with given cell, distance
+     * from important point (viewpoint or target point), horizontal angle from important point.
+     *
+     */
     class CellEvent : public RasterPosition
     {
       public:
