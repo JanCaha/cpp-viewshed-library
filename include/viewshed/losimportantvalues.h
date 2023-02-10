@@ -3,8 +3,17 @@
 
 namespace viewshed
 {
+    /**
+     * @brief Representation of important values and LoSNode indexes that can be extracted from LoS and are important
+     * for Visibility Algorithms.
+     *
+     */
     struct LoSImportantValues
     {
+        /**
+         * @brief Construct a new Lo S Important Values object
+         *
+         */
         LoSImportantValues();
 
         void reset();
@@ -19,8 +28,28 @@ namespace viewshed
         int mCountHorizon = 0;
         bool mHorizon = false;
 
+        /**
+         * @brief Is there a horizon between view point and target point?
+         *
+         * @return true
+         * @return false
+         */
         bool horizonBeforeExist();
+
+        /**
+         * @brief Is there a horizon on the LoS?
+         *
+         * @return true
+         * @return false
+         */
         bool horizonExist();
+
+        /**
+         * @brief Is the target point a horizon?
+         *
+         * @return true
+         * @return false
+         */
         bool isTargetHorizon();
     };
 } // namespace viewshed
