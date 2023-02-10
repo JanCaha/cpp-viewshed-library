@@ -15,5 +15,5 @@ viewshed::evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
 
     losEval.calculate();
 
-    return losEval.mResultValues;
+    return losEval.results();
 }

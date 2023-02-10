@@ -33,9 +33,12 @@ namespace viewshed
         ViewshedValues mResultValues;
         std::shared_ptr<LoSImportantValues> mLosValues = std::make_shared<LoSImportantValues>();
 
+        ViewshedValues results();
+
       private:
         std::shared_ptr<AbstractLoS> mLos;
         std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
+        ViewshedValues mResultValues;
 
         void parseNodes();
     };
