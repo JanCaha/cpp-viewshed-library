@@ -4,6 +4,7 @@
 
 using viewshed::AbstractViewshedAlgorithm;
 using viewshed::LoSEvaluator;
+using viewshed::ViewshedValues;
 using viewshed::Visibility;
 
 LoSEvaluator::LoSEvaluator( std::shared_ptr<AbstractLoS> los,
@@ -97,3 +98,5 @@ void LoSEvaluator::reset()
 }
 
 double LoSEvaluator::resultAt( int i ) { return mResultValues.values[i]; }
+
+ViewshedValues LoSEvaluator::results() { return mResultValues; }
