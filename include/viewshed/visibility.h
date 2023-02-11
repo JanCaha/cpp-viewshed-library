@@ -119,6 +119,19 @@ namespace viewshed
          * @return double
          */
         static double gradient( std::shared_ptr<Point> point, double elevation, double &distance );
+
+        /**
+         * @brief Recalculate elevation with inclusion of atmospheric refraction and earth curvature;
+         *
+         * @param elevation
+         * @param distance
+         * @param refractionCoeff Refraction coefficient. Default value is 0.142860.
+         * @param earthDiameter Diameter of Earth to use. Default value is 12740000, the units should be the same as for
+         * raster DEM.
+         * @return double
+         */
+        static double curvatureCorrections( double elevation, double distance, double refractionCoeff = 0.142860,
+                                            double earthDiameter = 12740000 );
     };
 } // namespace viewshed
 

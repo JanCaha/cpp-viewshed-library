@@ -248,3 +248,10 @@ CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, in
 
     return CellEventPosition( rRow, rCol );
 }
+
+double Visibility::curvatureCorrections( double elevation, double distance, double refractionCoeff,
+                                         double earthDiameter )
+{
+    return elevation - ( pow( distance, 2 ) / earthDiameter ) +
+           refractionCoeff * ( pow( distance, 2 ) / earthDiameter );
+}
