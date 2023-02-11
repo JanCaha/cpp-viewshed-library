@@ -3,7 +3,7 @@
 
 #include "pointwidget.h"
 
-PointWidget::PointWidget( QWidget *parent ) : QWidget( parent )
+PointWidget::PointWidget( bool addCrsLabel, QWidget *parent ) : QWidget( parent ), mAddCrsLabel( addCrsLabel )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setContentsMargins( 0, 0, 0, 0 );
@@ -21,6 +21,19 @@ PointWidget::PointWidget( QWidget *parent ) : QWidget( parent )
 
     layout->addWidget( mPointX );
     layout->addWidget( mPointY );
+
+    mCrsLabel = new QLabel( this );
+
+    if ( mAddCrsLabel )
+    {
+        mCrsLabel->setText( "" );
+        mCrsLabel->setMinimumWidth( 20 );
+        layout->addWidget( mCrsLabel );
+    }
+    else
+    {
+        mCrsLabel->setHidden( true );
+    }
 }
 
 void PointWidget::updatePoint()
@@ -69,3 +82,5 @@ void PointWidget::setPoint( QgsPoint p )
     setXY( p.x(), p.y() );
     mPointValid = true;
 }
+
+void PointWidget::setCrs( QString crs ) { mCrsLabel->setText( QString( "[%1]" ).arg( crs ) ); }
