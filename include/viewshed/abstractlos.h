@@ -175,6 +175,19 @@ namespace viewshed
          */
         std::shared_ptr<Point> vp();
 
+        void applyCurvatureCorrections( bool apply, double reffractionCoeff, double earthDiameter )
+        {
+            mCurvateCorrections = apply;
+            mReffractionCoefficient = reffractionCoeff;
+            mEarthDiameter = earthDiameter;
+        };
+
+        void applyCurvatureCorrections( bool apply ) { mCurvateCorrections = apply; };
+
+        void setReffractionCoeficient( double reffractionCoeff ) { mReffractionCoefficient = reffractionCoeff; };
+
+        void setEarthDiameter( double earthDiameter ) { mEarthDiameter = earthDiameter; };
+
       protected:
         AbstractLoS();
 
@@ -213,6 +226,10 @@ namespace viewshed
          *
          */
         int mTargetIndex;
+
+        bool mCurvateCorrections = false;
+        double mEarthDiameter = EARTH_DIAMETER;
+        double mReffractionCoefficient = REFRACTION_COEFFICIENT;
 
         /**
          * @brief Sort LoSNodes by distance from View point.
