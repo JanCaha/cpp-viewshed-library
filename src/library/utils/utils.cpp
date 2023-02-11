@@ -3,6 +3,9 @@
 #include <sstream>
 #include <string>
 
+#include "qgscoordinatereferencesystem.h"
+#include "qgsellipsoidutils.h"
+
 #include "inverselos.h"
 #include "utils.h"
 
@@ -76,3 +79,10 @@ std::vector<DataTriplet> Utils::distanceElevation( std::shared_ptr<AbstractLoS> 
 
     return data;
 }
+
+double Utils::earthDiameter( QgsCoordinateReferenceSystem crs )
+{
+    QString ellipsoid = crs.ellipsoidAcronym();
+    QgsEllipsoidUtils::EllipsoidParameters params = QgsEllipsoidUtils::ellipsoidParameters( ellipsoid );
+    return params.semiMajor * 2;
+};

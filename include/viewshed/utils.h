@@ -31,6 +31,7 @@ namespace viewshed
 
         static std::vector<std::pair<double, double>> rasterCoordinates( std::shared_ptr<std::vector<LoSNode>> los,
                                                                          LoSNode poi );
+        static double earthDiameter( QgsCoordinateReferenceSystem crs );
     };
 } // namespace viewshed
 
