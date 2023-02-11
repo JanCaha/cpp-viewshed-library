@@ -9,6 +9,7 @@
 #include "inverselos.h"
 #include "losevaluator.h"
 #include "point.h"
+#include "visibility.h"
 
 namespace viewshed
 {
@@ -17,6 +18,8 @@ namespace viewshed
       public:
         InverseViewshed( std::shared_ptr<Point> targetPoint, double observerOffset, std::shared_ptr<QgsRasterLayer> dem,
                          std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
+                         bool applyCurvatureCorrections = true, double earthDiameter = EARTH_DIAMETER,
+                         double reffractionCoeff = REFRACTION_COEFFICIENT,
                          double minimalAngle = std::numeric_limits<double>::quiet_NaN(),
                          double maximalAngle = std::numeric_limits<double>::quiet_NaN() );
 

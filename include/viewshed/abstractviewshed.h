@@ -15,6 +15,7 @@
 #include "losnode.h"
 #include "memoryraster.h"
 #include "viewshedvalues.h"
+#include "visibility.h"
 
 using viewshed::LoS;
 
@@ -61,6 +62,9 @@ namespace viewshed
         int mMaxNumberOfResults = 500;
         double mCellSize;
         double mValid;
+        bool mCurvateCorrections = false;
+        double mEarthDiameter = EARTH_DIAMETER;
+        double mReffractionCoefficient = REFRACTION_COEFFICIENT;
 
         LoSNode mLosNodePoint;
 
