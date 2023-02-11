@@ -14,11 +14,34 @@ void LoS::sort() { std::sort( begin(), end() ); }
 
 void LoS::setLoSNodes( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
 
-double LoS::gradient( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Gradient ); }
+double LoS::gradient( int i )
+{
+    if ( mCurvateCorrections )
+    {
+        double dist = distance( i );
+        return Visibility::gradient( mVp, elevation( i ), dist );
+    }
+    else
+    {
+        return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Gradient );
+    }
+}
 
 double LoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
 
-double LoS::elevation( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ); }
+double LoS::elevation( int i )
+{
+    if ( mCurvateCorrections )
+    {
+        return Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ),
+                                                 at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
+                                                 mReffractionCoefficient, mEarthDiameter );
+    }
+    else
+    {
+        return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
+    }
+}
 
 bool LoS::isValid() { return mVp->isValid(); }
 

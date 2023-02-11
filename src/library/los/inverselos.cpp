@@ -15,10 +15,30 @@ double InverseLoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizo
 double InverseLoS::gradient( int i )
 {
     double dist = distance( i );
-    return Visibility::gradient( mVp, at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ), dist );
+
+    if ( mCurvateCorrections )
+    {
+        return Visibility::gradient( mVp, elevation( i ), dist );
+    }
+    else
+    {
+        return Visibility::gradient( mVp, at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ), dist );
+    }
 }
 
-double InverseLoS::elevation( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ); }
+double InverseLoS::elevation( int i )
+{
+    if ( mCurvateCorrections )
+    {
+        return Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ),
+                                                 at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
+                                                 mReffractionCoefficient, mEarthDiameter );
+    }
+    else
+    {
+        return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
+    }
+}
 
 void InverseLoS::setTargetPoint( std::shared_ptr<Point> tp, double targetOffset )
 {
