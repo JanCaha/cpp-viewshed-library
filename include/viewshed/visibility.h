@@ -6,6 +6,9 @@
 #include "point.h"
 #include "rasterposition.h"
 
+#define REFRACTION_COEFFICIENT 0.142860
+#define EARTH_DIAMETER 12740000
+
 namespace viewshed
 {
     /**
@@ -130,8 +133,9 @@ namespace viewshed
          * raster DEM.
          * @return double
          */
-        static double curvatureCorrections( double elevation, double distance, double refractionCoeff = 0.142860,
-                                            double earthDiameter = 12740000 );
+        static double curvatureCorrections( double elevation, double distance,
+                                            double refractionCoeff = REFRACTION_COEFFICIENT,
+                                            double earthDiameter = EARTH_DIAMETER );
     };
 } // namespace viewshed
 
