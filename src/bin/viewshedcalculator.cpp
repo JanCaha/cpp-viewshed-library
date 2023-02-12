@@ -105,12 +105,7 @@ class MainWindow : public QMainWindow
 
                      QSettings settings = QSettings( outputFileName, QSettings::IniFormat, this );
 
-                     settings.setValue( QStringLiteral( "demFile" ), mFileWidget->filePath() );
-                     settings.setValue( QStringLiteral( "resultsFolder" ), mFolderWidget->filePath() );
-                     settings.setValue( QStringLiteral( "point" ), mPoint.asWkt() );
-                     settings.setValue( QStringLiteral( "observerOffset" ), mObserverOffset->text() );
-                     settings.setValue( QStringLiteral( "targetOffset" ), mTargetOffset->text() );
-                     settings.setValue( QStringLiteral( "viewshedType" ), mViewshedType->currentData( Qt::UserRole ) );
+                     saveCurrentValuesToSettings( settings );
 
                      QDir file( outputFileName );
                      mSettings.setValue( QStringLiteral( "lastUsedDirForSettings" ), file.dirName() );
@@ -134,18 +129,7 @@ class MainWindow : public QMainWindow
 
                      QSettings settings = QSettings( inputFileName, QSettings::IniFormat, this );
 
-                     mFileWidget->setFilePath( settings.value( QStringLiteral( "demFile" ), "" ).toString() );
-                     mFolderWidget->setFilePath( settings.value( QStringLiteral( "resultsFolder" ), "" ).toString() );
-
-                     mPoint.fromWkt(
-                         settings.value( QStringLiteral( "point" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
-                     mPointWidget->setPoint( mPoint );
-
-                     mObserverOffset->setText( settings.value( QStringLiteral( "observerOffset" ), "" ).toString() );
-                     mTargetOffset->setText( settings.value( QStringLiteral( "targetOffset" ), "" ).toString() );
-                     int index =
-                         mViewshedType->findData( settings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
-                     mViewshedType->setCurrentIndex( index );
+                     readValuesFromSettings( settings );
                  } );
 
         menu->addSeparator();
@@ -233,7 +217,7 @@ class MainWindow : public QMainWindow
         mLayout->addRow( mCalculateButton );
         mLayout->addRow( mProgressBar );
 
-        readFromSettings();
+        readSettings();
 
         connect( mViewshedType, qOverload<int>( &QComboBox::currentIndexChanged ), this, &MainWindow::saveSettings );
         connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainWindow::saveSettings );
@@ -252,48 +236,48 @@ class MainWindow : public QMainWindow
         enableCalculation();
     }
 
-    void readFromSettings()
+    void readSettings() { readValuesFromSettings( mSettings ); }
+
+    void readValuesFromSettings( QSettings &settings )
     {
-        int index = mViewshedType->findData( mSettings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
+        int index = mViewshedType->findData( settings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
         mViewshedType->setCurrentIndex( index );
 
-        mFileWidget->setFilePath( mSettings.value( QStringLiteral( "dem" ), QStringLiteral( "" ) ).toString() );
+        mFileWidget->setFilePath( settings.value( QStringLiteral( "dem" ), QStringLiteral( "" ) ).toString() );
 
-        std::string wkt =
-            mSettings.value( QStringLiteral( "point" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
-
-        mPoint.fromWkt( mSettings.value( QStringLiteral( "point" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+        mPoint.fromWkt( settings.value( QStringLiteral( "point" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
         mPointWidget->setPoint( mPoint );
 
         mFolderWidget->setFilePath(
-            mSettings.value( QStringLiteral( "resultFolder" ), QStringLiteral( "" ) ).toString() );
+            settings.value( QStringLiteral( "resultFolder" ), QStringLiteral( "" ) ).toString() );
 
         mCurvatureCorrections->setChecked(
-            mSettings.value( QStringLiteral( "useCurvatureCorrections" ), false ).toBool() );
+            settings.value( QStringLiteral( "useCurvatureCorrections" ), false ).toBool() );
 
         mReffractionCoefficient->setText(
-            mSettings
-                .value( QStringLiteral( "reffractionCoefficient" ), QString::number( REFRACTION_COEFFICIENT, 'g' ) )
+            settings.value( QStringLiteral( "reffractionCoefficient" ), QString::number( REFRACTION_COEFFICIENT, 'f' ) )
                 .toString() );
 
         mEarthDiamether->setText(
-            mSettings.value( QStringLiteral( "earthDiameter" ), QString::number( (double)EARTH_DIAMETER, 'g', 1 ) )
+            settings.value( QStringLiteral( "earthDiameter" ), QString::number( (double)EARTH_DIAMETER, 'f', 1 ) )
                 .toString() );
     }
 
-    void saveSettings()
+    void saveSettings() { saveCurrentValuesToSettings( mSettings ); }
+
+    void saveCurrentValuesToSettings( QSettings &settings )
     {
-        mSettings.setValue( QStringLiteral( "viewshedType" ), mViewshedType->currentData( Qt::UserRole ) );
-        mSettings.setValue( QStringLiteral( "dem" ), mFileWidget->filePath() );
-        mSettings.setValue( QStringLiteral( "point" ), mPointWidget->point().asWkt() );
-        mSettings.setValue( QStringLiteral( "observerOffset" ), mObserverOffset->text() );
-        mSettings.setValue( QStringLiteral( "targetOffset" ), mTargetOffset->text() );
+        settings.setValue( QStringLiteral( "viewshedType" ), mViewshedType->currentData( Qt::UserRole ) );
+        settings.setValue( QStringLiteral( "dem" ), mFileWidget->filePath() );
+        settings.setValue( QStringLiteral( "point" ), mPointWidget->point().asWkt() );
+        settings.setValue( QStringLiteral( "observerOffset" ), mObserverOffset->text() );
+        settings.setValue( QStringLiteral( "targetOffset" ), mTargetOffset->text() );
 
-        mSettings.setValue( QStringLiteral( "useCurvatureCorrections" ), mCurvatureCorrections->isChecked() );
-        mSettings.setValue( QStringLiteral( "reffractionCoefficient" ), mReffractionCoefficient->text() );
-        mSettings.setValue( QStringLiteral( "earthDiameter" ), mEarthDiamether->text() );
+        settings.setValue( QStringLiteral( "useCurvatureCorrections" ), mCurvatureCorrections->isChecked() );
+        settings.setValue( QStringLiteral( "reffractionCoefficient" ), mReffractionCoefficient->text() );
+        settings.setValue( QStringLiteral( "earthDiameter" ), mEarthDiamether->text() );
 
-        mSettings.setValue( QStringLiteral( "resultFolder" ), mFolderWidget->filePath() );
+        settings.setValue( QStringLiteral( "resultFolder" ), mFolderWidget->filePath() );
     }
 
     void validateDem()
