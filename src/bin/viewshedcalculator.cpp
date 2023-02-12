@@ -150,7 +150,7 @@ class MainWindow : public QMainWindow
                      mTargetOffset->setText( "0.0" );
 
                      mReffractionCoefficient->setText( QString::number( REFRACTION_COEFFICIENT, 'f' ) );
-                     mEarthDiamether->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
+                     mEarthDiameter->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
                  } );
     }
 
@@ -176,9 +176,9 @@ class MainWindow : public QMainWindow
         mReffractionCoefficient = new QLineEdit( this );
         mReffractionCoefficient->setText( QString::number( REFRACTION_COEFFICIENT, 'f' ) );
         mReffractionCoefficient->setValidator( mDoubleValidator );
-        mEarthDiamether = new QLineEdit( this );
-        mEarthDiamether->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
-        mEarthDiamether->setValidator( mDoubleValidator );
+        mEarthDiameter = new QLineEdit( this );
+        mEarthDiameter->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
+        mEarthDiameter->setValidator( mDoubleValidator );
 
         mFileWidget = new QgsFileWidget( this );
         mFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
@@ -212,7 +212,7 @@ class MainWindow : public QMainWindow
         mLayout->addRow( QStringLiteral( "Target offset:" ), mTargetOffset );
         mLayout->addRow( QStringLiteral( "Use curvature corrections:" ), mCurvatureCorrections );
         mLayout->addRow( QStringLiteral( "Reffraction coefficient:" ), mReffractionCoefficient );
-        mLayout->addRow( QStringLiteral( "Earth diamether:" ), mEarthDiamether );
+        mLayout->addRow( QStringLiteral( "Earth diamether:" ), mEarthDiameter );
         mLayout->addRow( QStringLiteral( "Folder for results:" ), mFolderWidget );
         mLayout->addRow( mCalculateButton );
         mLayout->addRow( mProgressBar );
@@ -222,14 +222,11 @@ class MainWindow : public QMainWindow
         connect( mViewshedType, qOverload<int>( &QComboBox::currentIndexChanged ), this, &MainWindow::saveSettings );
         connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainWindow::saveSettings );
         connect( mReffractionCoefficient, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
-        connect( mEarthDiamether, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
-
+        connect( mEarthDiameter, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
         connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateDem );
-
         connect( mPointWidget, &PointWidget::pointChanged, this, &MainWindow::updatePoint );
         connect( mPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updatePointLabel );
         connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updatePointRaster );
-
         connect( mFolderWidget, &QgsFileWidget::fileChanged, this, &MainWindow::saveSettings );
         connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
 
@@ -258,7 +255,7 @@ class MainWindow : public QMainWindow
             settings.value( QStringLiteral( "reffractionCoefficient" ), QString::number( REFRACTION_COEFFICIENT, 'f' ) )
                 .toString() );
 
-        mEarthDiamether->setText(
+        mEarthDiameter->setText(
             settings.value( QStringLiteral( "earthDiameter" ), QString::number( (double)EARTH_DIAMETER, 'f', 1 ) )
                 .toString() );
     }
@@ -275,7 +272,7 @@ class MainWindow : public QMainWindow
 
         settings.setValue( QStringLiteral( "useCurvatureCorrections" ), mCurvatureCorrections->isChecked() );
         settings.setValue( QStringLiteral( "reffractionCoefficient" ), mReffractionCoefficient->text() );
-        settings.setValue( QStringLiteral( "earthDiameter" ), mEarthDiamether->text() );
+        settings.setValue( QStringLiteral( "earthDiameter" ), mEarthDiameter->text() );
 
         settings.setValue( QStringLiteral( "resultFolder" ), mFolderWidget->filePath() );
     }
@@ -283,7 +280,7 @@ class MainWindow : public QMainWindow
     void validateDem()
     {
         mPointWidget->setCrs( "Unkown" );
-        mEarthDiamether->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
+        mEarthDiameter->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
 
         mCalculateButton->setEnabled( false );
         mDemValid = false;
@@ -330,7 +327,7 @@ class MainWindow : public QMainWindow
                                                  QStringLiteral( "gdal" ) );
 
         mPointWidget->setCrs( mDem->crs().geographicCrsAuthId() );
-        mEarthDiamether->setText( QString::number( Utils::earthDiameter( mDem->crs() ), 'f' ) );
+        mEarthDiameter->setText( QString::number( Utils::earthDiameter( mDem->crs() ), 'f' ) );
 
         enableCalculation();
 
@@ -397,7 +394,7 @@ class MainWindow : public QMainWindow
 
         bool useCurvartureCorrections = mCurvatureCorrections->checkState() == Qt::CheckState::Checked;
         double refractionCoefficient = QgsDoubleValidator::toDouble( mReffractionCoefficient->text() );
-        double earthDimeter = QgsDoubleValidator::toDouble( mEarthDiamether->text() );
+        double earthDimeter = QgsDoubleValidator::toDouble( mEarthDiameter->text() );
 
         if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeClassicViewshed )
         {
@@ -463,7 +460,7 @@ class MainWindow : public QMainWindow
     QComboBox *mViewshedType;
     QCheckBox *mCurvatureCorrections;
     QLineEdit *mReffractionCoefficient;
-    QLineEdit *mEarthDiamether;
+    QLineEdit *mEarthDiameter;
     std::shared_ptr<QgsRasterLayer> mDem;
     QSettings mSettings;
     QMessageBox mErrorMessageBox;
