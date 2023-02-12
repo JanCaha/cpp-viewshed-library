@@ -17,7 +17,7 @@ using viewshed::ViewshedValues;
 
 Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterLayer> dem,
                     std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
-                    bool applyCurvatureCorrections, double earthDiameter, double reffractionCoeff, double minimalAngle,
+                    bool applyCurvatureCorrections, double earthDiameter, double refractionCoeff, double minimalAngle,
                     double maximalAngle )
 {
     mValid = false;
@@ -28,7 +28,7 @@ Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterL
 
     mCurvateCorrections = applyCurvatureCorrections;
     mEarthDiameter = earthDiameter;
-    mReffractionCoefficient = reffractionCoeff;
+    mRefractionCoefficient = refractionCoeff;
 
     setAngles( minimalAngle, maximalAngle );
 

@@ -35,7 +35,7 @@ double LoS::elevation( int i )
     {
         return Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ),
                                                  at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
-                                                 mReffractionCoefficient, mEarthDiameter );
+                                                 mRefractionCoefficient, mEarthDiameter );
     }
     else
     {

@@ -64,7 +64,7 @@ namespace viewshed
         double mValid;
         bool mCurvateCorrections = false;
         double mEarthDiameter = EARTH_DIAMETER;
-        double mReffractionCoefficient = REFRACTION_COEFFICIENT;
+        double mRefractionCoefficient = REFRACTION_COEFFICIENT;
 
         LoSNode mLosNodePoint;
 

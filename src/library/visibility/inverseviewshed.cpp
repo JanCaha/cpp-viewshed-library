@@ -20,7 +20,7 @@ using viewshed::ViewshedValues;
 InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double observerOffset,
                                   std::shared_ptr<QgsRasterLayer> dem,
                                   std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
-                                  bool applyCurvatureCorrections, double earthDiameter, double reffractionCoeff,
+                                  bool applyCurvatureCorrections, double earthDiameter, double refractionCoeff,
                                   double minimalAngle, double maximalAngle )
 {
     mValid = false;
@@ -31,7 +31,7 @@ InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double obs
 
     mCurvateCorrections = applyCurvatureCorrections;
     mEarthDiameter = earthDiameter;
-    mReffractionCoefficient = reffractionCoeff;
+    mRefractionCoefficient = refractionCoeff;
 
     setAngles( minimalAngle, maximalAngle );
 
