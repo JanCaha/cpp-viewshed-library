@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QCheckBox>
 #include <QComboBox>
 #include <QFileDialog>
 #include <QFormLayout>
@@ -23,7 +24,9 @@
 #include "abstractviewshedalgorithm.h"
 #include "inverseviewshed.h"
 #include "point.h"
+#include "utils.h"
 #include "viewshed.h"
+#include "visibility.h"
 #include "visibilityalgorithms.h"
 
 #include "pointwidget.h"
@@ -144,6 +147,27 @@ class MainWindow : public QMainWindow
                          mViewshedType->findData( settings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
                      mViewshedType->setCurrentIndex( index );
                  } );
+
+        menu->addSeparator();
+
+        QAction *resetSettings = new QAction( "Reset settings", this );
+        menu->addAction( resetSettings );
+
+        connect( resetSettings, &QAction::triggered, this,
+                 [=]
+                 {
+                     mFileWidget->setFilePath( "" );
+                     mFolderWidget->setFilePath( "" );
+
+                     mViewshedType->setCurrentIndex( 0 );
+
+                     mPointWidget->setXY( 0, 0 );
+                     mObserverOffset->setText( DEFAULT_OBSERVER_OFFSET );
+                     mTargetOffset->setText( "0.0" );
+
+                     mReffractionCoefficient->setText( QString::number( REFRACTION_COEFFICIENT, 'f' ) );
+                     mEarthDiamether->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
+                 } );
     }
 
     void initGui()
@@ -159,35 +183,26 @@ class MainWindow : public QMainWindow
         mViewshedType->addItem( "Viewshed", ViewshedType::TypeClassicViewshed );
         mViewshedType->addItem( "InverseViewshed", ViewshedType::TypeInverseViewshed );
 
-        int index = mViewshedType->findData( mSettings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
-        mViewshedType->setCurrentIndex( index );
-
-        connect( mViewshedType, qOverload<int>( &QComboBox::currentIndexChanged ), this,
-                 [=]( int ) { mSettings.setValue( "viewshedType", mViewshedType->currentData( Qt::UserRole ) ); } );
-
         mCalculateButton = new QPushButton( this );
         mCalculateButton->setText( QStringLiteral( "Calculate!" ) );
 
-        mPointWidget = new PointWidget( this );
+        mPointWidget = new PointWidget( true, this );
+
+        mCurvatureCorrections = new QCheckBox( this );
+        mReffractionCoefficient = new QLineEdit( this );
+        mReffractionCoefficient->setText( QString::number( REFRACTION_COEFFICIENT, 'f' ) );
+        mReffractionCoefficient->setValidator( mDoubleValidator );
+        mEarthDiamether = new QLineEdit( this );
+        mEarthDiamether->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
+        mEarthDiamether->setValidator( mDoubleValidator );
 
         mFileWidget = new QgsFileWidget( this );
         mFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
         mFileWidget->setStorageMode( QgsFileWidget::GetFile );
         mFileWidget->setOptions( QFileDialog::HideNameFilterDetails );
 
-        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateDem );
-
-        mFileWidget->setFilePath( mSettings.value( QStringLiteral( "dem" ), QStringLiteral( "" ) ).toString() );
-
-        mPoint.fromWkt( mSettings.value( QStringLiteral( "viewpoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
-
         mPointLabel = new QLabel();
         mPointLabel->setText( mPoint.asWkt( 5 ) );
-
-        mPointWidget->setPoint( mPoint );
-
-        connect( mPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateViewPoint );
-        connect( mPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateViewPointLabel );
 
         mDoubleValidator = new QgsDoubleValidator( this );
 
@@ -202,12 +217,6 @@ class MainWindow : public QMainWindow
 
         mFolderWidget = new QgsFileWidget( this );
         mFolderWidget->setStorageMode( QgsFileWidget::StorageMode::GetDirectory );
-        mFolderWidget->setFilePath(
-            mSettings.value( QStringLiteral( "resultFolder" ), QStringLiteral( "" ) ).toString() );
-
-        connect( mFolderWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updateResultFolder );
-
-        connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
 
         mProgressBar = new QProgressBar( this );
 
@@ -217,15 +226,89 @@ class MainWindow : public QMainWindow
         mLayout->addRow( QStringLiteral( "Point:" ), mPointLabel );
         mLayout->addRow( QStringLiteral( "Observer offset:" ), mObserverOffset );
         mLayout->addRow( QStringLiteral( "Target offset:" ), mTargetOffset );
+        mLayout->addRow( QStringLiteral( "Use curvature corrections:" ), mCurvatureCorrections );
+        mLayout->addRow( QStringLiteral( "Reffraction coefficient:" ), mReffractionCoefficient );
+        mLayout->addRow( QStringLiteral( "Earth diamether:" ), mEarthDiamether );
         mLayout->addRow( QStringLiteral( "Folder for results:" ), mFolderWidget );
         mLayout->addRow( mCalculateButton );
         mLayout->addRow( mProgressBar );
+
+        readFromSettings();
+
+        connect( mViewshedType, qOverload<int>( &QComboBox::currentIndexChanged ), this, &MainWindow::saveSettings );
+        connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainWindow::saveSettings );
+        connect( mReffractionCoefficient, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
+        connect( mEarthDiamether, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
+
+        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateDem );
+
+        connect( mPointWidget, &PointWidget::pointChanged, this, &MainWindow::updatePoint );
+        connect( mPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updatePointLabel );
+        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updatePointRaster );
+
+        connect( mFolderWidget, &QgsFileWidget::fileChanged, this, &MainWindow::saveSettings );
+        connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
+
+        enableCalculation();
+    }
+
+    void readFromSettings()
+    {
+        int index = mViewshedType->findData( mSettings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
+        mViewshedType->setCurrentIndex( index );
+
+        mFileWidget->setFilePath( mSettings.value( QStringLiteral( "dem" ), QStringLiteral( "" ) ).toString() );
+
+        std::string wkt =
+            mSettings.value( QStringLiteral( "point" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
+
+        mPoint.fromWkt( mSettings.value( QStringLiteral( "point" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+        mPointWidget->setPoint( mPoint );
+
+        mFolderWidget->setFilePath(
+            mSettings.value( QStringLiteral( "resultFolder" ), QStringLiteral( "" ) ).toString() );
+
+        mCurvatureCorrections->setChecked(
+            mSettings.value( QStringLiteral( "useCurvatureCorrections" ), false ).toBool() );
+
+        mReffractionCoefficient->setText(
+            mSettings
+                .value( QStringLiteral( "reffractionCoefficient" ), QString::number( REFRACTION_COEFFICIENT, 'g' ) )
+                .toString() );
+
+        mEarthDiamether->setText(
+            mSettings.value( QStringLiteral( "earthDiameter" ), QString::number( (double)EARTH_DIAMETER, 'g', 1 ) )
+                .toString() );
+    }
+
+    void saveSettings()
+    {
+        mSettings.setValue( QStringLiteral( "viewshedType" ), mViewshedType->currentData( Qt::UserRole ) );
+        mSettings.setValue( QStringLiteral( "dem" ), mFileWidget->filePath() );
+        mSettings.setValue( QStringLiteral( "point" ), mPointWidget->point().asWkt() );
+        mSettings.setValue( QStringLiteral( "observerOffset" ), mObserverOffset->text() );
+        mSettings.setValue( QStringLiteral( "targetOffset" ), mTargetOffset->text() );
+
+        mSettings.setValue( QStringLiteral( "useCurvatureCorrections" ), mCurvatureCorrections->isChecked() );
+        mSettings.setValue( QStringLiteral( "reffractionCoefficient" ), mReffractionCoefficient->text() );
+        mSettings.setValue( QStringLiteral( "earthDiameter" ), mEarthDiamether->text() );
+
+        mSettings.setValue( QStringLiteral( "resultFolder" ), mFolderWidget->filePath() );
     }
 
     void validateDem()
     {
+        mPointWidget->setCrs( "Unkown" );
+        mEarthDiamether->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
+
+        mCalculateButton->setEnabled( false );
         mDemValid = false;
         mDem = nullptr;
+
+        if ( mFileWidget->filePath() == QStringLiteral( "" ) )
+        {
+            return;
+        }
 
         QgsRasterLayer *rl =
             new QgsRasterLayer( mFileWidget->filePath(), QStringLiteral( "dem" ), QStringLiteral( "gdal" ) );
@@ -257,23 +340,30 @@ class MainWindow : public QMainWindow
             return;
         }
 
-        mSettings.setValue( QStringLiteral( "dem" ), mFileWidget->filePath() );
-
         mDemValid = true;
 
         mDem = std::make_shared<QgsRasterLayer>( mFileWidget->filePath(), QStringLiteral( "dem" ),
                                                  QStringLiteral( "gdal" ) );
 
+        mPointWidget->setCrs( mDem->crs().geographicCrsAuthId() );
+        mEarthDiamether->setText( QString::number( Utils::earthDiameter( mDem->crs() ), 'f' ) );
+
         enableCalculation();
+
+        saveSettings();
     }
 
     void enableCalculation() { mCalculateButton->setEnabled( mDemValid && mPointWidget->isPointValid() ); }
 
-    void updateResultFolder() { mSettings.setValue( QStringLiteral( "resultFolder" ), mFolderWidget->filePath() ); }
+    void updatePoint( QgsPoint point )
+    {
+        mPoint = point;
+        saveSettings();
+    }
 
-    void updateViewPoint( QgsPoint point ) { mPoint = point; }
+    void updatePointRaster() { updatePoint( mPoint ); }
 
-    void updateViewPointLabel( QgsPointXY point )
+    void updatePointLabel( QgsPointXY point )
     {
         double elevation;
         bool sampledOk = false;
@@ -305,8 +395,6 @@ class MainWindow : public QMainWindow
             mPointLabel->setText( mPoint.asWkt( 5 ) + QString( " without valid elevation." ) );
         }
 
-        mSettings.setValue( QStringLiteral( "viewpoint" ), mPoint.asWkt() );
-
         enableCalculation();
     }
 
@@ -323,11 +411,15 @@ class MainWindow : public QMainWindow
 
         prepareAlgorithms();
 
+        bool useCurvartureCorrections = mCurvatureCorrections->checkState() == Qt::CheckState::Checked;
+        double refractionCoefficient = QgsDoubleValidator::toDouble( mReffractionCoefficient->text() );
+        double earthDimeter = QgsDoubleValidator::toDouble( mEarthDiamether->text() );
+
         if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeClassicViewshed )
         {
             std::shared_ptr<Point> vp =
                 std::make_shared<Point>( mPoint, mDem, QgsDoubleValidator::toDouble( mObserverOffset->text() ) );
-            Viewshed v = Viewshed( vp, mDem, mAlgs );
+            Viewshed v = Viewshed( vp, mDem, mAlgs, useCurvartureCorrections, earthDimeter, refractionCoefficient );
 
             mProgressBar->setRange( 0, 100 );
 
@@ -351,7 +443,8 @@ class MainWindow : public QMainWindow
             std::shared_ptr<Point> tp =
                 std::make_shared<Point>( mPoint, mDem, QgsDoubleValidator::toDouble( mTargetOffset->text() ) );
             InverseViewshed iv =
-                InverseViewshed( tp, QgsDoubleValidator::toDouble( mObserverOffset->text() ), mDem, mAlgs );
+                InverseViewshed( tp, QgsDoubleValidator::toDouble( mObserverOffset->text() ), mDem, mAlgs,
+                                 useCurvartureCorrections, earthDimeter, refractionCoefficient );
 
             mProgressBar->setRange( 0, 100 );
 
@@ -384,6 +477,9 @@ class MainWindow : public QMainWindow
     QProgressBar *mProgressBar;
     QPushButton *mCalculateButton;
     QComboBox *mViewshedType;
+    QCheckBox *mCurvatureCorrections;
+    QLineEdit *mReffractionCoefficient;
+    QLineEdit *mEarthDiamether;
     std::shared_ptr<QgsRasterLayer> mDem;
     QSettings mSettings;
     QMessageBox mErrorMessageBox;
@@ -400,9 +496,10 @@ int main( int argc, char *argv[] )
 {
     QApplication app( argc, argv );
     QApplication::setApplicationName( QStringLiteral( "Viewshed Calculator" ) );
-    QApplication::setApplicationVersion( QStringLiteral( "0.1" ) );
+    QApplication::setApplicationVersion( QStringLiteral( "0.2" ) );
     QCoreApplication::setOrganizationName( QStringLiteral( "JanCaha" ) );
     QCoreApplication::setOrganizationDomain( QStringLiteral( "cahik.cz" ) );
+    QSettings::setDefaultFormat( QSettings::Format::IniFormat );
 
     MainWindow mw;
     mw.show();
