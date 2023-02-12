@@ -16,7 +16,7 @@ double InverseLoS::gradient( int i )
 {
     double dist = distance( i );
 
-    if ( mCurvateCorrections )
+    if ( mCurvatureCorrections )
     {
         return Visibility::gradient( mVp, elevation( i ), dist );
     }
@@ -28,7 +28,7 @@ double InverseLoS::gradient( int i )
 
 double InverseLoS::elevation( int i )
 {
-    if ( mCurvateCorrections )
+    if ( mCurvatureCorrections )
     {
         return Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ),
                                                  at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),

@@ -26,7 +26,7 @@ Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterL
     mInputDem = dem;
     mAlgs = algs;
 
-    mCurvateCorrections = applyCurvatureCorrections;
+    mCurvatureCorrections = applyCurvatureCorrections;
     mEarthDiameter = earthDiameter;
     mRefractionCoefficient = refractionCoeff;
 

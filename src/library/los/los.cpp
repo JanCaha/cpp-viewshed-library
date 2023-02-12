@@ -16,7 +16,7 @@ void LoS::setLoSNodes( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(
 
 double LoS::gradient( int i )
 {
-    if ( mCurvateCorrections )
+    if ( mCurvatureCorrections )
     {
         double dist = distance( i );
         return Visibility::gradient( mVp, elevation( i ), dist );
@@ -31,7 +31,7 @@ double LoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, V
 
 double LoS::elevation( int i )
 {
-    if ( mCurvateCorrections )
+    if ( mCurvatureCorrections )
     {
         return Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ),
                                                  at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),

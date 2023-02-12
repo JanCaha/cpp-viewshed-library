@@ -29,7 +29,7 @@ InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double obs
     mInputDem = dem;
     mAlgs = algs;
 
-    mCurvateCorrections = applyCurvatureCorrections;
+    mCurvatureCorrections = applyCurvatureCorrections;
     mEarthDiameter = earthDiameter;
     mRefractionCoefficient = refractionCoeff;
 

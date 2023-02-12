@@ -62,7 +62,7 @@ namespace viewshed
         int mMaxNumberOfResults = 500;
         double mCellSize;
         double mValid;
-        bool mCurvateCorrections = false;
+        bool mCurvatureCorrections = false;
         double mEarthDiameter = EARTH_DIAMETER;
         double mRefractionCoefficient = REFRACTION_COEFFICIENT;
 

@@ -177,12 +177,12 @@ namespace viewshed
 
         void applyCurvatureCorrections( bool apply, double refractionCoeff, double earthDiameter )
         {
-            mCurvateCorrections = apply;
+            mCurvatureCorrections = apply;
             mRefractionCoefficient = refractionCoeff;
             mEarthDiameter = earthDiameter;
         };
 
-        void applyCurvatureCorrections( bool apply ) { mCurvateCorrections = apply; };
+        void applyCurvatureCorrections( bool apply ) { mCurvatureCorrections = apply; };
 
         void setRefractionCoeficient( double refractionCoeff ) { mRefractionCoefficient = refractionCoeff; };
 
@@ -227,7 +227,7 @@ namespace viewshed
          */
         int mTargetIndex;
 
-        bool mCurvateCorrections = false;
+        bool mCurvatureCorrections = false;
         double mEarthDiameter = EARTH_DIAMETER;
         double mRefractionCoefficient = REFRACTION_COEFFICIENT;
 
