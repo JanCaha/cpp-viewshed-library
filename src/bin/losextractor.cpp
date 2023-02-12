@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QCheckBox>
 #include <QComboBox>
 #include <QFileDialog>
 #include <QFormLayout>
@@ -103,13 +104,7 @@ class MainWindow : public QMainWindow
 
                      QSettings settings = QSettings( outputFileName, QSettings::IniFormat, this );
 
-                     settings.setValue( QStringLiteral( "demFile" ), mFileWidget->filePath() );
-                     settings.setValue( QStringLiteral( "resultCsv" ), mCsvFileWidget->filePath() );
-                     settings.setValue( QStringLiteral( "viewPoint" ), mViewPoint.asWkt() );
-                     settings.setValue( QStringLiteral( "targetPoint" ), mTargetPoint.asWkt() );
-                     settings.setValue( QStringLiteral( "observerOffset" ), mObserverOffset->text() );
-                     settings.setValue( QStringLiteral( "targetOffset" ), mTargetOffset->text() );
-                     settings.setValue( QStringLiteral( "viewshedType" ), mViewshedType->currentData( Qt::UserRole ) );
+                     saveCurrentValuesToSettings( settings );
 
                      QDir file( outputFileName );
                      mSettings.setValue( QStringLiteral( "lastUsedDirForSettings" ), file.dirName() );
@@ -133,23 +128,7 @@ class MainWindow : public QMainWindow
 
                      QSettings settings = QSettings( inputFileName, QSettings::IniFormat, this );
 
-                     mFileWidget->setFilePath( settings.value( QStringLiteral( "demFile" ), "" ).toString() );
-                     mCsvFileWidget->setFilePath( settings.value( QStringLiteral( "resultCsv" ), "" ).toString() );
-
-                     mViewPoint.fromWkt(
-                         settings.value( QStringLiteral( "viewPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
-
-                     mViewPointWidget->setPoint( mViewPoint );
-
-                     mTargetPoint.fromWkt(
-                         settings.value( QStringLiteral( "targetPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
-                     mTargetPointWidget->setPoint( mTargetPoint );
-
-                     mObserverOffset->setText( settings.value( QStringLiteral( "observerOffset" ), "" ).toString() );
-                     mTargetOffset->setText( settings.value( QStringLiteral( "targetOffset" ), "" ).toString() );
-                     int index =
-                         mViewshedType->findData( settings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
-                     mViewshedType->setCurrentIndex( index );
+                     readValuesFromSettings( settings );
                  } );
     }
 
@@ -168,9 +147,6 @@ class MainWindow : public QMainWindow
         int index = mViewshedType->findData( mSettings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
         mViewshedType->setCurrentIndex( index );
 
-        connect( mViewshedType, qOverload<int>( &QComboBox::currentIndexChanged ), this,
-                 [=]( int ) { mSettings.setValue( "viewshedType", mViewshedType->currentData( Qt::UserRole ) ); } );
-
         mCalculateButton = new QPushButton( this );
         mCalculateButton->setText( QStringLiteral( "Extract!" ) );
 
@@ -186,8 +162,6 @@ class MainWindow : public QMainWindow
         mFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
         mFileWidget->setStorageMode( QgsFileWidget::GetFile );
         mFileWidget->setOptions( QFileDialog::HideNameFilterDetails );
-
-        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateDem );
 
         mFileWidget->setFilePath( mSettings.value( QStringLiteral( "dem" ), QStringLiteral( "" ) ).toString() );
 
@@ -214,22 +188,20 @@ class MainWindow : public QMainWindow
         mTargetOffset->setValidator( mDoubleValidator );
         mTargetOffset->setText( QStringLiteral( "0.0" ) );
 
+        mCurvatureCorrections = new QCheckBox( this );
+        mRefractionCoefficient = new QLineEdit( this );
+        mRefractionCoefficient->setText( QString::number( REFRACTION_COEFFICIENT, 'f' ) );
+        mRefractionCoefficient->setValidator( mDoubleValidator );
+        mEarthDiameter = new QLineEdit( this );
+        mEarthDiameter->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
+        mEarthDiameter->setValidator( mDoubleValidator );
+
         mCsvFileWidget->setFilePath(
             mSettings.value( QStringLiteral( "resultCsv" ), QStringLiteral( "" ) ).toString() );
 
-        connect( mCsvFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updateResultCsv );
-
-        connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
-
         mViewPointWidget->setPoint( mViewPoint );
 
-        connect( mViewPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateViewPoint );
-        connect( mViewPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateViewPointLabel );
-
         mTargetPointWidget->setPoint( mTargetPoint );
-
-        connect( mTargetPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateTargetPoint );
-        connect( mTargetPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateTargetPointLabel );
 
         mLayout->addRow( QStringLiteral( "Type of viewshed:" ), mViewshedType );
         mLayout->addRow( QStringLiteral( "Select DEM file:" ), mFileWidget );
@@ -239,10 +211,79 @@ class MainWindow : public QMainWindow
         mLayout->addRow( QStringLiteral( "TargetPoint:" ), mTargetPointLabel );
         mLayout->addRow( QStringLiteral( "Observer offset:" ), mObserverOffset );
         mLayout->addRow( QStringLiteral( "Target offset:" ), mTargetOffset );
+        mLayout->addRow( QStringLiteral( "Use curvature corrections:" ), mCurvatureCorrections );
+        mLayout->addRow( QStringLiteral( "Refraction coefficient:" ), mRefractionCoefficient );
+        mLayout->addRow( QStringLiteral( "Earth diameter:" ), mEarthDiameter );
+
         mLayout->addRow( QStringLiteral( "Folder for results:" ), mCsvFileWidget );
         mLayout->addRow( mCalculateButton );
 
+        readSettings();
+
+        connect( mViewshedType, qOverload<int>( &QComboBox::currentIndexChanged ), this, &MainWindow::saveSettings );
+        connect( mViewPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateViewPoint );
+        connect( mViewPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateViewPointLabel );
+        connect( mTargetPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateTargetPoint );
+        connect( mTargetPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateTargetPointLabel );
+        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateDem );
+        connect( mCsvFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updateResultCsv );
+        connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
+        connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainWindow::saveSettings );
+        connect( mRefractionCoefficient, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
+        connect( mEarthDiameter, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
+
         enableCalculation();
+    }
+
+    void readSettings() { readValuesFromSettings( mSettings ); }
+
+    void readValuesFromSettings( QSettings &settings )
+    {
+        mFileWidget->setFilePath( settings.value( QStringLiteral( "dem" ), "" ).toString() );
+        mCsvFileWidget->setFilePath( settings.value( QStringLiteral( "resultCsv" ), "" ).toString() );
+
+        mViewPoint.fromWkt(
+            settings.value( QStringLiteral( "viewPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+
+        mViewPointWidget->setPoint( mViewPoint );
+
+        mTargetPoint.fromWkt(
+            settings.value( QStringLiteral( "targetPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+
+        mTargetPointWidget->setPoint( mTargetPoint );
+
+        mObserverOffset->setText( settings.value( QStringLiteral( "observerOffset" ), "" ).toString() );
+        mTargetOffset->setText( settings.value( QStringLiteral( "targetOffset" ), "" ).toString() );
+
+        int index = mViewshedType->findData( settings.value( QStringLiteral( "viewshedType" ), 0 ).toInt() );
+        mViewshedType->setCurrentIndex( index );
+
+        mCurvatureCorrections->setChecked(
+            settings.value( QStringLiteral( "useCurvatureCorrections" ), false ).toBool() );
+
+        mRefractionCoefficient->setText(
+            settings.value( QStringLiteral( "reffractionCoefficient" ), QString::number( REFRACTION_COEFFICIENT, 'f' ) )
+                .toString() );
+
+        mEarthDiameter->setText(
+            settings.value( QStringLiteral( "earthDiameter" ), QString::number( (double)EARTH_DIAMETER, 'f', 1 ) )
+                .toString() );
+    }
+
+    void saveSettings() { saveCurrentValuesToSettings( mSettings ); }
+
+    void saveCurrentValuesToSettings( QSettings &settings )
+    {
+        settings.setValue( QStringLiteral( "dem" ), mFileWidget->filePath() );
+        settings.setValue( QStringLiteral( "resultCsv" ), mCsvFileWidget->filePath() );
+        settings.setValue( QStringLiteral( "viewPoint" ), mViewPoint.asWkt() );
+        settings.setValue( QStringLiteral( "targetPoint" ), mTargetPoint.asWkt() );
+        settings.setValue( QStringLiteral( "observerOffset" ), mObserverOffset->text() );
+        settings.setValue( QStringLiteral( "targetOffset" ), mTargetOffset->text() );
+        settings.setValue( QStringLiteral( "viewshedType" ), mViewshedType->currentData( Qt::UserRole ) );
+        settings.setValue( QStringLiteral( "useCurvatureCorrections" ), mCurvatureCorrections->isChecked() );
+        settings.setValue( QStringLiteral( "reffractionCoefficient" ), mRefractionCoefficient->text() );
+        settings.setValue( QStringLiteral( "earthDiameter" ), mEarthDiameter->text() );
     }
 
     void validateDem()
@@ -280,12 +321,12 @@ class MainWindow : public QMainWindow
             return;
         }
 
-        mSettings.setValue( QStringLiteral( "dem" ), mFileWidget->filePath() );
-
         mDemValid = true;
 
         mDem = std::make_shared<QgsRasterLayer>( mFileWidget->filePath(), QStringLiteral( "dem" ),
                                                  QStringLiteral( "gdal" ) );
+
+        saveSettings();
 
         enableCalculation();
     }
@@ -299,11 +340,15 @@ class MainWindow : public QMainWindow
 
     void updateResultCsv()
     {
-        mSettings.setValue( QStringLiteral( "resultCsv" ), mCsvFileWidget->filePath() );
+        saveSettings();
         enableCalculation();
     }
 
-    void updateViewPoint( QgsPoint point ) { mViewPoint = point; }
+    void updateViewPoint( QgsPoint point )
+    {
+        mViewPoint = point;
+        saveSettings();
+    }
 
     void updateViewPointLabel( QgsPointXY point )
     {
@@ -337,12 +382,14 @@ class MainWindow : public QMainWindow
             mViewPointLabel->setText( mViewPoint.asWkt( 5 ) + QString( " without valid elevation." ) );
         }
 
-        mSettings.setValue( QStringLiteral( "viewpoint" ), mViewPoint.asWkt() );
-
         enableCalculation();
     }
 
-    void updateTargetPoint( QgsPoint point ) { mTargetPoint = point; }
+    void updateTargetPoint( QgsPoint point )
+    {
+        mTargetPoint = point;
+        saveSettings();
+    }
 
     void updateTargetPointLabel( QgsPointXY point )
     {
@@ -375,8 +422,6 @@ class MainWindow : public QMainWindow
         {
             mTargetPointLabel->setText( mTargetPoint.asWkt( 5 ) + QString( " without valid elevation." ) );
         }
-
-        mSettings.setValue( QStringLiteral( "targetpoint" ), mTargetPoint.asWkt() );
 
         enableCalculation();
     }
@@ -441,6 +486,9 @@ class MainWindow : public QMainWindow
     QgsPoint mTargetPoint;
     QPushButton *mCalculateButton;
     QComboBox *mViewshedType;
+    QCheckBox *mCurvatureCorrections;
+    QLineEdit *mRefractionCoefficient;
+    QLineEdit *mEarthDiameter;
     std::shared_ptr<QgsRasterLayer> mDem;
     QSettings mSettings;
     QMessageBox mErrorMessageBox;
