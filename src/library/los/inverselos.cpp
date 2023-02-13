@@ -28,15 +28,18 @@ double InverseLoS::gradient( int i )
 
 double InverseLoS::elevation( int i )
 {
+
+    double elevation = at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
+
     if ( mCurvatureCorrections )
     {
-        return Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ),
-                                                 at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
+        return elevation +
+               Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
                                                  mRefractionCoefficient, mEarthDiameter );
     }
     else
     {
-        return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
+        return elevation;
     }
 }
 
