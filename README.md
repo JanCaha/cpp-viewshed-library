@@ -42,9 +42,9 @@ Options:
 
 Besides that there are two binaries with GUI: `viewshedcalculator` and `losextractor`. That allow calculation of viewshed (and also inversviewshed) and its characteristics, and extraction of line-of-sight in form of CSV file.
 
-[Viewshed Calculator GUI](docs/images/ViewshedCalculator.png)
+![Viewshed Calculator GUI](docs/images/ViewshedCalculator.png)
 
-[LoS Extractor GUI](docs/images/LoSExtractor.png)
+![LoS Extractor GUI](docs/images/LoSExtractor.png)
 
 ### Docker
 
