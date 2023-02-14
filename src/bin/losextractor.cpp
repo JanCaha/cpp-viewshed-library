@@ -203,7 +203,7 @@ class MainWindow : public QMainWindow
 
         mTargetPointWidget->setPoint( mTargetPoint );
 
-        mLayout->addRow( QStringLiteral( "Type of viewshed:" ), mViewshedType );
+        mLayout->addRow( QStringLiteral( "Type of viewshed (LoS):" ), mViewshedType );
         mLayout->addRow( QStringLiteral( "Select DEM file:" ), mFileWidget );
         mLayout->addRow( QStringLiteral( "ViewPoint Coordinates (x,y):" ), mViewPointWidget );
         mLayout->addRow( QStringLiteral( "ViewPoint:" ), mViewPointLabel );
@@ -215,7 +215,7 @@ class MainWindow : public QMainWindow
         mLayout->addRow( QStringLiteral( "Refraction coefficient:" ), mRefractionCoefficient );
         mLayout->addRow( QStringLiteral( "Earth diameter:" ), mEarthDiameter );
 
-        mLayout->addRow( QStringLiteral( "Folder for results:" ), mCsvFileWidget );
+        mLayout->addRow( QStringLiteral( "CSV output file:" ), mCsvFileWidget );
         mLayout->addRow( mCalculateButton );
 
         readSettings();
