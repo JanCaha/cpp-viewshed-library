@@ -55,6 +55,12 @@ jobs:
             -DBUILD_DOCUMENTATION:bool=on \
             -DBUILD_TESTS:bool=on
 
+      - name: Upload DEB file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: _packages
+          path: viewshed_*.deb
+
       - name: Prepare for docker build
         run: |
           sudo cmake --build build --config Release --target pack_deb
