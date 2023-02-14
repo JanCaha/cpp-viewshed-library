@@ -1,7 +1,13 @@
 name: Tests for Library
 
 on:
-  push
+  push:
+    paths:
+      - src/**
+      - include/**
+      - external/** 
+      - cmake/**
+      - CMakeLists.txt
 
 jobs:
 
