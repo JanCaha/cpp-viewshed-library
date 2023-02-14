@@ -32,13 +32,10 @@ jobs:
       - name: Update and Upgrade
         run: |
           sudo apt update
-          sudo apt upgrade -y
           sudo apt install ninja-build
 
       - name: Install QGIS
         run: |
-          sudo apt update
-          sudo apt upgrade -y
           sudo apt -y install qgis qgis-dev
 
       - name: Checkout
