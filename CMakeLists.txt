@@ -76,9 +76,11 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/visibilityalgorithms.h
 )
 
-add_subdirectory(src)
-
+# ############################################################
+# add sources both external and specific
 add_subdirectory(external)
+
+add_subdirectory(src)
 
 # ############################################################
 # install :
