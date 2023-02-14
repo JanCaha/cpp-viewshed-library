@@ -8,6 +8,7 @@ on:
       - external/** 
       - cmake/**
       - CMakeLists.txt
+      - .github/workflows/test_plugin.yaml
 
 jobs:
 
