@@ -111,6 +111,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
 install(TARGETS library_viewshed
     LIBRARY DESTINATION lib
     PUBLIC_HEADER DESTINATION include/viewshed
+    PRIVATE_HEADER DESTINATION include/viewshed
     INCLUDES DESTINATION include
 )
 
