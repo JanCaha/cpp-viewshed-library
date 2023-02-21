@@ -258,6 +258,8 @@ class MainWindow : public QMainWindow
         mEarthDiameter->setText(
             settings.value( QStringLiteral( "earthDiameter" ), QString::number( (double)EARTH_DIAMETER, 'f', 1 ) )
                 .toString() );
+
+        validateDem();
     }
 
     void saveSettings() { saveCurrentValuesToSettings( mSettings ); }
