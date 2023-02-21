@@ -411,8 +411,21 @@ class MainWindow : public QMainWindow
 
         mTimingMessages = "";
 
+        std::function addTimingMessage = [=]( std::string text, double time )
+        { mTimingMessages = mTimingMessages + text + std::to_string( time ) + " seconds.\n"; };
+
+        std::function setProgress = [=]( int size, int i )
+        {
+            if ( i % 1000 == 0 )
+            {
+                mProgressBar->setValue( (int)( ( (double)i / (double)size ) * 100 ) );
+            }
+        };
+
         QElapsedTimer timer;
         timer.start();
+
+        mProgressBar->setRange( 0, 100 );
 
         if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeClassicViewshed )
         {
@@ -420,23 +433,11 @@ class MainWindow : public QMainWindow
                 std::make_shared<Point>( mPoint, mDem, QgsDoubleValidator::toDouble( mObserverOffset->text() ) );
             Viewshed v = Viewshed( vp, mDem, mAlgs, useCurvartureCorrections, earthDimeter, refractionCoefficient );
 
-            mProgressBar->setRange( 0, 100 );
-
-            v.calculate( [=]( std::string text, double time )
-                         { mTimingMessages = text + std::to_string( time ) + " seconds.\n"; },
-                         [=]( int size, int i )
-                         {
-                             if ( i % 1000 == 0 )
-                             {
-                                 mProgressBar->setValue( (int)( ( (double)i / (double)size ) * 100 ) );
-                             }
-                         } );
+            v.calculate( addTimingMessage, setProgress );
 
             mProgressBar->setValue( 100 );
 
             v.saveResults( mFolderWidget->filePath() );
-
-            mCalculateButton->setEnabled( true );
         }
         else if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeInverseViewshed )
         {
@@ -446,24 +447,14 @@ class MainWindow : public QMainWindow
                 InverseViewshed( tp, QgsDoubleValidator::toDouble( mObserverOffset->text() ), mDem, mAlgs,
                                  useCurvartureCorrections, earthDimeter, refractionCoefficient );
 
-            mProgressBar->setRange( 0, 100 );
-
-            iv.calculate( [=]( std::string text, double time )
-                          { mTimingMessages = mTimingMessages + text + std::to_string( time ) + " seconds.\n"; },
-                          [=]( int size, int i )
-                          {
-                              if ( i % 1000 == 0 )
-                              {
-                                  mProgressBar->setValue( (int)( ( (double)i / (double)size ) * 100 ) );
-                              }
-                          } );
+            iv.calculate( addTimingMessage, setProgress );
 
             mProgressBar->setValue( 100 );
 
             iv.saveResults( mFolderWidget->filePath(), "Inverse" );
-
-            mCalculateButton->setEnabled( true );
         }
+
+        mCalculateButton->setEnabled( true );
 
         statusBar()->showMessage( QString( "Calculation lasted: %1 seconds." ).arg( timer.elapsed() / (double)1000 ),
                                   5 * 60 * 1000 );
