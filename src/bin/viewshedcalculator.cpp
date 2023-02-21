@@ -427,6 +427,7 @@ class MainWindow : public QMainWindow
         timer.start();
 
         mProgressBar->setRange( 0, 100 );
+        mProgressBar->setValue( 0 );
 
         if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeClassicViewshed )
         {
