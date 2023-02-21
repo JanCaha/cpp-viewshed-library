@@ -150,9 +150,9 @@ class MainWindow : public QMainWindow
         mCalculateButton = new QPushButton( this );
         mCalculateButton->setText( QStringLiteral( "Extract!" ) );
 
-        mViewPointWidget = new PointWidget( this );
+        mViewPointWidget = new PointWidget( true, this );
 
-        mTargetPointWidget = new PointWidget( this );
+        mTargetPointWidget = new PointWidget( true, this );
 
         mCsvFileWidget = new QgsFileWidget( this );
         mCsvFileWidget->setStorageMode( QgsFileWidget::StorageMode::SaveFile );
@@ -268,6 +268,8 @@ class MainWindow : public QMainWindow
         mEarthDiameter->setText(
             settings.value( QStringLiteral( "earthDiameter" ), QString::number( (double)EARTH_DIAMETER, 'f', 1 ) )
                 .toString() );
+
+        validateDem();
     }
 
     void saveSettings() { saveCurrentValuesToSettings( mSettings ); }
@@ -288,8 +290,17 @@ class MainWindow : public QMainWindow
 
     void validateDem()
     {
+        mViewPointWidget->setCrs( "Unkown" );
+        mTargetPointWidget->setCrs( "Unkown" );
+        mEarthDiameter->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
+
         mDemValid = false;
         mDem = nullptr;
+
+        if ( mFileWidget->filePath() == QStringLiteral( "" ) )
+        {
+            return;
+        }
 
         QgsRasterLayer *rl =
             new QgsRasterLayer( mFileWidget->filePath(), QStringLiteral( "dem" ), QStringLiteral( "gdal" ) );
@@ -326,9 +337,14 @@ class MainWindow : public QMainWindow
         mDem = std::make_shared<QgsRasterLayer>( mFileWidget->filePath(), QStringLiteral( "dem" ),
                                                  QStringLiteral( "gdal" ) );
 
-        saveSettings();
+        mViewPointWidget->setCrs( mDem->crs().geographicCrsAuthId() );
+        mTargetPointWidget->setCrs( mDem->crs().geographicCrsAuthId() );
+
+        mEarthDiameter->setText( QString::number( Utils::earthDiameter( mDem->crs() ), 'f' ) );
 
         enableCalculation();
+
+        saveSettings();
     }
 
     void enableCalculation()
