@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
@@ -407,6 +409,8 @@ class MainWindow : public QMainWindow
         double refractionCoefficient = QgsDoubleValidator::toDouble( mRefractionCoefficient->text() );
         double earthDimeter = QgsDoubleValidator::toDouble( mEarthDiameter->text() );
 
+        mTimingMessages = "";
+
         QElapsedTimer timer;
         timer.start();
 
@@ -418,7 +422,8 @@ class MainWindow : public QMainWindow
 
             mProgressBar->setRange( 0, 100 );
 
-            v.calculate( []( std::string text, double time ) {},
+            v.calculate( [=]( std::string text, double time )
+                         { mTimingMessages = text + std::to_string( time ) + " seconds.\n"; },
                          [=]( int size, int i )
                          {
                              if ( i % 1000 == 0 )
@@ -443,7 +448,8 @@ class MainWindow : public QMainWindow
 
             mProgressBar->setRange( 0, 100 );
 
-            iv.calculate( []( std::string text, double time ) {},
+            iv.calculate( [=]( std::string text, double time )
+                          { mTimingMessages = mTimingMessages + text + std::to_string( time ) + " seconds.\n"; },
                           [=]( int size, int i )
                           {
                               if ( i % 1000 == 0 )
@@ -460,7 +466,13 @@ class MainWindow : public QMainWindow
         }
 
         statusBar()->showMessage( QString( "Calculation lasted: %1 seconds." ).arg( timer.elapsed() / (double)1000 ),
-                                  10000 );
+                                  5 * 60 * 1000 );
+
+        std::ofstream timingTextFile;
+        QString filename = mFolderWidget->filePath() + QString( "/timing.txt" );
+        timingTextFile.open( filename.toStdString() );
+        timingTextFile << mTimingMessages;
+        timingTextFile.close();
     }
 
   private:
@@ -483,6 +495,7 @@ class MainWindow : public QMainWindow
     QMessageBox mErrorMessageBox;
     PointWidget *mPointWidget = nullptr;
     QgsPoint mPoint;
+    std::string mTimingMessages;
 
     bool mDemValid;
 
