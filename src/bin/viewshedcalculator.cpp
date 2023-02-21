@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QElapsedTimer>
 #include <QFileDialog>
 #include <QFormLayout>
 #include <QLabel>
@@ -13,6 +14,7 @@
 #include <QPushButton>
 #include <QResizeEvent>
 #include <QSettings>
+#include <QStatusBar>
 #include <QTextEdit>
 
 #include "qgsdoublevalidator.h"
@@ -162,6 +164,8 @@ class MainWindow : public QMainWindow
 
         mLayout = new QFormLayout();
         mWidget->setLayout( mLayout );
+
+        statusBar()->show();
 
         mViewshedType = new QComboBox( this );
         mViewshedType->addItem( "Viewshed", ViewshedType::TypeClassicViewshed );
@@ -328,7 +332,7 @@ class MainWindow : public QMainWindow
         mDem = std::make_shared<QgsRasterLayer>( mFileWidget->filePath(), QStringLiteral( "dem" ),
                                                  QStringLiteral( "gdal" ) );
 
-        mPointWidget->setCrs( mDem->crs().geographicCrsAuthId() );
+        mPointWidget->setCrs( mDem->crs().authid() );
         mEarthDiameter->setText( QString::number( Utils::earthDiameter( mDem->crs() ), 'f' ) );
 
         enableCalculation();
@@ -398,6 +402,9 @@ class MainWindow : public QMainWindow
         double refractionCoefficient = QgsDoubleValidator::toDouble( mRefractionCoefficient->text() );
         double earthDimeter = QgsDoubleValidator::toDouble( mEarthDiameter->text() );
 
+        QElapsedTimer timer;
+        timer.start();
+
         if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeClassicViewshed )
         {
             std::shared_ptr<Point> vp =
@@ -446,6 +453,9 @@ class MainWindow : public QMainWindow
 
             mCalculateButton->setEnabled( true );
         }
+
+        statusBar()->showMessage( QString( "Calculation lasted: %1 seconds." ).arg( timer.elapsed() / (double)1000 ),
+                                  10000 );
     }
 
   private:

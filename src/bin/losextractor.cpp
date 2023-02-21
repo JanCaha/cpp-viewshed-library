@@ -337,8 +337,8 @@ class MainWindow : public QMainWindow
         mDem = std::make_shared<QgsRasterLayer>( mFileWidget->filePath(), QStringLiteral( "dem" ),
                                                  QStringLiteral( "gdal" ) );
 
-        mViewPointWidget->setCrs( mDem->crs().geographicCrsAuthId() );
-        mTargetPointWidget->setCrs( mDem->crs().geographicCrsAuthId() );
+        mViewPointWidget->setCrs( mDem->crs().authid() );
+        mTargetPointWidget->setCrs( mDem->crs().authid() );
 
         mEarthDiameter->setText( QString::number( Utils::earthDiameter( mDem->crs() ), 'f' ) );
 
