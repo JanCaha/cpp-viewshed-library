@@ -271,6 +271,7 @@ class MainWindow : public QMainWindow
                 .toString() );
 
         validateDem();
+        updatePointLabel( mPointWidget->pointXY() );
     }
 
     void saveSettings() { saveCurrentValuesToSettings( mSettings ); }
