@@ -233,6 +233,8 @@ class MainWindow : public QMainWindow
         connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updatePointRaster );
         connect( mFolderWidget, &QgsFileWidget::fileChanged, this, &MainWindow::saveSettings );
         connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
+        connect( mObserverOffset, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
+        connect( mTargetOffset, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
 
         enableCalculation();
     }
@@ -248,6 +250,9 @@ class MainWindow : public QMainWindow
 
         mPoint.fromWkt( settings.value( QStringLiteral( "point" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
         mPointWidget->setPoint( mPoint );
+
+        mObserverOffset->setText( settings.value( QStringLiteral( "observerOffset" ), "1.6" ).toString() );
+        mTargetOffset->setText( settings.value( QStringLiteral( "targetOffset" ), "0.0" ).toString() );
 
         mFolderWidget->setFilePath(
             settings.value( QStringLiteral( "resultFolder" ), QStringLiteral( "" ) ).toString() );
