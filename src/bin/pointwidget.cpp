@@ -16,7 +16,7 @@ PointWidget::PointWidget( bool addCrsLabel, QWidget *parent ) : QWidget( parent 
     mPointY = new QLineEdit( this );
     mPointY->setValidator( mDoubleValidator );
 
-    connect( mPointY, &QLineEdit::textChanged, this, &PointWidget::updatePoint );
+    connect( mPointX, &QLineEdit::textChanged, this, &PointWidget::updatePoint );
     connect( mPointY, &QLineEdit::textChanged, this, &PointWidget::updatePoint );
 
     layout->addWidget( mPointX );
