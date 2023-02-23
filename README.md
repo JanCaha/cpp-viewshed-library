@@ -12,17 +12,21 @@ There are two command line utilies: `viewshed` and `inverseviewshed`.
 
 ```bash
 Usage: viewshed [options]
-Viewshed .
+Viewshed.
 
 Options:
-  -h, --help              Displays help on commandline options.
-  --help-all              Displays help including Qt specific options.
-  -v, --version           Displays version information.
-  --dem < >               Raster file representing DEM for viewshed
-                          calculation.
-  --resultsFolder < >     Output folder to store the resuls in.
-  --observerPosition < >  Observer position in for XXX.XX;YY.YYY .
-  --heightObserver < >    Height of the observer.
+  -h, --help                          Displays help on commandline options.
+  --help-all                          Displays help including Qt specific
+                                      options.
+  -v, --version                       Displays version information.
+  --dem < >                           Raster file representing DEM for viewshed
+                                      calculation.
+  --resultsFolder < >                 Output folder to store the results in.
+  --observerPosition < >              Observer position in for XXX.XX;YY.YYY .
+  --heightObserver < >                Height of the observer.
+  --useCurvatureCorrections <true>    Use curvature corrections?
+  --refractionCoefficient <0.142860>  Refraction coefficient.
+  --earthDiameter <12740000>          Earth diameter.
 ```
 
 ```bash
@@ -30,14 +34,19 @@ Usage: inverseviewshed [options]
 InverseViewshed.
 
 Options:
-  -h, --help            Displays help on commandline options.
-  --help-all            Displays help including Qt specific options.
-  -v, --version         Displays version information.
-  --dem < >             Raster file representing DEM for viewshed calculation.
-  --resultsFolder < >   Output folder to store the resuls in.
-  --targetPosition < >  Target position in for XXX.XX;YY.YYY .
-  --heightObserver < >  Height of the observer.
-  --heightTarget <0>    Height of the target.
+  -h, --help                          Displays help on commandline options.
+  --help-all                          Displays help including Qt specific
+                                      options.
+  -v, --version                       Displays version information.
+  --dem < >                           Raster file representing DEM for viewshed
+                                      calculation.
+  --resultsFolder < >                 Output folder to store the results in.
+  --targetPosition < >                Target position in for XXX.XX;YY.YYY .
+  --heightObserver < >                Height of the observer.
+  --heightTarget <0>                  Height of the target.
+  --useCurvatureCorrections <true>    Use curvature corrections?
+  --refractionCoefficient <0.142860>  Refraction coefficient.
+  --earthDiameter <12740000>          Earth diameter.
 ```
 
 Besides that there are two binaries with GUI: `viewshedcalculator` and `losextractor`. That allow calculation of viewshed (and also inversviewshed) and its characteristics, and extraction of line-of-sight in form of CSV file.
