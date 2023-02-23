@@ -33,81 +33,51 @@ int main( int argc, char *argv[] )
     parser.addHelpOption();
     parser.addVersionOption();
 
-    QCommandLineOption demOption( QStringList() << "dem", "Raster file representing DEM for viewshed calculation.",
-                                  " " );
-    parser.addOption( demOption );
+    addDem( parser );
 
-    QCommandLineOption resultsFolder( QStringList() << "resultsFolder", "Output folder to store the resuls in.", " " );
-    parser.addOption( resultsFolder );
+    addResultFolder( parser );
 
-    QCommandLineOption observerPosition( QStringList() << "observerPosition",
+    QCommandLineOption observerPosition( QStringLiteral( "observerPosition" ),
                                          "Observer position in for XXX.XX;YY.YYY .", " " );
     parser.addOption( observerPosition );
 
-    QCommandLineOption heightObserver( QStringList() << "heightObserver", "Height of the observer.", " " );
-    parser.addOption( heightObserver );
+    addHeightObserver( parser );
 
-    // QCommandLineOption heightTarget( QStringList() << "targetOffset", "Height of the target.", "0.0" );
-    // parser.addOption( heightTarget );
+    addCurvatureCorrections( parser );
 
-    QCommandLineOption useCurvatureCorrections( QStringList() << "useCurvatureCorrections",
-                                                "Use curvature corrections?", "true" );
-    parser.addOption( useCurvatureCorrections );
+    addRefractionCoefficient( parser );
 
-    QCommandLineOption refractionCoefficient( QStringList() << "refractionCoefficient", "Refraction coefficient.",
-                                              "0.142860" );
-    parser.addOption( refractionCoefficient );
-
-    QCommandLineOption earthDiameter( QStringList() << "earthDiameter", "Earth diameter.", "12740000" );
-    parser.addOption( earthDiameter );
+    addEarthDiameter( parser );
 
     parser.process( app );
 
     const QStringList args = parser.positionalArguments();
 
-    QFile demFile( parser.value( demOption ) );
+    QString demFilePath = getDemFilePath( parser );
 
-    if ( !demFile.exists() )
-    {
-        exitWithError( "Error: Dem file does not exist.", parser );
-    }
-
-    std::shared_ptr<QgsRasterLayer> rl = std::make_shared<QgsRasterLayer>( demFile.fileName(), "dem", "gdal" );
+    std::shared_ptr<QgsRasterLayer> rl = std::make_shared<QgsRasterLayer>( demFilePath, "dem", "gdal" );
 
     if ( !rl->isValid() )
     {
         exitWithError( rl->error().message().toLocal8Bit().constData(), parser );
     }
 
-    QDir output( parser.value( resultsFolder ) );
+    QString resultFolder = resultFolderAbsolute( parser );
 
-    if ( !output.exists() )
-    {
-        exitWithError( "Error: Output folder does not exist.", parser );
-    }
+    Coord coord = getCoords( parser, QStringLiteral( "observerPosition" ) );
 
-    QString coords( parser.value( observerPosition ) );
+    double observerOffset = getHeightObserver( parser );
 
-    double x, y;
-    if ( coords.contains( ";" ) )
-    {
-        x = coords.split( ";" )[0].toDouble();
-        y = coords.split( ";" )[1].toDouble();
-    }
+    bool curvatureCorrections = getCurvatureCorrections( parser );
 
-    double observerOffset = QVariant( parser.value( heightObserver ) ).toDouble();
+    double earthDiam = getEarthDiameter( parser );
 
-    // double targetOffset = QVariant( parser.value( heightTarget ) ).toDouble();
+    double refCoeff = getRefractionCoefficient( parser );
 
-    bool curvatureCorrections = QVariant( parser.value( useCurvatureCorrections ) ).toBool();
+    std::shared_ptr<viewshed::Point> vp =
+        std::make_shared<viewshed::Point>( QgsPoint( coord.x, coord.y ), rl, observerOffset );
 
-    double earthDiam = QVariant( parser.value( earthDiameter ) ).toDouble();
-
-    double refCoeff = QVariant( parser.value( refractionCoefficient ) ).toDouble();
-
-    std::shared_ptr<viewshed::Point> vp = std::make_shared<viewshed::Point>( QgsPoint( x, y ), rl, observerOffset );
-
-    if ( !rl->extent().contains( x, y ) )
+    if ( !rl->extent().contains( coord.x, coord.y ) )
     {
         exitWithError( "Error: Viewpoint does not lie on the Dem raster.", parser );
     }
@@ -130,7 +100,7 @@ int main( int argc, char *argv[] )
 
     v.calculate( printTimeInfo, printProgressInfo );
 
-    v.saveResults( output.absolutePath() );
+    v.saveResults( resultFolder );
 
     return 0;
 }
