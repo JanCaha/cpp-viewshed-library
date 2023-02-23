@@ -16,6 +16,8 @@
 #include "viewshed.h"
 #include "visibilityalgorithms.h"
 
+#include "commandlinehelper.h"
+
 using namespace viewshed;
 using namespace viewshed::visibilityalgorithm;
 
@@ -26,29 +28,23 @@ int main( int argc, char *argv[] )
     QCoreApplication::setApplicationVersion( "0.1" );
 
     QCommandLineParser parser;
-    parser.setApplicationDescription( QCoreApplication::translate( "main", "Viewshed ." ) );
+    parser.setApplicationDescription( "Viewshed." );
 
     parser.addHelpOption();
     parser.addVersionOption();
 
-    QCommandLineOption demOption(
-        QStringList() << "dem",
-        QCoreApplication::translate( "dem", "Raster file representing DEM for viewshed calculation." ), " " );
+    QCommandLineOption demOption( QStringList() << "dem", "Raster file representing DEM for viewshed calculation.",
+                                  " " );
     parser.addOption( demOption );
 
-    QCommandLineOption resultsFolder(
-        QStringList() << "resultsFolder",
-        QCoreApplication::translate( "resultsFolder", "Output folder to store the resuls in." ), " " );
+    QCommandLineOption resultsFolder( QStringList() << "resultsFolder", "Output folder to store the resuls in.", " " );
     parser.addOption( resultsFolder );
 
-    QCommandLineOption observerPosition(
-        QStringList() << "observerPosition",
-        QCoreApplication::translate( "observerPosition", "Observer position in for XXX.XX;YY.YYY ." ), " " );
+    QCommandLineOption observerPosition( QStringList() << "observerPosition",
+                                         "Observer position in for XXX.XX;YY.YYY .", " " );
     parser.addOption( observerPosition );
 
-    QCommandLineOption heightObserver( QStringList() << "heightObserver",
-                                       QCoreApplication::translate( "heightObserver", "Height of the observer." ),
-                                       " " );
+    QCommandLineOption heightObserver( QStringList() << "heightObserver", "Height of the observer.", " " );
     parser.addOption( heightObserver );
 
     parser.process( app );

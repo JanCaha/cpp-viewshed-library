@@ -27,33 +27,26 @@ int main( int argc, char *argv[] )
     QCoreApplication::setApplicationVersion( "0.1" );
 
     QCommandLineParser parser;
-    parser.setApplicationDescription( QCoreApplication::translate( "main", "InverseViewshed." ) );
+    parser.setApplicationDescription( "InverseViewshed." );
 
     parser.addHelpOption();
     parser.addVersionOption();
 
-    QCommandLineOption demOption(
-        QStringList() << "dem",
-        QCoreApplication::translate( "dem", "Raster file representing DEM for viewshed calculation." ), " " );
+    QCommandLineOption demOption( QStringList() << "dem", "Raster file representing DEM for viewshed calculation.",
+                                  " " );
     parser.addOption( demOption );
 
-    QCommandLineOption resultsFolder(
-        QStringList() << "resultsFolder",
-        QCoreApplication::translate( "resultsFolder", "Output folder to store the resuls in." ), " " );
+    QCommandLineOption resultsFolder( QStringList() << "resultsFolder", "Output folder to store the resuls in.", " " );
     parser.addOption( resultsFolder );
 
-    QCommandLineOption targetPosition(
-        QStringList() << "targetPosition",
-        QCoreApplication::translate( "targetPosition", "Target position in for XXX.XX;YY.YYY ." ), " " );
+    QCommandLineOption targetPosition( QStringList() << "targetPosition", "Target position in for XXX.XX;YY.YYY .",
+                                       " " );
     parser.addOption( targetPosition );
 
-    QCommandLineOption heightObserver( QStringList() << "heightObserver",
-                                       QCoreApplication::translate( "heightObserver", "Height of the observer." ),
-                                       " " );
+    QCommandLineOption heightObserver( QStringList() << "heightObserver", "Height of the observer.", " " );
     parser.addOption( heightObserver );
 
-    QCommandLineOption heightTarget( QStringList() << "heightTarget",
-                                     QCoreApplication::translate( "heightTarget", "Height of the target." ), "0" );
+    QCommandLineOption heightTarget( QStringList() << "heightTarget", "Height of the target.", "0" );
     parser.addOption( heightTarget );
 
     parser.process( app );
