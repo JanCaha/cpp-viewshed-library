@@ -4,6 +4,7 @@
 
 #include <QCommandLineParser>
 #include <QDebug>
+#include <QFile>
 #include <QString>
 
 int exitWithError( const char *error, QCommandLineParser &parser )
@@ -125,4 +126,16 @@ QString resultFolderAbsolute( QCommandLineParser &parser )
     }
 
     return output.absolutePath();
+}
+
+QString getDemFilePath( QCommandLineParser &parser )
+{
+    QFile demFile( parser.value( QStringLiteral( "dem" ) ) );
+
+    if ( !demFile.exists() )
+    {
+        exitWithError( "Error: Dem file does not exist.", parser );
+    }
+
+    return demFile.fileName();
 }
