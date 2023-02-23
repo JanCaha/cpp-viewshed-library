@@ -3,7 +3,7 @@ macro(create_binary bin_name filename add_widgets)
     if(${add_widgets})
         add_executable(${bin_name} ${filename} pointwidget.h pointwidget.cpp)
     else()
-        add_executable(${bin_name} ${filename})
+        add_executable(${bin_name} ${filename} commandlinehelper.h)
     endif()
 
     set_target_properties(${bin_name} PROPERTIES AUTOMOC TRUE)
