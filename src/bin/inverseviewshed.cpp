@@ -24,7 +24,7 @@ int main( int argc, char *argv[] )
 {
     QCoreApplication app( argc, argv );
     QCoreApplication::setApplicationName( "InverseViewshed" );
-    QCoreApplication::setApplicationVersion( "0.1" );
+    QCoreApplication::setApplicationVersion( "0.2" );
 
     QCommandLineParser parser;
     parser.setApplicationDescription( "InverseViewshed." );
@@ -48,6 +48,17 @@ int main( int argc, char *argv[] )
 
     QCommandLineOption heightTarget( QStringList() << "heightTarget", "Height of the target.", "0" );
     parser.addOption( heightTarget );
+
+    QCommandLineOption useCurvatureCorrections( QStringList() << "useCurvatureCorrections",
+                                                "Use curvature corrections?", "true" );
+    parser.addOption( useCurvatureCorrections );
+
+    QCommandLineOption refractionCoefficient( QStringList() << "refractionCoefficient", "Refraction coefficient.",
+                                              "0.142860" );
+    parser.addOption( refractionCoefficient );
+
+    QCommandLineOption earthDiameter( QStringList() << "earthDiameter", "earthDiameter", "12740000" );
+    parser.addOption( earthDiameter );
 
     parser.process( app );
 
@@ -87,6 +98,12 @@ int main( int argc, char *argv[] )
 
     double targetOffset = QVariant( parser.value( heightTarget ) ).toDouble();
 
+    bool curvatureCorrections = QVariant( parser.value( useCurvatureCorrections ) ).toBool();
+
+    double earthDiam = QVariant( parser.value( earthDiameter ) ).toDouble();
+
+    double refCoeff = QVariant( parser.value( refractionCoefficient ) ).toDouble();
+
     std::shared_ptr<viewshed::Point> tp = std::make_shared<viewshed::Point>( QgsPoint( x, y ), rl, targetOffset );
 
     if ( !rl->extent().contains( x, y ) )
@@ -108,7 +125,7 @@ int main( int argc, char *argv[] )
     algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true ) );
     algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false ) );
 
-    InverseViewshed iv( tp, observerOffset, rl, algs );
+    InverseViewshed iv( tp, observerOffset, rl, algs, curvatureCorrections, earthDiam, refCoeff );
 
     iv.calculate( printTimeInfo, printProgressInfo );
 

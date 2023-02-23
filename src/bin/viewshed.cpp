@@ -25,7 +25,7 @@ int main( int argc, char *argv[] )
 {
     QCoreApplication app( argc, argv );
     QCoreApplication::setApplicationName( "Viewshed" );
-    QCoreApplication::setApplicationVersion( "0.1" );
+    QCoreApplication::setApplicationVersion( "0.2" );
 
     QCommandLineParser parser;
     parser.setApplicationDescription( "Viewshed." );
@@ -46,6 +46,20 @@ int main( int argc, char *argv[] )
 
     QCommandLineOption heightObserver( QStringList() << "heightObserver", "Height of the observer.", " " );
     parser.addOption( heightObserver );
+
+    // QCommandLineOption heightTarget( QStringList() << "targetOffset", "Height of the target.", "0.0" );
+    // parser.addOption( heightTarget );
+
+    QCommandLineOption useCurvatureCorrections( QStringList() << "useCurvatureCorrections",
+                                                "Use curvature corrections?", "true" );
+    parser.addOption( useCurvatureCorrections );
+
+    QCommandLineOption refractionCoefficient( QStringList() << "refractionCoefficient", "Refraction coefficient.",
+                                              "0.142860" );
+    parser.addOption( refractionCoefficient );
+
+    QCommandLineOption earthDiameter( QStringList() << "earthDiameter", "Earth diameter.", "12740000" );
+    parser.addOption( earthDiameter );
 
     parser.process( app );
 
@@ -83,6 +97,14 @@ int main( int argc, char *argv[] )
 
     double observerOffset = QVariant( parser.value( heightObserver ) ).toDouble();
 
+    // double targetOffset = QVariant( parser.value( heightTarget ) ).toDouble();
+
+    bool curvatureCorrections = QVariant( parser.value( useCurvatureCorrections ) ).toBool();
+
+    double earthDiam = QVariant( parser.value( earthDiameter ) ).toDouble();
+
+    double refCoeff = QVariant( parser.value( refractionCoefficient ) ).toDouble();
+
     std::shared_ptr<viewshed::Point> vp = std::make_shared<viewshed::Point>( QgsPoint( x, y ), rl, observerOffset );
 
     if ( !rl->extent().contains( x, y ) )
@@ -104,7 +126,7 @@ int main( int argc, char *argv[] )
     algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true ) );
     algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false ) );
 
-    Viewshed v( vp, rl, algs );
+    Viewshed v( vp, rl, algs, curvatureCorrections, earthDiam, refCoeff );
 
     v.calculate( printTimeInfo, printProgressInfo );
 
