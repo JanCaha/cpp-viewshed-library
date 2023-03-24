@@ -125,6 +125,8 @@ void InverseViewshed::initEventList()
 
                 if ( !isNoData )
                 {
+                    mValidCells++;
+
                     int column = blockColumn + iterLeft;
                     int row = blockRow + iterTop;
 
