@@ -46,6 +46,10 @@ namespace viewshed
         LoSNode statusNodeFromPoint( QgsPoint point );
         QgsPoint point( int row, int col );
 
+        long numberOfValidCells() { return mValidCells; };
+
+        long numberOfCellEvents() { return mCellEvents.size(); };
+
       protected:
         std::vector<LoSNode> mLosNodes;
         std::vector<CellEvent> mCellEvents;
@@ -54,6 +58,7 @@ namespace viewshed
         std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
         Qgis::DataType mDataType = Qgis::DataType::Float64;
         int mDefaultBand = 1;
+        long mValidCells = 0;
 
         double mMaxDistance = std::numeric_limits<double>::max();
         double mMinAngle = std::numeric_limits<double>::quiet_NaN();
