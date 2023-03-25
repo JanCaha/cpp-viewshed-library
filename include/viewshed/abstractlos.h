@@ -1,6 +1,8 @@
 #ifndef VIEWSHEDLIB_ABSTRACTLOS_H
 #define VIEWSHEDLIB_ABSTRACTLOS_H
 
+#include <chrono>
+
 #include "cellevent.h"
 #include "enums.h"
 #include "losnode.h"
@@ -187,6 +189,9 @@ namespace viewshed
         void setRefractionCoeficient( double refractionCoeff ) { mRefractionCoefficient = refractionCoeff; };
 
         void setEarthDiameter( double earthDiameter ) { mEarthDiameter = earthDiameter; };
+
+        std::chrono::nanoseconds timeToCopy;
+        std::chrono::nanoseconds timeToEval;
 
       protected:
         AbstractLoS();

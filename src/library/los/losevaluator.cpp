@@ -1,5 +1,7 @@
-#include "losevaluator.h"
+#include <chrono>
+
 #include "abstractviewshed.h"
+#include "losevaluator.h"
 #include "visibility.h"
 
 using viewshed::AbstractViewshedAlgorithm;
@@ -19,6 +21,7 @@ std::shared_ptr<AbstractViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { 
 
 void LoSEvaluator::parseNodes()
 {
+    auto startTime = std::chrono::high_resolution_clock::now();
 
     double snGradient;
 
@@ -71,6 +74,8 @@ void LoSEvaluator::parseNodes()
         }
     }
     mAlreadyParsed = true;
+    auto endTime = std::chrono::high_resolution_clock::now();
+    mLos->timeToEval = std::chrono::duration_cast<std::chrono::nanoseconds>( endTime - startTime );
 }
 
 void LoSEvaluator::calculate()
