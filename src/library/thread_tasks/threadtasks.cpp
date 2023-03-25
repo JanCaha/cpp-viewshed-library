@@ -1,5 +1,6 @@
 #include "threadtasks.h"
 #include "abstractviewshed.h"
+#include "db.h"
 #include "losnode.h"
 #include "point.h"
 #include "viewshedvalues.h"
@@ -14,6 +15,8 @@ viewshed::evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
     LoSEvaluator losEval( los, algs );
 
     losEval.calculate();
+
+    db.add_los_timing_data( los->timeToCopy, los->timeToEval );
 
     return losEval.results();
 }
