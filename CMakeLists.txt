@@ -23,12 +23,15 @@ find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
 
 find_package(Threads REQUIRED)
 
+find_package(SQLite3)
+
 set(MINIMAL_QGIS_INCLUDES
     ${QGIS_INCLUDE_DIR}
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5Xml_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
+    ${SQLITE3_INCLUDE_DIRS}
 )
 
 set(MINIMAL_QGIS_LIBS
@@ -37,6 +40,7 @@ set(MINIMAL_QGIS_LIBS
     Qt5::Gui
     Qt5::Xml
     Qt5::Widgets
+    ${SQLITE3_LIBRARIES}
 )
 
 set(LIBRARY_VIEWSHED_PRIVATE_HEADERS

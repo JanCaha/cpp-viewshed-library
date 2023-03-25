@@ -12,6 +12,7 @@ set(LIBRARY_VIEWSHED_SRC
     memory_raster/memoryraster.cpp
 
     utils/utils.cpp
+    utils/db.h
 
     structures/cellevent.cpp
     structures/point.cpp
