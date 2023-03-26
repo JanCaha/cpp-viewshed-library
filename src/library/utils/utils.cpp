@@ -8,6 +8,7 @@
 
 #include "inverselos.h"
 #include "utils.h"
+#include "visibility.h"
 
 using viewshed::DataTriplet;
 using viewshed::InverseLoS;
@@ -83,6 +84,10 @@ std::vector<DataTriplet> Utils::distanceElevation( std::shared_ptr<AbstractLoS> 
 double Utils::earthDiameter( QgsCoordinateReferenceSystem crs )
 {
     QString ellipsoid = crs.ellipsoidAcronym();
-    QgsEllipsoidUtils::EllipsoidParameters params = QgsEllipsoidUtils::ellipsoidParameters( ellipsoid );
-    return params.semiMajor * 2;
+    if ( !ellipsoid.isEmpty() )
+    {
+        QgsEllipsoidUtils::EllipsoidParameters params = QgsEllipsoidUtils::ellipsoidParameters( ellipsoid );
+        return params.semiMajor * 2;
+    }
+    return EARTH_DIAMETER;
 };
