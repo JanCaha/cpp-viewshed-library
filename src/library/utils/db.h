@@ -53,9 +53,10 @@ class PG
         pqxx::work W( *mConn );
 
         std::string sql = "INSERT INTO " + table +
-                          "( time_to_copy, time_to_eval ) "
+                          "( time_to_copy, time_to_eval, inserted ) "
                           " VALUES( " +
-                          std::to_string( timeToCopy.count() ) + "," + std::to_string( timeToEval.count() ) + " );";
+                          std::to_string( timeToCopy.count() ) + "," + std::to_string( timeToEval.count() ) +
+                          ", now() );";
         try
         {
             W.exec( sql );
