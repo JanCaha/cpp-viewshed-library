@@ -22,11 +22,11 @@ viewshed::evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
 
     if ( inverseLoS )
     {
-        db.add_los_timing_data_to( "inverseviewshed_los_timing", los->timeToCopy, los->timeToEval );
+        pg.add_los_timing_data_to( "inverseviewshed_los_timing", los->timeToCopy, los->timeToEval );
     }
     else
     {
-        db.add_los_timing_data_to( "viewshed_los_timing", los->timeToCopy, los->timeToEval );
+        pg.add_los_timing_data_to( "viewshed_los_timing", los->timeToCopy, los->timeToEval );
     }
 
     return losEval.results();
