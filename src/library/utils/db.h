@@ -2,16 +2,18 @@
 #include <chrono>
 #include <sqlite3.h>
 
-static int callback( void *data, int argc, char **argv, char **azColName ) {}
+static int callback( void *data, int argc, char **argv, char **azColName ) { return 0; }
 
 class DB
 {
   public:
     ~DB() { sqlite3_close( mDb ); }
 
-    void add_los_timing_data( std::chrono::nanoseconds timeToCopy, std::chrono::nanoseconds timeToEval )
+    void add_los_timing_data_to( std::string table, std::chrono::nanoseconds timeToCopy,
+                                 std::chrono::nanoseconds timeToEval )
     {
-        std::string sql = "INSERT INTO los_timing( time_to_copy, time_to_eval ) "
+        std::string sql = "INSERT INTO " + table +
+                          "( time_to_copy, time_to_eval ) "
                           " VALUES( " +
                           std::to_string( timeToCopy.count() ) + "," + std::to_string( timeToEval.count() ) + " )";
 
