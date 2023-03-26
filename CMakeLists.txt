@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.20.0)
 project(viewshed VERSION 1.9.5 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." ON)
-option(BUILD_DOCUMENTATION "Build documentation." ON)
+option(BUILD_DOCUMENTATION "Build documentation." OFF)
 option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
