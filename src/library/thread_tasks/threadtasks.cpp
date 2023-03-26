@@ -1,10 +1,12 @@
 #include "threadtasks.h"
+#include "../utils/db.h"
 #include "abstractviewshed.h"
-#include "db.h"
+#include "inverselos.h"
 #include "losnode.h"
 #include "point.h"
 #include "viewshedvalues.h"
 
+using viewshed::InverseLoS;
 using viewshed::LoSEvaluator;
 using viewshed::ViewshedValues;
 
@@ -16,7 +18,16 @@ viewshed::evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
 
     losEval.calculate();
 
-    db.add_los_timing_data( los->timeToCopy, los->timeToEval );
+    auto inverseLoS = std::dynamic_pointer_cast<InverseLoS>( los );
+
+    if ( inverseLoS )
+    {
+        db.add_los_timing_data_to( "inverseviewshed_los_timing", los->timeToCopy, los->timeToEval );
+    }
+    else
+    {
+        db.add_los_timing_data_to( "viewshed_los_timing", los->timeToCopy, los->timeToEval );
+    }
 
     return losEval.results();
 }
