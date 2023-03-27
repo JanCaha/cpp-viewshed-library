@@ -57,6 +57,11 @@ namespace viewshed
          * @return double
          */
         static double earthDiameter( QgsCoordinateReferenceSystem crs );
+
+        static bool validateRaster( std::shared_ptr<QgsRasterLayer> r1, std::string &error );
+
+        static bool compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<QgsRasterLayer> r2,
+                                    std::string &error );
     };
 } // namespace viewshed
 
