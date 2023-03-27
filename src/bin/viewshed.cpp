@@ -72,6 +72,11 @@ int main( int argc, char *argv[] )
     if ( !maskFilePath.isEmpty() )
     {
         mask = std::make_shared<QgsRasterLayer>( maskFilePath, "dem", "gdal" );
+
+        if ( !Utils::validateRaster( mask, rasterError ) )
+        {
+            exitWithError( rasterError, parser );
+        }
     }
 
     QString resultFolder = resultFolderAbsolute( parser );
