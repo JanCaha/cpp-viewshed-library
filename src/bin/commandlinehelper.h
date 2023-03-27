@@ -9,7 +9,7 @@
 
 int exitWithError( std::string error, QCommandLineParser &parser )
 {
-    fprintf( stderr, "%s\n", error );
+    fprintf( stderr, "%s\n", error.c_str() );
     parser.showHelp( 1 );
 }
 
