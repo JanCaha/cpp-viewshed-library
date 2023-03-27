@@ -100,7 +100,7 @@ void Viewshed::submitToThreadpool( CellEvent &e )
 }
 
 void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValue,
-                                  std::unique_ptr<QgsRasterBlock> &rasterBlock )
+                                  std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell )
 {
     double elevs[3];
     elevs[CellEventPositionType::CENTER] = pixelValue;
@@ -138,7 +138,10 @@ void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValu
         }
 
         mCellEvents.push_back( eEnter );
-        mCellEvents.push_back( eCenter );
         mCellEvents.push_back( eExit );
+        if ( solveCell )
+        {
+            mCellEvents.push_back( eCenter );
+        }
     }
 }

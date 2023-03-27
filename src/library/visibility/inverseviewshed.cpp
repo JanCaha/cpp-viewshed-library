@@ -98,7 +98,7 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
 }
 
 void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pixelValue,
-                                         std::unique_ptr<QgsRasterBlock> &rasterBlock )
+                                         std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell )
 {
     double elevs[3];
     elevs[CellEventPositionType::CENTER] = pixelValue;
@@ -180,7 +180,10 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         mCellEvents.push_back( eExitOpposite );
 
         mCellEvents.push_back( eEnter );
-        mCellEvents.push_back( eCenter );
         mCellEvents.push_back( eExit );
+        if ( solveCell )
+        {
+            mCellEvents.push_back( eCenter );
+        }
     }
 }

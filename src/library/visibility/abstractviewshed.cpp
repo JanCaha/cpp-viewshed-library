@@ -33,14 +33,33 @@ void AbstractViewshed::initEventList()
     int iterRows = 0;
     bool isNoData = false;
     std::unique_ptr<QgsRasterBlock> rasterBlock; // = std::make_shared<QgsRasterBlock>();
+    QgsRasterBlock *maskBlock;
+    bool isMaskNoData = false;
+    bool solveCell = false;
 
     while ( iter.readNextRasterPart( mDefaultBand, iterCols, iterRows, rasterBlock, iterLeft, iterTop ) )
     {
+        if ( mVisibilityMask )
+        {
+            maskBlock = mVisibilityMask->dataProvider()->block( mDefaultBand, mInputDem->extent(), mInputDem->width(),
+                                                                mInputDem->height() );
+        }
+
         for ( int blockRow = 0; blockRow < iterRows; blockRow++ )
         {
             for ( int blockColumn = 0; blockColumn < iterCols; blockColumn++ )
             {
                 const double pixelValue = rasterBlock->valueAndNoData( blockRow, blockColumn, isNoData );
+
+                solveCell = true;
+                if ( mVisibilityMask )
+                {
+                    const double maskValue = maskBlock->valueAndNoData( blockRow, blockColumn, isMaskNoData );
+                    if ( isMaskNoData || maskValue == 0 )
+                    {
+                        solveCell = false;
+                    }
+                }
 
                 if ( !isNoData )
                 {
@@ -49,7 +68,7 @@ void AbstractViewshed::initEventList()
                     int column = blockColumn + iterLeft;
                     int row = blockRow + iterTop;
 
-                    addEventsFromCell( row, column, pixelValue, rasterBlock );
+                    addEventsFromCell( row, column, pixelValue, rasterBlock, solveCell );
                 }
             }
         }
