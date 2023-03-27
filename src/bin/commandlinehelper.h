@@ -7,9 +7,9 @@
 #include <QFile>
 #include <QString>
 
-int exitWithError( const char *error, QCommandLineParser &parser )
+int exitWithError( std::string error, QCommandLineParser &parser )
 {
-    fprintf( stderr, "%s\n", qPrintable( error ) );
+    fprintf( stderr, "%s\n", error );
     parser.showHelp( 1 );
 }
 
