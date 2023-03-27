@@ -2,6 +2,9 @@ name: Tests for Library
 
 on:
   push:
+    branches-ignore:
+      - "ex-**" 
+      - "experiments**"
     paths:
       - src/**
       - include/**
