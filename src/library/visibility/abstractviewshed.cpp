@@ -33,14 +33,33 @@ void AbstractViewshed::initEventList()
     int iterRows = 0;
     bool isNoData = false;
     std::unique_ptr<QgsRasterBlock> rasterBlock; // = std::make_shared<QgsRasterBlock>();
+    QgsRasterBlock *maskBlock;
+    bool isMaskNoData = false;
+    bool solveCell = false;
 
     while ( iter.readNextRasterPart( mDefaultBand, iterCols, iterRows, rasterBlock, iterLeft, iterTop ) )
     {
+        if ( mVisibilityMask )
+        {
+            maskBlock = mVisibilityMask->dataProvider()->block( mDefaultBand, mInputDem->extent(), mInputDem->width(),
+                                                                mInputDem->height() );
+        }
+
         for ( int blockRow = 0; blockRow < iterRows; blockRow++ )
         {
             for ( int blockColumn = 0; blockColumn < iterCols; blockColumn++ )
             {
                 const double pixelValue = rasterBlock->valueAndNoData( blockRow, blockColumn, isNoData );
+
+                solveCell = true;
+                if ( mVisibilityMask )
+                {
+                    const double maskValue = maskBlock->valueAndNoData( blockRow, blockColumn, isMaskNoData );
+                    if ( isMaskNoData || maskValue == 0 )
+                    {
+                        solveCell = false;
+                    }
+                }
 
                 if ( !isNoData )
                 {
@@ -49,50 +68,7 @@ void AbstractViewshed::initEventList()
                     int column = blockColumn + iterLeft;
                     int row = blockRow + iterTop;
 
-                    double elevs[3];
-                    elevs[CellEventPositionType::CENTER] = pixelValue;
-                    CellEventPosition tempPosEnter =
-                        Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint );
-                    elevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
-                    CellEventPosition tempPosExit =
-                        Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint );
-                    elevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
-
-                    double angleCenter = Visibility::angle( row, column, mPoint );
-                    double angleEnter = Visibility::angle( &tempPosEnter, mPoint );
-                    double angleExit = Visibility::angle( &tempPosExit, mPoint );
-
-                    double eventDistance = Visibility::distance( row, column, mPoint, mCellSize );
-
-                    if ( eventDistance < mMaxDistance && isInsideAngles( angleEnter, angleExit ) )
-                    {
-                        CellEvent eCenter =
-                            CellEvent( CellEventPositionType::CENTER, row, column, eventDistance, angleCenter, elevs );
-                        CellEvent eEnter =
-                            CellEvent( CellEventPositionType::ENTER, row, column,
-                                       Visibility::distance( &tempPosEnter, mPoint, mCellSize ), angleEnter, elevs );
-                        CellEvent eExit =
-                            CellEvent( CellEventPositionType::EXIT, row, column,
-                                       Visibility::distance( &tempPosExit, mPoint, mCellSize ), angleExit, elevs );
-
-                        // Target or ViewPoint are not part CellEvents - handled separately
-                        if ( mPoint->row == row && mPoint->col == column )
-                        {
-                            mLosNodePoint = LoSNode( mPoint, &eCenter, mCellSize );
-                            continue;
-                        }
-
-                        // LosNode prefill
-                        if ( mPoint->row == row && mPoint->col < column )
-                        {
-                            LoSNode ln = LoSNode( mPoint, &eEnter, mCellSize );
-                            mLosNodes.push_back( ln );
-                        }
-
-                        mCellEvents.push_back( eEnter );
-                        mCellEvents.push_back( eCenter );
-                        mCellEvents.push_back( eExit );
-                    }
+                    addEventsFromCell( row, column, pixelValue, rasterBlock, solveCell );
                 }
             }
         }

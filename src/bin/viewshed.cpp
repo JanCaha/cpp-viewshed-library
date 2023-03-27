@@ -49,6 +49,8 @@ int main( int argc, char *argv[] )
 
     addEarthDiameter( parser );
 
+    addVisibilityMask( parser );
+
     parser.process( app );
 
     const QStringList args = parser.positionalArguments();
@@ -57,9 +59,29 @@ int main( int argc, char *argv[] )
 
     std::shared_ptr<QgsRasterLayer> rl = std::make_shared<QgsRasterLayer>( demFilePath, "dem", "gdal" );
 
-    if ( !rl->isValid() )
+    std::string rasterError;
+    if ( !Utils::validateRaster( rl, rasterError ) )
     {
-        exitWithError( rl->error().message().toLocal8Bit().constData(), parser );
+        exitWithError( rasterError, parser );
+    }
+
+    QString maskFilePath = getVisibilityMask( parser );
+
+    std::shared_ptr<QgsRasterLayer> mask = nullptr;
+
+    if ( !maskFilePath.isEmpty() )
+    {
+        mask = std::make_shared<QgsRasterLayer>( maskFilePath, "dem", "gdal" );
+
+        if ( !Utils::validateRaster( mask, rasterError ) )
+        {
+            exitWithError( rasterError, parser );
+        }
+
+        if ( !Utils::compareRasters( rl, mask, rasterError ) )
+        {
+            exitWithError( "Dem and VisibilityMask raster comparison. " + rasterError, parser );
+        }
     }
 
     QString resultFolder = resultFolderAbsolute( parser );
@@ -97,6 +119,11 @@ int main( int argc, char *argv[] )
     algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false ) );
 
     Viewshed v( vp, rl, algs, curvatureCorrections, earthDiam, refCoeff );
+
+    if ( mask )
+    {
+        v.setVisibilityMask( mask );
+    }
 
     v.calculate( printTimeInfo, printProgressInfo );
 

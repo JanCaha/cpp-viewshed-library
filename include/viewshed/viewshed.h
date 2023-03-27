@@ -30,6 +30,9 @@ namespace viewshed
 
         std::shared_ptr<LoS> getLoS( QgsPoint point, bool onlyToPoint = false );
 
+        void addEventsFromCell( int &row, int &column, const double &pixelValue,
+                                std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell ) override;
+
         void submitToThreadpool( CellEvent &e ) override;
     };
 

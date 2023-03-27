@@ -305,34 +305,13 @@ class MainWindow : public QMainWindow
             return;
         }
 
-        QgsRasterLayer *rl =
-            new QgsRasterLayer( mFileWidget->filePath(), QStringLiteral( "dem" ), QStringLiteral( "gdal" ) );
+        std::shared_ptr<QgsRasterLayer> rl = std::make_shared<QgsRasterLayer>(
+            mFileWidget->filePath(), QStringLiteral( "dem" ), QStringLiteral( "gdal" ) );
 
-        if ( !rl )
+        std::string rasterError;
+        if ( !Utils::validateRaster( rl, rasterError ) )
         {
-            mErrorMessageBox.critical( this, QStringLiteral( "Error" ),
-                                       QStringLiteral( "Could not load the raster." ) );
-            return;
-        }
-
-        if ( !rl->isValid() )
-        {
-            mErrorMessageBox.critical( this, QStringLiteral( "Error" ), QStringLiteral( "Raster is not valid." ) );
-            return;
-        }
-
-        if ( rl->bandCount() != 1 )
-        {
-            mErrorMessageBox.critical( this, QStringLiteral( "Error" ),
-                                       QStringLiteral( "Raster layer needs to have only one band." ) );
-            return;
-        }
-
-        if ( rl->crs().isGeographic() )
-        {
-            mErrorMessageBox.critical( this, QStringLiteral( "Error" ),
-                                       QStringLiteral( "Raster needs to be projected." ) );
-            return;
+            mErrorMessageBox.critical( this, QStringLiteral( "Error" ), QString::fromStdString( rasterError ) );
         }
 
         mDemValid = true;

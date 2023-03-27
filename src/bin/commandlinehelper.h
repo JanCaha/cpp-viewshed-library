@@ -7,9 +7,9 @@
 #include <QFile>
 #include <QString>
 
-int exitWithError( const char *error, QCommandLineParser &parser )
+int exitWithError( std::string error, QCommandLineParser &parser )
 {
-    fprintf( stderr, "%s\n", qPrintable( error ) );
+    fprintf( stderr, "%s\n", error.c_str() );
     parser.showHelp( 1 );
 }
 
@@ -138,4 +138,32 @@ QString getDemFilePath( QCommandLineParser &parser )
     }
 
     return demFile.fileName();
+}
+
+void addVisibilityMask( QCommandLineParser &parser )
+{
+    QCommandLineOption visibilityMask( QStringLiteral( "visibilityMask" ),
+                                       "Raster file representing visibility mask, specifying areas to calculate "
+                                       "visibility in, for viewshed calculation.",
+                                       " " );
+    parser.addOption( visibilityMask );
+}
+
+QString getVisibilityMask( QCommandLineParser &parser )
+{
+    QString path = parser.value( QStringLiteral( "visibilityMask" ) );
+
+    if ( path.trimmed().isEmpty() )
+    {
+        return QString();
+    }
+
+    QFile file( path );
+
+    if ( !file.exists() )
+    {
+        exitWithError( "Error: Dem file does not exist.", parser );
+    }
+
+    return file.fileName();
 }

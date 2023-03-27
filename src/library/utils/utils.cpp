@@ -91,3 +91,74 @@ double Utils::earthDiameter( QgsCoordinateReferenceSystem crs )
     }
     return EARTH_DIAMETER;
 };
+
+bool Utils::compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<QgsRasterLayer> r2, std::string &error )
+{
+
+    if ( r1->crs() != r2->crs() )
+    {
+        error = "Crs of rasters are not the same.";
+        return false;
+    }
+
+    if ( r1->extent() != r2->extent() )
+    {
+        error = "Extents of rasters are not the same.";
+        return false;
+    }
+
+    if ( r1->width() != r2->width() )
+    {
+        error = "Widths of rasters are not the same.";
+        return false;
+    }
+
+    if ( r1->height() != r2->height() )
+    {
+        error = "Heights of rasters are not the same.";
+        return false;
+    }
+
+    if ( !qgsDoubleNear( r1->rasterUnitsPerPixelX(), r2->rasterUnitsPerPixelX(), 0.0001 ) )
+    {
+        error = "Pixel size of rasters are not the same.";
+        return false;
+    }
+
+    return true;
+}
+
+bool Utils::validateRaster( std::shared_ptr<QgsRasterLayer> rl, std::string &error )
+{
+    if ( !rl )
+    {
+        error = "Could not load the raster.";
+        return false;
+    }
+
+    if ( !rl->isValid() )
+    {
+        error = "Raster is not valid. " + rl->error().message().toStdString();
+        return false;
+    }
+
+    if ( rl->bandCount() != 1 )
+    {
+        error = "Raster layer needs to have only one band.";
+        return false;
+    }
+
+    if ( rl->crs().isGeographic() )
+    {
+        error = "Raster needs to be projected.";
+        return false;
+    }
+
+    if ( !qgsDoubleNear( rl->rasterUnitsPerPixelX(), rl->rasterUnitsPerPixelY(), 0.0001 ) )
+    {
+        error = "Raster needs to have rectangular cells.";
+        return false;
+    }
+
+    return true;
+}
