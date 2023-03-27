@@ -128,7 +128,7 @@ bool Utils::compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<
     return true;
 }
 
-bool validateRaster( std::shared_ptr<QgsRasterLayer> rl, std::string &error )
+bool Utils::validateRaster( std::shared_ptr<QgsRasterLayer> rl, std::string &error )
 {
     if ( !rl )
     {
