@@ -57,9 +57,10 @@ int main( int argc, char *argv[] )
 
     std::shared_ptr<QgsRasterLayer> rl = std::make_shared<QgsRasterLayer>( demFilePath, "dem", "gdal" );
 
-    if ( !rl->isValid() )
+    std::string rasterError;
+    if ( !Utils::validateRaster( rl, rasterError ) )
     {
-        exitWithError( rl->error().message().toLocal8Bit().constData(), parser );
+        exitWithError( rasterError, parser );
     }
 
     QString resultFolder = resultFolderAbsolute( parser );
