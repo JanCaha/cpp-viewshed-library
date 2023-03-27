@@ -143,7 +143,7 @@ QString getDemFilePath( QCommandLineParser &parser )
 void addVisibilityMask( QCommandLineParser &parser )
 {
     QCommandLineOption visibilityMask( QStringLiteral( "visibilityMask" ),
-                                       "Raster file representing visibility mask, specifing areas to calculate "
+                                       "Raster file representing visibility mask, specifying areas to calculate "
                                        "visibility in, for viewshed calculation.",
                                        " " );
     parser.addOption( visibilityMask );
