@@ -120,6 +120,11 @@ int main( int argc, char *argv[] )
 
     Viewshed v( vp, rl, algs, curvatureCorrections, earthDiam, refCoeff );
 
+    if ( mask )
+    {
+        v.setVisibilityMask( mask );
+    }
+
     v.calculate( printTimeInfo, printProgressInfo );
 
     v.saveResults( resultFolder );
