@@ -77,6 +77,11 @@ int main( int argc, char *argv[] )
         {
             exitWithError( rasterError, parser );
         }
+
+        if ( !Utils::compareRasters( rl, mask, rasterError ) )
+        {
+            exitWithError( "Dem and VisibilityMask raster comparison. " + rasterError, parser );
+        }
     }
 
     QString resultFolder = resultFolderAbsolute( parser );
