@@ -38,6 +38,9 @@ namespace viewshed
         void setMaxResultsInMemory( int maxResults );
         void setMaxThreads( int threads );
 
+        virtual void addEventsFromCell( int &row, int &column, const double &pixelValue,
+                                        std::unique_ptr<QgsRasterBlock> &rasterBlock ) = 0;
+
         virtual void submitToThreadpool( CellEvent &e ) = 0;
 
         std::shared_ptr<MemoryRaster> resultRaster( int index = 0 );

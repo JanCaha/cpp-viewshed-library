@@ -32,7 +32,8 @@ namespace viewshed
 
         void submitToThreadpool( CellEvent &e ) override;
 
-        void initEventList();
+        void addEventsFromCell( int &row, int &column, const double &pixelValue,
+                                std::unique_ptr<QgsRasterBlock> &rasterBlock ) override;
 
       private:
         double mObserverOffset;
