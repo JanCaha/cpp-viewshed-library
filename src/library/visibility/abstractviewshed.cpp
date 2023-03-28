@@ -19,6 +19,9 @@ void AbstractViewshed::prepareMemoryRasters()
 void AbstractViewshed::initEventList()
 {
 
+    mCellEvents.clear();
+    mLosNodes.clear();
+
     std::unique_ptr<QgsRasterInterface> rInterface;
     rInterface.reset( mInputDem->dataProvider()->clone() );
 
