@@ -1,9 +1,9 @@
+#include "chrono"
 #include <fstream>
 
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
-#include <QElapsedTimer>
 #include <QFileDialog>
 #include <QFormLayout>
 #include <QLabel>
@@ -392,7 +392,7 @@ class MainWindow : public QMainWindow
         mTimingMessages = "";
 
         std::function addTimingMessage = [=]( std::string text, double time )
-        { mTimingMessages = mTimingMessages + text + std::to_string( time ) + " seconds.\n"; };
+        { mTimingMessages = mTimingMessages + text + std::to_string( time / 1000000000 ) + " seconds.\n"; };
 
         std::function setProgress = [=]( int size, int i )
         {
@@ -402,8 +402,10 @@ class MainWindow : public QMainWindow
             }
         };
 
-        QElapsedTimer timer;
-        timer.start();
+        using namespace std::chrono::_V2;
+        using namespace std::chrono;
+
+        system_clock::time_point startTime = high_resolution_clock::now();
 
         mProgressBar->setRange( 0, 100 );
         mProgressBar->setValue( 0 );
@@ -437,7 +439,9 @@ class MainWindow : public QMainWindow
 
         mCalculateButton->setEnabled( true );
 
-        statusBar()->showMessage( QString( "Calculation lasted: %1 seconds." ).arg( timer.elapsed() / (double)1000 ),
+        milliseconds elapsed = duration_cast<milliseconds>( high_resolution_clock::now() - startTime );
+
+        statusBar()->showMessage( QString( "Calculation lasted: %1 seconds." ).arg( elapsed.count() / (double)1000 ),
                                   5 * 60 * 1000 );
 
         std::ofstream timingTextFile;
