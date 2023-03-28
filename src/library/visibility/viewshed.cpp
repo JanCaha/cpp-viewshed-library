@@ -1,6 +1,5 @@
+#include "chrono"
 #include <cmath>
-
-#include <QElapsedTimer>
 
 #include "los.h"
 #include "threadtasks.h"
@@ -67,25 +66,33 @@ std::shared_ptr<LoS> Viewshed::getLoS( QgsPoint point, bool onlyToPoi )
 void Viewshed::calculate( std::function<void( std::string, double )> stepsTimingCallback,
                           std::function<void( int size, int current )> progressCallback )
 {
-    QElapsedTimer timer;
+    using namespace std::chrono::_V2;
+    using namespace std::chrono;
 
-    timer.start();
+    system_clock::time_point startTime = high_resolution_clock::now();
 
     initEventList();
 
-    stepsTimingCallback( "Init event list lasted: ", timer.elapsed() / 1000.0 );
+    system_clock::time_point endTime = high_resolution_clock::now();
 
-    timer.restart();
+    stepsTimingCallback( "Init event list lasted: ", ( duration_cast<nanoseconds>( endTime - startTime ) ).count() );
+
+    startTime = high_resolution_clock::now();
 
     sortEventList();
 
-    stepsTimingCallback( "Sort event list lasted: ", timer.elapsed() / 1000.0 );
+    endTime = high_resolution_clock::now();
 
-    timer.restart();
+    stepsTimingCallback( "Sort event list lasted: ", ( duration_cast<nanoseconds>( endTime - startTime ) ).count() );
+
+    startTime = high_resolution_clock::now();
 
     parseEventList( progressCallback );
 
-    stepsTimingCallback( "Parsing of event list lasted: ", timer.elapsed() / 1000.0 );
+    endTime = high_resolution_clock::now();
+
+    stepsTimingCallback( "Parsing of event list lasted: ",
+                         ( duration_cast<nanoseconds>( endTime - startTime ) ).count() );
 }
 
 void Viewshed::submitToThreadpool( CellEvent &e )
