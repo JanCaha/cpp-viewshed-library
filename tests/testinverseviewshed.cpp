@@ -65,6 +65,16 @@ class TestInverseViewshed : public QObject
         Utils::saveToCsv( data, "distance,elevation,target_point\n", TEST_DATA_LOS );
     }
 
+    void testInitCells()
+    {
+        InverseViewshed v( tp, 2, dem, algs );
+        QVERIFY( v.numberOfValidCells() == 0 );
+        QVERIFY( v.numberOfCellEvents() == 0 );
+        v.initEventList();
+        QVERIFY( v.numberOfValidCells() == 37990 );
+        QVERIFY( v.numberOfCellEvents() == ( v.numberOfValidCells() - 1 ) * 5 );
+    }
+
     void testInverseViewshedCalculation()
     {
         InverseViewshed v( tp, 2, dem, algs );

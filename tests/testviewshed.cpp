@@ -62,6 +62,16 @@ class TestViewshed : public QObject
         Utils::saveToCsv( data, "distance,elevation\n", TEST_DATA_LOS );
     }
 
+    void testInitCells()
+    {
+        Viewshed v( vp, dem, algs );
+        QVERIFY( v.numberOfValidCells() == 0 );
+        QVERIFY( v.numberOfCellEvents() == 0 );
+        v.initEventList();
+        QVERIFY( v.numberOfValidCells() == 37990 );
+        QVERIFY( v.numberOfCellEvents() == ( v.numberOfValidCells() - 1 ) * 3 );
+    }
+
     void testViewshedCalculation()
     {
         Viewshed v( vp, dem, algs );
