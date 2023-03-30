@@ -69,27 +69,15 @@ void Viewshed::calculate( std::function<void( std::string, double )> stepsTiming
     using namespace std::chrono::_V2;
     using namespace std::chrono;
 
-    system_clock::time_point startTime = high_resolution_clock::now();
-
     initEventList();
-
-    mTimeInit = duration_cast<nanoseconds>( high_resolution_clock::now() - startTime );
 
     stepsTimingCallback( "Init event list lasted: ", initLastedSeconds() );
 
-    startTime = high_resolution_clock::now();
-
     sortEventList();
-
-    mTimeSort = duration_cast<nanoseconds>( high_resolution_clock::now() - startTime );
 
     stepsTimingCallback( "Sort event list lasted: ", sortLastedSeconds() );
 
-    startTime = high_resolution_clock::now();
-
     parseEventList( progressCallback );
-
-    mTimeParse = duration_cast<nanoseconds>( high_resolution_clock::now() - startTime );
 
     stepsTimingCallback( "Parsing of event list lasted: ", parseLastedSeconds() );
 }
