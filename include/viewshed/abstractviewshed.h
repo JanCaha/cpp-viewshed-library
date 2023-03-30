@@ -64,11 +64,11 @@ namespace viewshed
 
         long long meanSizeOfLoS() { return ( sizeof( LoSNode ) * mTotalLosSize ) / mNumberOfLos; };
 
-        double initLastedSeconds() { return mTimeInit.count() / (double)10e9; }
+        double initLastedSeconds() { return mTimeInit.count() / 1e9; }
 
-        double sortLastedSeconds() { return mTimeSort.count() / (double)10e9; }
+        double sortLastedSeconds() { return mTimeSort.count() / (double)1e9; }
 
-        double parseLastedSeconds() { return mTimeParse.count() / (double)10e9; }
+        double parseLastedSeconds() { return mTimeParse.count() / (double)1e9; }
 
         double processingLastedSeconds() { return initLastedSeconds() + sortLastedSeconds() + parseLastedSeconds(); }
 

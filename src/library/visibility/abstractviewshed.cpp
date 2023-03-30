@@ -23,7 +23,7 @@ void AbstractViewshed::initEventList()
     mLosNodes.clear();
     mValidCells = 0;
     mTotalLosSize = 0;
-    mNumberOfLos;
+    mNumberOfLos = 0;
 
     std::unique_ptr<QgsRasterInterface> rInterface;
     rInterface.reset( mInputDem->dataProvider()->clone() );
