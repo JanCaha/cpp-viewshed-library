@@ -102,6 +102,7 @@ void Viewshed::submitToThreadpool( CellEvent &e )
     std::shared_ptr<LoS> los = std::make_shared<LoS>( mLosNodes );
     los->setViewPoint( mPoint );
     los->setTargetPoint( poi );
+    los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
     mResultPixels.push_back( mThreadPool.submit( viewshed::evaluateLoSForPoI, los, mAlgs ) );
 }

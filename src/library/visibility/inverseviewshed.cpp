@@ -100,6 +100,7 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( mLosNodes );
     los->setTargetPoint( mPoint, mPoint->offset );
     los->setViewPoint( poi, mObserverOffset );
+    los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
     mResultPixels.push_back( mThreadPool.submit( viewshed::evaluateLoSForPoI, los, mAlgs ) );
 }
