@@ -1,6 +1,7 @@
 #ifndef VIEWSHEDLIB_ABSTRACTVIEWSHED_H
 #define VIEWSHEDLIB_ABSTRACTVIEWSHED_H
 
+#include <chrono>
 #include <limits>
 
 #include "qgspoint.h"
@@ -57,9 +58,19 @@ namespace viewshed
 
         long long sizeOfEventList() { return sizeof( CellEvent ) * mCellEvents.size(); };
 
+        long long totalCountOfLoSNodes() { return mTotalLosSize; };
+
         long long totalSizeOfLoS() { return sizeof( LoSNode ) * mTotalLosSize; };
 
         long long meanSizeOfLoS() { return ( sizeof( LoSNode ) * mTotalLosSize ) / mNumberOfLos; };
+
+        double initLastedSeconds() { return mTimeInit.count() / (double)10e9; }
+
+        double sortLastedSeconds() { return mTimeSort.count() / (double)10e9; }
+
+        double parseLastedSeconds() { return mTimeParse.count() / (double)10e9; }
+
+        double processingLastedSeconds() { return initLastedSeconds() + sortLastedSeconds() + parseLastedSeconds(); }
 
       protected:
         std::vector<LoSNode> mLosNodes;
@@ -97,6 +108,10 @@ namespace viewshed
         BS::multi_future<ViewshedValues> mResultPixels;
 
         std::vector<std::shared_ptr<MemoryRaster>> mResults;
+
+        std::chrono::nanoseconds mTimeInit;
+        std::chrono::nanoseconds mTimeSort;
+        std::chrono::nanoseconds mTimeParse;
 
         double getCornerValue( const CellEventPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
                                double defaultValue );

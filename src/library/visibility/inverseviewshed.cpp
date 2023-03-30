@@ -71,26 +71,25 @@ void InverseViewshed::calculate( std::function<void( std::string, double )> step
 
     initEventList();
 
-    system_clock::time_point endTime = high_resolution_clock::now();
+    mTimeInit = duration_cast<nanoseconds>( high_resolution_clock::now() - startTime );
 
-    stepsTimingCallback( "Init event list lasted: ", ( duration_cast<nanoseconds>( endTime - startTime ) ).count() );
+    stepsTimingCallback( "Init event list lasted: ", initLastedSeconds() );
 
     startTime = high_resolution_clock::now();
 
     sortEventList();
 
-    endTime = high_resolution_clock::now();
+    mTimeSort = duration_cast<nanoseconds>( high_resolution_clock::now() - startTime );
 
-    stepsTimingCallback( "Sort event list lasted: ", ( duration_cast<nanoseconds>( endTime - startTime ) ).count() );
+    stepsTimingCallback( "Sort event list lasted: ", sortLastedSeconds() );
 
     startTime = high_resolution_clock::now();
 
     parseEventList( progressCallback );
 
-    endTime = high_resolution_clock::now();
+    mTimeParse = duration_cast<nanoseconds>( high_resolution_clock::now() - startTime );
 
-    stepsTimingCallback( "Parsing of event list lasted: ",
-                         ( duration_cast<nanoseconds>( endTime - startTime ) ).count() );
+    stepsTimingCallback( "Parsing of event list lasted: ", parseLastedSeconds() );
 }
 
 void InverseViewshed::submitToThreadpool( CellEvent &e )
