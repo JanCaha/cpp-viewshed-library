@@ -103,6 +103,7 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
     los->timeToCopy = std::chrono::duration_cast<std::chrono::nanoseconds>( endTime - startTime );
     los->setTargetPoint( mPoint, mPoint->offset );
     los->setViewPoint( poi, mObserverOffset );
+    los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
     mResultPixels.push_back( mThreadPool.submit( viewshed::evaluateLoSForPoI, los, mAlgs ) );
 }

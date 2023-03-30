@@ -105,6 +105,7 @@ void Viewshed::submitToThreadpool( CellEvent &e )
     los->timeToCopy = std::chrono::duration_cast<std::chrono::nanoseconds>( endTime - startTime );
     los->setViewPoint( mPoint );
     los->setTargetPoint( poi );
+    los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
     mResultPixels.push_back( mThreadPool.submit( viewshed::evaluateLoSForPoI, los, mAlgs ) );
 }
