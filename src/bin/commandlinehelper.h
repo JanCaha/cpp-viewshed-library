@@ -13,10 +13,7 @@ int exitWithError( std::string error, QCommandLineParser &parser )
     parser.showHelp( 1 );
 }
 
-void printTimeInfo( std::string text, double time )
-{
-    std::cout << text << ( time / 1000000000.0 ) << " seconds." << std::endl;
-}
+void printTimeInfo( std::string text, double time ) { std::cout << text << time << " seconds." << std::endl; }
 
 void printProgressInfo( int size, int i )
 {
