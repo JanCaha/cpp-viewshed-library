@@ -55,6 +55,12 @@ namespace viewshed
 
         void setVisibilityMask( std::shared_ptr<QgsRasterLayer> mask ) { mVisibilityMask = mask; }
 
+        long long sizeOfEventList() { return sizeof( CellEvent ) * mCellEvents.size(); };
+
+        long long totalSizeOfLoS() { return sizeof( LoSNode ) * mTotalLosSize; };
+
+        long long meanSizeOfLoS() { return ( sizeof( LoSNode ) * mTotalLosSize ) / mNumberOfLos; };
+
       protected:
         std::vector<LoSNode> mLosNodes;
         std::vector<CellEvent> mCellEvents;
@@ -65,6 +71,8 @@ namespace viewshed
         Qgis::DataType mDataType = Qgis::DataType::Float64;
         int mDefaultBand = 1;
         long mValidCells = 0;
+        long long mTotalLosSize = 0;
+        long long mNumberOfLos = 0;
 
         double mMaxDistance = std::numeric_limits<double>::max();
         double mMinAngle = std::numeric_limits<double>::quiet_NaN();
