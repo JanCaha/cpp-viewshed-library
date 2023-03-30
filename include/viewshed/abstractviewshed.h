@@ -57,11 +57,11 @@ namespace viewshed
 
         long long totalCountOfLoSNodes() { return mTotalLosNodesCount; };
 
-        long long countOfEvents() { return mCellEvents.size(); };
+        long long sizeOfEvents() { return sizeof( CellEvent ) * mCellEvents.size(); };
 
         long long totalSizeOfLoS() { return sizeof( LoSNode ) * mTotalLosNodesCount; };
 
-        long long meanSizeOfLoS() { return ( sizeof( LoSNode ) * mTotalLosNodesCount ) / mNumberOfLos; };
+        long long meanSizeOfLoS() { return ( totalSizeOfLoS() ) / mNumberOfLos; };
 
         double initLastedSeconds() { return mTimeInit.count() / (double)1e9; }
 
