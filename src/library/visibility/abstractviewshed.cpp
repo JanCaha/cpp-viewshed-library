@@ -18,6 +18,7 @@ void AbstractViewshed::prepareMemoryRasters()
 
 void AbstractViewshed::initEventList()
 {
+    std::chrono::_V2::system_clock::time_point startTime = std::chrono::_V2::high_resolution_clock::now();
 
     mCellEvents.clear();
     mLosNodes.clear();
@@ -79,6 +80,9 @@ void AbstractViewshed::initEventList()
             }
         }
     }
+
+    mTimeInit = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::high_resolution_clock::now() -
+                                                                      startTime );
 }
 
 void AbstractViewshed::setMaximalDistance( double distance ) { mMaxDistance = distance; }
@@ -141,11 +145,21 @@ bool AbstractViewshed::isInsideAngles( double eventEnterAngle, double eventExitA
     return true;
 }
 
-void AbstractViewshed::sortEventList() { std::sort( mCellEvents.begin(), mCellEvents.end() ); }
+void AbstractViewshed::sortEventList()
+{
+    std::chrono::_V2::system_clock::time_point startTime = std::chrono::_V2::high_resolution_clock::now();
+
+    std::sort( mCellEvents.begin(), mCellEvents.end() );
+
+    mTimeSort = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::high_resolution_clock::now() -
+                                                                      startTime );
+}
 
 void AbstractViewshed::parseEventList( std::function<void( int size, int current )> progressCallback )
 {
     prepareMemoryRasters();
+
+    std::chrono::_V2::system_clock::time_point startTime = std::chrono::_V2::high_resolution_clock::now();
 
     ViewshedValues rasterValues;
 
@@ -211,6 +225,9 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
     {
         mResults.at( j )->setValue( mAlgs->at( j )->pointValue(), mPoint->col, mPoint->row );
     }
+
+    mTimeParse = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::high_resolution_clock::now() -
+                                                                       startTime );
 }
 
 void AbstractViewshed::parseCalculatedResults()
