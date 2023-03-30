@@ -51,3 +51,5 @@ target_link_libraries(library_viewshed
     ${MINIMAL_QGIS_LIBS}
     bs_thread_pool
 )
+
+target_compile_definitions(library_viewshed PUBLIC CALCULATE_INDIVIDUAL_LOS_TIMING=false)
