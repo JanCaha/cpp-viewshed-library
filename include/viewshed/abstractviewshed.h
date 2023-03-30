@@ -58,11 +58,13 @@ namespace viewshed
 
         long long sizeOfEventList() { return sizeof( CellEvent ) * mCellEvents.size(); };
 
-        long long totalCountOfLoSNodes() { return mTotalLosSize; };
+        long long totalCountOfLoSNodes() { return mTotalLosNodesCount; };
 
-        long long totalSizeOfLoS() { return sizeof( LoSNode ) * mTotalLosSize; };
+        long long countOfEvents() { return mCellEvents.size(); };
 
-        long long meanSizeOfLoS() { return ( sizeof( LoSNode ) * mTotalLosSize ) / mNumberOfLos; };
+        long long totalSizeOfLoS() { return sizeof( LoSNode ) * mTotalLosNodesCount; };
+
+        long long meanSizeOfLoS() { return ( sizeof( LoSNode ) * mTotalLosNodesCount ) / mNumberOfLos; };
 
         double initLastedSeconds() { return mTimeInit.count() / (double)1e9; }
 
@@ -82,7 +84,7 @@ namespace viewshed
         Qgis::DataType mDataType = Qgis::DataType::Float64;
         int mDefaultBand = 1;
         long mValidCells = 0;
-        long mTotalLosSize = 0;
+        long mTotalLosNodesCount = 0;
         long mNumberOfLos = 0;
 
         double mMaxDistance = std::numeric_limits<double>::max();
