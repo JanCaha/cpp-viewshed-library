@@ -64,7 +64,7 @@ namespace viewshed
 
         long long meanSizeOfLoS() { return ( sizeof( LoSNode ) * mTotalLosSize ) / mNumberOfLos; };
 
-        double initLastedSeconds() { return mTimeInit.count() / 1e9; }
+        double initLastedSeconds() { return mTimeInit.count() / (double)1e9; }
 
         double sortLastedSeconds() { return mTimeSort.count() / (double)1e9; }
 
@@ -82,8 +82,8 @@ namespace viewshed
         Qgis::DataType mDataType = Qgis::DataType::Float64;
         int mDefaultBand = 1;
         long mValidCells = 0;
-        long long mTotalLosSize = 0;
-        long long mNumberOfLos = 0;
+        long mTotalLosSize = 0;
+        long mNumberOfLos = 0;
 
         double mMaxDistance = std::numeric_limits<double>::max();
         double mMinAngle = std::numeric_limits<double>::quiet_NaN();
