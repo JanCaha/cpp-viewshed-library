@@ -186,7 +186,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
             }
             case CellEventPositionType::CENTER:
             {
-                mTotalLosSize += mLosNodes.size();
+                mTotalLosNodesCount += mLosNodes.size();
                 mNumberOfLos++;
 
                 submitToThreadpool( e );
