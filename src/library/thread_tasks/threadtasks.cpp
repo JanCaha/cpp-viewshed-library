@@ -1,5 +1,5 @@
 #include "threadtasks.h"
-#include "../utils/db.h"
+#include "../utils/debug_info_handling_functions.h"
 #include "abstractviewshed.h"
 #include "inverselos.h"
 #include "losnode.h"
@@ -18,16 +18,16 @@ viewshed::evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
 
     losEval.calculate();
 
+#if CALCULATE_INDIVIDUAL_LOS_TIMING
     auto inverseLoS = std::dynamic_pointer_cast<InverseLoS>( los );
 
-#if CALCULATE_INDIVIDUAL_LOS_TIMING
     if ( inverseLoS )
     {
-        pg.add_los_timing_data_to( "inverseviewshed_los_timing", los->timeToCopy, los->timeToEval );
+        handle_inverse_viewshed_los_timing( los->timeToCopy, los->timeToEval );
     }
     else
     {
-        pg.add_los_timing_data_to( "viewshed_los_timing", los->timeToCopy, los->timeToEval );
+        handle_viewshed_los_timing( los->timeToCopy, los->timeToEval );
     }
 #endif
 

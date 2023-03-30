@@ -2,8 +2,6 @@
 #include <chrono>
 #include <pqxx/pqxx>
 
-#define CALCULATE_INDIVIDUAL_LOS_TIMING false
-
 class PG
 {
   public:
