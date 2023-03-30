@@ -2,6 +2,8 @@
 #include <chrono>
 #include <pqxx/pqxx>
 
+#define CALCULATE_INDIVIDUAL_LOS_TIMING false
+
 // #include <sqlite3.h>
 
 // static int callback( void *data, int argc, char **argv, char **azColName ) { return 0; }

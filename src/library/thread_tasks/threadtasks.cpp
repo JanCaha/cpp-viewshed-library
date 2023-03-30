@@ -20,6 +20,7 @@ viewshed::evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
 
     auto inverseLoS = std::dynamic_pointer_cast<InverseLoS>( los );
 
+#if CALCULATE_INDIVIDUAL_LOS_TIMING
     if ( inverseLoS )
     {
         pg.add_los_timing_data_to( "inverseviewshed_los_timing", los->timeToCopy, los->timeToEval );
@@ -28,6 +29,7 @@ viewshed::evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
     {
         pg.add_los_timing_data_to( "viewshed_los_timing", los->timeToCopy, los->timeToEval );
     }
+#endif
 
     return losEval.results();
 }
