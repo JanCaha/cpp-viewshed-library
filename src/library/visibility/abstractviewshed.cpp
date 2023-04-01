@@ -24,6 +24,8 @@ void AbstractViewshed::initEventList()
     mLosNodes.clear();
     mValidCells = 0;
 
+    mCellEvents.reserve( mInputDem->height() * mInputDem->width() * 3 );
+
     std::unique_ptr<QgsRasterBlock> rasterBlock( mInputDem->dataProvider()->block(
         mDefaultBand, mInputDem->extent(), mInputDem->width(), mInputDem->height() ) );
 
