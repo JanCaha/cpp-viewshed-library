@@ -359,9 +359,9 @@ void AbstractViewshed::setMaxResultsInMemory( int maxResults ) { mMaxNumberOfRes
 
 void AbstractViewshed::setMaxThreads( int threads )
 {
-    if ( mThreadPool.get_thread_count() < threads )
+    if ( std::thread::hardware_concurrency() < threads )
     {
-        return;
+        threads = std::thread::hardware_concurrency();
     }
 
     mThreadPool.reset( threads );
