@@ -109,13 +109,12 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
 
     if ( mEventDistance < mMaxDistance && isInsideAngles( mAngleEnter, mAngleExit ) )
     {
-        CellEvent eCenter =
+        mEventCenter =
             CellEvent( CellEventPositionType::CENTER, row, column, mEventDistance, mAngleCenter, mCellElevs );
-        CellEvent eEnter =
-            CellEvent( CellEventPositionType::ENTER, row, column,
-                       Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mAngleEnter, mCellElevs );
-        CellEvent eExit = CellEvent( CellEventPositionType::EXIT, row, column,
-                                     Visibility::distance( &tempPosExit, mPoint, mCellSize ), mAngleExit, mCellElevs );
+        mEventEnter = CellEvent( CellEventPositionType::ENTER, row, column,
+                                 Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mAngleEnter, mCellElevs );
+        mEventExit = CellEvent( CellEventPositionType::EXIT, row, column,
+                                Visibility::distance( &tempPosExit, mPoint, mCellSize ), mAngleExit, mCellElevs );
 
         mOppositeAngleEnter = mAngleEnter;
         mOppositeAngleExit = mAngleExit;
@@ -151,7 +150,7 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         // Target or ViewPoint are not part CellEvents - handled separately
         if ( mPoint->row == row && mPoint->col == column )
         {
-            mLosNodePoint = LoSNode( mPoint, &eCenter, mCellSize );
+            mLosNodePoint = LoSNode( mPoint, &mEventCenter, mCellSize );
             return;
         }
 
@@ -160,7 +159,7 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         {
             if ( mPoint->col < column )
             {
-                mLoSNodeTemp = LoSNode( mPoint, &eEnter, mCellSize );
+                mLoSNodeTemp = LoSNode( mPoint, &mEventCenter, mCellSize );
                 mLosNodes.push_back( mLoSNodeTemp );
             }
             else
@@ -173,11 +172,11 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         mCellEvents.push_back( mEventEnterOpposite );
         mCellEvents.push_back( mEventExitOpposite );
 
-        mCellEvents.push_back( eEnter );
-        mCellEvents.push_back( eExit );
+        mCellEvents.push_back( mEventEnter );
+        mCellEvents.push_back( mEventExit );
         if ( solveCell )
         {
-            mCellEvents.push_back( eCenter );
+            mCellEvents.push_back( mEventCenter );
         }
     }
 }
