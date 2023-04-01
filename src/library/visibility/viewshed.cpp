@@ -136,7 +136,7 @@ void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValu
         mCellEvents.push_back( mEventExit );
         if ( solveCell )
         {
-            mCellEvents.push_back( mEventEnter );
+            mCellEvents.push_back( mEventCenter );
         }
     }
 }
