@@ -84,6 +84,8 @@ namespace viewshed
         long mTotalLosNodesCount = 0;
         long mNumberOfLos = 0;
 
+        bool mInverseViewshed = false;
+
         double mMaxDistance = std::numeric_limits<double>::max();
         double mMinAngle = std::numeric_limits<double>::quiet_NaN();
         double mMaxAngle = std::numeric_limits<double>::quiet_NaN();

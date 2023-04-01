@@ -24,6 +24,8 @@ InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double obs
 {
     mValid = false;
 
+    mInverseViewshed = true;
+
     mPoint = targetPoint;
     mInputDem = dem;
     mAlgs = algs;
