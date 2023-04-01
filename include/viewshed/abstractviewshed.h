@@ -114,6 +114,14 @@ namespace viewshed
 
         double getCornerValue( const CellEventPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
                                double defaultValue );
+
+        double mCellElevs[3];
+        double mAngleCenter, mAngleEnter, mAngleExit;
+        double mEventDistance;
+        CellEvent mEventCenter, mEventEnter, mEventExit = CellEvent();
+        CellEvent mEventEnterOpposite, mEventExitOpposite = CellEvent();
+        double mOppositeAngleEnter, mOppositeAngleExit;
+        LoSNode mLoSNodeTemp = LoSNode();
     };
 
 } // namespace viewshed
