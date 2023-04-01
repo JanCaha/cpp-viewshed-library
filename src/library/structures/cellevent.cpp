@@ -3,6 +3,18 @@
 using viewshed::CellEvent;
 using viewshed::CellEventPositionType;
 
+CellEvent::CellEvent()
+{
+    eventType = CellEventPositionType::CENTER;
+    row = -1;
+    col = -1;
+    dist2vp = -1;
+    angle = -1;
+    elevation[CellEventPositionType::ENTER] = -1;
+    elevation[CellEventPositionType::CENTER] = -1;
+    elevation[CellEventPositionType::EXIT] = -1;
+}
+
 CellEvent::CellEvent( CellEventPositionType eventType_, int row_, int col_, double dist_, double angle_,
                       double elevation_[3] )
 {
