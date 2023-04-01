@@ -78,7 +78,7 @@ namespace viewshed
         std::vector<LoSNode> mLosNodes;
         std::vector<CellEvent> mCellEvents;
         std::shared_ptr<QgsRasterLayer> mInputDem;
-        std::shared_ptr<QgsRasterLayer> mVisibilityMask;
+        std::shared_ptr<QgsRasterLayer> mVisibilityMask = nullptr;
         std::shared_ptr<Point> mPoint;
         std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
         Qgis::DataType mDataType = Qgis::DataType::Float64;
