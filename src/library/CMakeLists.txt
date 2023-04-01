@@ -52,4 +52,4 @@ target_link_libraries(library_viewshed
     bs_thread_pool
 )
 
-target_compile_definitions(library_viewshed PUBLIC CALCULATE_INDIVIDUAL_LOS_TIMING=false)
+target_compile_definitions(library_viewshed PUBLIC CALCULATE_INDIVIDUAL_LOS_TIMING=true)
