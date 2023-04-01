@@ -168,7 +168,6 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
     {
         progressCallback( mCellEvents.size(), i );
 
-        LoSNode ln;
         switch ( e.eventType )
         {
             case CellEventPositionType::ENTER:
@@ -178,8 +177,8 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
                     break;
                 }
 
-                ln = LoSNode( mPoint, &e, mCellSize );
-                mLosNodes.push_back( ln );
+                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                mLosNodes.push_back( mLoSNodeTemp );
                 break;
             }
             case CellEventPositionType::EXIT:
@@ -189,9 +188,9 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
                     break;
                 }
 
-                ln = LoSNode( e.row, e.col );
+                mLoSNodeTemp = LoSNode( e.row, e.col );
 
-                std::vector<LoSNode>::iterator index = std::find( mLosNodes.begin(), mLosNodes.end(), ln );
+                std::vector<LoSNode>::iterator index = std::find( mLosNodes.begin(), mLosNodes.end(), mLoSNodeTemp );
                 if ( index != mLosNodes.end() )
                 {
                     mLosNodes.erase( index );
@@ -260,8 +259,8 @@ void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLaye
     {
         if ( event.eventType == CellEventPositionType::CENTER )
         {
-            LoSNode ln( mPoint, &event, mCellSize );
-            result.setValue( func( ln ), ln.col, ln.row );
+            mLoSNodeTemp = LoSNode( mPoint, &event, mCellSize );
+            result.setValue( func( mLoSNodeTemp ), mLoSNodeTemp.col, mLoSNodeTemp.row );
         }
         i++;
     }
@@ -373,7 +372,6 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( QgsPoint point )
 {
 
     LoSNode poi = statusNodeFromPoint( point );
-    LoSNode ln;
 
     std::vector<LoSNode> losNodes;
 
@@ -387,8 +385,8 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( QgsPoint point )
                 {
                     break;
                 }
-                ln = LoSNode( mPoint, &e, mCellSize );
-                losNodes.push_back( ln );
+                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                losNodes.push_back( mLoSNodeTemp );
                 break;
             }
 
@@ -398,8 +396,8 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( QgsPoint point )
                 {
                     break;
                 }
-                ln = LoSNode( e.row, e.col );
-                std::vector<LoSNode>::iterator index = std::find( losNodes.begin(), losNodes.end(), ln );
+                mLoSNodeTemp = LoSNode( e.row, e.col );
+                std::vector<LoSNode>::iterator index = std::find( losNodes.begin(), losNodes.end(), mLoSNodeTemp );
                 if ( index != losNodes.end() )
                 {
                     losNodes.erase( index );
@@ -409,8 +407,8 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( QgsPoint point )
 
             case CellEventPositionType::CENTER:
             {
-                ln = LoSNode( mPoint, &e, mCellSize );
-                if ( ln.col == poi.col && ln.row == poi.row )
+                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                if ( mLoSNodeTemp.col == poi.col && mLoSNodeTemp.row == poi.row )
                 {
                     return losNodes;
                 }

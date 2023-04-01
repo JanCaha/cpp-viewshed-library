@@ -98,57 +98,58 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
 void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pixelValue,
                                          std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell )
 {
-    double elevs[3];
-    elevs[CellEventPositionType::CENTER] = pixelValue;
+    mCellElevs[CellEventPositionType::CENTER] = pixelValue;
     CellEventPosition tempPosEnter = Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint );
-    elevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
     CellEventPosition tempPosExit = Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint );
-    elevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
 
-    double angleCenter = Visibility::angle( row, column, mPoint );
-    double angleEnter = Visibility::angle( &tempPosEnter, mPoint );
-    double angleExit = Visibility::angle( &tempPosExit, mPoint );
+    mAngleCenter = Visibility::angle( row, column, mPoint );
+    mAngleEnter = Visibility::angle( &tempPosEnter, mPoint );
+    mAngleExit = Visibility::angle( &tempPosExit, mPoint );
 
-    double eventDistance = Visibility::distance( row, column, mPoint, mCellSize );
+    mEventDistance = Visibility::distance( row, column, mPoint, mCellSize );
 
-    if ( eventDistance < mMaxDistance && isInsideAngles( angleEnter, angleExit ) )
+    if ( mEventDistance < mMaxDistance && isInsideAngles( mAngleEnter, mAngleExit ) )
     {
-        CellEvent eCenter = CellEvent( CellEventPositionType::CENTER, row, column, eventDistance, angleCenter, elevs );
-        CellEvent eEnter = CellEvent( CellEventPositionType::ENTER, row, column,
-                                      Visibility::distance( &tempPosEnter, mPoint, mCellSize ), angleEnter, elevs );
-        CellEvent eExit = CellEvent( CellEventPositionType::EXIT, row, column,
-                                     Visibility::distance( &tempPosExit, mPoint, mCellSize ), angleExit, elevs );
-
-        double oppositeAngleEnter = angleEnter;
-        double oppositeAngleExit = angleExit;
-
-        if ( oppositeAngleEnter < M_PI )
-        {
-            oppositeAngleEnter = M_PI + oppositeAngleEnter;
-        }
-        else
-        {
-            oppositeAngleEnter = oppositeAngleEnter - M_PI;
-        }
-
-        if ( oppositeAngleExit < M_PI )
-        {
-            oppositeAngleExit = M_PI + oppositeAngleExit;
-        }
-        else
-        {
-            oppositeAngleExit = oppositeAngleExit - M_PI;
-        }
-
-        CellEvent eEnterOpposite =
+        CellEvent eCenter =
+            CellEvent( CellEventPositionType::CENTER, row, column, mEventDistance, mAngleCenter, mCellElevs );
+        CellEvent eEnter =
             CellEvent( CellEventPositionType::ENTER, row, column,
-                       Visibility::distance( &tempPosEnter, mPoint, mCellSize ), oppositeAngleEnter, elevs );
-        eEnterOpposite.behindTargetForInverseLoS = true;
+                       Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mAngleEnter, mCellElevs );
+        CellEvent eExit = CellEvent( CellEventPositionType::EXIT, row, column,
+                                     Visibility::distance( &tempPosExit, mPoint, mCellSize ), mAngleExit, mCellElevs );
 
-        CellEvent eExitOpposite =
+        mOppositeAngleEnter = mAngleEnter;
+        mOppositeAngleExit = mAngleExit;
+
+        if ( mOppositeAngleEnter < M_PI )
+        {
+            mOppositeAngleEnter = M_PI + mOppositeAngleEnter;
+        }
+        else
+        {
+            mOppositeAngleEnter = mOppositeAngleEnter - M_PI;
+        }
+
+        if ( mOppositeAngleExit < M_PI )
+        {
+            mOppositeAngleExit = M_PI + mOppositeAngleExit;
+        }
+        else
+        {
+            mOppositeAngleExit = mOppositeAngleExit - M_PI;
+        }
+
+        mEventEnterOpposite =
+            CellEvent( CellEventPositionType::ENTER, row, column,
+                       Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mOppositeAngleEnter, mCellElevs );
+        mEventEnterOpposite.behindTargetForInverseLoS = true;
+
+        mEventExitOpposite =
             CellEvent( CellEventPositionType::EXIT, row, column,
-                       Visibility::distance( &tempPosExit, mPoint, mCellSize ), oppositeAngleExit, elevs );
-        eExitOpposite.behindTargetForInverseLoS = true;
+                       Visibility::distance( &tempPosExit, mPoint, mCellSize ), mOppositeAngleExit, mCellElevs );
+        mEventExitOpposite.behindTargetForInverseLoS = true;
 
         // Target or ViewPoint are not part CellEvents - handled separately
         if ( mPoint->row == row && mPoint->col == column )
@@ -160,22 +161,20 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         // LosNode prefill
         if ( mPoint->row == row )
         {
-            LoSNode ln;
-
             if ( mPoint->col < column )
             {
-                ln = LoSNode( mPoint, &eEnter, mCellSize );
-                mLosNodes.push_back( ln );
+                mLoSNodeTemp = LoSNode( mPoint, &eEnter, mCellSize );
+                mLosNodes.push_back( mLoSNodeTemp );
             }
             else
             {
-                ln = LoSNode( mPoint, &eEnterOpposite, mCellSize );
-                mLosNodes.push_back( ln );
+                mLoSNodeTemp = LoSNode( mPoint, &mEventEnterOpposite, mCellSize );
+                mLosNodes.push_back( mLoSNodeTemp );
             }
         }
 
-        mCellEvents.push_back( eEnterOpposite );
-        mCellEvents.push_back( eExitOpposite );
+        mCellEvents.push_back( mEventEnterOpposite );
+        mCellEvents.push_back( mEventExitOpposite );
 
         mCellEvents.push_back( eEnter );
         mCellEvents.push_back( eExit );

@@ -100,46 +100,46 @@ void Viewshed::submitToThreadpool( CellEvent &e )
 void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValue,
                                   std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell )
 {
-    double elevs[3];
-    elevs[CellEventPositionType::CENTER] = pixelValue;
+    mCellElevs[CellEventPositionType::CENTER] = pixelValue;
     CellEventPosition tempPosEnter = Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint );
-    elevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
     CellEventPosition tempPosExit = Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint );
-    elevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
 
-    double angleCenter = Visibility::angle( row, column, mPoint );
-    double angleEnter = Visibility::angle( &tempPosEnter, mPoint );
-    double angleExit = Visibility::angle( &tempPosExit, mPoint );
+    mAngleCenter = Visibility::angle( row, column, mPoint );
+    mAngleEnter = Visibility::angle( &tempPosEnter, mPoint );
+    mAngleExit = Visibility::angle( &tempPosExit, mPoint );
 
-    double eventDistance = Visibility::distance( row, column, mPoint, mCellSize );
+    mEventDistance = Visibility::distance( row, column, mPoint, mCellSize );
 
-    if ( eventDistance < mMaxDistance && isInsideAngles( angleEnter, angleExit ) )
+    if ( mEventDistance < mMaxDistance && isInsideAngles( mAngleEnter, mAngleExit ) )
     {
-        CellEvent eCenter = CellEvent( CellEventPositionType::CENTER, row, column, eventDistance, angleCenter, elevs );
-        CellEvent eEnter = CellEvent( CellEventPositionType::ENTER, row, column,
-                                      Visibility::distance( &tempPosEnter, mPoint, mCellSize ), angleEnter, elevs );
-        CellEvent eExit = CellEvent( CellEventPositionType::EXIT, row, column,
-                                     Visibility::distance( &tempPosExit, mPoint, mCellSize ), angleExit, elevs );
+        mEventCenter =
+            CellEvent( CellEventPositionType::CENTER, row, column, mEventDistance, mAngleCenter, mCellElevs );
+        mEventEnter = CellEvent( CellEventPositionType::ENTER, row, column,
+                                 Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mAngleEnter, mCellElevs );
+        mEventExit = CellEvent( CellEventPositionType::EXIT, row, column,
+                                Visibility::distance( &tempPosExit, mPoint, mCellSize ), mAngleExit, mCellElevs );
 
         // Target or ViewPoint are not part CellEvents - handled separately
         if ( mPoint->row == row && mPoint->col == column )
         {
-            mLosNodePoint = LoSNode( mPoint, &eCenter, mCellSize );
+            mLosNodePoint = LoSNode( mPoint, &mEventCenter, mCellSize );
             return;
         }
 
         // LosNode prefill
         if ( mPoint->row == row && mPoint->col < column )
         {
-            LoSNode ln = LoSNode( mPoint, &eEnter, mCellSize );
-            mLosNodes.push_back( ln );
+            mLoSNodeTemp = LoSNode( mPoint, &mEventEnter, mCellSize );
+            mLosNodes.push_back( mLoSNodeTemp );
         }
 
-        mCellEvents.push_back( eEnter );
-        mCellEvents.push_back( eExit );
+        mCellEvents.push_back( mEventEnter );
+        mCellEvents.push_back( mEventExit );
         if ( solveCell )
         {
-            mCellEvents.push_back( eCenter );
+            mCellEvents.push_back( mEventEnter );
         }
     }
 }
