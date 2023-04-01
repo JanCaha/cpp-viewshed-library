@@ -33,14 +33,14 @@ void AbstractViewshed::initEventList()
 
     bool isNoData = false;
     bool isMaskNoData = false;
-    QgsRasterBlock *maskBlock;
+    std::unique_ptr<QgsRasterBlock> maskBlock;
 
     bool solveCell;
 
     if ( mVisibilityMask )
     {
-        maskBlock = mVisibilityMask->dataProvider()->block( mDefaultBand, mInputDem->extent(), mInputDem->width(),
-                                                            mInputDem->height() );
+        maskBlock = std::unique_ptr<QgsRasterBlock>( mVisibilityMask->dataProvider()->block(
+            mDefaultBand, mInputDem->extent(), mInputDem->width(), mInputDem->height() ) );
     }
 
     for ( int blockRow = 0; blockRow < rasterBlock->height(); blockRow++ )
