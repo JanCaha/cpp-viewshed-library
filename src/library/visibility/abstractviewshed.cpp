@@ -24,57 +24,45 @@ void AbstractViewshed::initEventList()
     mLosNodes.clear();
     mValidCells = 0;
 
-    std::unique_ptr<QgsRasterInterface> rInterface;
-    rInterface.reset( mInputDem->dataProvider()->clone() );
+    std::unique_ptr<QgsRasterBlock> rasterBlock( mInputDem->dataProvider()->block(
+        mDefaultBand, mInputDem->extent(), mInputDem->width(), mInputDem->height() ) );
 
-    QgsRasterIterator iter( rInterface.get() );
-    iter.setMaximumTileHeight( rInterface->ySize() + 1 );
-    iter.setMaximumTileWidth( rInterface->xSize() + 1 );
-
-    iter.startRasterRead( mDefaultBand, mInputDem->width(), mInputDem->height(), mInputDem->extent() );
-    int iterLeft = 0;
-    int iterTop = 0;
-    int iterCols = 0;
-    int iterRows = 0;
     bool isNoData = false;
-    std::unique_ptr<QgsRasterBlock> rasterBlock; // = std::make_shared<QgsRasterBlock>();
-    QgsRasterBlock *maskBlock;
     bool isMaskNoData = false;
-    bool solveCell = false;
+    QgsRasterBlock *maskBlock;
 
-    while ( iter.readNextRasterPart( mDefaultBand, iterCols, iterRows, rasterBlock, iterLeft, iterTop ) )
+    bool solveCell;
+
+    if ( mVisibilityMask )
     {
-        if ( mVisibilityMask )
-        {
-            maskBlock = mVisibilityMask->dataProvider()->block( mDefaultBand, mInputDem->extent(), mInputDem->width(),
-                                                                mInputDem->height() );
-        }
+        maskBlock = mVisibilityMask->dataProvider()->block( mDefaultBand, mInputDem->extent(), mInputDem->width(),
+                                                            mInputDem->height() );
+    }
 
-        for ( int blockRow = 0; blockRow < iterRows; blockRow++ )
+    for ( int blockRow = 0; blockRow < rasterBlock->height(); blockRow++ )
+    {
+        for ( int blockColumn = 0; blockColumn < rasterBlock->width(); blockColumn++ )
         {
-            for ( int blockColumn = 0; blockColumn < iterCols; blockColumn++ )
+            const double pixelValue = rasterBlock->valueAndNoData( blockRow, blockColumn, isNoData );
+
+            solveCell = true;
+            if ( mVisibilityMask )
             {
-                const double pixelValue = rasterBlock->valueAndNoData( blockRow, blockColumn, isNoData );
-
-                solveCell = true;
-                if ( mVisibilityMask )
+                const double maskValue = maskBlock->valueAndNoData( blockRow, blockColumn, isMaskNoData );
+                if ( isMaskNoData || maskValue == 0 )
                 {
-                    const double maskValue = maskBlock->valueAndNoData( blockRow, blockColumn, isMaskNoData );
-                    if ( isMaskNoData || maskValue == 0 )
-                    {
-                        solveCell = false;
-                    }
+                    solveCell = false;
                 }
+            }
 
-                if ( !isNoData )
-                {
-                    mValidCells++;
+            if ( !isNoData )
+            {
+                mValidCells++;
 
-                    int column = blockColumn + iterLeft;
-                    int row = blockRow + iterTop;
+                int column = blockColumn;
+                int row = blockRow;
 
-                    addEventsFromCell( row, column, pixelValue, rasterBlock, solveCell );
-                }
+                addEventsFromCell( row, column, pixelValue, rasterBlock, solveCell );
             }
         }
     }
