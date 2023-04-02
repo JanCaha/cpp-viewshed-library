@@ -51,6 +51,8 @@ namespace viewshed
         LoSNode statusNodeFromPoint( QgsPoint point );
         QgsPoint point( int row, int col );
 
+        void setDefaultResultDataType( Qgis::DataType dataType );
+
         long numberOfValidCells() { return mValidCells; };
 
         long numberOfCellEvents() { return mCellEvents.size(); };

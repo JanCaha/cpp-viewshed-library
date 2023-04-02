@@ -14,8 +14,17 @@ void AbstractViewshed::prepareMemoryRasters()
 
     for ( int i = 0; i < mAlgs->size(); i++ )
     {
-        mResults.push_back( std::make_shared<MemoryRaster>( mInputDem, Qgis::DataType::Float32,
-                                                            mInputDem->dataProvider()->sourceNoDataValue( 1 ) ) );
+        mResults.push_back( std::make_shared<MemoryRaster>(
+            mInputDem, mDataType, mInputDem->dataProvider()->sourceNoDataValue( mDefaultBand ) ) );
+    }
+}
+
+void AbstractViewshed::setDefaultResultDataType( Qgis::DataType dataType )
+{
+    mDataType = dataType;
+    if ( !mResults.empty() )
+    {
+        prepareMemoryRasters();
     }
 }
 
