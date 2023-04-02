@@ -39,6 +39,8 @@ namespace viewshed
         void setMaxResultsInMemory( int maxResults );
         void setMaxThreads( int threads );
 
+        void prepareMemoryRasters();
+
         virtual void addEventsFromCell( int &row, int &column, const double &pixelValue,
                                         std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell ) = 0;
 
@@ -104,7 +106,6 @@ namespace viewshed
 
         std::vector<LoSNode> prepareLoSWithPoint( QgsPoint point );
         bool validAngles();
-        void prepareMemoryRasters();
         void setPixelData( ViewshedValues values );
         void parseCalculatedResults();
 
