@@ -236,7 +236,8 @@ void AbstractViewshed::parseCalculatedResults()
         setPixelData( mResultPixels[j].get() );
     }
 
-    mResultPixels = BS::multi_future<ViewshedValues>();
+    // prepare maxNumberOfResults + 25% as safety overhead - the structure should be fairly small
+    mResultPixels = BS::multi_future<ViewshedValues>( mMaxNumberOfResults + ( mMaxNumberOfResults / 4 ) );
 }
 
 void AbstractViewshed::setPixelData( ViewshedValues values )
