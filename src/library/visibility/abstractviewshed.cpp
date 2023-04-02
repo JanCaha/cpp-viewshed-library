@@ -9,6 +9,9 @@ using viewshed::MemoryRaster;
 
 void AbstractViewshed::prepareMemoryRasters()
 {
+    mResults.clear();
+    mResults.reserve( mAlgs->size() );
+
     for ( int i = 0; i < mAlgs->size(); i++ )
     {
         mResults.push_back( std::make_shared<MemoryRaster>( mInputDem, Qgis::DataType::Float32,
