@@ -80,7 +80,7 @@ namespace viewshed
         std::shared_ptr<QgsRasterLayer> mVisibilityMask = nullptr;
         std::shared_ptr<Point> mPoint;
         std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
-        Qgis::DataType mDataType = Qgis::DataType::Float64;
+        Qgis::DataType mDataType = Qgis::DataType::Float32;
         int mDefaultBand = 1;
         long mValidCells = 0;
         long mTotalLosNodesCount = 0;
