@@ -1,6 +1,6 @@
 # Viewshed a Cpp library to calculate Viewshed and extract LoS on Digital Surface Models
 
-Library using QGIS, QT API and C++17 features to calculate visibility (viewshed) and additional information about it. The library is developed and tested on Linux.
+Library using QGIS, QT API and C++17 features to calculate visibility (viewshed), inverse visibility and additional information about it. The library is developed and tested on Linux.
 
 ## Using the library
 
@@ -27,6 +27,9 @@ Options:
   --useCurvatureCorrections <true>    Use curvature corrections?
   --refractionCoefficient <0.142860>  Refraction coefficient.
   --earthDiameter <12740000>          Earth diameter.
+  --visibilityMask < >                Raster file representing visibility mask,
+                                      specifying areas to calculate visibility
+                                      in, for viewshed calculation.  
 ```
 
 ```bash
@@ -47,6 +50,9 @@ Options:
   --useCurvatureCorrections <true>    Use curvature corrections?
   --refractionCoefficient <0.142860>  Refraction coefficient.
   --earthDiameter <12740000>          Earth diameter.
+  --visibilityMask < >                Raster file representing visibility mask,
+                                      specifying areas to calculate visibility
+                                      in, for viewshed calculation.
 ```
 
 Besides that there are two binaries with GUI: `viewshedcalculator` and `losextractor`. That allow calculation of viewshed (and also inversviewshed) and its characteristics, and extraction of line-of-sight in form of CSV file.
