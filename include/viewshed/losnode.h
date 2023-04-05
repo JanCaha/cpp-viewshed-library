@@ -15,7 +15,6 @@ namespace viewshed
     class LoSNode : public RasterPosition
     {
       public:
-        double gradient[3];
         double angle[3];
         double elevs[3];
         double distances[3];
@@ -55,7 +54,7 @@ namespace viewshed
          * @param valueType
          * @return double
          */
-        double valueAtAngle( const double &angle, ValueType valueType = ValueType::Gradient );
+        double valueAtAngle( const double &angle, ValueType valueType = ValueType::Elevation );
 
         /**
          * @brief Extract value of ValueType at specific cell event position.
@@ -64,7 +63,7 @@ namespace viewshed
          * @param valueType
          * @return double
          */
-        double value( CellEventPositionType position, ValueType valueType = ValueType::Gradient );
+        double value( CellEventPositionType position, ValueType valueType = ValueType::Elevation );
 
         /**
          * @brief Shortcut call to obtain horizontal angle at center of raster cell that this LoSNode represents.

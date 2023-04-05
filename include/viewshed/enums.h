@@ -11,8 +11,7 @@ namespace viewshed
     {
         Angle,
         Elevation,
-        Distance,
-        Gradient
+        Distance
     };
 
     /**
