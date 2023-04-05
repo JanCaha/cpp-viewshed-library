@@ -83,6 +83,7 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/visibilityviewangle.h
     include/viewshed/visibilityboolean.h
     include/viewshed/visibilityalgorithms.h
+    include/viewshed/visibilityslopetoviewangle.h
 )
 
 # ############################################################
