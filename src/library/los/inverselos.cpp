@@ -12,19 +12,7 @@ InverseLoS::InverseLoS( std::vector<LoSNode> losNodes ) { assign( losNodes.begin
 
 double InverseLoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
 
-double InverseLoS::gradient( int i )
-{
-    double dist = distance( i );
-
-    if ( mCurvatureCorrections )
-    {
-        return Visibility::gradient( mVp, elevation( i ), dist );
-    }
-    else
-    {
-        return Visibility::gradient( mVp, at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation ), dist );
-    }
-}
+double InverseLoS::gradient( int i ) { return Visibility::gradient( mVp, elevation( i ), distance( i ) ); }
 
 double InverseLoS::elevation( int i )
 {
