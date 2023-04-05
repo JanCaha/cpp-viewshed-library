@@ -19,6 +19,7 @@
 #include "visibilityelevationdifferencetoglobalhorizon.h"
 #include "visibilityelevationdifferencetolocalhorizon.h"
 #include "visibilityhorizons.h"
+#include "visibilityslopetoviewangle.h"
 
 using namespace viewshed;
 using namespace viewshed::visibilityalgorithm;
@@ -348,6 +349,32 @@ class TestLosAlgorithms : public QObject
 
         QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 1 ), -6.6, 0.1 ) );
+    }
+
+    void losSlopeToViewAngle()
+    {
+        algs->clear();
+
+        double invisible = -1;
+        LoSSlopeToViewAngle a = LoSSlopeToViewAngle();
+
+        algs->push_back( std::make_shared<LoSSlopeToViewAngle>( invisible ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), 0.0349, 0.0001 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 0 ), 4.2, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 0 ), 2.7, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), 28.7, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), 25.7, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
     }
 };
 
