@@ -193,6 +193,12 @@ namespace viewshed
         std::chrono::nanoseconds timeToCopy;
         std::chrono::nanoseconds timeToEval;
 
+        int targetIndex() { return mTargetIndex; }
+
+        double viewPointElevation() { return mVp->elevation; }
+
+        double viewPointTotalElevation() { return mVp->totalElevation(); }
+
       protected:
         AbstractLoS();
 
