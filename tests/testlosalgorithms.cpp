@@ -20,6 +20,7 @@
 #include "visibilityelevationdifferencetolocalhorizon.h"
 #include "visibilityhorizons.h"
 #include "visibilityslopetoviewangle.h"
+#include "visibilityviewangle.h"
 
 using namespace viewshed;
 using namespace viewshed::visibilityalgorithm;
@@ -88,52 +89,42 @@ class TestLosAlgorithms : public QObject
         std::shared_ptr<LoSNode> p = getPointLoS( 0 );
         QVERIFY( p->centreDistance() == 1.0 );
         QVERIFY( qgsDoubleNear( p->centreElevation(), 0.8, 0.1 ) );
-        QVERIFY( qgsDoubleNear( p->centreGradient(), 38.6, 0.1 ) );
 
         p = getPointLoS( 1 );
         QVERIFY( p->centreDistance() == 2.0 );
         QVERIFY( qgsDoubleNear( p->centreElevation(), 1.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( p->centreGradient(), 43.5, 0.1 ) );
 
         p = getPointLoS( 2 );
         QVERIFY( p->centreDistance() == 3.0 );
         QVERIFY( qgsDoubleNear( p->centreElevation(), 3, 0.1 ) );
-        QVERIFY( qgsDoubleNear( p->centreGradient(), 44.9, 0.1 ) );
 
         p = getPointLoS( 3 );
         QVERIFY( p->centreDistance() == 4.0 );
         QVERIFY( qgsDoubleNear( p->centreElevation(), 1, 0.1 ) );
-        QVERIFY( qgsDoubleNear( p->centreGradient(), 14.0, 0.1 ) );
 
         p = getPointLoS( 4 );
         QVERIFY( p->centreDistance() == 5.0 );
         QVERIFY( qgsDoubleNear( p->centreElevation(), 1, 0.1 ) );
-        QVERIFY( qgsDoubleNear( p->centreGradient(), 11.2, 0.1 ) );
 
         p = getPointLoS( 5 );
         QVERIFY( p->centreDistance() == 6.0 );
         QVERIFY( qgsDoubleNear( p->centreElevation(), 8, 0.1 ) );
-        QVERIFY( qgsDoubleNear( p->centreGradient(), 53.1, 0.1 ) );
 
         p = getPointLoS( 6 );
         QVERIFY( p->centreDistance() == 7.0 );
         QVERIFY( qgsDoubleNear( p->centreElevation(), 2, 0.1 ) );
-        QVERIFY( qgsDoubleNear( p->centreGradient(), 15.9, 0.1 ) );
 
         p = getPointLoS( 7 );
         QVERIFY( p->centreDistance() == 8.0 );
         QVERIFY( qgsDoubleNear( p->centreElevation(), 4, 0.1 ) );
-        QVERIFY( qgsDoubleNear( p->centreGradient(), 26.5, 0.1 ) );
 
         p = getPointLoS( 8 );
         QVERIFY( p->centreDistance() == 9.0 );
         QVERIFY( qgsDoubleNear( p->centreElevation(), 15, 0.1 ) );
-        QVERIFY( qgsDoubleNear( p->centreGradient(), 59.0, 0.1 ) );
 
         p = getPointLoS( 9 );
         QVERIFY( p->centreDistance() == 10.0 );
         QVERIFY( qgsDoubleNear( p->centreElevation(), 10, 0.1 ) );
-        QVERIFY( qgsDoubleNear( p->centreGradient(), 44.9, 0.1 ) );
     }
 
     double losEvalForPoint( int position, int result = 0 )
@@ -199,6 +190,33 @@ class TestLosAlgorithms : public QObject
         QVERIFY( losEvalForPoint( 8 ) == 1.0 );
 
         QVERIFY( losEvalForPoint( 9 ) == 0.0 );
+    }
+
+    void viewAngle()
+    {
+        algs->clear();
+
+        algs->push_back( std::make_shared<ViewAngle>() );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), 38.6, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 0 ), 43.5, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 0 ), 44.9, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 0 ), 14, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 0 ), 11.2, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), 53.1, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 0 ), 15.9, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 0 ), 26.5, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), 59.0, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 0 ), 44.9, 0.1 ) );
     }
 
     void differenceLocalHorizon()
