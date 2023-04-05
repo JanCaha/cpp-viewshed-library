@@ -8,6 +8,7 @@ set(LIBRARY_VIEWSHED_SRC
     visibility_algorithms/angledifferencetolocalhorizon.cpp
     visibility_algorithms/angledifferencetoglobalhorizon.cpp
     visibility_algorithms/horizondistance.cpp
+    visibility_algorithms/slopetoviewangle.cpp
 
     memory_raster/memoryraster.cpp
 
