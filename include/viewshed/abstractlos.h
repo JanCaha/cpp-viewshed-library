@@ -188,6 +188,12 @@ namespace viewshed
 
         void setEarthDiameter( double earthDiameter ) { mEarthDiameter = earthDiameter; };
 
+        int targetIndex() { return mTargetIndex; }
+
+        double viewPointElevation() { return mVp->elevation; }
+
+        double viewPointTotalElevation() { return mVp->totalElevation(); }
+
       protected:
         AbstractLoS();
 
