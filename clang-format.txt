@@ -5,6 +5,7 @@
 BasedOnStyle: LLVM
 AccessModifierOffset: '-2'
 BreakBeforeBraces: Allman
+AlwaysBreakTemplateDeclarations: Yes
 ColumnLimit: 120
 IndentCaseLabels: 'true'
 IndentWidth: '4'
