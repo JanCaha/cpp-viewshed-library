@@ -1,7 +1,16 @@
 # sudo apt purge -y viewshed
 # sudo cmake --build build --target uninstall
+cmake --build build --target clean
 
-cmake -S. -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=off -DBUILD_DOCUMENTATION:bool=off -DBUILD_TESTS:bool=on
+cmake -S. \
+    -Bbuild \
+    -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DPACK_DEB:bool=off \
+    -DBUILD_DOCUMENTATION:bool=off \
+    -DBUILD_TESTS:bool=on \
+    -DCELL_EVENT_DATA_FLOAT:bool=on \
+    -DOUTPUT_RASTER_DATA_FLOAT:bool=on
 
 cmake --build build --config Release --target viewshed
 
