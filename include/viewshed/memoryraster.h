@@ -115,6 +115,11 @@ namespace viewshed
          */
         bool setValue( double value, int col, int row );
 
+        /**
+         * @brief Calculate size of the data. Data type * height * width of the raster.
+         *
+         * @return long long
+         */
         long long dataSize() { return QgsRasterBlock::typeSize( mDataType ) * ( mHeight * mWidth ); }
 
       private:
