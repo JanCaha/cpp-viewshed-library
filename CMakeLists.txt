@@ -46,11 +46,6 @@ set(LIBRARY_VIEWSHED_PRIVATE_HEADERS
     ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
 )
 
-configure_file(
-    include/viewshed/viewshedlibrary.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/viewshed/viewshedlibrary.h
-)
-
 set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/abstractlos.h
     include/viewshed/abstractviewshed.h

@@ -74,3 +74,8 @@ configure_file(
     ${CMAKE_SOURCE_DIR}/include/viewshed/defaultdatatypes.h
     @ONLY
 )
+
+configure_file(
+    ../../include/viewshed/templates/viewshedlibrary.in
+    ${CMAKE_SOURCE_DIR}/include/viewshed/viewshedlibrary.h
+)
