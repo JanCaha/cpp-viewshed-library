@@ -74,7 +74,7 @@ jobs:
            cmake --build build --config Release --target run_tests
 
       - name: Run Tests with double
-        id: unittests
+        id: unittestsdouble
         run: |
            cmake \
              -S. \
