@@ -51,3 +51,19 @@ target_link_libraries(library_viewshed
     ${MINIMAL_QGIS_LIBS}
     bs_thread_pool
 )
+
+if(${CELL_EVENT_DATA_FLOAT})
+    message(STATUS "CellEvents will have data type `float`.")
+    target_compile_definitions(library_viewshed PUBLIC CELL_EVENT_TYPE=float)
+else()
+    message(STATUS "CellEvents will have data type `double`.")
+    target_compile_definitions(library_viewshed PUBLIC CELL_EVENT_TYPE=double)
+endif()
+
+if(${OUTPUT_RASTER_DATA_FLOAT})
+    message(STATUS "Output rasters will have data type `Float32`.")
+    target_compile_definitions(library_viewshed PUBLIC OUTPUT_RASTER_DATA_TYPE=Qgis::DataType::Float32)
+else()
+    message(STATUS "Output rasters will have data type `Float64`.")
+    target_compile_definitions(library_viewshed PUBLIC OUTPUT_RASTER_DATA_TYPE=Qgis::DataType::Float64)
+endif()
