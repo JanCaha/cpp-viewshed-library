@@ -307,6 +307,11 @@ double AbstractViewshed::getCornerValue( const CellEventPosition &pos, const std
 
 std::shared_ptr<MemoryRaster> AbstractViewshed::resultRaster( int index ) { return mResults.at( index ); }
 
+void AbstractViewshed::saveResults( std::string location, std::string fileNamePrefix = "" )
+{
+    saveResults( QString::fromStdString( location ), QString::fromStdString( fileNamePrefix ) );
+};
+
 void AbstractViewshed::saveResults( QString location, QString fileNamePrefix )
 {
     for ( int i = 0; i < mAlgs->size(); i++ )

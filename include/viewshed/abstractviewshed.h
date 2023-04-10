@@ -48,6 +48,9 @@ namespace viewshed
         std::shared_ptr<MemoryRaster> resultRaster( int index = 0 );
 
         void saveResults( QString location, QString fileNamePrefix = QString() );
+
+        void saveResults( std::string location, std::string fileNamePrefix = "" );
+
         LoSNode statusNodeFromPoint( QgsPoint point );
         QgsPoint point( int row, int col );
 
