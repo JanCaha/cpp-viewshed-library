@@ -115,6 +115,8 @@ namespace viewshed
          */
         bool setValue( double value, int col, int row );
 
+        long long dataSize() { return QgsRasterBlock::typeSize( mDataType ) * ( mHeight * mWidth ); }
+
       private:
         std::unique_ptr<QgsRasterBlock> mRasterData;
         QgsCoordinateReferenceSystem mCrs;
