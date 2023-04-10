@@ -11,6 +11,7 @@
 #include "abstractviewshedalgorithm.h"
 #include "cellevent.h"
 #include "celleventposition.h"
+#include "defaultdatatypes.h"
 #include "los.h"
 #include "losnode.h"
 #include "memoryraster.h"
