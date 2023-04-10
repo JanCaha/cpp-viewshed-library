@@ -54,17 +54,23 @@ target_link_libraries(library_viewshed
 
 if(${CELL_EVENT_DATA_FLOAT})
     message(STATUS "CellEvents will have data type `float`.")
-    target_compile_definitions(library_viewshed PUBLIC CELL_EVENT_TYPE=float)
+    set(CELL_EVENT_DATA_TYPE float)
     target_compile_definitions(library_viewshed PUBLIC CELL_EVENT_USE_FLOAT=1)
 else()
+    set(CELL_EVENT_DATA_TYPE double)
     message(STATUS "CellEvents will have data type `double`.")
-    target_compile_definitions(library_viewshed PUBLIC CELL_EVENT_TYPE=double)
 endif()
 
 if(${OUTPUT_RASTER_DATA_FLOAT})
+    set(OUTPUT_RASTER_DATA_TYPE Qgis::DataType::Float32)
     message(STATUS "Output rasters will have data type `Float32`.")
-    target_compile_definitions(library_viewshed PUBLIC OUTPUT_RASTER_DATA_TYPE=Qgis::DataType::Float32)
 else()
+    set(OUTPUT_RASTER_DATA_TYPE Qgis::DataType::Float64)
     message(STATUS "Output rasters will have data type `Float64`.")
-    target_compile_definitions(library_viewshed PUBLIC OUTPUT_RASTER_DATA_TYPE=Qgis::DataType::Float64)
 endif()
+
+configure_file(
+    ../../include/viewshed/templates/defaultdatatypes.txt
+    ${CMAKE_SOURCE_DIR}/include/viewshed/defaultdatatypes.h
+    @ONLY
+)
