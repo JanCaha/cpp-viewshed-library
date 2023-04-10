@@ -259,7 +259,7 @@ void AbstractViewshed::setPixelData( ViewshedValues values )
 void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
                                                    std::function<double( LoSNode )> func )
 {
-    MemoryRaster result = MemoryRaster( dem_ );
+    MemoryRaster result = MemoryRaster( dem_, mDataType );
 
     int i = 0;
     for ( CellEvent event : mCellEvents )
