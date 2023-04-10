@@ -55,7 +55,9 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=on \
             -DBUILD_DOCUMENTATION:bool=on \
-            -DBUILD_TESTS:bool=on
+            -DBUILD_TESTS:bool=on \
+            -DCELL_EVENT_DATA_FLOAT:bool=on \
+            -DOUTPUT_RASTER_DATA_FLOAT:bool=on
 
       - name: Build
         run: | 
@@ -67,6 +69,22 @@ jobs:
 
       - name: Run Tests
         id: unittests
-        run: | 
+        run: |
+           cmake --build build --config Release --target build_tests
+           cmake --build build --config Release --target run_tests
+
+      - name: Run Tests with double
+        id: unittests
+        run: |
+           cmake \
+             -S. \
+            -Bbuild \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPACK_DEB:bool=off \
+            -DBUILD_DOCUMENTATION:bool=off \
+            -DBUILD_TESTS:bool=on \
+            -DCELL_EVENT_DATA_FLOAT:bool=off \
+            -DOUTPUT_RASTER_DATA_FLOAT:bool=off
            cmake --build build --config Release --target build_tests
            cmake --build build --config Release --target run_tests
