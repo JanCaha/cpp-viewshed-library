@@ -55,6 +55,7 @@ target_link_libraries(library_viewshed
 if(${CELL_EVENT_DATA_FLOAT})
     message(STATUS "CellEvents will have data type `float`.")
     target_compile_definitions(library_viewshed PUBLIC CELL_EVENT_TYPE=float)
+    target_compile_definitions(library_viewshed PUBLIC CELL_EVENT_USE_FLOAT=1)
 else()
     message(STATUS "CellEvents will have data type `double`.")
     target_compile_definitions(library_viewshed PUBLIC CELL_EVENT_TYPE=double)

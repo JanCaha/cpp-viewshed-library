@@ -70,6 +70,23 @@ class TestViewshed : public QObject
         v.initEventList();
         QVERIFY( v.numberOfValidCells() == 37990 );
         QVERIFY( v.numberOfCellEvents() == ( v.numberOfValidCells() - 1 ) * 3 );
+
+#if ( CELL_EVENT_USE_FLOAT )
+        QVERIFY( v.sizeOfEvents() == 4102812 );
+#else
+        QVERIFY( v.sizeOfEvents() == 7293888 );
+#endif
+    }
+
+    void testOutputRasterSize()
+    {
+        Viewshed v( vp, dem, algs );
+        v.prepareMemoryRasters();
+#if ( CELL_EVENT_USE_FLOAT )
+        QVERIFY( v.sizeOfOutputRaster() == 156100 );
+#else
+        QVERIFY( v.sizeOfOutputRaster() == 312200 );
+#endif
     }
 
     void testViewshedCalculation()
