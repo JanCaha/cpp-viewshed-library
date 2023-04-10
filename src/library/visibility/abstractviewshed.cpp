@@ -62,16 +62,16 @@ void AbstractViewshed::initEventList()
             mDefaultBand, mInputDem->extent(), mInputDem->width(), mInputDem->height() ) );
     }
 
-    for ( int blockRow = 0; blockRow < rasterBlock->height(); blockRow++ )
+    for ( int row = 0; row < rasterBlock->height(); row++ )
     {
-        for ( int blockColumn = 0; blockColumn < rasterBlock->width(); blockColumn++ )
+        for ( int column = 0; column < rasterBlock->width(); column++ )
         {
-            const double pixelValue = rasterBlock->valueAndNoData( blockRow, blockColumn, isNoData );
+            const double pixelValue = rasterBlock->valueAndNoData( row, column, isNoData );
 
             solveCell = true;
             if ( mVisibilityMask )
             {
-                const double maskValue = maskBlock->valueAndNoData( blockRow, blockColumn, isMaskNoData );
+                const double maskValue = maskBlock->valueAndNoData( row, column, isMaskNoData );
                 if ( isMaskNoData || maskValue == 0 )
                 {
                     solveCell = false;
@@ -81,10 +81,6 @@ void AbstractViewshed::initEventList()
             if ( !isNoData )
             {
                 mValidCells++;
-
-                int column = blockColumn;
-                int row = blockRow;
-
                 addEventsFromCell( row, column, pixelValue, rasterBlock, solveCell );
             }
         }
