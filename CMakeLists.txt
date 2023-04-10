@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 1.9.7 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 1.9.8 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
@@ -46,6 +46,11 @@ set(LIBRARY_VIEWSHED_PRIVATE_HEADERS
     ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
 )
 
+configure_file(
+    include/viewshed/viewshedlibrary.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/viewshed/viewshedlibrary.h
+)
+
 set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/abstractlos.h
     include/viewshed/abstractviewshed.h
@@ -78,6 +83,7 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/visibilityboolean.h
     include/viewshed/visibilityalgorithms.h
     include/viewshed/visibilityslopetoviewangle.h
+    include/viewshed/viewshedlibrary.h
 )
 
 # ############################################################
