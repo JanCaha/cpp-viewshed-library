@@ -78,6 +78,17 @@ namespace viewshed
 
         double processingLastedSeconds() { return initLastedSeconds() + sortLastedSeconds() + parseLastedSeconds(); }
 
+        long long sizeOfOutputRaster()
+        {
+            if ( mResults.size() > 0 )
+            {
+                return mResults[0]->dataSize();
+            }
+            return 0;
+        }
+
+        long long sizeOfOutputRasters() { return mAlgs->size() * sizeOfOutputRaster(); }
+
       protected:
         std::vector<LoSNode> mLosNodes;
         std::vector<CellEvent> mCellEvents;
