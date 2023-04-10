@@ -49,7 +49,7 @@ namespace viewshed
 
         void saveResults( QString location, QString fileNamePrefix = QString() );
 
-        void saveResults( std::string location, std::string fileNamePrefix = "" );
+        void saveResultsStdString( std::string location, std::string fileNamePrefix = "" );
 
         LoSNode statusNodeFromPoint( QgsPoint point );
         QgsPoint point( int row, int col );
