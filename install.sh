@@ -16,3 +16,11 @@ sudo cmake --build build --config Release --target install
 # cmake -S. -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=on -DBUILD_DOCUMENTATION:bool=on -DBUILD_TESTS:bool=on
 # cmake --build build --config Release --target pack_deb
 
+# sudo cmake --build build --target clean
+# cmake -S. -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release \
+#     -DPACK_DEB:bool=off \
+#     -DBUILD_DOCUMENTATION:bool=off \
+#     -DBUILD_TESTS:bool=on \
+#     -DCELL_EVENT_DATA_FLOAT:bool=off \
+#     -DOUTPUT_RASTER_DATA_FLOAT:bool=off
+# cmake --build build --config Release --target run_tests
