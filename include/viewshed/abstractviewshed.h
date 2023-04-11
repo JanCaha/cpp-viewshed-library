@@ -41,8 +41,9 @@ namespace viewshed
 
         void prepareMemoryRasters();
 
-        virtual void calculate( std::function<void( std::string, double )> stepsTimingCallback,
-                                std::function<void( int, int )> progressCallback ) = 0;
+        virtual void calculate(
+            std::function<void( std::string, double )> stepsTimingCallback = []( std::string text, double time ) {},
+            std::function<void( int, int )> progressCallback = []( int, int ) {} ) = 0;
 
         virtual void addEventsFromCell( int &row, int &column, const double &pixelValue,
                                         std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell ) = 0;
