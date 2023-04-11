@@ -26,7 +26,7 @@ namespace viewshed
         void calculate(
             std::function<void( std::string, double )> stepsTimingCallback = []( std::string text, double time )
             { qDebug() << QString::fromStdString( text ) << time; },
-            std::function<void( int, int )> progressCallback = []( int, int ) {} );
+            std::function<void( int, int )> progressCallback = []( int, int ) {} ) override;
 
         std::shared_ptr<InverseLoS> getLoS( QgsPoint point, bool onlyToPoint = false );
 
