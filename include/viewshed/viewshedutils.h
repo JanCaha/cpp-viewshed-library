@@ -31,7 +31,7 @@ namespace viewshed
         bool third;
     };
 
-    class Utils
+    class ViewshedUtils
     {
       public:
         /**

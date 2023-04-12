@@ -64,7 +64,6 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/point.h
     include/viewshed/rasterposition.h
     include/viewshed/threadtasks.h
-    include/viewshed/utils.h
     include/viewshed/viewshed.h
     include/viewshed/viewshedvalues.h
     include/viewshed/visibility.h
@@ -80,6 +79,7 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/visibilityalgorithms.h
     include/viewshed/visibilityslopetoviewangle.h
     include/viewshed/viewshedlibrary.h
+    include/viewshed/viewshedutils.h
 )
 
 # ############################################################

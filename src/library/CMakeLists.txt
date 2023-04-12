@@ -12,7 +12,7 @@ set(LIBRARY_VIEWSHED_SRC
 
     memory_raster/memoryraster.cpp
 
-    utils/utils.cpp
+    utils/viewshedutils.cpp
 
     structures/cellevent.cpp
     structures/point.cpp

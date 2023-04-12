@@ -7,8 +7,8 @@
 
 #include "abstractviewshedalgorithm.h"
 #include "point.h"
-#include "utils.h"
 #include "viewshed.h"
+#include "viewshedutils.h"
 #include "visibility.h"
 #include "visibilityangledifferencetolocalhorizon.h"
 #include "visibilityboolean.h"
@@ -33,7 +33,7 @@ class TestViewshed : public QObject
     {
         dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM, "dsm", "gdal" );
         vp = std::make_shared<Point>( QgsPoint( -336364.021, -1189108.615 ), dem );
-        algs = Utils::allAlgorithms();
+        algs = ViewshedUtils::allAlgorithms();
     }
 
     void testLoS()
@@ -53,10 +53,10 @@ class TestViewshed : public QObject
         los = v.getLoS( poiPoint, true );
         QVERIFY( los->size() == 70 );
 
-        std::vector<DataTriplet> data = Utils::distanceElevation( los );
+        std::vector<DataTriplet> data = ViewshedUtils::distanceElevation( los );
         QVERIFY( data.size() == 72 );
 
-        Utils::saveToCsv( data, "distance,elevation\n", TEST_DATA_LOS );
+        ViewshedUtils::saveToCsv( data, "distance,elevation\n", TEST_DATA_LOS );
     }
 
     void testInitCells()

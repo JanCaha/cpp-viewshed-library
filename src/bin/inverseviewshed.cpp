@@ -13,7 +13,7 @@
 #include "abstractviewshedalgorithm.h"
 #include "inverseviewshed.h"
 #include "point.h"
-#include "utils.h"
+#include "viewshedutils.h"
 #include "visibilityalgorithms.h"
 
 #include "commandlinehelper.h"
@@ -62,7 +62,7 @@ int main( int argc, char *argv[] )
     std::shared_ptr<QgsRasterLayer> rl = std::make_shared<QgsRasterLayer>( demFilePath, "dem", "gdal" );
 
     std::string rasterError;
-    if ( !Utils::validateRaster( rl, rasterError ) )
+    if ( !ViewshedUtils::validateRaster( rl, rasterError ) )
     {
         exitWithError( rasterError, parser );
     }
@@ -75,12 +75,12 @@ int main( int argc, char *argv[] )
     {
         mask = std::make_shared<QgsRasterLayer>( maskFilePath, "dem", "gdal" );
 
-        if ( !Utils::validateRaster( mask, rasterError ) )
+        if ( !ViewshedUtils::validateRaster( mask, rasterError ) )
         {
             exitWithError( rasterError, parser );
         }
 
-        if ( !Utils::compareRasters( rl, mask, rasterError ) )
+        if ( !ViewshedUtils::compareRasters( rl, mask, rasterError ) )
         {
             exitWithError( "Dem and VisibilityMask raster comparison. " + rasterError, parser );
         }

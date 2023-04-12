@@ -7,16 +7,16 @@
 #include "qgsellipsoidutils.h"
 
 #include "inverselos.h"
-#include "utils.h"
+#include "viewshedutils.h"
 #include "visibility.h"
 
 using viewshed::DataTriplet;
 using viewshed::InverseLoS;
-using viewshed::Utils;
+using viewshed::ViewshedUtils;
 
 std::string toStr( bool val ) { return val ? "true" : "false"; }
 
-void Utils::saveToCsv( std::vector<DataTriplet> data, std::string header, std::string fileName )
+void ViewshedUtils::saveToCsv( std::vector<DataTriplet> data, std::string header, std::string fileName )
 {
     std::ofstream resultCsvFile;
 
@@ -46,7 +46,7 @@ void Utils::saveToCsv( std::vector<DataTriplet> data, std::string header, std::s
     resultCsvFile.close();
 }
 
-std::vector<DataTriplet> Utils::distanceElevation( std::shared_ptr<AbstractLoS> los )
+std::vector<DataTriplet> ViewshedUtils::distanceElevation( std::shared_ptr<AbstractLoS> los )
 {
     std::vector<DataTriplet> data;
 
@@ -81,7 +81,7 @@ std::vector<DataTriplet> Utils::distanceElevation( std::shared_ptr<AbstractLoS> 
     return data;
 }
 
-double Utils::earthDiameter( QgsCoordinateReferenceSystem crs )
+double ViewshedUtils::earthDiameter( QgsCoordinateReferenceSystem crs )
 {
     QString ellipsoid = crs.ellipsoidAcronym();
     if ( !ellipsoid.isEmpty() )
@@ -92,7 +92,8 @@ double Utils::earthDiameter( QgsCoordinateReferenceSystem crs )
     return EARTH_DIAMETER;
 };
 
-bool Utils::compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<QgsRasterLayer> r2, std::string &error )
+bool ViewshedUtils::compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<QgsRasterLayer> r2,
+                                    std::string &error )
 {
 
     if ( r1->crs() != r2->crs() )
@@ -128,7 +129,7 @@ bool Utils::compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<
     return true;
 }
 
-bool Utils::validateRaster( std::shared_ptr<QgsRasterLayer> rl, std::string &error )
+bool ViewshedUtils::validateRaster( std::shared_ptr<QgsRasterLayer> rl, std::string &error )
 {
     if ( !rl )
     {

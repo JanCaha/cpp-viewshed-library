@@ -28,8 +28,8 @@
 #include "abstractviewshedalgorithm.h"
 #include "inverseviewshed.h"
 #include "point.h"
-#include "utils.h"
 #include "viewshed.h"
+#include "viewshedutils.h"
 #include "visibility.h"
 #include "visibilityalgorithms.h"
 
@@ -320,7 +320,7 @@ class MainWindow : public QMainWindow
             mFileWidget->filePath(), QStringLiteral( "dem" ), QStringLiteral( "gdal" ) );
 
         std::string rasterError;
-        if ( !Utils::validateRaster( rl, rasterError ) )
+        if ( !ViewshedUtils::validateRaster( rl, rasterError ) )
         {
             mErrorMessageBox.critical( this, QStringLiteral( "Error" ), QString::fromStdString( rasterError ) );
         }
@@ -331,7 +331,7 @@ class MainWindow : public QMainWindow
                                                  QStringLiteral( "gdal" ) );
 
         mPointWidget->setCrs( mDem->crs().authid() );
-        mEarthDiameter->setText( QString::number( Utils::earthDiameter( mDem->crs() ), 'f' ) );
+        mEarthDiameter->setText( QString::number( ViewshedUtils::earthDiameter( mDem->crs() ), 'f' ) );
 
         enableCalculation();
 
@@ -351,13 +351,13 @@ class MainWindow : public QMainWindow
             mMaskFileWidget->filePath(), QStringLiteral( "mask" ), QStringLiteral( "gdal" ) );
 
         std::string rasterError;
-        if ( !Utils::validateRaster( mask, rasterError ) )
+        if ( !ViewshedUtils::validateRaster( mask, rasterError ) )
         {
             mMaskFileWidget->setFilePath( "" );
             mErrorMessageBox.critical( this, QStringLiteral( "Error" ), QString::fromStdString( rasterError ) );
         }
 
-        if ( !Utils::compareRasters( mDem, mask, rasterError ) )
+        if ( !ViewshedUtils::compareRasters( mDem, mask, rasterError ) )
         {
             mMaskFileWidget->setFilePath( "" );
             mErrorMessageBox.critical( this, QStringLiteral( "Error" ), QString::fromStdString( rasterError ) );
