@@ -73,6 +73,10 @@ jobs:
            cmake --build build --config Release --target build_tests
            cmake --build build --config Release --target run_tests
 
+      - name: Clean Build
+        run: |
+          sudo cmake --build build --target clean
+
       - name: Run Tests with double
         id: unittestsdouble
         run: |
