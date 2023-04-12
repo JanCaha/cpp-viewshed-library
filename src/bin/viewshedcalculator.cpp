@@ -191,6 +191,11 @@ class MainWindow : public QMainWindow
         mFileWidget->setStorageMode( QgsFileWidget::GetFile );
         mFileWidget->setOptions( QFileDialog::HideNameFilterDetails );
 
+        mMaskFileWidget = new QgsFileWidget( this );
+        mMaskFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
+        mMaskFileWidget->setStorageMode( QgsFileWidget::GetFile );
+        mMaskFileWidget->setOptions( QFileDialog::HideNameFilterDetails );
+
         mPointLabel = new QLabel();
         mPointLabel->setText( mPoint.asWkt( 5 ) );
 
@@ -212,6 +217,7 @@ class MainWindow : public QMainWindow
 
         mLayout->addRow( QStringLiteral( "Type of viewshed:" ), mViewshedType );
         mLayout->addRow( QStringLiteral( "Select DEM file:" ), mFileWidget );
+        mLayout->addRow( QStringLiteral( "Select Visibility Mask file:" ), mMaskFileWidget );
         mLayout->addRow( QStringLiteral( "Important Point Coordinates (x,y):" ), mPointWidget );
         mLayout->addRow( QStringLiteral( "Point:" ), mPointLabel );
         mLayout->addRow( QStringLiteral( "Observer offset:" ), mObserverOffset );
@@ -230,6 +236,8 @@ class MainWindow : public QMainWindow
         connect( mRefractionCoefficient, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
         connect( mEarthDiameter, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
         connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateDem );
+        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateMask );
+        connect( mMaskFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateMask );
         connect( mPointWidget, &PointWidget::pointChanged, this, &MainWindow::updatePoint );
         connect( mPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updatePointLabel );
         connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updatePointRaster );
@@ -249,6 +257,8 @@ class MainWindow : public QMainWindow
         mViewshedType->setCurrentIndex( index );
 
         mFileWidget->setFilePath( settings.value( QStringLiteral( "dem" ), QStringLiteral( "" ) ).toString() );
+
+        mMaskFileWidget->setFilePath( settings.value( QStringLiteral( "mask" ), QStringLiteral( "" ) ).toString() );
 
         mPoint.fromWkt( settings.value( QStringLiteral( "point" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
         mPointWidget->setPoint( mPoint );
@@ -280,6 +290,7 @@ class MainWindow : public QMainWindow
     {
         settings.setValue( QStringLiteral( "viewshedType" ), mViewshedType->currentData( Qt::UserRole ) );
         settings.setValue( QStringLiteral( "dem" ), mFileWidget->filePath() );
+        settings.setValue( QStringLiteral( "mask" ), mMaskFileWidget->filePath() );
         settings.setValue( QStringLiteral( "point" ), mPointWidget->point().asWkt() );
         settings.setValue( QStringLiteral( "observerOffset" ), mObserverOffset->text() );
         settings.setValue( QStringLiteral( "targetOffset" ), mTargetOffset->text() );
@@ -323,6 +334,37 @@ class MainWindow : public QMainWindow
         mEarthDiameter->setText( QString::number( Utils::earthDiameter( mDem->crs() ), 'f' ) );
 
         enableCalculation();
+
+        saveSettings();
+    }
+
+    void validateMask()
+    {
+        if ( !mDem || mMaskFileWidget->filePath() == QStringLiteral( "" ) )
+        {
+            return;
+        }
+
+        mMask = nullptr;
+
+        std::shared_ptr<QgsRasterLayer> mask = std::make_shared<QgsRasterLayer>(
+            mMaskFileWidget->filePath(), QStringLiteral( "mask" ), QStringLiteral( "gdal" ) );
+
+        std::string rasterError;
+        if ( !Utils::validateRaster( mask, rasterError ) )
+        {
+            mMaskFileWidget->setFilePath( "" );
+            mErrorMessageBox.critical( this, QStringLiteral( "Error" ), QString::fromStdString( rasterError ) );
+        }
+
+        if ( !Utils::compareRasters( mDem, mask, rasterError ) )
+        {
+            mMaskFileWidget->setFilePath( "" );
+            mErrorMessageBox.critical( this, QStringLiteral( "Error" ), QString::fromStdString( rasterError ) );
+        }
+
+        mMask = std::make_shared<QgsRasterLayer>( mMaskFileWidget->filePath(), QStringLiteral( "mask" ),
+                                                  QStringLiteral( "gdal" ) );
 
         saveSettings();
     }
@@ -416,6 +458,11 @@ class MainWindow : public QMainWindow
                 std::make_shared<Point>( mPoint, mDem, QgsDoubleValidator::toDouble( mObserverOffset->text() ) );
             Viewshed v = Viewshed( vp, mDem, mAlgs, useCurvartureCorrections, earthDimeter, refractionCoefficient );
 
+            if ( mMask )
+            {
+                v.setVisibilityMask( mMask );
+            }
+
             v.calculate( addTimingMessage, setProgress );
 
             mProgressBar->setValue( 100 );
@@ -429,6 +476,11 @@ class MainWindow : public QMainWindow
             InverseViewshed iv =
                 InverseViewshed( tp, QgsDoubleValidator::toDouble( mObserverOffset->text() ), mDem, mAlgs,
                                  useCurvartureCorrections, earthDimeter, refractionCoefficient );
+
+            if ( mMask )
+            {
+                iv.setVisibilityMask( mMask );
+            }
 
             iv.calculate( addTimingMessage, setProgress );
 
@@ -455,6 +507,7 @@ class MainWindow : public QMainWindow
     QFormLayout *mLayout = nullptr;
     QWidget *mWidget = nullptr;
     QgsFileWidget *mFileWidget = nullptr;
+    QgsFileWidget *mMaskFileWidget = nullptr;
     QgsFileWidget *mFolderWidget = nullptr;
     QLineEdit *mObserverOffset = nullptr;
     QLineEdit *mTargetOffset = nullptr;
@@ -467,6 +520,7 @@ class MainWindow : public QMainWindow
     QLineEdit *mRefractionCoefficient;
     QLineEdit *mEarthDiameter;
     std::shared_ptr<QgsRasterLayer> mDem;
+    std::shared_ptr<QgsRasterLayer> mMask;
     QSettings mSettings;
     QMessageBox mErrorMessageBox;
     PointWidget *mPointWidget = nullptr;
