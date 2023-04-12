@@ -92,6 +92,8 @@ namespace viewshed
             return 0;
         }
 
+        int numberOfResultRasters() { return mResults.size(); }
+
         long long sizeOfOutputRasters() { return mAlgs->size() * sizeOfOutputRaster(); }
 
       protected:
