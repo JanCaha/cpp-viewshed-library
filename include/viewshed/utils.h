@@ -2,8 +2,12 @@
 #define VIEWSHEDLIB_UTILS_H
 
 #include "abstractlos.h"
+#include "abstractviewshedalgorithm.h"
 #include "losnode.h"
 #include "viewshed.h"
+#include "visibilityalgorithms.h"
+
+using namespace viewshed::visibilityalgorithm;
 
 namespace viewshed
 {
@@ -62,6 +66,29 @@ namespace viewshed
 
         static bool compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<QgsRasterLayer> r2,
                                     std::string &error );
+
+        static std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> allAlgorithms()
+        {
+            static std::vector<std::shared_ptr<AbstractViewshedAlgorithm>> algs;
+
+            algs.push_back( std::make_shared<Boolean>() );
+            algs.push_back( std::make_shared<Horizons>() );
+            algs.push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
+            algs.push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false ) );
+            algs.push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( true ) );
+            algs.push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( false ) );
+            algs.push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true ) );
+            algs.push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false ) );
+            algs.push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true ) );
+            algs.push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false ) );
+            algs.push_back( std::make_shared<ElevationDifference>() );
+            algs.push_back( std::make_shared<HorizonDistance>() );
+            algs.push_back( std::make_shared<Horizons>() );
+            algs.push_back( std::make_shared<LoSSlopeToViewAngle>() );
+            algs.push_back( std::make_shared<ViewAngle>() );
+
+            return std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>( algs );
+        }
     };
 } // namespace viewshed
 
