@@ -369,7 +369,9 @@ class MainWindow : public QMainWindow
         if ( !ViewshedUtils::compareRasters( mDem, mask, rasterError ) )
         {
             mMaskFileWidget->setFilePath( "" );
-            mErrorMessageBox.critical( this, QStringLiteral( "Error" ), QString::fromStdString( rasterError ) );
+            mErrorMessageBox.critical(
+                this, QStringLiteral( "Error" ),
+                QString::fromStdString( "Dem and Visibility Mask raster comparison. " + rasterError ) );
         }
 
         mMask = std::make_shared<QgsRasterLayer>( mMaskFileWidget->filePath(), QStringLiteral( "mask" ),
