@@ -530,6 +530,8 @@ class MainWindow : public QMainWindow
     QCheckBox *mCurvatureCorrections;
     QLineEdit *mRefractionCoefficient;
     QLineEdit *mEarthDiameter;
+    QCheckBox *mNoDataForInvisible;
+
     std::shared_ptr<QgsRasterLayer> mDem;
     std::shared_ptr<QgsRasterLayer> mMask;
     QSettings mSettings;
