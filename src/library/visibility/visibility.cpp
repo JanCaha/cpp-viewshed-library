@@ -91,7 +91,7 @@ double Visibility::distance( int &row, int &column, std::shared_ptr<Point> point
     return distance( r, c, point, cellSize );
 }
 
-double Visibility::gradient( std::shared_ptr<Point> point, double elevation, double &distance )
+double Visibility::gradient( std::shared_ptr<Point> point, double elevation, double distance )
 {
     double elevationDifference = elevation - point->totalElevation();
 

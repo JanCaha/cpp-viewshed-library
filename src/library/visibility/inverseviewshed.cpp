@@ -24,6 +24,8 @@ InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double obs
 {
     mValid = false;
 
+    mInverseViewshed = true;
+
     mPoint = targetPoint;
     mInputDem = dem;
     mAlgs = algs;
@@ -98,90 +100,88 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
 void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pixelValue,
                                          std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell )
 {
-    double elevs[3];
-    elevs[CellEventPositionType::CENTER] = pixelValue;
+    mCellElevs[CellEventPositionType::CENTER] = pixelValue;
     CellEventPosition tempPosEnter = Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint );
-    elevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
     CellEventPosition tempPosExit = Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint );
-    elevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
 
-    double angleCenter = Visibility::angle( row, column, mPoint );
-    double angleEnter = Visibility::angle( &tempPosEnter, mPoint );
-    double angleExit = Visibility::angle( &tempPosExit, mPoint );
+    mAngleCenter = Visibility::angle( row, column, mPoint );
+    mAngleEnter = Visibility::angle( &tempPosEnter, mPoint );
+    mAngleExit = Visibility::angle( &tempPosExit, mPoint );
 
-    double eventDistance = Visibility::distance( row, column, mPoint, mCellSize );
+    mEventDistance = Visibility::distance( row, column, mPoint, mCellSize );
 
-    if ( eventDistance < mMaxDistance && isInsideAngles( angleEnter, angleExit ) )
+    if ( mEventDistance < mMaxDistance && isInsideAngles( mAngleEnter, mAngleExit ) )
     {
-        CellEvent eCenter = CellEvent( CellEventPositionType::CENTER, row, column, eventDistance, angleCenter, elevs );
-        CellEvent eEnter = CellEvent( CellEventPositionType::ENTER, row, column,
-                                      Visibility::distance( &tempPosEnter, mPoint, mCellSize ), angleEnter, elevs );
-        CellEvent eExit = CellEvent( CellEventPositionType::EXIT, row, column,
-                                     Visibility::distance( &tempPosExit, mPoint, mCellSize ), angleExit, elevs );
+        mEventCenter =
+            CellEvent( CellEventPositionType::CENTER, row, column, mEventDistance, mAngleCenter, mCellElevs );
+        mEventEnter = CellEvent( CellEventPositionType::ENTER, row, column,
+                                 Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mAngleEnter, mCellElevs );
+        mEventExit = CellEvent( CellEventPositionType::EXIT, row, column,
+                                Visibility::distance( &tempPosExit, mPoint, mCellSize ), mAngleExit, mCellElevs );
 
-        double oppositeAngleEnter = angleEnter;
-        double oppositeAngleExit = angleExit;
+        mOppositeAngleEnter = mAngleEnter;
+        mOppositeAngleExit = mAngleExit;
 
-        if ( oppositeAngleEnter < M_PI )
+        if ( mOppositeAngleEnter < M_PI )
         {
-            oppositeAngleEnter = M_PI + oppositeAngleEnter;
+            mOppositeAngleEnter = M_PI + mOppositeAngleEnter;
         }
         else
         {
-            oppositeAngleEnter = oppositeAngleEnter - M_PI;
+            mOppositeAngleEnter = mOppositeAngleEnter - M_PI;
         }
 
-        if ( oppositeAngleExit < M_PI )
+        if ( mOppositeAngleExit < M_PI )
         {
-            oppositeAngleExit = M_PI + oppositeAngleExit;
+            mOppositeAngleExit = M_PI + mOppositeAngleExit;
         }
         else
         {
-            oppositeAngleExit = oppositeAngleExit - M_PI;
+            mOppositeAngleExit = mOppositeAngleExit - M_PI;
         }
 
-        CellEvent eEnterOpposite =
+        mEventEnterOpposite =
             CellEvent( CellEventPositionType::ENTER, row, column,
-                       Visibility::distance( &tempPosEnter, mPoint, mCellSize ), oppositeAngleEnter, elevs );
-        eEnterOpposite.behindTargetForInverseLoS = true;
+                       Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mOppositeAngleEnter, mCellElevs );
+        mEventEnterOpposite.behindTargetForInverseLoS = true;
 
-        CellEvent eExitOpposite =
+        mEventExitOpposite =
             CellEvent( CellEventPositionType::EXIT, row, column,
-                       Visibility::distance( &tempPosExit, mPoint, mCellSize ), oppositeAngleExit, elevs );
-        eExitOpposite.behindTargetForInverseLoS = true;
+                       Visibility::distance( &tempPosExit, mPoint, mCellSize ), mOppositeAngleExit, mCellElevs );
+        mEventExitOpposite.behindTargetForInverseLoS = true;
 
         // Target or ViewPoint are not part CellEvents - handled separately
         if ( mPoint->row == row && mPoint->col == column )
         {
-            mLosNodePoint = LoSNode( mPoint, &eCenter, mCellSize );
+            mLosNodePoint = LoSNode( mPoint, &mEventCenter, mCellSize );
             return;
         }
 
         // LosNode prefill
         if ( mPoint->row == row )
         {
-            LoSNode ln;
-
             if ( mPoint->col < column )
             {
-                ln = LoSNode( mPoint, &eEnter, mCellSize );
-                mLosNodes.push_back( ln );
+                mLoSNodeTemp = LoSNode( mPoint, &mEventCenter, mCellSize );
+                mLosNodes.push_back( mLoSNodeTemp );
             }
             else
             {
-                ln = LoSNode( mPoint, &eEnterOpposite, mCellSize );
-                mLosNodes.push_back( ln );
+                mLoSNodeTemp = LoSNode( mPoint, &mEventEnterOpposite, mCellSize );
+                mLosNodes.push_back( mLoSNodeTemp );
             }
         }
 
-        mCellEvents.push_back( eEnterOpposite );
-        mCellEvents.push_back( eExitOpposite );
+        mCellEvents.push_back( mEventEnterOpposite );
+        mCellEvents.push_back( mEventExitOpposite );
 
-        mCellEvents.push_back( eEnter );
-        mCellEvents.push_back( eExit );
+        mCellEvents.push_back( mEventEnter );
+        mCellEvents.push_back( mEventExit );
         if ( solveCell )
         {
-            mCellEvents.push_back( eCenter );
+            mCellEvents.push_back( mEventCenter );
         }
     }
 }

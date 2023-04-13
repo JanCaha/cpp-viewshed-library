@@ -12,6 +12,7 @@
 #include "abstractviewshedalgorithm.h"
 #include "cellevent.h"
 #include "celleventposition.h"
+#include "defaultdatatypes.h"
 #include "los.h"
 #include "losnode.h"
 #include "memoryraster.h"
@@ -39,6 +40,12 @@ namespace viewshed
         void setMaxResultsInMemory( int maxResults );
         void setMaxThreads( int threads );
 
+        void prepareMemoryRasters();
+
+        virtual void calculate(
+            std::function<void( std::string, double )> stepsTimingCallback = []( std::string text, double time ) {},
+            std::function<void( int, int )> progressCallback = []( int, int ) {} ) = 0;
+
         virtual void addEventsFromCell( int &row, int &column, const double &pixelValue,
                                         std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell ) = 0;
 
@@ -47,16 +54,19 @@ namespace viewshed
         std::shared_ptr<MemoryRaster> resultRaster( int index = 0 );
 
         void saveResults( QString location, QString fileNamePrefix = QString() );
+
+        void saveResultsStdString( std::string location, std::string fileNamePrefix = "" );
+
         LoSNode statusNodeFromPoint( QgsPoint point );
         QgsPoint point( int row, int col );
+
+        void setDefaultResultDataType( Qgis::DataType dataType );
 
         long numberOfValidCells() { return mValidCells; };
 
         long numberOfCellEvents() { return mCellEvents.size(); };
 
         void setVisibilityMask( std::shared_ptr<QgsRasterLayer> mask ) { mVisibilityMask = mask; }
-
-        long long sizeOfEventList() { return sizeof( CellEvent ) * mCellEvents.size(); };
 
         long long totalCountOfLoSNodes() { return mTotalLosNodesCount; };
 
@@ -74,18 +84,33 @@ namespace viewshed
 
         double processingLastedSeconds() { return initLastedSeconds() + sortLastedSeconds() + parseLastedSeconds(); }
 
+        long long sizeOfOutputRaster()
+        {
+            if ( mResults.size() > 0 )
+            {
+                return mResults[0]->dataSize();
+            }
+            return 0;
+        }
+
+        int numberOfResultRasters() { return mResults.size(); }
+
+        long long sizeOfOutputRasters() { return mAlgs->size() * sizeOfOutputRaster(); }
+
       protected:
         std::vector<LoSNode> mLosNodes;
         std::vector<CellEvent> mCellEvents;
         std::shared_ptr<QgsRasterLayer> mInputDem;
-        std::shared_ptr<QgsRasterLayer> mVisibilityMask;
+        std::shared_ptr<QgsRasterLayer> mVisibilityMask = nullptr;
         std::shared_ptr<Point> mPoint;
         std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
-        Qgis::DataType mDataType = Qgis::DataType::Float64;
+        Qgis::DataType mDataType = OUTPUT_RASTER_DATA_TYPE;
         int mDefaultBand = 1;
         long mValidCells = 0;
         long mTotalLosNodesCount = 0;
         long mNumberOfLos = 0;
+
+        bool mInverseViewshed = false;
 
         double mMaxDistance = std::numeric_limits<double>::max();
         double mMinAngle = std::numeric_limits<double>::quiet_NaN();
@@ -102,7 +127,6 @@ namespace viewshed
 
         std::vector<LoSNode> prepareLoSWithPoint( QgsPoint point );
         bool validAngles();
-        void prepareMemoryRasters();
         void setPixelData( ViewshedValues values );
         void parseCalculatedResults();
 
@@ -117,6 +141,14 @@ namespace viewshed
 
         double getCornerValue( const CellEventPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
                                double defaultValue );
+
+        double mCellElevs[3];
+        double mAngleCenter, mAngleEnter, mAngleExit;
+        double mEventDistance;
+        CellEvent mEventCenter, mEventEnter, mEventExit = CellEvent();
+        CellEvent mEventEnterOpposite, mEventExitOpposite = CellEvent();
+        double mOppositeAngleEnter, mOppositeAngleExit;
+        LoSNode mLoSNodeTemp = LoSNode();
     };
 
 } // namespace viewshed

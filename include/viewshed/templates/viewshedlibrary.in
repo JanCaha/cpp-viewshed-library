@@ -1,0 +1,45 @@
+#ifndef VIEWSHEDLIB_H
+#define VIEWSHEDLIB_H
+
+#include <algorithm>
+#include <string>
+
+class ViewshedLibrary{
+
+    public:
+        static std::string version()
+        {
+            return "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@";
+        }
+
+        static int versionMajor(){
+            return @PROJECT_VERSION_MAJOR@;
+        }
+
+        static int versionMinor(){
+            return @PROJECT_VERSION_MINOR@;
+        }
+
+        static int versionPatch(){
+            return @PROJECT_VERSION_PATCH@;
+        }
+
+        static bool useFloatInCellEvents()
+        {   
+            return upper("@CELL_EVENT_DATA_FLOAT@") == "ON";
+        } 
+
+        static bool defaultRasterOutputValuesFloat()
+        {
+            return upper("@OUTPUT_RASTER_DATA_FLOAT@") == "ON";
+        }
+    
+    private:
+        static std::string upper(std::string str)
+        {   
+            std::transform( str.begin(), str.end(), str.begin(), ::toupper );
+            return str;
+        }
+};
+
+#endif

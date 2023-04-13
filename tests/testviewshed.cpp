@@ -7,8 +7,8 @@
 
 #include "abstractviewshedalgorithm.h"
 #include "point.h"
-#include "utils.h"
 #include "viewshed.h"
+#include "viewshedutils.h"
 #include "visibility.h"
 #include "visibilityangledifferencetolocalhorizon.h"
 #include "visibilityboolean.h"
@@ -33,10 +33,7 @@ class TestViewshed : public QObject
     {
         dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM, "dsm", "gdal" );
         vp = std::make_shared<Point>( QgsPoint( -336364.021, -1189108.615 ), dem );
-        algs->push_back( std::make_shared<Boolean>() );
-        algs->push_back( std::make_shared<Horizons>() );
-        algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
-        algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false ) );
+        algs = ViewshedUtils::allAlgorithms();
     }
 
     void testLoS()
@@ -56,10 +53,10 @@ class TestViewshed : public QObject
         los = v.getLoS( poiPoint, true );
         QVERIFY( los->size() == 70 );
 
-        std::vector<DataTriplet> data = Utils::distanceElevation( los );
+        std::vector<DataTriplet> data = ViewshedUtils::distanceElevation( los );
         QVERIFY( data.size() == 72 );
 
-        Utils::saveToCsv( data, "distance,elevation\n", TEST_DATA_LOS );
+        ViewshedUtils::saveToCsv( data, "distance,elevation\n", TEST_DATA_LOS );
     }
 
     void testInitCells()
@@ -70,12 +67,30 @@ class TestViewshed : public QObject
         v.initEventList();
         QVERIFY( v.numberOfValidCells() == 37990 );
         QVERIFY( v.numberOfCellEvents() == ( v.numberOfValidCells() - 1 ) * 3 );
+
+#if ( CELL_EVENT_USE_FLOAT )
+        QVERIFY( v.sizeOfEvents() == 4102812 );
+#else
+        QVERIFY( v.sizeOfEvents() == 7293888 );
+#endif
+    }
+
+    void testOutputRasterSize()
+    {
+        Viewshed v( vp, dem, algs );
+        v.prepareMemoryRasters();
+#if ( CELL_EVENT_USE_FLOAT )
+        QVERIFY( v.sizeOfOutputRaster() == 156100 );
+#else
+        QVERIFY( v.sizeOfOutputRaster() == 312200 );
+#endif
     }
 
     void testViewshedCalculation()
     {
         Viewshed v( vp, dem, algs );
         v.calculate();
+        QVERIFY( v.numberOfResultRasters() == algs->size() );
         v.saveResults( TEST_DATA_RESULTS_DIR );
     }
 };

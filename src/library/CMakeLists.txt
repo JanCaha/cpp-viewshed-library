@@ -8,11 +8,12 @@ set(LIBRARY_VIEWSHED_SRC
     visibility_algorithms/angledifferencetolocalhorizon.cpp
     visibility_algorithms/angledifferencetoglobalhorizon.cpp
     visibility_algorithms/horizondistance.cpp
+    visibility_algorithms/slopetoviewangle.cpp
 
     memory_raster/memoryraster.cpp
 
-    utils/utils.cpp
     utils/db.h
+    utils/viewshedutils.cpp
 
     structures/cellevent.cpp
     structures/point.cpp
@@ -53,3 +54,31 @@ target_link_libraries(library_viewshed
 )
 
 target_compile_definitions(library_viewshed PUBLIC CALCULATE_INDIVIDUAL_LOS_TIMING=true)
+
+if(${CELL_EVENT_DATA_FLOAT})
+    message(STATUS "CellEvents will have data type `float`.")
+    set(CELL_EVENT_DATA_TYPE float)
+    target_compile_definitions(library_viewshed PUBLIC CELL_EVENT_USE_FLOAT=1)
+else()
+    set(CELL_EVENT_DATA_TYPE double)
+    message(STATUS "CellEvents will have data type `double`.")
+endif()
+
+if(${OUTPUT_RASTER_DATA_FLOAT})
+    set(OUTPUT_RASTER_DATA_TYPE Qgis::DataType::Float32)
+    message(STATUS "Output rasters will have data type `Float32`.")
+else()
+    set(OUTPUT_RASTER_DATA_TYPE Qgis::DataType::Float64)
+    message(STATUS "Output rasters will have data type `Float64`.")
+endif()
+
+configure_file(
+    ../../include/viewshed/templates/defaultdatatypes.txt
+    ${CMAKE_SOURCE_DIR}/include/viewshed/defaultdatatypes.h
+    @ONLY
+)
+
+configure_file(
+    ../../include/viewshed/templates/viewshedlibrary.in
+    ${CMAKE_SOURCE_DIR}/include/viewshed/viewshedlibrary.h
+)

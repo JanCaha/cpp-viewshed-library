@@ -2,21 +2,25 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "qgscoordinatereferencesystem.h"
 #include "qgsellipsoidutils.h"
 
+#include "abstractviewshedalgorithm.h"
 #include "inverselos.h"
-#include "utils.h"
+#include "viewshedutils.h"
 #include "visibility.h"
 
+using viewshed::AbstractViewshedAlgorithm;
 using viewshed::DataTriplet;
 using viewshed::InverseLoS;
-using viewshed::Utils;
+using viewshed::ViewshedUtils;
+using namespace viewshed::visibilityalgorithm;
 
 std::string toStr( bool val ) { return val ? "true" : "false"; }
 
-void Utils::saveToCsv( std::vector<DataTriplet> data, std::string header, std::string fileName )
+void ViewshedUtils::saveToCsv( std::vector<DataTriplet> data, std::string header, std::string fileName )
 {
     std::ofstream resultCsvFile;
 
@@ -46,7 +50,7 @@ void Utils::saveToCsv( std::vector<DataTriplet> data, std::string header, std::s
     resultCsvFile.close();
 }
 
-std::vector<DataTriplet> Utils::distanceElevation( std::shared_ptr<AbstractLoS> los )
+std::vector<DataTriplet> ViewshedUtils::distanceElevation( std::shared_ptr<AbstractLoS> los )
 {
     std::vector<DataTriplet> data;
 
@@ -81,7 +85,7 @@ std::vector<DataTriplet> Utils::distanceElevation( std::shared_ptr<AbstractLoS> 
     return data;
 }
 
-double Utils::earthDiameter( QgsCoordinateReferenceSystem crs )
+double ViewshedUtils::earthDiameter( QgsCoordinateReferenceSystem crs )
 {
     QString ellipsoid = crs.ellipsoidAcronym();
     if ( !ellipsoid.isEmpty() )
@@ -92,7 +96,8 @@ double Utils::earthDiameter( QgsCoordinateReferenceSystem crs )
     return EARTH_DIAMETER;
 };
 
-bool Utils::compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<QgsRasterLayer> r2, std::string &error )
+bool ViewshedUtils::compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<QgsRasterLayer> r2,
+                                    std::string &error )
 {
 
     if ( r1->crs() != r2->crs() )
@@ -128,7 +133,7 @@ bool Utils::compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<
     return true;
 }
 
-bool Utils::validateRaster( std::shared_ptr<QgsRasterLayer> rl, std::string &error )
+bool ViewshedUtils::validateRaster( std::shared_ptr<QgsRasterLayer> rl, std::string &error )
 {
     if ( !rl )
     {
@@ -162,3 +167,53 @@ bool Utils::validateRaster( std::shared_ptr<QgsRasterLayer> rl, std::string &err
 
     return true;
 }
+<<<<<<< HEAD:src/library/utils/utils.cpp
+=======
+
+std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> ViewshedUtils::allAlgorithms()
+{
+    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs =
+        std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
+
+    algs->push_back( std::make_shared<Boolean>() );
+    algs->push_back( std::make_shared<Horizons>() );
+    algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
+    algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false ) );
+    algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( true ) );
+    algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( false ) );
+    algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true ) );
+    algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false ) );
+    algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true ) );
+    algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false ) );
+    algs->push_back( std::make_shared<ElevationDifference>() );
+    algs->push_back( std::make_shared<HorizonDistance>() );
+    algs->push_back( std::make_shared<LoSSlopeToViewAngle>() );
+    algs->push_back( std::make_shared<ViewAngle>() );
+
+    return algs;
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>
+ViewshedUtils::allAlgorithms( double invisibleValue )
+{
+    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs =
+        std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
+
+    algs->push_back( std::make_shared<Boolean>() );
+    algs->push_back( std::make_shared<Horizons>( 1, invisibleValue ) );
+    algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
+    algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false, invisibleValue ) );
+    algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( true ) );
+    algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( false, invisibleValue ) );
+    algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true ) );
+    algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false, invisibleValue ) );
+    algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true ) );
+    algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false, invisibleValue ) );
+    algs->push_back( std::make_shared<ElevationDifference>() );
+    algs->push_back( std::make_shared<HorizonDistance>() );
+    algs->push_back( std::make_shared<LoSSlopeToViewAngle>( invisibleValue ) );
+    algs->push_back( std::make_shared<ViewAngle>() );
+
+    return algs;
+}
+>>>>>>> v2:src/library/utils/viewshedutils.cpp

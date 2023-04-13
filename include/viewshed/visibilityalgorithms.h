@@ -6,4 +6,5 @@
 #include "visibilityelevationdifferencetolocalhorizon.h"
 #include "visibilityhorizondistance.h"
 #include "visibilityhorizons.h"
+#include "visibilityslopetoviewangle.h"
 #include "visibilityviewangle.h"

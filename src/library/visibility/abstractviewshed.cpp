@@ -9,10 +9,22 @@ using viewshed::MemoryRaster;
 
 void AbstractViewshed::prepareMemoryRasters()
 {
+    mResults.clear();
+    mResults.reserve( mAlgs->size() );
+
     for ( int i = 0; i < mAlgs->size(); i++ )
     {
-        mResults.push_back( std::make_shared<MemoryRaster>( mInputDem, Qgis::DataType::Float32,
-                                                            mInputDem->dataProvider()->sourceNoDataValue( 1 ) ) );
+        mResults.push_back( std::make_shared<MemoryRaster>(
+            mInputDem, mDataType, mInputDem->dataProvider()->sourceNoDataValue( mDefaultBand ) ) );
+    }
+}
+
+void AbstractViewshed::setDefaultResultDataType( Qgis::DataType dataType )
+{
+    mDataType = dataType;
+    if ( !mResults.empty() )
+    {
+        prepareMemoryRasters();
     }
 }
 
@@ -26,57 +38,50 @@ void AbstractViewshed::initEventList()
     mTotalLosNodesCount = 0;
     mNumberOfLos = 0;
 
-    std::unique_ptr<QgsRasterInterface> rInterface;
-    rInterface.reset( mInputDem->dataProvider()->clone() );
-
-    QgsRasterIterator iter( rInterface.get() );
-    iter.setMaximumTileHeight( rInterface->ySize() + 1 );
-    iter.setMaximumTileWidth( rInterface->xSize() + 1 );
-
-    iter.startRasterRead( mDefaultBand, mInputDem->width(), mInputDem->height(), mInputDem->extent() );
-    int iterLeft = 0;
-    int iterTop = 0;
-    int iterCols = 0;
-    int iterRows = 0;
-    bool isNoData = false;
-    std::unique_ptr<QgsRasterBlock> rasterBlock; // = std::make_shared<QgsRasterBlock>();
-    QgsRasterBlock *maskBlock;
-    bool isMaskNoData = false;
-    bool solveCell = false;
-
-    while ( iter.readNextRasterPart( mDefaultBand, iterCols, iterRows, rasterBlock, iterLeft, iterTop ) )
+    if ( mInverseViewshed )
     {
-        if ( mVisibilityMask )
-        {
-            maskBlock = mVisibilityMask->dataProvider()->block( mDefaultBand, mInputDem->extent(), mInputDem->width(),
-                                                                mInputDem->height() );
-        }
+        mCellEvents.reserve( mInputDem->height() * mInputDem->width() * 5 );
+    }
+    else
+    {
+        mCellEvents.reserve( mInputDem->height() * mInputDem->width() * 3 );
+    }
 
-        for ( int blockRow = 0; blockRow < iterRows; blockRow++ )
+    std::unique_ptr<QgsRasterBlock> rasterBlock( mInputDem->dataProvider()->block(
+        mDefaultBand, mInputDem->extent(), mInputDem->width(), mInputDem->height() ) );
+
+    bool isNoData = false;
+    bool isMaskNoData = false;
+    std::unique_ptr<QgsRasterBlock> maskBlock;
+
+    bool solveCell;
+
+    if ( mVisibilityMask )
+    {
+        maskBlock = std::unique_ptr<QgsRasterBlock>( mVisibilityMask->dataProvider()->block(
+            mDefaultBand, mInputDem->extent(), mInputDem->width(), mInputDem->height() ) );
+    }
+
+    for ( int row = 0; row < rasterBlock->height(); row++ )
+    {
+        for ( int column = 0; column < rasterBlock->width(); column++ )
         {
-            for ( int blockColumn = 0; blockColumn < iterCols; blockColumn++ )
+            const double pixelValue = rasterBlock->valueAndNoData( row, column, isNoData );
+
+            solveCell = true;
+            if ( mVisibilityMask )
             {
-                const double pixelValue = rasterBlock->valueAndNoData( blockRow, blockColumn, isNoData );
-
-                solveCell = true;
-                if ( mVisibilityMask )
+                const double maskValue = maskBlock->valueAndNoData( row, column, isMaskNoData );
+                if ( isMaskNoData || maskValue == 0 )
                 {
-                    const double maskValue = maskBlock->valueAndNoData( blockRow, blockColumn, isMaskNoData );
-                    if ( isMaskNoData || maskValue == 0 )
-                    {
-                        solveCell = false;
-                    }
+                    solveCell = false;
                 }
+            }
 
-                if ( !isNoData )
-                {
-                    mValidCells++;
-
-                    int column = blockColumn + iterLeft;
-                    int row = blockRow + iterTop;
-
-                    addEventsFromCell( row, column, pixelValue, rasterBlock, solveCell );
-                }
+            if ( !isNoData )
+            {
+                mValidCells++;
+                addEventsFromCell( row, column, pixelValue, rasterBlock, solveCell );
             }
         }
     }
@@ -168,7 +173,6 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
     {
         progressCallback( mCellEvents.size(), i );
 
-        LoSNode ln;
         switch ( e.eventType )
         {
             case CellEventPositionType::ENTER:
@@ -178,8 +182,8 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
                     break;
                 }
 
-                ln = LoSNode( mPoint, &e, mCellSize );
-                mLosNodes.push_back( ln );
+                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                mLosNodes.push_back( mLoSNodeTemp );
                 break;
             }
             case CellEventPositionType::EXIT:
@@ -189,9 +193,9 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
                     break;
                 }
 
-                ln = LoSNode( e.row, e.col );
+                mLoSNodeTemp = LoSNode( e.row, e.col );
 
-                std::vector<LoSNode>::iterator index = std::find( mLosNodes.begin(), mLosNodes.end(), ln );
+                std::vector<LoSNode>::iterator index = std::find( mLosNodes.begin(), mLosNodes.end(), mLoSNodeTemp );
                 if ( index != mLosNodes.end() )
                 {
                     mLosNodes.erase( index );
@@ -253,15 +257,15 @@ void AbstractViewshed::setPixelData( ViewshedValues values )
 void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
                                                    std::function<double( LoSNode )> func )
 {
-    MemoryRaster result = MemoryRaster( dem_ );
+    MemoryRaster result = MemoryRaster( dem_, mDataType );
 
     int i = 0;
     for ( CellEvent event : mCellEvents )
     {
         if ( event.eventType == CellEventPositionType::CENTER )
         {
-            LoSNode ln( mPoint, &event, mCellSize );
-            result.setValue( func( ln ), ln.col, ln.row );
+            mLoSNodeTemp = LoSNode( mPoint, &event, mCellSize );
+            result.setValue( func( mLoSNodeTemp ), mLoSNodeTemp.col, mLoSNodeTemp.row );
         }
         i++;
     }
@@ -304,6 +308,11 @@ double AbstractViewshed::getCornerValue( const CellEventPosition &pos, const std
 }
 
 std::shared_ptr<MemoryRaster> AbstractViewshed::resultRaster( int index ) { return mResults.at( index ); }
+
+void AbstractViewshed::saveResultsStdString( std::string location, std::string fileNamePrefix )
+{
+    saveResults( QString::fromStdString( location ), QString::fromStdString( fileNamePrefix ) );
+};
 
 void AbstractViewshed::saveResults( QString location, QString fileNamePrefix )
 {
@@ -361,9 +370,9 @@ void AbstractViewshed::setMaxResultsInMemory( int maxResults ) { mMaxNumberOfRes
 
 void AbstractViewshed::setMaxThreads( int threads )
 {
-    if ( mThreadPool.get_thread_count() < threads )
+    if ( std::thread::hardware_concurrency() < threads )
     {
-        return;
+        threads = std::thread::hardware_concurrency();
     }
 
     mThreadPool.reset( threads );
@@ -373,7 +382,6 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( QgsPoint point )
 {
 
     LoSNode poi = statusNodeFromPoint( point );
-    LoSNode ln;
 
     std::vector<LoSNode> losNodes;
 
@@ -387,8 +395,8 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( QgsPoint point )
                 {
                     break;
                 }
-                ln = LoSNode( mPoint, &e, mCellSize );
-                losNodes.push_back( ln );
+                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                losNodes.push_back( mLoSNodeTemp );
                 break;
             }
 
@@ -398,8 +406,8 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( QgsPoint point )
                 {
                     break;
                 }
-                ln = LoSNode( e.row, e.col );
-                std::vector<LoSNode>::iterator index = std::find( losNodes.begin(), losNodes.end(), ln );
+                mLoSNodeTemp = LoSNode( e.row, e.col );
+                std::vector<LoSNode>::iterator index = std::find( losNodes.begin(), losNodes.end(), mLoSNodeTemp );
                 if ( index != losNodes.end() )
                 {
                     losNodes.erase( index );
@@ -409,8 +417,8 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( QgsPoint point )
 
             case CellEventPositionType::CENTER:
             {
-                ln = LoSNode( mPoint, &e, mCellSize );
-                if ( ln.col == poi.col && ln.row == poi.row )
+                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                if ( mLoSNodeTemp.col == poi.col && mLoSNodeTemp.row == poi.row )
                 {
                     return losNodes;
                 }

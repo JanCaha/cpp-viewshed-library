@@ -25,8 +25,8 @@
 #include "abstractviewshedalgorithm.h"
 #include "inverseviewshed.h"
 #include "point.h"
-#include "utils.h"
 #include "viewshed.h"
+#include "viewshedutils.h"
 #include "visibilityalgorithms.h"
 
 #include "pointwidget.h"
@@ -340,7 +340,7 @@ class MainWindow : public QMainWindow
         mViewPointWidget->setCrs( mDem->crs().authid() );
         mTargetPointWidget->setCrs( mDem->crs().authid() );
 
-        mEarthDiameter->setText( QString::number( Utils::earthDiameter( mDem->crs() ), 'f' ) );
+        mEarthDiameter->setText( QString::number( ViewshedUtils::earthDiameter( mDem->crs() ), 'f' ) );
 
         enableCalculation();
 
@@ -461,9 +461,9 @@ class MainWindow : public QMainWindow
 
             std::shared_ptr<LoS> los = v.getLoS( mTargetPoint );
 
-            std::vector<DataTriplet> data = Utils::distanceElevation( los );
+            std::vector<DataTriplet> data = ViewshedUtils::distanceElevation( los );
 
-            Utils::saveToCsv( data, "distance,elevation,target_point\n", resultFile.toStdString() );
+            ViewshedUtils::saveToCsv( data, "distance,elevation,target_point\n", resultFile.toStdString() );
 
             mCalculateButton->setEnabled( true );
         }
@@ -479,9 +479,9 @@ class MainWindow : public QMainWindow
 
             std::shared_ptr<InverseLoS> inverselos = iv.getLoS( mViewPoint );
 
-            std::vector<DataTriplet> data = Utils::distanceElevation( inverselos );
+            std::vector<DataTriplet> data = ViewshedUtils::distanceElevation( inverselos );
 
-            Utils::saveToCsv( data, "distance,elevation,target_point\n", resultFile.toStdString() );
+            ViewshedUtils::saveToCsv( data, "distance,elevation,target_point\n", resultFile.toStdString() );
 
             mCalculateButton->setEnabled( true );
         }
@@ -521,7 +521,7 @@ int main( int argc, char *argv[] )
 {
     QApplication app( argc, argv );
     QApplication::setApplicationName( QStringLiteral( "LoS Extractor" ) );
-    QApplication::setApplicationVersion( QStringLiteral( "0.1" ) );
+    QApplication::setApplicationVersion( QStringLiteral( "0.5" ) );
     QCoreApplication::setOrganizationName( QStringLiteral( "JanCaha" ) );
     QCoreApplication::setOrganizationDomain( QStringLiteral( "cahik.cz" ) );
 

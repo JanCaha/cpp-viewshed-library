@@ -1,6 +1,7 @@
 #ifndef VIEWSHEDLIB_EVENT_H
 #define VIEWSHEDLIB_EVENT_H
 
+#include "defaultdatatypes.h"
 #include "enums.h"
 #include "point.h"
 #include "rasterposition.h"
@@ -17,10 +18,12 @@ namespace viewshed
     {
       public:
         CellEventPositionType eventType;
-        double dist2vp;
-        double angle;
-        double elevation[3];
+        CELL_EVENT_DATA_TYPE dist2vp;
+        CELL_EVENT_DATA_TYPE angle;
+        CELL_EVENT_DATA_TYPE elevation[3];
         bool behindTargetForInverseLoS = false;
+
+        CellEvent();
 
         CellEvent( CellEventPositionType eventType_, int row_, int col_, double dist_, double angle_,
                    double elevation_[3] );

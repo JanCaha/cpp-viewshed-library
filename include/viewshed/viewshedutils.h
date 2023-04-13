@@ -2,8 +2,12 @@
 #define VIEWSHEDLIB_UTILS_H
 
 #include "abstractlos.h"
+#include "abstractviewshedalgorithm.h"
 #include "losnode.h"
 #include "viewshed.h"
+#include "visibilityalgorithms.h"
+
+using namespace viewshed::visibilityalgorithm;
 
 namespace viewshed
 {
@@ -27,7 +31,7 @@ namespace viewshed
         bool third;
     };
 
-    class Utils
+    class ViewshedUtils
     {
       public:
         /**
@@ -62,6 +66,11 @@ namespace viewshed
 
         static bool compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<QgsRasterLayer> r2,
                                     std::string &error );
+
+        static std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> allAlgorithms();
+
+        static std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>
+        allAlgorithms( double invisibleValue );
     };
 } // namespace viewshed
 

@@ -12,8 +12,8 @@
 
 #include "abstractviewshedalgorithm.h"
 #include "point.h"
-#include "utils.h"
 #include "viewshed.h"
+#include "viewshedutils.h"
 #include "visibilityalgorithms.h"
 
 #include "commandlinehelper.h"
@@ -25,10 +25,10 @@ int main( int argc, char *argv[] )
 {
     QCoreApplication app( argc, argv );
     QCoreApplication::setApplicationName( "Viewshed" );
-    QCoreApplication::setApplicationVersion( "0.2" );
+    QCoreApplication::setApplicationVersion( "0.5" );
 
     QCommandLineParser parser;
-    parser.setApplicationDescription( "Viewshed." );
+    parser.setApplicationDescription( "Calculate Viewshed with defined parameters." );
 
     parser.addHelpOption();
     parser.addVersionOption();
@@ -51,6 +51,8 @@ int main( int argc, char *argv[] )
 
     addVisibilityMask( parser );
 
+    addInvisibleNoData( parser );
+
     parser.process( app );
 
     const QStringList args = parser.positionalArguments();
@@ -60,7 +62,7 @@ int main( int argc, char *argv[] )
     std::shared_ptr<QgsRasterLayer> rl = std::make_shared<QgsRasterLayer>( demFilePath, "dem", "gdal" );
 
     std::string rasterError;
-    if ( !Utils::validateRaster( rl, rasterError ) )
+    if ( !ViewshedUtils::validateRaster( rl, rasterError ) )
     {
         exitWithError( rasterError, parser );
     }
@@ -73,12 +75,12 @@ int main( int argc, char *argv[] )
     {
         mask = std::make_shared<QgsRasterLayer>( maskFilePath, "dem", "gdal" );
 
-        if ( !Utils::validateRaster( mask, rasterError ) )
+        if ( !ViewshedUtils::validateRaster( mask, rasterError ) )
         {
             exitWithError( rasterError, parser );
         }
 
-        if ( !Utils::compareRasters( rl, mask, rasterError ) )
+        if ( !ViewshedUtils::compareRasters( rl, mask, rasterError ) )
         {
             exitWithError( "Dem and VisibilityMask raster comparison. " + rasterError, parser );
         }
@@ -96,6 +98,8 @@ int main( int argc, char *argv[] )
 
     double refCoeff = getRefractionCoefficient( parser );
 
+    bool invisibleNoData = getInvisibleNoData( parser );
+
     std::shared_ptr<viewshed::Point> vp =
         std::make_shared<viewshed::Point>( QgsPoint( coord.x, coord.y ), rl, observerOffset );
 
@@ -104,19 +108,17 @@ int main( int argc, char *argv[] )
         exitWithError( "Error: Viewpoint does not lie on the Dem raster.", parser );
     }
 
-    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs =
-        std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
+    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs;
 
-    algs->push_back( std::make_shared<Boolean>() );
-    algs->push_back( std::make_shared<Horizons>() );
-    algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
-    algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false ) );
-    algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( false ) );
-    algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( true ) );
-    algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true ) );
-    algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false ) );
-    algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true ) );
-    algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false ) );
+    if ( invisibleNoData )
+    {
+        double noData = rl->dataProvider()->sourceNoDataValue( 1 );
+        algs = ViewshedUtils::allAlgorithms( noData );
+    }
+    else
+    {
+        algs = ViewshedUtils::allAlgorithms();
+    }
 
     Viewshed v( vp, rl, algs, curvatureCorrections, earthDiam, refCoeff );
 

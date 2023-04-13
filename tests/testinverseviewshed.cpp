@@ -8,7 +8,7 @@
 #include "abstractviewshedalgorithm.h"
 #include "inverseviewshed.h"
 #include "point.h"
-#include "utils.h"
+#include "viewshedutils.h"
 #include "visibility.h"
 #include "visibilityangledifferencetolocalhorizon.h"
 #include "visibilityboolean.h"
@@ -59,10 +59,10 @@ class TestInverseViewshed : public QObject
         los = v.getLoS( poiPoint, true );
         QVERIFY( los->size() == 98 );
 
-        std::vector<DataTriplet> data = Utils::distanceElevation( los );
+        std::vector<DataTriplet> data = ViewshedUtils::distanceElevation( los );
         QVERIFY( data.size() == 100 );
 
-        Utils::saveToCsv( data, "distance,elevation,target_point\n", TEST_DATA_LOS );
+        ViewshedUtils::saveToCsv( data, "distance,elevation,target_point\n", TEST_DATA_LOS );
     }
 
     void testInitCells()

@@ -50,13 +50,6 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
     distances[CellEventPositionType::CENTER] = Visibility::distance( row, col, point, cellSize );
     distances[CellEventPositionType::ENTER] = Visibility::distance( &posEnter, point, cellSize );
     distances[CellEventPositionType::EXIT] = Visibility::distance( &posExit, point, cellSize );
-
-    gradient[CellEventPositionType::CENTER] =
-        Visibility::gradient( point, elevs[CellEventPositionType::CENTER], distances[CellEventPositionType::CENTER] );
-    gradient[CellEventPositionType::ENTER] =
-        Visibility::gradient( point, elevs[CellEventPositionType::ENTER], distances[CellEventPositionType::ENTER] );
-    gradient[CellEventPositionType::EXIT] =
-        Visibility::gradient( point, elevs[CellEventPositionType::EXIT], distances[CellEventPositionType::EXIT] );
 }
 
 double LoSNode::value( CellEventPositionType position, ValueType valueType )
@@ -74,10 +67,6 @@ double LoSNode::value( CellEventPositionType position, ValueType valueType )
         case ValueType::Elevation:
         {
             return elevs[position];
-        }
-        case ValueType::Gradient:
-        {
-            return gradient[position];
         }
         default:
         {
@@ -125,8 +114,6 @@ double LoSNode::valueAtAngle( const double &specificAngle, ValueType valueType )
 }
 
 double LoSNode::centreAngle() { return angle[CellEventPositionType::CENTER]; }
-
-double LoSNode::centreGradient() { return gradient[CellEventPositionType::CENTER]; }
 
 double LoSNode::centreElevation() { return elevs[CellEventPositionType::CENTER]; }
 

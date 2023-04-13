@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 1.9.6 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 1.9.9 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." OFF)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
 option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." OFF)
+
+option(CELL_EVENT_DATA_FLOAT "Create CellEvents with data stored `float` instead of `double`. Lowers significantly RAM memory usage." ON)
+option(OUTPUT_RASTER_DATA_FLOAT "Create output rasters with data stored `Float32` instead of `Float64`. Lowers RAM memory usage." ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
@@ -58,6 +61,7 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/abstractviewshedalgorithm.h
     include/viewshed/cellevent.h
     include/viewshed/celleventposition.h
+    include/viewshed/defaultdatatypes.h
     include/viewshed/enums.h
     include/viewshed/inverselos.h
     include/viewshed/inverseviewshed.h
@@ -69,7 +73,6 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/point.h
     include/viewshed/rasterposition.h
     include/viewshed/threadtasks.h
-    include/viewshed/utils.h
     include/viewshed/viewshed.h
     include/viewshed/viewshedvalues.h
     include/viewshed/visibility.h
@@ -83,6 +86,9 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/visibilityviewangle.h
     include/viewshed/visibilityboolean.h
     include/viewshed/visibilityalgorithms.h
+    include/viewshed/visibilityslopetoviewangle.h
+    include/viewshed/viewshedlibrary.h
+    include/viewshed/viewshedutils.h
 )
 
 # ############################################################

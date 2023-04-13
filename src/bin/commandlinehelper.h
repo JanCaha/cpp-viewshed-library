@@ -2,8 +2,10 @@
 #include "ostream"
 #include <cmath>
 
+#include <QCommandLineOption>
 #include <QCommandLineParser>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QString>
 
@@ -166,4 +168,17 @@ QString getVisibilityMask( QCommandLineParser &parser )
     }
 
     return file.fileName();
+}
+
+void addInvisibleNoData( QCommandLineParser &parser )
+{
+    QCommandLineOption useNoDataForInvisble(
+        QStringLiteral( "invisibleAsNoData" ),
+        "Set invisible areas to No Data for some visibility indices. Otherwise default values are set.", "true" );
+    parser.addOption( useNoDataForInvisble );
+}
+
+bool getInvisibleNoData( QCommandLineParser &parser )
+{
+    return QVariant( parser.value( QStringLiteral( "invisibleAsNoData" ) ) ).toBool();
 }

@@ -13,7 +13,7 @@
 #include "losnode.h"
 #include "memoryraster.h"
 #include "point.h"
-#include "utils.h"
+#include "viewshedutils.h"
 #include "visibilityangledifferencetoglobalhorizon.h"
 #include "visibilityangledifferencetolocalhorizon.h"
 #include "visibilityboolean.h"
