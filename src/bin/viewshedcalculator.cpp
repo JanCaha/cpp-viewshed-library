@@ -287,6 +287,7 @@ class MainWindow : public QMainWindow
         mNoDataForInvisible->setChecked( settings.value( QStringLiteral( "noDataForInvisible" ), true ).toBool() );
 
         validateDem();
+        validateMask();
         updatePointLabel( mPointWidget->pointXY() );
     }
 
