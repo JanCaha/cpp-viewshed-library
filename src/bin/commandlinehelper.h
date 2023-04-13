@@ -168,3 +168,16 @@ QString getVisibilityMask( QCommandLineParser &parser )
 
     return file.fileName();
 }
+
+void addInvisibleNoData( QCommandLineParser &parser )
+{
+    QCommandLineOption useCurvatureCorrections(
+        QStringLiteral( "invisibleAsNoData" ),
+        "Set invisible areas to No Data for some visibility indices. Otherwise default values are set.", "true" );
+    parser.addOption( useCurvatureCorrections );
+}
+
+bool getInvisibleNoData( QCommandLineParser &parser )
+{
+    return QVariant( parser.value( QStringLiteral( "invisibleAsNoData" ) ) ).toBool();
+}
