@@ -28,7 +28,7 @@ int main( int argc, char *argv[] )
     QCoreApplication::setApplicationVersion( "0.5" );
 
     QCommandLineParser parser;
-    parser.setApplicationDescription( "Viewshed." );
+    parser.setApplicationDescription( "Calculate Viewshed with defined parameters." );
 
     parser.addHelpOption();
     parser.addVersionOption();
