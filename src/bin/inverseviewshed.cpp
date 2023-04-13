@@ -53,6 +53,8 @@ int main( int argc, char *argv[] )
 
     addVisibilityMask( parser );
 
+    addInvisibleNoData( parser );
+
     parser.process( app );
 
     const QStringList args = parser.positionalArguments();
@@ -100,6 +102,8 @@ int main( int argc, char *argv[] )
 
     double refCoeff = getRefractionCoefficient( parser );
 
+    bool invisibleNoData = getInvisibleNoData( parser );
+
     std::shared_ptr<viewshed::Point> tp =
         std::make_shared<viewshed::Point>( QgsPoint( coord.x, coord.y ), rl, targetOffset );
 
@@ -108,19 +112,17 @@ int main( int argc, char *argv[] )
         exitWithError( "Error: Target point does not lie on the Dem raster.", parser );
     }
 
-    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs =
-        std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
+    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs;
 
-    algs->push_back( std::make_shared<Boolean>() );
-    algs->push_back( std::make_shared<Horizons>() );
-    algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
-    algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false ) );
-    algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( false ) );
-    algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( true ) );
-    algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true ) );
-    algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false ) );
-    algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true ) );
-    algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false ) );
+    if ( invisibleNoData )
+    {
+        double noData = rl->dataProvider()->sourceNoDataValue( 1 );
+        algs = ViewshedUtils::allAlgorithms( noData );
+    }
+    else
+    {
+        algs = ViewshedUtils::allAlgorithms();
+    }
 
     InverseViewshed iv( tp, observerOffset, rl, algs, curvatureCorrections, earthDiam, refCoeff );
 
