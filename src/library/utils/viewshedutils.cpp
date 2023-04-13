@@ -167,8 +167,6 @@ bool ViewshedUtils::validateRaster( std::shared_ptr<QgsRasterLayer> rl, std::str
 
     return true;
 }
-<<<<<<< HEAD:src/library/utils/utils.cpp
-=======
 
 std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> ViewshedUtils::allAlgorithms()
 {
@@ -216,4 +214,3 @@ ViewshedUtils::allAlgorithms( double invisibleValue )
 
     return algs;
 }
->>>>>>> v2:src/library/utils/viewshedutils.cpp
