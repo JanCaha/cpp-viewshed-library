@@ -2,6 +2,7 @@
 #include "ostream"
 #include <cmath>
 
+#include <QCommandLineOption>
 #include <QCommandLineParser>
 #include <QDebug>
 #include <QDir>
@@ -171,10 +172,10 @@ QString getVisibilityMask( QCommandLineParser &parser )
 
 void addInvisibleNoData( QCommandLineParser &parser )
 {
-    QCommandLineOption useCurvatureCorrections(
+    QCommandLineOption useNoDataForInvisble(
         QStringLiteral( "invisibleAsNoData" ),
         "Set invisible areas to No Data for some visibility indices. Otherwise default values are set.", "true" );
-    parser.addOption( useCurvatureCorrections );
+    parser.addOption( useNoDataForInvisble );
 }
 
 bool getInvisibleNoData( QCommandLineParser &parser )
