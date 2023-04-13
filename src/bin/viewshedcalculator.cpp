@@ -55,7 +55,7 @@ class MainWindow : public QMainWindow
     {
         initMenu();
         initGui();
-        resize( mSettings.value( QStringLiteral( "UI/mainwindowsize" ), QSize( 600, 400 ) ).toSize() );
+        resize( mSettings.value( QStringLiteral( "UI/mainwindowsize" ), QSize( 800, 400 ) ).toSize() );
     }
 
     void resizeEvent( QResizeEvent *event )
