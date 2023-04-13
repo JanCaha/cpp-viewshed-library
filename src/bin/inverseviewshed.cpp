@@ -24,7 +24,7 @@ using namespace viewshed::visibilityalgorithm;
 int main( int argc, char *argv[] )
 {
     QCoreApplication app( argc, argv );
-    QCoreApplication::setApplicationName( "InverseViewshed" );
+    QCoreApplication::setApplicationName( "Inverse Viewshed" );
     QCoreApplication::setApplicationVersion( "0.5" );
 
     QCommandLineParser parser;
