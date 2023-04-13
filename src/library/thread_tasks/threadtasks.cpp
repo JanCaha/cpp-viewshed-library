@@ -24,13 +24,13 @@ viewshed::evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
 {
     LoSEvaluator losEval( los, algs );
 
-    losEval.calculate();
-
 #if CALCULATE_INDIVIDUAL_LOS_TIMING
     auto inverseLoS = std::dynamic_pointer_cast<InverseLoS>( los );
 
     if ( uint_dist10( rng ) < 5 )
     {
+        losEval.calculate();
+
         if ( inverseLoS )
         {
             handle_inverse_viewshed_los_timing( los->timeToCopy, los->timeToEval, los->numberOfNodes() );
@@ -40,6 +40,8 @@ viewshed::evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
             handle_viewshed_los_timing( los->timeToCopy, los->timeToEval, los->numberOfNodes() );
         }
     }
+#else
+    losEval.calculate();
 #endif
 
     return losEval.results();
