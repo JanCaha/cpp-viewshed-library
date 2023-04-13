@@ -550,7 +550,7 @@ int main( int argc, char *argv[] )
 {
     QApplication app( argc, argv );
     QApplication::setApplicationName( QStringLiteral( "Viewshed Calculator" ) );
-    QApplication::setApplicationVersion( QStringLiteral( "0.2" ) );
+    QApplication::setApplicationVersion( QStringLiteral( "0.5" ) );
     QCoreApplication::setOrganizationName( QStringLiteral( "JanCaha" ) );
     QCoreApplication::setOrganizationDomain( QStringLiteral( "cahik.cz" ) );
     QSettings::setDefaultFormat( QSettings::Format::IniFormat );

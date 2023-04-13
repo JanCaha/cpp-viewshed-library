@@ -25,7 +25,7 @@ int main( int argc, char *argv[] )
 {
     QCoreApplication app( argc, argv );
     QCoreApplication::setApplicationName( "Viewshed" );
-    QCoreApplication::setApplicationVersion( "0.2" );
+    QCoreApplication::setApplicationVersion( "0.5" );
 
     QCommandLineParser parser;
     parser.setApplicationDescription( "Viewshed." );

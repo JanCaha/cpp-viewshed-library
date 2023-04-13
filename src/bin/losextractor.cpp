@@ -521,7 +521,7 @@ int main( int argc, char *argv[] )
 {
     QApplication app( argc, argv );
     QApplication::setApplicationName( QStringLiteral( "LoS Extractor" ) );
-    QApplication::setApplicationVersion( QStringLiteral( "0.1" ) );
+    QApplication::setApplicationVersion( QStringLiteral( "0.5" ) );
     QCoreApplication::setOrganizationName( QStringLiteral( "JanCaha" ) );
     QCoreApplication::setOrganizationDomain( QStringLiteral( "cahik.cz" ) );
 
