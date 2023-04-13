@@ -16,7 +16,7 @@ typedef std::mt19937 MyRNG; // the Mersenne Twister with a popular choice of par
 uint32_t seed_val;          // populate somehow
 
 MyRNG rng;
-std::uniform_int_distribution<uint32_t> uint_dist10( 0, 100 );
+std::uniform_int_distribution<uint32_t> uint_dist10( 0, 200 );
 
 ViewshedValues
 viewshed::evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
