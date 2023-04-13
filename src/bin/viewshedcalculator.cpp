@@ -69,16 +69,14 @@ class MainWindow : public QMainWindow
 
         mAlgs = std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
 
-        mAlgs->push_back( std::make_shared<Boolean>() );
-        mAlgs->push_back( std::make_shared<Horizons>() );
-        mAlgs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
-        mAlgs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false, noData ) );
-        mAlgs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( true ) );
-        mAlgs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( false, noData ) );
-        mAlgs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true ) );
-        mAlgs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false, noData ) );
-        mAlgs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true ) );
-        mAlgs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false, noData ) );
+        if ( mNoDataForInvisible->isChecked() )
+        {
+            mAlgs = ViewshedUtils::allAlgorithms( noData );
+        }
+        else
+        {
+            mAlgs = ViewshedUtils::allAlgorithms();
+        }
     };
 
     void initMenu()
@@ -210,6 +208,9 @@ class MainWindow : public QMainWindow
         mTargetOffset->setValidator( mDoubleValidator );
         mTargetOffset->setText( QStringLiteral( "0.0" ) );
 
+        mNoDataForInvisible = new QCheckBox( this );
+        mNoDataForInvisible->setChecked( true );
+
         mFolderWidget = new QgsFileWidget( this );
         mFolderWidget->setStorageMode( QgsFileWidget::StorageMode::GetDirectory );
 
@@ -225,6 +226,8 @@ class MainWindow : public QMainWindow
         mLayout->addRow( QStringLiteral( "Use curvature corrections:" ), mCurvatureCorrections );
         mLayout->addRow( QStringLiteral( "Reffraction coefficient:" ), mRefractionCoefficient );
         mLayout->addRow( QStringLiteral( "Earth diamether:" ), mEarthDiameter );
+        mLayout->addRow( QStringLiteral( "Set invisible areas to No Data for some visibility indices:" ),
+                         mNoDataForInvisible );
         mLayout->addRow( QStringLiteral( "Folder for results:" ), mFolderWidget );
         mLayout->addRow( mCalculateButton );
         mLayout->addRow( mProgressBar );
@@ -232,6 +235,7 @@ class MainWindow : public QMainWindow
         readSettings();
 
         connect( mViewshedType, qOverload<int>( &QComboBox::currentIndexChanged ), this, &MainWindow::saveSettings );
+        connect( mNoDataForInvisible, &QCheckBox::stateChanged, this, &MainWindow::saveSettings );
         connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainWindow::saveSettings );
         connect( mRefractionCoefficient, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
         connect( mEarthDiameter, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
@@ -280,6 +284,8 @@ class MainWindow : public QMainWindow
             settings.value( QStringLiteral( "earthDiameter" ), QString::number( (double)EARTH_DIAMETER, 'f', 1 ) )
                 .toString() );
 
+        mNoDataForInvisible->setChecked( settings.value( QStringLiteral( "noDataForInvisible" ), true ).toBool() );
+
         validateDem();
         updatePointLabel( mPointWidget->pointXY() );
     }
@@ -298,6 +304,8 @@ class MainWindow : public QMainWindow
         settings.setValue( QStringLiteral( "useCurvatureCorrections" ), mCurvatureCorrections->isChecked() );
         settings.setValue( QStringLiteral( "reffractionCoefficient" ), mRefractionCoefficient->text() );
         settings.setValue( QStringLiteral( "earthDiameter" ), mEarthDiameter->text() );
+
+        settings.setValue( QStringLiteral( "noDataForInvisible" ), mNoDataForInvisible->isChecked() );
 
         settings.setValue( QStringLiteral( "resultFolder" ), mFolderWidget->filePath() );
     }
