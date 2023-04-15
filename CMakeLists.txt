@@ -69,8 +69,9 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/visibility.h
     include/viewshed/visibilityangledifferencetoglobalhorizon.h
     include/viewshed/visibilityangledifferencetolocalhorizon.h
+    include/viewshed/visibilitydistanceglobalhorizon.h
+    include/viewshed/visibilitydistancelocalhorizon.h
     include/viewshed/visibilityelevationdifference.h
-    include/viewshed/visibilityhorizondistance.h
     include/viewshed/visibilityelevationdifferencetolocalhorizon.h
     include/viewshed/visibilityelevationdifferencetoglobalhorizon.h
     include/viewshed/visibilityhorizons.h

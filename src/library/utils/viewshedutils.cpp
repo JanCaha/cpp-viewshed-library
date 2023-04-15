@@ -184,7 +184,8 @@ std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> Viewshe
     algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true ) );
     algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false ) );
     algs->push_back( std::make_shared<ElevationDifference>() );
-    algs->push_back( std::make_shared<HorizonDistance>() );
+    algs->push_back( std::make_shared<DistanceLocalHorizon>() );
+    algs->push_back( std::make_shared<DistanceGlobalHorizon>() );
     algs->push_back( std::make_shared<LoSSlopeToViewAngle>() );
     algs->push_back( std::make_shared<ViewAngle>() );
 
@@ -208,7 +209,8 @@ ViewshedUtils::allAlgorithms( double invisibleValue )
     algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true ) );
     algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false, invisibleValue ) );
     algs->push_back( std::make_shared<ElevationDifference>() );
-    algs->push_back( std::make_shared<HorizonDistance>() );
+    algs->push_back( std::make_shared<DistanceLocalHorizon>( invisibleValue ) );
+    algs->push_back( std::make_shared<DistanceGlobalHorizon>( invisibleValue ) );
     algs->push_back( std::make_shared<LoSSlopeToViewAngle>( invisibleValue ) );
     algs->push_back( std::make_shared<ViewAngle>() );
 

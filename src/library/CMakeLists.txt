@@ -1,13 +1,14 @@
 set(LIBRARY_VIEWSHED_SRC
     visibility_algorithms/boolean.cpp
     visibility_algorithms/viewangle.cpp
+    visibility_algorithms/distancelocalhorizon.cpp
+    visibility_algorithms/distanceglobalhorizon.cpp
     visibility_algorithms/elevationdifference.cpp
     visibility_algorithms/horizons.cpp
     visibility_algorithms/elevationdifferencetolocalhorizon.cpp
     visibility_algorithms/elevationdifferencetoglobalhorizon.cpp
     visibility_algorithms/angledifferencetolocalhorizon.cpp
     visibility_algorithms/angledifferencetoglobalhorizon.cpp
-    visibility_algorithms/horizondistance.cpp
     visibility_algorithms/slopetoviewangle.cpp
 
     memory_raster/memoryraster.cpp
