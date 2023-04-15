@@ -20,6 +20,8 @@ std::shared_ptr<AbstractViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { 
 void LoSEvaluator::parseNodes()
 {
 
+    mLosValues->mTargetIndex = mLos->targetIndex();
+
     double snGradient;
 
     for ( int i = 0; i < mLos->numberOfNodes(); i++ )
