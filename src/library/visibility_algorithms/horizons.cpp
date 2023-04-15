@@ -5,10 +5,26 @@
 
 using viewshed::visibilityalgorithm::Horizons;
 
-Horizons::Horizons( double horizon, double notHorizon ) : mHorizon( horizon ), mNotHorizon( notHorizon ) {}
+Horizons::Horizons( double horizon, double notHorizon, double globalHorizon )
+    : mHorizon( horizon ), mNotHorizon( notHorizon )
+{
+    if ( std::isnan( globalHorizon ) )
+    {
+        mGlobalHorizon = horizon;
+    }
+    else
+    {
+        mGlobalHorizon = globalHorizon;
+    }
+}
 
 double Horizons::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los )
 {
+
+    if ( losValues->isTargetGlobalHorizon() )
+    {
+        return mGlobalHorizon;
+    }
 
     if ( losValues->isTargetHorizon() )
     {
