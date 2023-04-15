@@ -22,3 +22,12 @@ bool LoSImportantValues::horizonBeforeExist() { return mIndexHorizonBefore != -1
 bool LoSImportantValues::horizonExist() { return mIndexHorizon != -1; }
 
 bool LoSImportantValues::isTargetHorizon() { return mHorizon; }
+
+bool LoSImportantValues::isTargetGlobalHorizon()
+{
+    if ( horizonExist() )
+    {
+        return mIndexHorizon == mTargetIndex;
+    }
+    return false;
+}

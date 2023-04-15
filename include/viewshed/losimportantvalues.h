@@ -27,6 +27,7 @@ namespace viewshed
         int mCountHorizonBefore = 0;
         int mCountHorizon = 0;
         bool mHorizon = false;
+        int mTargetIndex = -1;
 
         /**
          * @brief Is there a horizon between view point and target point?
@@ -51,6 +52,14 @@ namespace viewshed
          * @return false
          */
         bool isTargetHorizon();
+
+        /**
+         * @brief Is Target Point global horizon?
+         *
+         * @return true
+         * @return false
+         */
+        bool isTargetGlobalHorizon();
     };
 } // namespace viewshed
 
