@@ -5,6 +5,7 @@ set(LIBRARY_VIEWSHED_SRC
     visibility_algorithms/distanceglobalhorizon.cpp
     visibility_algorithms/elevationdifference.cpp
     visibility_algorithms/horizons.cpp
+    visibility_algorithms/horizonscount.cpp
     visibility_algorithms/elevationdifferencetolocalhorizon.cpp
     visibility_algorithms/elevationdifferencetoglobalhorizon.cpp
     visibility_algorithms/angledifferencetolocalhorizon.cpp

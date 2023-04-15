@@ -188,6 +188,8 @@ std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> Viewshe
     algs->push_back( std::make_shared<DistanceGlobalHorizon>() );
     algs->push_back( std::make_shared<LoSSlopeToViewAngle>() );
     algs->push_back( std::make_shared<ViewAngle>() );
+    algs->push_back( std::make_shared<HorizonsCount>( true ) );
+    algs->push_back( std::make_shared<HorizonsCount>( false ) );
 
     return algs;
 }
@@ -213,6 +215,8 @@ ViewshedUtils::allAlgorithms( double invisibleValue )
     algs->push_back( std::make_shared<DistanceGlobalHorizon>( invisibleValue ) );
     algs->push_back( std::make_shared<LoSSlopeToViewAngle>( invisibleValue ) );
     algs->push_back( std::make_shared<ViewAngle>() );
+    algs->push_back( std::make_shared<HorizonsCount>( true ) );
+    algs->push_back( std::make_shared<HorizonsCount>( false ) );
 
     return algs;
 }
