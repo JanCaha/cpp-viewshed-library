@@ -167,29 +167,33 @@ class TestLosAlgorithms : public QObject
     {
         algs->clear();
 
-        algs->push_back( std::make_shared<Horizons>() );
+        double noHorizon = 0;
+        double horizon = 1;
+        double globalHorizon = 2;
+
+        algs->push_back( std::make_shared<Horizons>( horizon, noHorizon, globalHorizon ) );
 
         losEval = LoSEvaluator( los, algs );
 
-        QVERIFY( losEvalForPoint( 0 ) == 0.0 );
+        QVERIFY( losEvalForPoint( 0 ) == noHorizon );
 
-        QVERIFY( losEvalForPoint( 1 ) == 0.0 );
+        QVERIFY( losEvalForPoint( 1 ) == noHorizon );
 
-        QVERIFY( losEvalForPoint( 2 ) == 1.0 );
+        QVERIFY( losEvalForPoint( 2 ) == horizon );
 
-        QVERIFY( losEvalForPoint( 3 ) == 0.0 );
+        QVERIFY( losEvalForPoint( 3 ) == noHorizon );
 
-        QVERIFY( losEvalForPoint( 4 ) == 0.0 );
+        QVERIFY( losEvalForPoint( 4 ) == noHorizon );
 
-        QVERIFY( losEvalForPoint( 5 ) == 1.0 );
+        QVERIFY( losEvalForPoint( 5 ) == horizon );
 
-        QVERIFY( losEvalForPoint( 6 ) == 0.0 );
+        QVERIFY( losEvalForPoint( 6 ) == noHorizon );
 
-        QVERIFY( losEvalForPoint( 7 ) == 0.0 );
+        QVERIFY( losEvalForPoint( 7 ) == noHorizon );
 
-        QVERIFY( losEvalForPoint( 8 ) == 1.0 );
+        QVERIFY( losEvalForPoint( 8 ) == globalHorizon );
 
-        QVERIFY( losEvalForPoint( 9 ) == 0.0 );
+        QVERIFY( losEvalForPoint( 9 ) == noHorizon );
     }
 
     void viewAngle()
