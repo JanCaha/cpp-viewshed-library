@@ -11,7 +11,7 @@ namespace viewshed
         {
 
           public:
-            ViewAngle( double pointValue = 180 );
+            ViewAngle( bool onlyVisible = false, double invisibleValue = -91, double pointValue = -90 );
 
             double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
@@ -21,6 +21,8 @@ namespace viewshed
 
           private:
             double mPointValue;
+            double mInvisibleValue;
+            bool mOnlyVisible;
         };
     } // namespace visibilityalgorithm
 } // namespace viewshed
