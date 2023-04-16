@@ -13,7 +13,7 @@ namespace viewshed
         {
 
           public:
-            HorizonsCount( bool beforeTarget );
+            HorizonsCount( bool beforeTarget = true );
 
             double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
