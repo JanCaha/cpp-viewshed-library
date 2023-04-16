@@ -1,6 +1,7 @@
 set(LIBRARY_VIEWSHED_SRC
     visibility_algorithms/boolean.cpp
     visibility_algorithms/viewangle.cpp
+    visibility_algorithms/fuzzy.cpp
     visibility_algorithms/distancelocalhorizon.cpp
     visibility_algorithms/distanceglobalhorizon.cpp
     visibility_algorithms/elevationdifference.cpp
