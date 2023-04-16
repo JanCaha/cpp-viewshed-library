@@ -13,14 +13,7 @@
 #include "losnode.h"
 #include "memoryraster.h"
 #include "point.h"
-#include "visibilityangledifferencetoglobalhorizon.h"
-#include "visibilityangledifferencetolocalhorizon.h"
-#include "visibilityboolean.h"
-#include "visibilityelevationdifferencetoglobalhorizon.h"
-#include "visibilityelevationdifferencetolocalhorizon.h"
-#include "visibilityhorizons.h"
-#include "visibilityslopetoviewangle.h"
-#include "visibilityviewangle.h"
+#include "visibilityalgorithms.h"
 
 using namespace viewshed;
 using namespace viewshed::visibilityalgorithm;
@@ -163,6 +156,29 @@ class TestLosAlgorithms : public QObject
         QVERIFY( losEvalForPoint( 9 ) == 0.0 );
     }
 
+    void fuzzyVisibility()
+    {
+        algs->clear();
+
+        algs->push_back( std::make_shared<FuzzyVisibility>( 1, 2 ) );
+
+        losEval = LoSEvaluator( los, algs );
+
+        los->setViewPoint( vp );
+
+        QVERIFY( losEvalForPoint( 0 ) == 1.0 );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 1 ), 0.8, 0.1 ) );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 2 ), 0.5, 0.1 ) );
+
+        QVERIFY( losEvalForPoint( 3 ) == -1 );
+
+        QVERIFY( losEvalForPoint( 4 ) == -1 );
+
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 5 ), 0.138, 0.001 ) );
+    }
+
     void isHorizon()
     {
         algs->clear();
@@ -194,6 +210,61 @@ class TestLosAlgorithms : public QObject
         QVERIFY( losEvalForPoint( 8 ) == globalHorizon );
 
         QVERIFY( losEvalForPoint( 9 ) == noHorizon );
+    }
+
+    void horizonCount()
+    {
+        algs->clear();
+
+        algs->push_back( std::make_shared<HorizonsCount>( true ) );
+
+        losEval = LoSEvaluator( los, algs );
+
+        QVERIFY( losEvalForPoint( 0 ) == 0 );
+
+        QVERIFY( losEvalForPoint( 1 ) == 0 );
+
+        QVERIFY( losEvalForPoint( 2 ) == 0 );
+
+        QVERIFY( losEvalForPoint( 3 ) == 1 );
+
+        QVERIFY( losEvalForPoint( 4 ) == 1 );
+
+        QVERIFY( losEvalForPoint( 5 ) == 1 );
+
+        QVERIFY( losEvalForPoint( 6 ) == 2 );
+
+        QVERIFY( losEvalForPoint( 7 ) == 2 );
+
+        QVERIFY( losEvalForPoint( 8 ) == 2 );
+
+        QVERIFY( losEvalForPoint( 9 ) == 3 );
+
+        algs->clear();
+
+        algs->push_back( std::make_shared<HorizonsCount>( false ) );
+
+        losEval = LoSEvaluator( los, algs );
+
+        QVERIFY( losEvalForPoint( 0 ) == 3 );
+
+        QVERIFY( losEvalForPoint( 1 ) == 3 );
+
+        QVERIFY( losEvalForPoint( 2 ) == 3 );
+
+        QVERIFY( losEvalForPoint( 3 ) == 2 );
+
+        QVERIFY( losEvalForPoint( 4 ) == 2 );
+
+        QVERIFY( losEvalForPoint( 5 ) == 2 );
+
+        QVERIFY( losEvalForPoint( 6 ) == 1 );
+
+        QVERIFY( losEvalForPoint( 7 ) == 1 );
+
+        QVERIFY( losEvalForPoint( 8 ) == 1 );
+
+        QVERIFY( losEvalForPoint( 9 ) == 0 );
     }
 
     void viewAngle()
