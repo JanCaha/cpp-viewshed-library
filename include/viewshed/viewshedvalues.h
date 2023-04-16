@@ -9,6 +9,11 @@
 namespace viewshed
 {
 
+    /**
+     * @brief A simple class that stores results of visibility indices calculation (in form of vector of doubles) for
+     * specific cell.
+     *
+     */
     class ViewshedValues : public RasterPosition
     {
       public:

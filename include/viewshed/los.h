@@ -17,6 +17,10 @@ using viewshed::ValueType;
 
 namespace viewshed
 {
+    /**
+     * @brief Class that represents LoS for classic Viewshed calculation.
+     *
+     */
     class LoS : public std::vector<LoSNode>, public AbstractLoS
     {
       public:

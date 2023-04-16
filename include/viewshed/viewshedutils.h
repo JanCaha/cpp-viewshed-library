@@ -31,6 +31,10 @@ namespace viewshed
         bool third;
     };
 
+    /**
+     * @brief Class that contains mostly static helper functions.
+     *
+     */
     class ViewshedUtils
     {
       public:
@@ -62,13 +66,44 @@ namespace viewshed
          */
         static double earthDiameter( QgsCoordinateReferenceSystem crs );
 
+        /**
+         * @brief Validate the raster for viewshed calculation, checks if it fulfills all the requirements.
+         *
+         * @param r1
+         * @param error Returned error message.
+         * @return true
+         * @return false
+         */
         static bool validateRaster( std::shared_ptr<QgsRasterLayer> r1, std::string &error );
 
+        /**
+         * @brief Checks if the two rasters have the same properties and that one can be used visibility calculation
+         * mask for the second raster, which should be raster of digital surface model.
+         *
+         * @param r1
+         * @param r2
+         * @param error Returned error message.
+         * @return true
+         * @return false
+         */
         static bool compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<QgsRasterLayer> r2,
                                     std::string &error );
 
+        /**
+         * @brief Returns list of all implemented viewshed indices as algorithms to be used in viewshed of inverse
+         * viewshed calculation.
+         *
+         * @return std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>
+         */
         static std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> allAlgorithms();
 
+        /**
+         * @brief Returns list of all implemented viewshed indices as algorithms to be used in viewshed of inverse
+         * viewshed calculation. Allows setting specific value to be used in some algorithms as invisible value.
+         *
+         * @param invisibleValue
+         * @return std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>
+         */
         static std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>
         allAlgorithms( double invisibleValue );
     };

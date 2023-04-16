@@ -19,6 +19,10 @@ using viewshed::ValueType;
 
 namespace viewshed
 {
+    /**
+     * @brief Class that represents InverseLoS, that is LoS used in Inverse Viewshed calculation.
+     *
+     */
     class InverseLoS : public std::vector<LoSNode>, public AbstractLoS
     {
       public:
