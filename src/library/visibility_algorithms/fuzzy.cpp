@@ -7,16 +7,21 @@ using viewshed::visibilityalgorithm::FuzzyVisibility;
 
 FuzzyVisibility::FuzzyVisibility( double clearVisibility, double halfDropout, bool includeVerticalDistance,
                                   double notVisible )
-    : mB1( clearVisibility ), mB2( halfDropout ), mNotVisibile( notVisible ),
-      mVerticalDistane( includeVerticalDistance )
+    : mB1( clearVisibility ), mB2( halfDropout ), mNotVisible( notVisible ),
+      mVerticalDistance( includeVerticalDistance )
 {
 }
 
 double FuzzyVisibility::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los )
 {
+    if ( losValues->mMaxGradientBefore > los->targetGradient() )
+    {
+        return mNotVisible;
+    }
+
     double distance = los->distance( losValues->mTargetIndex );
 
-    if ( mVerticalDistane )
+    if ( mVerticalDistance )
     {
         distance = sqrt( pow( los->distance( losValues->mTargetIndex ), 2 ) +
                          pow( los->vp()->totalElevation() - los->targetElevation(), 2 ) );
@@ -26,7 +31,7 @@ double FuzzyVisibility::result( std::shared_ptr<LoSImportantValues> losValues, s
 
     if ( distance > mB1 )
     {
-        fuzzyVisibility = 1 / ( 1 - ( ( distance - mB1 ) / ( mB2 ) ) );
+        fuzzyVisibility = 1 / ( 1 + pow( ( distance - mB1 ) / ( mB2 ), 2 ) );
     }
 
     return fuzzyVisibility;

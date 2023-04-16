@@ -23,8 +23,8 @@ namespace viewshed
           private:
             double mB1;
             double mB2;
-            double mNotVisibile = -1;
-            bool mVerticalDistane = false;
+            double mNotVisible = -1;
+            bool mVerticalDistance = false;
         };
     } // namespace visibilityalgorithm
 } // namespace viewshed
