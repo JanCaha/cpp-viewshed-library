@@ -33,6 +33,7 @@
 #include "visibility.h"
 #include "visibilityalgorithms.h"
 
+#include "algorithmsdialog.h"
 #include "pointwidget.h"
 
 using namespace viewshed;
@@ -153,6 +154,19 @@ class MainWindow : public QMainWindow
 
                      mRefractionCoefficient->setText( QString::number( REFRACTION_COEFFICIENT, 'f' ) );
                      mEarthDiameter->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
+                 } );
+
+        QMenu *menuAlgs = new QMenu( QStringLiteral( "Calculation Settings" ), this );
+        menuBar()->addMenu( menuAlgs );
+
+        QAction *visibilityIndices = new QAction( "Visibility Indices Settings", this );
+        menuAlgs->addAction( visibilityIndices );
+
+        connect( visibilityIndices, &QAction::triggered, this,
+                 [=]
+                 {
+                     AlgorithmsDialog *dialog = new AlgorithmsDialog( this );
+                     dialog->exec();
                  } );
     }
 

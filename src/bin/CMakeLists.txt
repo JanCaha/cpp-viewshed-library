@@ -1,7 +1,7 @@
 # Binaries :
 macro(create_binary bin_name filename add_widgets)
     if(${add_widgets})
-        add_executable(${bin_name} ${filename} pointwidget.h pointwidget.cpp)
+        add_executable(${bin_name} ${filename} pointwidget.h pointwidget.cpp algorithmsdialog.cpp algorithmsdialog.h integerspinbox.h)
     else()
         add_executable(${bin_name} ${filename} commandlinehelper.h)
     endif()
