@@ -1,12 +1,13 @@
 name: Release Docker Image
 
 on:
-  push:
-    branches: 
-      - master
-      - main
-    tags:
-      - v*
+  workflow_run:
+    workflows: ["Tests for Library"]
+    types:
+      - completed
+    branches:
+      - 'main'
+      - 'master'
 
 jobs:
 
@@ -52,8 +53,10 @@ jobs:
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=on \
-            -DBUILD_DOCUMENTATION:bool=on \
+            -DBUILD_DOCUMENTATION:bool=off \
             -DBUILD_TESTS:bool=on
+          cmake --build build --config Release --target all
+          cmake --build build --config Release --target pack_deb
 
       - name: Upload DEB file as artifact
         uses: actions/upload-artifact@v3
