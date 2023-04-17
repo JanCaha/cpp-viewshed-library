@@ -267,6 +267,32 @@ class TestLosAlgorithms : public QObject
         QVERIFY( losEvalForPoint( 8 ) == 1 );
 
         QVERIFY( losEvalForPoint( 9 ) == 0 );
+
+        algs->clear();
+
+        algs->push_back( std::make_shared<HorizonsCount>( true, true ) );
+
+        losEval = LoSEvaluator( los, algs );
+
+        QVERIFY( losEvalForPoint( 0 ) == 0 );
+
+        QVERIFY( losEvalForPoint( 1 ) == 0 );
+
+        QVERIFY( losEvalForPoint( 2 ) == 0 );
+
+        QVERIFY( losEvalForPoint( 3 ) == -1 );
+
+        QVERIFY( losEvalForPoint( 4 ) == -1 );
+
+        QVERIFY( losEvalForPoint( 5 ) == 1 );
+
+        QVERIFY( losEvalForPoint( 6 ) == -1 );
+
+        QVERIFY( losEvalForPoint( 7 ) == -1 );
+
+        QVERIFY( losEvalForPoint( 8 ) == 2 );
+
+        QVERIFY( losEvalForPoint( 9 ) == -1 );
     }
 
     void viewAngle()

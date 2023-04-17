@@ -5,10 +5,18 @@
 
 using viewshed::visibilityalgorithm::HorizonsCount;
 
-HorizonsCount::HorizonsCount( bool beforeTarget ) : mBeforeTarget( beforeTarget ) {}
+HorizonsCount::HorizonsCount( bool beforeTarget, bool onlyVisible, double invisibleValue )
+    : mBeforeTarget( beforeTarget ), mOnlyVisible( onlyVisible ), mInvisibleValue( invisibleValue )
+{
+}
 
 double HorizonsCount::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los )
 {
+    if ( mOnlyVisible && losValues->mMaxGradientBefore > los->targetGradient() )
+    {
+        return mInvisibleValue;
+    }
+
     if ( mBeforeTarget )
     {
         return losValues->mCountHorizonBefore;

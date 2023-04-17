@@ -13,7 +13,7 @@ namespace viewshed
         {
 
           public:
-            HorizonsCount( bool beforeTarget = true );
+            HorizonsCount( bool beforeTarget = true, bool onlyVisible = false, double invisibleValue = -1 );
 
             double result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los ) override;
 
@@ -23,6 +23,8 @@ namespace viewshed
 
           private:
             bool mBeforeTarget = true;
+            bool mOnlyVisible = false;
+            int mInvisibleValue = -1;
         };
     } // namespace visibilityalgorithm
 } // namespace viewshed
