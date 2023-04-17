@@ -49,6 +49,9 @@ jobs:
             -DPACK_DEB:bool=on \
             -DBUILD_DOCUMENTATION:bool=off \
             -DBUILD_TESTS:bool=on
+          
+      - name: Build
+        run: | 
           cmake --build build --config Release --target all
           cmake --build build --config Release --target pack_deb
 
