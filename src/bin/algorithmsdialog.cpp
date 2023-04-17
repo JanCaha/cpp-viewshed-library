@@ -23,7 +23,7 @@ void AlgorithmsDialog::initGui()
 void AlgorithmsDialog::setUpPage1()
 {
     mPage1 = new QWidget( this );
-    QFormLayout *layout = new QFormLayout( this );
+    QFormLayout *layout = new QFormLayout();
     mPage1->setLayout( layout );
     mBinaryViewshed = new QCheckBox( this );
     mBinaryViewshed->setChecked( true );
@@ -39,7 +39,7 @@ void AlgorithmsDialog::setUpPage1()
 void AlgorithmsDialog::setUpPage2()
 {
     mPage2 = new QWidget( this );
-    QFormLayout *layout = new QFormLayout( this );
+    QFormLayout *layout = new QFormLayout();
     mPage2->setLayout( layout );
     mHorizons = new QCheckBox( this );
     mHorizons->setChecked( true );
@@ -47,7 +47,7 @@ void AlgorithmsDialog::setUpPage2()
 
     mGlobalHorizon = new IntegerSpinBox( 2, false );
 
-    mNotHorizon = new IntegerSpinBox( 0, false );
+    mNotHorizon = new IntegerSpinBox( 0, true );
     layout->addRow( "Calculate: ", mHorizons );
     layout->addRow( "Local Horizon: ", mLocalHorizon );
     layout->addRow( "Global Horizon: ", mGlobalHorizon );
@@ -59,7 +59,7 @@ void AlgorithmsDialog::setUpPage2()
 void AlgorithmsDialog::setUpPage3()
 {
     mPage3 = new QWidget( this );
-    QFormLayout *layout = new QFormLayout( this );
+    QFormLayout *layout = new QFormLayout();
     mPage3->setLayout( layout );
     mHorizonsCount = new QCheckBox( this );
     mHorizonsCount->setChecked( true );
@@ -78,12 +78,12 @@ void AlgorithmsDialog::setUpPage3()
 void AlgorithmsDialog::setUpPage4()
 {
     mPage4 = new QWidget( this );
-    QFormLayout *layout = new QFormLayout( this );
-    mPage3->setLayout( layout );
+    QFormLayout *layout = new QFormLayout();
+    mPage4->setLayout( layout );
     mViewAngle = new QCheckBox( this );
     mViewAngle->setChecked( true );
 
     layout->addRow( "Calculate:", mViewAngle );
 
-    mTabWidget->addTab( mPage3, "View Angle" );
+    mTabWidget->addTab( mPage4, "View Angle" );
 }
