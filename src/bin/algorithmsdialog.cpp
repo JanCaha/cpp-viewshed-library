@@ -13,6 +13,7 @@ void AlgorithmsDialog::initGui()
     setUpPage2();
     setUpPage3();
     setUpPage4();
+    setUpPage5();
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->addWidget( mTabWidget );
@@ -86,4 +87,37 @@ void AlgorithmsDialog::setUpPage4()
     layout->addRow( "Calculate:", mViewAngle );
 
     mTabWidget->addTab( mPage4, "View Angle" );
+}
+
+void AlgorithmsDialog::setUpPage5()
+{
+    mPage5 = new QWidget( this );
+    QFormLayout *layout = new QFormLayout();
+    mPage5->setLayout( layout );
+
+    mFuzzy = new QCheckBox( this );
+    mFuzzy->setChecked( true );
+
+    mClearVisibility = new QgsDoubleSpinBox( this );
+    mClearVisibility->setMinimum( 0 );
+    mClearVisibility->setMaximum( MAX );
+    mClearVisibility->setValue( 1000 );
+
+    mHalfDropout = new QgsDoubleSpinBox( this );
+    mHalfDropout->setMinimum( 0 );
+    mHalfDropout->setMaximum( MAX );
+    mHalfDropout->setValue( 1500 );
+
+    mVerticalDistance = new QCheckBox( this );
+    mVerticalDistance->setChecked( false );
+
+    mFuzzyNotVisible = new IntegerSpinBox( true, -1, 0, this );
+
+    layout->addRow( "Calculate:", mFuzzy );
+    layout->addRow( "Clear visibility limit:", mClearVisibility );
+    layout->addRow( "Half dropout limit:", mHalfDropout );
+    layout->addRow( "Not visible value:", mFuzzyNotVisible );
+    layout->addRow( "Include vertical distance:", mVerticalDistance );
+
+    mTabWidget->addTab( mPage5, "Fuzzy visibility" );
 }

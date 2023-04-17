@@ -46,8 +46,16 @@ class AlgorithmsDialog : public QDialog
     QWidget *mPage4 = nullptr;
     QCheckBox *mViewAngle = nullptr;
 
+    QWidget *mPage5 = nullptr;
+    QCheckBox *mFuzzy = nullptr;
+    QgsDoubleSpinBox *mClearVisibility = nullptr;
+    QgsDoubleSpinBox *mHalfDropout = nullptr;
+    QCheckBox *mVerticalDistance = nullptr;
+    IntegerSpinBox *mFuzzyNotVisible = nullptr;
+
     void setUpPage1();
     void setUpPage2();
     void setUpPage3();
     void setUpPage4();
+    void setUpPage5();
 };

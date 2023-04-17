@@ -11,6 +11,11 @@ class IntegerSpinBox : public QgsDoubleSpinBox
     {
     }
 
+    IntegerSpinBox( bool noDataDefault = true, int min = MIN, int max = MAX, QWidget *parent = nullptr )
+        : IntegerSpinBox( MIN, noDataDefault, min, max, noDataDefault, parent )
+    {
+    }
+
     IntegerSpinBox( int defaultValue, bool useNoData = false, int min = MIN, int max = MAX, bool noDataDefault = false,
                     QWidget *parent = nullptr )
         : QgsDoubleSpinBox( parent )
@@ -38,7 +43,7 @@ class IntegerSpinBox : public QgsDoubleSpinBox
 
         if ( useNoData && noDataDefault )
         {
-            setValue( min - 1 );
+            setValue( clearValue );
         }
     }
 
