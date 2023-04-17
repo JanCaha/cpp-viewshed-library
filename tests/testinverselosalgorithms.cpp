@@ -14,13 +14,7 @@
 #include "memoryraster.h"
 #include "point.h"
 #include "viewshedutils.h"
-#include "visibilityangledifferencetoglobalhorizon.h"
-#include "visibilityangledifferencetolocalhorizon.h"
-#include "visibilityboolean.h"
-#include "visibilityelevationdifferencetoglobalhorizon.h"
-#include "visibilityelevationdifferencetolocalhorizon.h"
-#include "visibilityhorizons.h"
-#include "visibilityviewangle.h"
+#include "visibilityalgorithms.h"
 
 using namespace viewshed;
 using namespace viewshed::visibilityalgorithm;
@@ -282,7 +276,7 @@ class TestInverseLosAlgorithms : public QObject
         QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 0 ), noHorizonBefore, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), 2, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), noHorizonBefore, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), 2.6, 0.1 ) );
@@ -300,48 +294,38 @@ class TestInverseLosAlgorithms : public QObject
         QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 1 ), -59.9, 0.1 ) );
     }
 
-    // void differenceElevationGlobalHorizon()
-    // {
-    //     algs->clear();
+    void differenceElevationGlobalHorizon()
+    {
+        algs->clear();
 
-    //     double noHorizonBefore = -99;
-    //     double invisible = -9999;
+        double noHorizonBefore = -99;
+        double invisible = -9999;
 
-    //     algs->push_back(
-    //         std::make_shared<VisibilityElevationDifferenceToGlobalHorizon>( false, invisible, noHorizonBefore ) );
-    //     algs->push_back(
-    //         std::make_shared<VisibilityElevationDifferenceToGlobalHorizon>( true, invisible, noHorizonBefore ) );
+        algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false, invisible, noHorizonBefore ) );
+        algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true, invisible, noHorizonBefore ) );
 
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), noHorizonBefore, 0.1 ) );
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), -1.4, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 0 ), -2.3, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 0 ), -2.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), -4.1, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), -5.0, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
 
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 0 ), noHorizonBefore, 0.1 ) );
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 1 ), noHorizonBefore, 0.1 ) );
-
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 0 ), noHorizonBefore, 0.1 ) );
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 1 ), noHorizonBefore, 0.1 ) );
-
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 1 ), -5.6, 0.1 ) );
-
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 1 ), -7.3, 0.1 ) );
-
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), -2.0, 0.1 ) );
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 1 ), -2.0, 0.1 ) );
-
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 1 ), -9.6, 0.1 ) );
-
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 1 ), -9.3, 0.1 ) );
-
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), 0, 0.1 ) );
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 1 ), 0, 0.1 ) );
-
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
-    //     QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 1 ), -6.6, 0.1 ) );
-    // }
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), -1.5, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 1 ), -2.3, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 1 ), -2.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 1 ), -8.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 1 ), -5.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 1 ), -4.1, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 1 ), -43.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 1 ), -19.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 1 ), -5.0, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 1 ), -59.9, 0.1 ) );
+    }
 };
 
 QTEST_MAIN( TestInverseLosAlgorithms )
