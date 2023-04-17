@@ -151,6 +151,8 @@ class TestLosAlgorithms : public QObject
 
         QVERIFY( losEvalForPoint( 6 ) == 0.0 );
 
+        QVERIFY( losEvalForPoint( 7 ) == 0.0 );
+
         QVERIFY( losEvalForPoint( 8 ) == 1.0 );
 
         QVERIFY( losEvalForPoint( 9 ) == 0.0 );
