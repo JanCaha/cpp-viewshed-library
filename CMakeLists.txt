@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 1.9.9 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 1.9.9 DESCRIPTION "Viewshed library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)

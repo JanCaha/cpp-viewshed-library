@@ -1,4 +1,4 @@
-# Viewshed a Cpp library to calculate Viewshed and extract LoS on Digital Surface Models
+# Viewshed is a Cpp library to calculate Viewshed and extract LoS on Digital Surface Models
 
 Library using QGIS, QT API and C++17 features to calculate visibility (viewshed), inverse visibility and additional information about it. The library is developed and tested on Linux.
 
