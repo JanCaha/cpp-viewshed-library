@@ -40,9 +40,9 @@ jobs:
 
       - name: Configure
         run: | 
-           mkdir build
-           cmake \
-             -S. \
+          mkdir build
+          cmake \
+            -S. \
             -Bbuild \
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
