@@ -11,7 +11,7 @@ on:
       - external/** 
       - cmake/**
       - CMakeLists.txt
-      -- **/CMakeLists.txt
+      - "**/CMakeLists.txt"
       - .github/workflows/test_plugin.yaml
 
 jobs:
