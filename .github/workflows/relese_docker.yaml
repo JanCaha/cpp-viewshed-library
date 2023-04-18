@@ -5,6 +5,9 @@ on:
     workflows: ["Tests for Library"]
     types:
       - completed
+  push:
+    paths:
+      - "**/release_docker.yaml"
     # branches:
     #   - 'main'
     #   - 'master'
@@ -27,13 +30,6 @@ jobs:
           name: viewshed_.+deb
           name_is_regexp: true
           path: _packages
-
-      - name: Prepare for docker build
-        run: |
-          sudo cmake --build build --config Release --target pack_deb
-          cd docker
-          mkdir install
-          cp ../_packages/viewshed_*.deb install/
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
