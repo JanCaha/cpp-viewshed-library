@@ -18,16 +18,16 @@ namespace viewshed
 
         void reset();
 
-        double mMaxGradientBefore = -180;
-        double mMaxGradient = -180;
-        int mIndexMaxGradientBefore = -1;
-        int mIndexMaxGradient = -1;
-        int mIndexHorizonBefore = -1;
-        int mIndexHorizon = -1;
-        int mCountHorizonBefore = 0;
-        int mCountHorizon = 0;
-        bool mHorizon = false;
-        int mTargetIndex = -1;
+        double maxGradientBefore = -180;
+        double maxGradient = -180;
+        int indexMaxGradientBefore = -1;
+        int indexMaxGradient = -1;
+        int indexHorizonBefore = -1;
+        int indexHorizon = -1;
+        int countHorizonBefore = 0;
+        int countHorizon = 0;
+        bool targetHorizon = false;
+        int targetIndex = -1;
 
         /**
          * @brief Is there a horizon between view point and target point?

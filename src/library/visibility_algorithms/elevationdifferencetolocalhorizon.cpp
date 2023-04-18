@@ -20,7 +20,7 @@ double ElevationDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantVa
 
     if ( losValues->horizonBeforeExist() )
     {
-        change = std::tan( ( M_PI / 180 ) * losValues->mMaxGradientBefore ) * los->targetDistance();
+        change = std::tan( ( M_PI / 180 ) * losValues->maxGradientBefore ) * los->targetDistance();
         difference = los->targetElevation() - ( los->vp()->totalElevation() + change );
     }
     else
@@ -34,7 +34,7 @@ double ElevationDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantVa
     }
     else
     {
-        if ( los->targetGradient() < losValues->mMaxGradientBefore )
+        if ( los->targetGradient() < losValues->maxGradientBefore )
             return mInvisibleValue;
         else
             return difference;

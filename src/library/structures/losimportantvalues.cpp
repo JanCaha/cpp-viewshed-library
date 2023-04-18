@@ -6,28 +6,28 @@ LoSImportantValues::LoSImportantValues() { reset(); }
 
 void LoSImportantValues::reset()
 {
-    mMaxGradientBefore = -180;
-    mMaxGradient = -180;
-    mIndexMaxGradientBefore = -1;
-    mIndexMaxGradient = -1;
-    mIndexHorizonBefore = -1;
-    mIndexHorizon = -1;
-    mCountHorizonBefore = 0;
-    mCountHorizon = 0;
-    mHorizon = false;
+    maxGradientBefore = -180;
+    maxGradient = -180;
+    indexMaxGradientBefore = -1;
+    indexMaxGradient = -1;
+    indexHorizonBefore = -1;
+    indexHorizon = -1;
+    countHorizonBefore = 0;
+    countHorizon = 0;
+    targetHorizon = false;
 }
 
-bool LoSImportantValues::horizonBeforeExist() { return mIndexHorizonBefore != -1; }
+bool LoSImportantValues::horizonBeforeExist() { return indexHorizonBefore != -1; }
 
-bool LoSImportantValues::horizonExist() { return mIndexHorizon != -1; }
+bool LoSImportantValues::horizonExist() { return indexHorizon != -1; }
 
-bool LoSImportantValues::isTargetHorizon() { return mHorizon; }
+bool LoSImportantValues::isTargetHorizon() { return targetHorizon; }
 
 bool LoSImportantValues::isTargetGlobalHorizon()
 {
     if ( horizonExist() )
     {
-        return mIndexHorizon == mTargetIndex;
+        return indexHorizon == targetIndex;
     }
     return false;
 }

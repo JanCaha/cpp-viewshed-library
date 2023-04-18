@@ -17,7 +17,7 @@ double AngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValue
     double difference;
     if ( losValues->horizonExist() )
     {
-        difference = los->targetGradient() - los->gradient( losValues->mIndexHorizon );
+        difference = los->targetGradient() - los->gradient( losValues->indexHorizon );
     }
     else
     {
@@ -30,7 +30,7 @@ double AngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValue
     }
     else
     {
-        if ( los->targetGradient() < losValues->mMaxGradientBefore )
+        if ( los->targetGradient() < losValues->maxGradientBefore )
             return mInvisibleValue;
         else
             return difference;
