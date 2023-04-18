@@ -93,3 +93,28 @@ jobs:
             -DOUTPUT_RASTER_DATA_FLOAT:bool=off
            cmake --build build --config Release --target build_tests
            cmake --build build --config Release --target run_tests
+
+      - name: Configure Packing DEB
+        run: | 
+          mkdir build
+          cmake \
+            -S. \
+            -Bbuild \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPACK_DEB:bool=on \
+            -DBUILD_DOCUMENTATION:bool=off \
+            -DBUILD_TESTS:bool=off \
+            -DCELL_EVENT_DATA_FLOAT:bool=on \
+            -DOUTPUT_RASTER_DATA_FLOAT:bool=on
+          
+      - name: Build DEB
+        run: | 
+          cmake --build build --config Release --target all
+          cmake --build build --config Release --target pack_deb
+
+      - name: Upload DEB file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: _packages
+          path: _packages/viewshed_*.deb
