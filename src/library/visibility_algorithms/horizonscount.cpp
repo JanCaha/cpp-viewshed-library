@@ -12,17 +12,17 @@ HorizonsCount::HorizonsCount( bool beforeTarget, bool onlyVisible, double invisi
 
 double HorizonsCount::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los )
 {
-    if ( mOnlyVisible && losValues->mMaxGradientBefore > los->targetGradient() )
+    if ( mOnlyVisible && losValues->maxGradientBefore > los->targetGradient() )
     {
         return mInvisibleValue;
     }
 
     if ( mBeforeTarget )
     {
-        return losValues->mCountHorizonBefore;
+        return losValues->countHorizonBefore;
     }
 
-    return losValues->mCountHorizon - losValues->mCountHorizonBefore;
+    return losValues->countHorizon - losValues->countHorizonBefore;
 }
 
 const QString HorizonsCount::name()

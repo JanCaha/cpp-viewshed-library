@@ -20,7 +20,7 @@ std::shared_ptr<AbstractViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { 
 void LoSEvaluator::parseNodes()
 {
 
-    mLosValues->mTargetIndex = mLos->targetIndex();
+    mLosValues->targetIndex = mLos->targetIndex();
 
     double snGradient;
 
@@ -33,50 +33,50 @@ void LoSEvaluator::parseNodes()
             // is current PoI horizon?
             if ( i == mLos->targetPointIndex() )
             {
-                if ( mLos->gradient( i + 1 ) < snGradient && mLosValues->mMaxGradientBefore < snGradient )
+                if ( mLos->gradient( i + 1 ) < snGradient && mLosValues->maxGradientBefore < snGradient )
                 {
-                    mLosValues->mHorizon = true;
+                    mLosValues->targetHorizon = true;
                 }
             }
 
             // is LoSNode horizon before PoI?
             if ( mLos->distance( i + 1 ) <= mLos->targetDistance() )
             {
-                if ( mLosValues->mMaxGradientBefore < snGradient && mLos->gradient( i + 1 ) < snGradient )
+                if ( mLosValues->maxGradientBefore < snGradient && mLos->gradient( i + 1 ) < snGradient )
                 {
-                    mLosValues->mIndexHorizonBefore = i;
-                    mLosValues->mCountHorizonBefore++;
+                    mLosValues->indexHorizonBefore = i;
+                    mLosValues->countHorizonBefore++;
                 }
             }
 
             // is this LoSNode horizon?
-            if ( mLosValues->mMaxGradient < snGradient && mLos->gradient( i + 1 ) < snGradient )
+            if ( mLosValues->maxGradient < snGradient && mLos->gradient( i + 1 ) < snGradient )
             {
-                mLosValues->mIndexHorizon = i;
-                mLosValues->mCountHorizon++;
+                mLosValues->indexHorizon = i;
+                mLosValues->countHorizon++;
             }
         }
 
         if ( mLos->distance( i ) < mLos->targetDistance() )
         {
-            if ( mLosValues->mMaxGradientBefore < snGradient )
+            if ( mLosValues->maxGradientBefore < snGradient )
             {
-                mLosValues->mMaxGradientBefore = snGradient;
-                mLosValues->mIndexMaxGradientBefore = i;
+                mLosValues->maxGradientBefore = snGradient;
+                mLosValues->indexMaxGradientBefore = i;
             }
         }
 
-        if ( mLosValues->mMaxGradient < snGradient )
+        if ( mLosValues->maxGradient < snGradient )
         {
-            mLosValues->mMaxGradient = snGradient;
-            mLosValues->mIndexMaxGradient = i;
+            mLosValues->maxGradient = snGradient;
+            mLosValues->indexMaxGradient = i;
         }
     }
 
     // if max gradient is behind global horizon, move global horizon
-    if ( mLosValues->mIndexHorizon < mLosValues->mIndexMaxGradient )
+    if ( mLosValues->indexHorizon < mLosValues->indexMaxGradient )
     {
-        mLosValues->mIndexHorizon = mLosValues->mIndexMaxGradient;
+        mLosValues->indexHorizon = mLosValues->indexMaxGradient;
     }
 
     mAlreadyParsed = true;

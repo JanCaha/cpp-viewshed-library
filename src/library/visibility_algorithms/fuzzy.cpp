@@ -14,16 +14,16 @@ FuzzyVisibility::FuzzyVisibility( double clearVisibility, double halfDropout, bo
 
 double FuzzyVisibility::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los )
 {
-    if ( losValues->mMaxGradientBefore > los->targetGradient() )
+    if ( losValues->maxGradientBefore > los->targetGradient() )
     {
         return mNotVisible;
     }
 
-    double distance = los->distance( losValues->mTargetIndex );
+    double distance = los->distance( losValues->targetIndex );
 
     if ( mVerticalDistance )
     {
-        distance = sqrt( pow( los->distance( losValues->mTargetIndex ), 2 ) +
+        distance = sqrt( pow( los->distance( losValues->targetIndex ), 2 ) +
                          pow( los->vp()->totalElevation() - los->targetElevation(), 2 ) );
     }
 

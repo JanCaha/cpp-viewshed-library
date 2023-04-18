@@ -11,7 +11,7 @@ Boolean::Boolean( double visible, double invisible, double pointValue )
 
 double Boolean::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los )
 {
-    if ( losValues->mMaxGradientBefore < los->targetGradient() )
+    if ( losValues->maxGradientBefore < los->targetGradient() )
         return mVisibile;
     else
         return mInvisibile;

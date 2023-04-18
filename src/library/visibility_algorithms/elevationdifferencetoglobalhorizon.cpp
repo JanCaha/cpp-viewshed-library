@@ -21,7 +21,7 @@ double ElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantV
 
     if ( losValues->horizonExist() )
     {
-        change = std::tan( ( M_PI / 180 ) * los->gradient( losValues->mIndexHorizon ) ) * los->targetDistance();
+        change = std::tan( ( M_PI / 180 ) * los->gradient( losValues->indexHorizon ) ) * los->targetDistance();
         difference = los->targetElevation() - ( los->vp()->totalElevation() + change );
     }
     else
@@ -35,7 +35,7 @@ double ElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantV
     }
     else
     {
-        if ( los->targetGradient() < losValues->mMaxGradientBefore )
+        if ( los->targetGradient() < losValues->maxGradientBefore )
             return mInvisibleValue;
         else
             return difference;

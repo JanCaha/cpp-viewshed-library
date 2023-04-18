@@ -10,7 +10,7 @@ double DistanceLocalHorizon::result( std::shared_ptr<LoSImportantValues> losValu
 {
     if ( losValues->horizonBeforeExist() )
     {
-        return los->targetDistance() - los->distance( losValues->mIndexHorizonBefore );
+        return los->targetDistance() - los->distance( losValues->indexHorizonBefore );
     }
     else
     {

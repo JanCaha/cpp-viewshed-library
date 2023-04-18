@@ -13,7 +13,7 @@ double ViewAngle::result( std::shared_ptr<LoSImportantValues> losValues, std::sh
 {
     if ( mOnlyVisible )
     {
-        if ( los->targetGradient() <= losValues->mMaxGradientBefore )
+        if ( los->targetGradient() <= losValues->maxGradientBefore )
             return mInvisibleValue;
     }
 
