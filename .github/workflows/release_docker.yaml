@@ -5,6 +5,9 @@ on:
     paths:
       - docker/**
       - .github/workflows/release_docker.yaml
+    branches:
+      - master
+      - main
   workflow_run:
     workflows: ["Tests for Library"]
     types:
