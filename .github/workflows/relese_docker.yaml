@@ -1,16 +1,13 @@
 name: Release Docker Image
 
 on:
-  # workflow_run:
-  #   workflows: ["Tests for Library"]
-  #   types:
-  #     - completed
-  push:
-    paths:
-      - .github/workflows/release_docker.yaml
-    # branches:
-    #   - 'main'
-    #   - 'master'
+  workflow_run:
+    workflows: ["Tests for Library"]
+    types:
+      - completed
+    branches:
+      - 'main'
+      - 'master'
 
 jobs:
 
@@ -38,12 +35,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
             
-
-      # - name: Build and push Docker image
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     file: docker/Dockerfile
-      #     context: docker/
-      #     push: true
-      #     tags: cahik/viewshed:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          file: docker/Dockerfile
+          context: docker/
+          push: true
+          tags: cahik/viewshed:latest
         
