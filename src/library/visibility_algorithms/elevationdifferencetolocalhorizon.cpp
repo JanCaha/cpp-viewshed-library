@@ -4,26 +4,24 @@
 
 using viewshed::visibilityalgorithm::ElevationDifferenceToLocalHorizon;
 
-ElevationDifferenceToLocalHorizon::ElevationDifferenceToLocalHorizon(
-    bool all, double invisibleValue, double differenceWithoutHorizon, double pointValue )
+ElevationDifferenceToLocalHorizon::ElevationDifferenceToLocalHorizon( bool all, double invisibleValue,
+                                                                      double differenceWithoutHorizon,
+                                                                      double pointValue )
     : mAllPoints( all ), mInvisibleValue( invisibleValue ), mDifferenceWithoutHorizon( differenceWithoutHorizon ),
       mPointValue( pointValue )
 {
 }
 
 double ElevationDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantValues> losValues,
-                                                            std::shared_ptr<AbstractLoS> los )
+                                                  std::shared_ptr<AbstractLoS> los )
 {
     double change;
     double difference;
 
     if ( losValues->horizonBeforeExist() )
     {
-        LoSNode horizon = los->nodeAt( losValues->mIndexHorizonBefore );
-
-        change = std::tan( ( M_PI / 180 ) * losValues->mMaxGradientBefore ) *
-                 ( los->targetDistance() - los->distance( losValues->mIndexHorizonBefore ) );
-        difference = los->targetElevation() - ( change + los->elevation( losValues->mIndexHorizonBefore ) );
+        change = std::tan( ( M_PI / 180 ) * losValues->mMaxGradientBefore ) * los->targetDistance();
+        difference = los->targetElevation() - change;
     }
     else
     {
