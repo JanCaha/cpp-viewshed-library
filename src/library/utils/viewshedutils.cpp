@@ -201,7 +201,7 @@ ViewshedUtils::allAlgorithms( double invisibleValue )
         std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
 
     algs->push_back( std::make_shared<Boolean>() );
-    algs->push_back( std::make_shared<Horizons>( 1, invisibleValue ) );
+    algs->push_back( std::make_shared<Horizons>( 1, invisibleValue, 2 ) );
     algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
     algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false, invisibleValue ) );
     algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( true ) );
