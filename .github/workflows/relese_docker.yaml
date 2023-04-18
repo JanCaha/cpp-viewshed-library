@@ -5,9 +5,9 @@ on:
     workflows: ["Tests for Library"]
     types:
       - completed
-    branches:
-      - 'main'
-      - 'master'
+    # branches:
+    #   - 'main'
+    #   - 'master'
 
 jobs:
 
@@ -15,51 +15,18 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-      DEBIAN_FRONTEND: "noninteractive"
-      QT_QPA_PLATFORM: "offscreen"
-      XDG_RUNTIME_DIR: "/tmp"
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
 
-      - name: Add Sources
-        run: |
-          sudo gpg -k
-          sudo wget -qO /etc/apt/keyrings/qgis-archive-keyring.gpg https://download.qgis.org/downloads/qgis-archive-keyring.gpg
-          sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/qgis-archive-keyring.gpg] https://qgis.org/ubuntu `lsb_release -c -s` main" > /etc/apt/sources.list.d/qgis.list'
-      
-      - name: Update and Upgrade, install QGIS
-        run: |
-          sudo apt update
-          sudo apt upgrade -y
-          sudo apt install ninja-build qgis qgis-dev
-
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Configure
-        run: | 
-          mkdir build
-          cmake \
-            -S. \
-            -Bbuild \
-            -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DPACK_DEB:bool=on \
-            -DBUILD_DOCUMENTATION:bool=off \
-            -DBUILD_TESTS:bool=on
-          
-      - name: Build
-        run: | 
-          cmake --build build --config Release --target all
-          cmake --build build --config Release --target pack_deb
-
-      - name: Upload DEB file as artifact
-        uses: actions/upload-artifact@v3
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
         with:
-          name: _packages
-          path: viewshed_*.deb
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: test_plugin.yaml
+          workflow_conclusion: success
+          name: viewshed_.+deb
+          name_is_regexp: true
+          path: _packages
 
       - name: Prepare for docker build
         run: |
@@ -74,11 +41,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
             
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          file: docker/Dockerfile
-          context: docker/
-          push: true
-          tags: cahik/viewshed:latest
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     file: docker/Dockerfile
+      #     context: docker/
+      #     push: true
+      #     tags: cahik/viewshed:latest
         
