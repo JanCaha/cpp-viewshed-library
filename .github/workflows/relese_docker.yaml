@@ -25,7 +25,7 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow: test_plugin.yaml
           workflow_conclusion: success
-          name: viewshed_.+deb
+          name: _packages
           name_is_regexp: true
           path: _packages
 
