@@ -96,7 +96,8 @@ jobs:
 
       - name: Configure Packing DEB
         run: | 
-          sudo cmake --build build --target clean
+          rm -rf build
+          mkdir build
           cmake \
             -S. \
             -Bbuild \
