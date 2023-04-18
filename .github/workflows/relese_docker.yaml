@@ -7,7 +7,7 @@ on:
   #     - completed
   push:
     paths:
-      - "**/release_docker.yaml"
+      - .github/workflows/release_docker.yaml
     # branches:
     #   - 'main'
     #   - 'master'
