@@ -4,7 +4,6 @@ Library using QGIS, QT API and C++17 features to calculate visibility (viewshed)
 
 ## Using the library
 
-
 The core of the functionality is in the library itself that can be used directly from C++, however the project defines also couple of binaries to simply use of tool.
 
 ### Binaries
