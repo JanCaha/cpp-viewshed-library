@@ -16,6 +16,7 @@ cmake --build build --config Release --target viewshed
 
 # testing
 # cmake --build build --config Debug --target run_tests
+cmake --build build --config Release --target all
 cmake --build build --config Release --target run_tests
 
 # install
