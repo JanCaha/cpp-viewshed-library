@@ -1,6 +1,10 @@
 name: Release Docker Image
 
 on:
+  push:
+    paths:
+      - docker/**
+      - .github/workflows/release-docker.yaml
   workflow_run:
     workflows: ["Tests for Library"]
     types:
@@ -10,7 +14,6 @@ on:
       - 'master'
 
 jobs:
-
 
   Release-Docker-Viewshed:
 
