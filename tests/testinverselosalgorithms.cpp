@@ -279,19 +279,19 @@ class TestInverseLosAlgorithms : public QObject
         QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), noHorizonBefore, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), 15.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), 0.9, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
 
         QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), noHorizonBefore, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 1 ), noHorizonBefore, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 1 ), noHorizonBefore, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 1 ), -7.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 1 ), -4.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 1 ), -8.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 1 ), -5.9, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 1 ), noHorizonBefore, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 1 ), -41.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 1 ), -15.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 1 ), 15.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 1 ), -49.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 1 ), -43.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 1 ), -19.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 1 ), 0.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 1 ), -59.9, 0.1 ) );
     }
 
     void differenceElevationGlobalHorizon()
@@ -304,8 +304,8 @@ class TestInverseLosAlgorithms : public QObject
         algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false, invisible, noHorizonBefore ) );
         algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true, invisible, noHorizonBefore ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), -1.4, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 0 ), -2.3, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), -1.5, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 0 ), -2.4, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 0 ), -2.9, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
