@@ -74,7 +74,7 @@ void LoSEvaluator::parseNodes()
     }
 
     // if max gradient is behind global horizon, move global horizon
-    if ( mLosValues->indexHorizon < mLosValues->indexMaxGradient )
+    if ( mLosValues->indexMaxGradient > 0 && mLosValues->indexHorizon < mLosValues->indexMaxGradient )
     {
         mLosValues->indexHorizon = mLosValues->indexMaxGradient;
     }
