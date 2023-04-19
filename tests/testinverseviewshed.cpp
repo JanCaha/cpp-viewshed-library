@@ -33,12 +33,11 @@ class TestInverseViewshed : public QObject
     {
         // dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM_SMALL, "dsm", "gdal" );
         // tp = std::make_shared<Point>( QgsPoint( -336312.978, -1189034.372 ), dem, 0 );
+
         dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM, "dsm", "gdal" );
         tp = std::make_shared<Point>( QgsPoint( -336364.021, -1189108.615 ), dem, 0 );
         double noData = dem->dataProvider()->sourceNoDataValue( 1 );
-        algs->push_back( std::make_shared<Boolean>() );
-        algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
-        algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false, noData, noData, 0 ) );
+        algs = ViewshedUtils::allAlgorithms();
     }
 
     void testLoS()
@@ -54,7 +53,7 @@ class TestInverseViewshed : public QObject
 
         std::shared_ptr<InverseLoS> los = v.getLoS( poiPoint );
 
-        QVERIFY( los->size() == 218 );
+        QVERIFY( los->size() == 219 );
 
         los = v.getLoS( poiPoint, true );
         QVERIFY( los->size() == 98 );

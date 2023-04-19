@@ -37,6 +37,22 @@ void InverseLoS::setTargetPoint( std::shared_ptr<Point> tp, double targetOffset 
     mTp = std::make_shared<Point>( tp->row, tp->col, tp->elevation, targetOffset, tp->cellSize );
 }
 
+void InverseLoS::setUpTargetLoSNode()
+{
+    LoSNode ln = LoSNode( mTp->row, mTp->col );
+    double angle = Visibility::angle( mVp->row, mVp->col, mTp );
+    ln.angle[CellEventPositionType::ENTER] = angle;
+    ln.angle[CellEventPositionType::CENTER] = angle;
+    ln.angle[CellEventPositionType::EXIT] = angle;
+    ln.elevs[CellEventPositionType::ENTER] = mTp->elevation;
+    ln.elevs[CellEventPositionType::CENTER] = mTp->elevation;
+    ln.elevs[CellEventPositionType::EXIT] = mTp->elevation;
+    ln.distances[CellEventPositionType::ENTER] = 0;
+    ln.distances[CellEventPositionType::CENTER] = 0;
+    ln.distances[CellEventPositionType::EXIT] = 0;
+    push_back( ln );
+}
+
 void InverseLoS::setViewPoint( std::shared_ptr<LoSNode> vp, double observerOffset )
 {
     mTargetIndex = -1;
@@ -58,14 +74,16 @@ void InverseLoS::sort() { std::sort( begin(), end() ); }
 void InverseLoS::prepareForCalculation()
 {
     removePointsAfterViewPoint();
+    setUpTargetLoSNode();
     fixDistancesAngles();
     sort();
-    findTargetPointIndex();
 
     if ( mRemovePointsAfterTarget )
     {
         removePointsAfterTarget();
     }
+
+    findTargetPointIndex();
 };
 
 void InverseLoS::removePointsAfterViewPoint()
@@ -126,16 +144,17 @@ void InverseLoS::findTargetPointIndex()
     {
         if ( i + 1 < numberOfNodes() )
         {
-            if ( at( i ).distances[CellEventPositionType::CENTER] < targetDistance() &&
-                 targetDistance() < at( i + 1 ).distances[CellEventPositionType::CENTER] )
+            if ( at( i ).centreDistance() == targetDistance() )
             {
                 mTargetIndex = i;
+                break;
             }
         }
-        else
-        {
-            mTargetIndex = i;
-        }
+    }
+
+    if ( mTargetIndex == -1 )
+    {
+        mTargetIndex = numberOfNodes() - 1;
     }
 }
 

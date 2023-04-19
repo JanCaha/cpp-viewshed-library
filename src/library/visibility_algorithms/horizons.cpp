@@ -20,7 +20,6 @@ Horizons::Horizons( double horizon, double notHorizon, double globalHorizon )
 
 double Horizons::result( std::shared_ptr<LoSImportantValues> losValues, std::shared_ptr<AbstractLoS> los )
 {
-
     if ( losValues->isTargetGlobalHorizon() )
     {
         return mGlobalHorizon;
