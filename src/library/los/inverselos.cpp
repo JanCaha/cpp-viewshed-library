@@ -74,14 +74,16 @@ void InverseLoS::sort() { std::sort( begin(), end() ); }
 void InverseLoS::prepareForCalculation()
 {
     removePointsAfterViewPoint();
+    setUpTargetLoSNode();
     fixDistancesAngles();
     sort();
-    findTargetPointIndex();
 
     if ( mRemovePointsAfterTarget )
     {
         removePointsAfterTarget();
     }
+
+    findTargetPointIndex();
 };
 
 void InverseLoS::removePointsAfterViewPoint()
@@ -142,16 +144,17 @@ void InverseLoS::findTargetPointIndex()
     {
         if ( i + 1 < numberOfNodes() )
         {
-            if ( at( i ).distances[CellEventPositionType::CENTER] < targetDistance() &&
-                 targetDistance() < at( i + 1 ).distances[CellEventPositionType::CENTER] )
+            if ( at( i ).centreDistance() == targetDistance() )
             {
                 mTargetIndex = i;
+                break;
             }
         }
-        else
-        {
-            mTargetIndex = i;
-        }
+    }
+
+    if ( mTargetIndex == -1 )
+    {
+        mTargetIndex = numberOfNodes() - 1;
     }
 }
 
