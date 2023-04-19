@@ -60,6 +60,7 @@ namespace viewshed
         void fixDistancesAngles();
         void removePointsAfterTarget();
         bool mRemovePointsAfterTarget = false;
+        void setUpTargetLoSNode();
     };
 
 } // namespace viewshed

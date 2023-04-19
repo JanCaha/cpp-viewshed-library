@@ -37,6 +37,22 @@ void InverseLoS::setTargetPoint( std::shared_ptr<Point> tp, double targetOffset 
     mTp = std::make_shared<Point>( tp->row, tp->col, tp->elevation, targetOffset, tp->cellSize );
 }
 
+void InverseLoS::setUpTargetLoSNode()
+{
+    LoSNode ln = LoSNode( mTp->row, mTp->col );
+    double angle = Visibility::angle( mVp->row, mVp->col, mTp );
+    ln.angle[CellEventPositionType::ENTER] = angle;
+    ln.angle[CellEventPositionType::CENTER] = angle;
+    ln.angle[CellEventPositionType::EXIT] = angle;
+    ln.elevs[CellEventPositionType::ENTER] = mTp->elevation;
+    ln.elevs[CellEventPositionType::CENTER] = mTp->elevation;
+    ln.elevs[CellEventPositionType::EXIT] = mTp->elevation;
+    ln.distances[CellEventPositionType::ENTER] = 0;
+    ln.distances[CellEventPositionType::CENTER] = 0;
+    ln.distances[CellEventPositionType::EXIT] = 0;
+    push_back( ln );
+}
+
 void InverseLoS::setViewPoint( std::shared_ptr<LoSNode> vp, double observerOffset )
 {
     mTargetIndex = -1;
