@@ -43,6 +43,7 @@ namespace viewshed
         double elevation( int i ) override;
 
         LoSNode nodeAt( int i ) override;
+        void removePointsAfterTarget();
 
       protected:
         void sort() override;

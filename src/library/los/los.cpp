@@ -69,3 +69,10 @@ LoSNode LoS::nodeAt( int i ) { return at( i ); }
 int LoS::resultRow() { return mTp->row; }
 
 int LoS::resultCol() { return mTp->col; }
+
+void LoS::removePointsAfterTarget()
+{
+
+    erase( std::remove_if( begin(), end(), [=]( LoSNode &node ) { return mPointDistance <= node.centreDistance(); } ),
+           end() );
+}
