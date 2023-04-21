@@ -104,7 +104,7 @@ jobs:
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=on \
-            -DBUILD_DOCUMENTATION:bool=off \
+            -DBUILD_DOCUMENTATION:bool=on \
             -DBUILD_TESTS:bool=off \
             -DCELL_EVENT_DATA_FLOAT:bool=on \
             -DOUTPUT_RASTER_DATA_FLOAT:bool=on
