@@ -127,6 +127,16 @@ class TestLosAlgorithms : public QObject
         return losEval.resultAt( result );
     }
 
+    void printDebug( int count, int position )
+    {
+        for ( int i = 0; i < count; i++ )
+        {
+            qDebug() << "Eval value: " << losEvalForPoint( i, position );
+        }
+
+        qDebug() << "-----";
+    }
+
     void isVisibile()
     {
         algs->clear();
@@ -397,8 +407,6 @@ class TestLosAlgorithms : public QObject
 
         algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false, invisible, noHorizonBefore ) );
         algs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true, invisible, noHorizonBefore ) );
-
-        LoSEvaluator losEval = LoSEvaluator( los, algs );
 
         QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), noHorizonBefore, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), noHorizonBefore, 0.1 ) );

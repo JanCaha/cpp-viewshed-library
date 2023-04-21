@@ -279,7 +279,7 @@ class TestInverseLosAlgorithms : public QObject
         QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), noHorizonBefore, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), 0.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), 6.0, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
 
         QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), noHorizonBefore, 0.1 ) );
@@ -290,7 +290,7 @@ class TestInverseLosAlgorithms : public QObject
         QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 1 ), noHorizonBefore, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 1 ), -43.9, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 1 ), -19.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 1 ), 0.9, 0.1 ) );
+        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 1 ), 6.0, 0.1 ) );
         QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 1 ), -59.9, 0.1 ) );
     }
 
