@@ -119,3 +119,10 @@ jobs:
         with:
           name: _packages
           path: _packages/viewshed_*.deb
+      
+      - name: Deploy Documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./documentation
+          publish_branch: gh-pages 
