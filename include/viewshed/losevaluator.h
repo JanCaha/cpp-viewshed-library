@@ -23,7 +23,7 @@ namespace viewshed
     {
       public:
         LoSEvaluator( std::shared_ptr<AbstractLoS> los,
-                      std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs );
+                      std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices );
 
         /**
          * @brief Calculate results of LoS evaluation for every algorithms.
@@ -73,7 +73,7 @@ namespace viewshed
 
       private:
         std::shared_ptr<AbstractLoS> mLos;
-        std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
+        std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mVisibilityIndices;
         ViewshedValues mResultValues;
 
         void parseNodes();

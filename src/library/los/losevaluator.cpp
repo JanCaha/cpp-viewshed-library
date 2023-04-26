@@ -8,14 +8,14 @@ using viewshed::ViewshedValues;
 using viewshed::Visibility;
 
 LoSEvaluator::LoSEvaluator( std::shared_ptr<AbstractLoS> los,
-                            std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs )
-    : mLos( los ), mAlgs( algs )
+                            std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices )
+    : mLos( los ), mVisibilityIndices( visibilityIndices )
 {
 }
 
-int LoSEvaluator::size() { return mAlgs->size(); }
+int LoSEvaluator::size() { return mVisibilityIndices->size(); }
 
-std::shared_ptr<AbstractViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { return mAlgs->at( i ); }
+std::shared_ptr<AbstractViewshedAlgorithm> LoSEvaluator::algorithmAt( int i ) { return mVisibilityIndices->at( i ); }
 
 void LoSEvaluator::parseNodes()
 {
@@ -94,9 +94,9 @@ void LoSEvaluator::calculate()
 
     mResultValues = ViewshedValues( mLos->resultRow(), mLos->resultCol() );
 
-    for ( int i = 0; i < mAlgs->size(); i++ )
+    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
     {
-        mResultValues.values.push_back( mAlgs->at( i )->result( mLosValues, mLos ) );
+        mResultValues.values.push_back( mVisibilityIndices->at( i )->result( mLosValues, mLos ) );
     }
 }
 

@@ -291,7 +291,7 @@ namespace viewshed
          *
          * @return long long
          */
-        long long sizeOfOutputRasters() { return mAlgs->size() * sizeOfOutputRaster(); }
+        long long sizeOfOutputRasters() { return mVisibilityIndices->size() * sizeOfOutputRaster(); }
 
       protected:
         /**
@@ -329,7 +329,7 @@ namespace viewshed
          * @brief Visibility indexes to calculate while calculating this viewshed. As \a AbstractViewshedAlgorithm.
          *
          */
-        std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
+        std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mVisibilityIndices;
 
         /**
          * @brief Data type of output rasters.

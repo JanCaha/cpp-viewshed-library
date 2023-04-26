@@ -10,9 +10,9 @@ using viewshed::MemoryRaster;
 void AbstractViewshed::prepareMemoryRasters()
 {
     mResults->clear();
-    mResults->reserve( mAlgs->size() );
+    mResults->reserve( mVisibilityIndices->size() );
 
-    for ( int i = 0; i < mAlgs->size(); i++ )
+    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
     {
         mResults->push_back( std::make_shared<MemoryRaster>(
             mInputDsm, mDataType, mInputDsm->dataProvider()->sourceNoDataValue( mDefaultBand ) ) );
@@ -223,9 +223,9 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
     // parse results left after the algorithm finished
     mThreadPool.wait_for_tasks();
 
-    for ( int j = 0; j < mAlgs->size(); j++ )
+    for ( int j = 0; j < mVisibilityIndices->size(); j++ )
     {
-        mResults->at( j )->setValue( mAlgs->at( j )->pointValue(), mPoint->col, mPoint->row );
+        mResults->at( j )->setValue( mVisibilityIndices->at( j )->pointValue(), mPoint->col, mPoint->row );
     }
 
     mTimeParse = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::high_resolution_clock::now() -
@@ -302,7 +302,7 @@ void AbstractViewshed::saveResultsStdString( std::string location, std::string f
 
 void AbstractViewshed::saveResults( QString location, QString fileNamePrefix )
 {
-    for ( int i = 0; i < mAlgs->size(); i++ )
+    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
     {
         QString filePath = QString( "%1/%2" );
 
@@ -310,11 +310,11 @@ void AbstractViewshed::saveResults( QString location, QString fileNamePrefix )
 
         if ( fileNamePrefix.isEmpty() )
         {
-            fileName = QString( "%1.tif" ).arg( mAlgs->at( i )->name() );
+            fileName = QString( "%1.tif" ).arg( mVisibilityIndices->at( i )->name() );
         }
         else
         {
-            fileName = QString( "%1 %2.tif" ).arg( fileNamePrefix, mAlgs->at( i )->name() );
+            fileName = QString( "%1 %2.tif" ).arg( fileNamePrefix, mVisibilityIndices->at( i )->name() );
         }
         mResults->at( i )->save( filePath.arg( location, fileName ) );
     }
