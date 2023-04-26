@@ -84,6 +84,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a7dab2db716cc29899aace3e520016b00"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1ViewshedUtils.html#a7dab2db716cc29899aace3e520016b00">saveToCsv</a> (std::vector&lt; <a class="el" href="structviewshed_1_1DataTriplet.html">DataTriplet</a> &gt; data, std::string header, std::string fileName)</td></tr>
 <tr class="memdesc:a7dab2db716cc29899aace3e520016b00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save data vector of DataTriplets as CSV file.  <a href="classviewshed_1_1ViewshedUtils.html#a7dab2db716cc29899aace3e520016b00">More...</a><br /></td></tr>
 <tr class="separator:a7dab2db716cc29899aace3e520016b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21397998f642235a61b70dd00c9e727e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1ViewshedUtils.html#a21397998f642235a61b70dd00c9e727e">saveToCsv</a> (std::vector&lt; std::string &gt; rows, std::string header, std::string fileName)</td></tr>
+<tr class="memdesc:a21397998f642235a61b70dd00c9e727e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save arbitrary rows as CSV file.  <a href="classviewshed_1_1ViewshedUtils.html#a21397998f642235a61b70dd00c9e727e">More...</a><br /></td></tr>
+<tr class="separator:a21397998f642235a61b70dd00c9e727e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebeb13fa3bbc6caf7233be1b1ae41d78"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="structviewshed_1_1DataTriplet.html">DataTriplet</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1ViewshedUtils.html#aebeb13fa3bbc6caf7233be1b1ae41d78">distanceElevation</a> (std::shared_ptr&lt; <a class="el" href="classviewshed_1_1AbstractLoS.html">AbstractLoS</a> &gt; los)</td></tr>
 <tr class="memdesc:aebeb13fa3bbc6caf7233be1b1ae41d78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts triplets of distance, elevation and target point (boolean) from provided <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a>.  <a href="classviewshed_1_1ViewshedUtils.html#aebeb13fa3bbc6caf7233be1b1ae41d78">More...</a><br /></td></tr>
 <tr class="separator:aebeb13fa3bbc6caf7233be1b1ae41d78"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,7 +301,7 @@ false </dd></dl>
 </div>
 </div>
 <a id="a7dab2db716cc29899aace3e520016b00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7dab2db716cc29899aace3e520016b00">&#9670;&nbsp;</a></span>saveToCsv()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dab2db716cc29899aace3e520016b00">&#9670;&nbsp;</a></span>saveToCsv() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -341,8 +344,60 @@ false </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td></td></tr>
-    <tr><td class="paramname">header</td><td></td></tr>
-    <tr><td class="paramname">fileName</td><td></td></tr>
+    <tr><td class="paramname">header</td><td>formatted header of CSV. </td></tr>
+    <tr><td class="paramname">fileName</td><td>filename with path to store data into. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a21397998f642235a61b70dd00c9e727e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21397998f642235a61b70dd00c9e727e">&#9670;&nbsp;</a></span>saveToCsv() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ViewshedUtils::saveToCsv </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; std::string &gt;&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>header</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>fileName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Save arbitrary rows as CSV file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rows</td><td>formatted rows of the CSV, "\n" is added automatically at the end of string. </td></tr>
+    <tr><td class="paramname">header</td><td>formatted header of CSV. </td></tr>
+    <tr><td class="paramname">fileName</td><td>filename with path to store data into. </td></tr>
   </table>
   </dd>
 </dl>
