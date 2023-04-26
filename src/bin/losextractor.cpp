@@ -223,7 +223,7 @@ class MainWindow : public QMainWindow
         connect( mViewPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateViewPointLabel );
         connect( mTargetPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateTargetPoint );
         connect( mTargetPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateTargetPointLabel );
-        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateDem );
+        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::demUpdated );
         connect( mCsvFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updateResultCsv );
         connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
         connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainWindow::saveSettings );
@@ -267,7 +267,7 @@ class MainWindow : public QMainWindow
             settings.value( QStringLiteral( "earthDiameter" ), QString::number( (double)EARTH_DIAMETER, 'f', 1 ) )
                 .toString() );
 
-        validateDem();
+        demUpdated();
     }
 
     void saveSettings() { saveCurrentValuesToSettings( mSettings ); }
@@ -284,6 +284,17 @@ class MainWindow : public QMainWindow
         settings.setValue( QStringLiteral( "useCurvatureCorrections" ), mCurvatureCorrections->isChecked() );
         settings.setValue( QStringLiteral( "reffractionCoefficient" ), mRefractionCoefficient->text() );
         settings.setValue( QStringLiteral( "earthDiameter" ), mEarthDiameter->text() );
+    }
+
+    void demUpdated()
+    {
+        validateDem();
+        prepareAlgorithms();
+        enableCalculation();
+        updateViewPointLabel( QgsPointXY( mViewPoint.x(), mViewPoint.y() ) );
+        updateTargetPointLabel( QgsPointXY( mTargetPoint.x(), mTargetPoint.y() ) );
+
+        saveSettings();
     }
 
     void validateDem()
@@ -339,11 +350,6 @@ class MainWindow : public QMainWindow
         mTargetPointWidget->setCrs( mDem->crs().authid() );
 
         mEarthDiameter->setText( QString::number( ViewshedUtils::earthDiameter( mDem->crs() ), 'f' ) );
-
-        prepareAlgorithms();
-        enableCalculation();
-
-        saveSettings();
     }
 
     void enableCalculation()
