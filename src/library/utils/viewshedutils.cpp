@@ -20,6 +20,22 @@ using namespace viewshed::visibilityalgorithm;
 
 std::string toStr( bool val ) { return val ? "true" : "false"; }
 
+void ViewshedUtils::saveToCsv( std::vector<std::string> rows, std::string header, std::string fileName )
+{
+    std::ofstream resultCsvFile;
+
+    resultCsvFile.open( fileName );
+
+    for ( int i = 0; i < rows.size(); i++ )
+    {
+        resultCsvFile << rows[i];
+
+        resultCsvFile << "\n";
+    }
+
+    resultCsvFile.close();
+}
+
 void ViewshedUtils::saveToCsv( std::vector<DataTriplet> data, std::string header, std::string fileName )
 {
     std::ofstream resultCsvFile;

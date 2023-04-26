@@ -55,9 +55,8 @@ std::shared_ptr<InverseLoS> InverseViewshed::getLoS( QgsPoint point, bool onlyTo
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( losNodes );
     los->setTargetPoint( mPoint, mPoint->offset );
     los->setViewPoint( poi, mObserverOffset );
-
     los->setRemovePointsAfterTarget( onlyToPoi );
-
+    los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
     los->prepareForCalculation();
 
     return los;

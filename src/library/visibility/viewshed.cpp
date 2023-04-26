@@ -58,6 +58,7 @@ std::shared_ptr<LoS> Viewshed::getLoS( QgsPoint point, bool onlyToPoi )
     std::shared_ptr<LoS> los = std::make_shared<LoS>( losNodes );
     los->setViewPoint( mPoint );
     los->setTargetPoint( poi );
+    los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
     los->prepareForCalculation();
 
     return los;

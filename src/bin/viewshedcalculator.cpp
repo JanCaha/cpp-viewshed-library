@@ -241,10 +241,10 @@ class MainWindow : public QMainWindow
         connect( mEarthDiameter, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
         connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateDem );
         connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateMask );
+        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updatePointRaster );
         connect( mMaskFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateMask );
         connect( mPointWidget, &PointWidget::pointChanged, this, &MainWindow::updatePoint );
         connect( mPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updatePointLabel );
-        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updatePointRaster );
         connect( mFolderWidget, &QgsFileWidget::fileChanged, this, &MainWindow::saveSettings );
         connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
         connect( mObserverOffset, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
