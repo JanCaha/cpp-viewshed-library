@@ -310,7 +310,7 @@ namespace viewshed
          * @brief Input raster with digital surface model.
          *
          */
-        std::shared_ptr<QgsRasterLayer> mInputDem;
+        std::shared_ptr<QgsRasterLayer> mInputDsm;
 
         /**
          * @brief Input raster with visibility calculation mask.

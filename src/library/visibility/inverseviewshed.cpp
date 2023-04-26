@@ -27,7 +27,7 @@ InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double obs
     mInverseViewshed = true;
 
     mPoint = targetPoint;
-    mInputDem = dem;
+    mInputDsm = dem;
     mAlgs = algs;
 
     mCurvatureCorrections = applyCurvatureCorrections;
@@ -36,7 +36,7 @@ InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double obs
 
     setAngles( minimalAngle, maximalAngle );
 
-    mCellSize = mInputDem->rasterUnitsPerPixelX();
+    mCellSize = mInputDsm->rasterUnitsPerPixelX();
 
     mThreadPool.reset( mThreadPool.get_thread_count() - 1 );
 

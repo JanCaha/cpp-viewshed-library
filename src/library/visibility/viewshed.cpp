@@ -22,7 +22,7 @@ Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterL
     mValid = false;
 
     mPoint = viewPoint;
-    mInputDem = dem;
+    mInputDsm = dem;
     mAlgs = algs;
 
     mCurvatureCorrections = applyCurvatureCorrections;
@@ -31,7 +31,7 @@ Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterL
 
     setAngles( minimalAngle, maximalAngle );
 
-    mCellSize = mInputDem->rasterUnitsPerPixelX();
+    mCellSize = mInputDsm->rasterUnitsPerPixelX();
 
     mThreadPool.reset( mThreadPool.get_thread_count() - 1 );
 

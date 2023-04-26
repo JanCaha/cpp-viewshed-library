@@ -15,7 +15,7 @@ void AbstractViewshed::prepareMemoryRasters()
     for ( int i = 0; i < mAlgs->size(); i++ )
     {
         mResults->push_back( std::make_shared<MemoryRaster>(
-            mInputDem, mDataType, mInputDem->dataProvider()->sourceNoDataValue( mDefaultBand ) ) );
+            mInputDsm, mDataType, mInputDsm->dataProvider()->sourceNoDataValue( mDefaultBand ) ) );
     }
 }
 
@@ -38,15 +38,15 @@ void AbstractViewshed::initEventList()
 
     if ( mInverseViewshed )
     {
-        mCellEvents.reserve( mInputDem->height() * mInputDem->width() * 5 );
+        mCellEvents.reserve( mInputDsm->height() * mInputDsm->width() * 5 );
     }
     else
     {
-        mCellEvents.reserve( mInputDem->height() * mInputDem->width() * 3 );
+        mCellEvents.reserve( mInputDsm->height() * mInputDsm->width() * 3 );
     }
 
-    std::unique_ptr<QgsRasterBlock> rasterBlock( mInputDem->dataProvider()->block(
-        mDefaultBand, mInputDem->extent(), mInputDem->width(), mInputDem->height() ) );
+    std::unique_ptr<QgsRasterBlock> rasterBlock( mInputDsm->dataProvider()->block(
+        mDefaultBand, mInputDsm->extent(), mInputDsm->width(), mInputDsm->height() ) );
 
     bool isNoData = false;
     bool isMaskNoData = false;
@@ -57,7 +57,7 @@ void AbstractViewshed::initEventList()
     if ( mVisibilityMask )
     {
         maskBlock = std::unique_ptr<QgsRasterBlock>( mVisibilityMask->dataProvider()->block(
-            mDefaultBand, mInputDem->extent(), mInputDem->width(), mInputDem->height() ) );
+            mDefaultBand, mInputDsm->extent(), mInputDsm->width(), mInputDsm->height() ) );
     }
 
     for ( int row = 0; row < rasterBlock->height(); row++ )
@@ -322,7 +322,7 @@ void AbstractViewshed::saveResults( QString location, QString fileNamePrefix )
 
 QgsPoint AbstractViewshed::point( int row, int col )
 {
-    QgsPoint p = mInputDem->dataProvider()->transformCoordinates(
+    QgsPoint p = mInputDsm->dataProvider()->transformCoordinates(
         QgsPoint( col + 0.5, row + 0.5 ), QgsRasterDataProvider::TransformType::TransformImageToLayer );
 
     return p;
@@ -330,7 +330,7 @@ QgsPoint AbstractViewshed::point( int row, int col )
 
 LoSNode AbstractViewshed::statusNodeFromPoint( QgsPoint point )
 {
-    QgsPoint pointRaster = mInputDem->dataProvider()->transformCoordinates(
+    QgsPoint pointRaster = mInputDsm->dataProvider()->transformCoordinates(
         point, QgsRasterDataProvider::TransformType::TransformLayerToImage );
 
     int row = pointRaster.y();
