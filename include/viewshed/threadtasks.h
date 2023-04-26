@@ -18,8 +18,8 @@ namespace viewshed
      * @return ViewshedValues
      */
     void evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
-                                      std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
-                                      std::shared_ptr<std::vector<std::shared_ptr<MemoryRaster>>> results );
+                            std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
+                            std::shared_ptr<std::vector<std::shared_ptr<MemoryRaster>>> results );
 
 } // namespace viewshed
 
