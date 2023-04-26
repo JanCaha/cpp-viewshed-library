@@ -91,7 +91,7 @@ void Viewshed::submitToThreadpool( CellEvent &e )
     los->setTargetPoint( poi );
     los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
-    mThreadPool.push_task( viewshed::evaluateLoSForPoI, los, mAlgs, mResults );
+    mThreadPool.push_task( viewshed::evaluateLoS, los, mAlgs, mResults );
 }
 
 void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValue,
