@@ -1,7 +1,10 @@
+#include <string>
+
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QFormLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -62,18 +65,12 @@ class MainWindow : public QMainWindow
 
     void prepareAlgorithms()
     {
-        mAlgs = std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
+        if ( mDem )
+        {
+            double noData = mDem->dataProvider()->sourceNoDataValue( 1 );
 
-        mAlgs->push_back( std::make_shared<Boolean>() );
-        mAlgs->push_back( std::make_shared<Horizons>() );
-        mAlgs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true ) );
-        mAlgs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false ) );
-        mAlgs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( false ) );
-        mAlgs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( true ) );
-        mAlgs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( true ) );
-        mAlgs->push_back( std::make_shared<ElevationDifferenceToLocalHorizon>( false ) );
-        mAlgs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true ) );
-        mAlgs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false ) );
+            mAlgs = ViewshedUtils::allAlgorithms( noData );
+        }
     };
 
     void initMenu()
@@ -149,6 +146,7 @@ class MainWindow : public QMainWindow
 
         mCalculateButton = new QPushButton( this );
         mCalculateButton->setText( QStringLiteral( "Extract!" ) );
+        mCalculateButton->setEnabled( false );
 
         mViewPointWidget = new PointWidget( true, this );
 
@@ -342,6 +340,7 @@ class MainWindow : public QMainWindow
 
         mEarthDiameter->setText( QString::number( ViewshedUtils::earthDiameter( mDem->crs() ), 'f' ) );
 
+        prepareAlgorithms();
         enableCalculation();
 
         saveSettings();
@@ -447,7 +446,6 @@ class MainWindow : public QMainWindow
         mCalculateButton->setEnabled( false );
 
         QString csvSuffix = QStringLiteral( ".csv" );
-
         QString resultFile = mCsvFileWidget->filePath();
 
         if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeClassicViewshed )
@@ -464,6 +462,14 @@ class MainWindow : public QMainWindow
             std::vector<DataTriplet> data = ViewshedUtils::distanceElevation( los );
 
             ViewshedUtils::saveToCsv( data, "distance,elevation,target_point\n", resultFile.toStdString() );
+
+            QFileInfo fileInfo = QFileInfo( resultFile );
+            QString visibilityIndicesFile = QString( "%1/%2_visibility_idices.csv" )
+                                                .arg( fileInfo.absoluteDir().path() )
+                                                .arg( fileInfo.baseName() );
+
+            ViewshedUtils::saveToCsv( evalToRows( los ), "\"visibility index\", value\n",
+                                      visibilityIndicesFile.toStdString() );
 
             mCalculateButton->setEnabled( true );
         }
@@ -485,6 +491,23 @@ class MainWindow : public QMainWindow
 
             mCalculateButton->setEnabled( true );
         }
+    }
+
+    std::vector<std::string> evalToRows( std::shared_ptr<AbstractLoS> los )
+    {
+        std::vector<std::string> rows;
+        LoSEvaluator losEval = LoSEvaluator( los, mAlgs );
+
+        losEval.calculate();
+
+        for ( int i = 0; i < mAlgs->size(); i++ )
+        {
+            std::string row = "\"" + mAlgs->at( i )->name().toStdString() + "\";";
+            row += std::to_string( losEval.resultAt( i ) );
+            rows.push_back( row );
+        }
+
+        return rows;
     }
 
   private:
