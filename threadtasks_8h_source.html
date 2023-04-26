@@ -81,12 +81,13 @@ $(function() {
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>viewshed</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    ViewshedValues evaluateLoSForPoI( std::shared_ptr&lt;AbstractLoS&gt; los,</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                                      std::shared_ptr&lt;std::vector&lt;std::shared_ptr&lt;AbstractViewshedAlgorithm&gt;&gt;&gt; algs );</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;} <span class="comment">// namespace viewshed</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">void</span> evaluateLoS( std::shared_ptr&lt;AbstractLoS&gt; los,</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                      std::shared_ptr&lt;std::vector&lt;std::shared_ptr&lt;AbstractViewshedAlgorithm&gt;&gt;&gt; algs,</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                      std::shared_ptr&lt;std::vector&lt;std::shared_ptr&lt;MemoryRaster&gt;&gt;&gt; results );</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;} <span class="comment">// namespace viewshed</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
