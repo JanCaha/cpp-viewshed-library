@@ -8,7 +8,7 @@ CellEvent::CellEvent()
     eventType = CellEventPositionType::CENTER;
     row = -1;
     col = -1;
-    dist2vp = -1;
+    dist2point = -1;
     angle = -1;
     elevation[CellEventPositionType::ENTER] = -1;
     elevation[CellEventPositionType::CENTER] = -1;
@@ -22,7 +22,7 @@ CellEvent::CellEvent( CellEventPositionType eventType_, int row_, int col_, doub
     row = row_;
     col = col_;
     angle = angle_;
-    dist2vp = dist_;
+    dist2point = dist_;
     elevation[CellEventPositionType::ENTER] = elevation_[CellEventPositionType::ENTER];
     elevation[CellEventPositionType::CENTER] = elevation_[CellEventPositionType::CENTER];
     elevation[CellEventPositionType::EXIT] = elevation_[CellEventPositionType::EXIT];

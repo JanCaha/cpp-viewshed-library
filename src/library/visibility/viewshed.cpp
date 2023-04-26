@@ -15,15 +15,15 @@ using viewshed::Viewshed;
 using viewshed::ViewshedValues;
 
 Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterLayer> dem,
-                    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
+                    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices,
                     bool applyCurvatureCorrections, double earthDiameter, double refractionCoeff, double minimalAngle,
                     double maximalAngle )
 {
     mValid = false;
 
     mPoint = viewPoint;
-    mInputDem = dem;
-    mAlgs = algs;
+    mInputDsm = dem;
+    mVisibilityIndices = visibilityIndices;
 
     mCurvatureCorrections = applyCurvatureCorrections;
     mEarthDiameter = earthDiameter;
@@ -31,7 +31,7 @@ Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterL
 
     setAngles( minimalAngle, maximalAngle );
 
-    mCellSize = mInputDem->rasterUnitsPerPixelX();
+    mCellSize = mInputDsm->rasterUnitsPerPixelX();
 
     mThreadPool.reset( mThreadPool.get_thread_count() - 1 );
 
@@ -91,7 +91,7 @@ void Viewshed::submitToThreadpool( CellEvent &e )
     los->setTargetPoint( poi );
     los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
-    mResultPixels.push_back( mThreadPool.submit( viewshed::evaluateLoSForPoI, los, mAlgs ) );
+    mThreadPool.push_task( viewshed::evaluateLoS, los, mVisibilityIndices, mResults );
 }
 
 void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValue,

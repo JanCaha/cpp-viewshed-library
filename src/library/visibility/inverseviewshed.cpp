@@ -16,19 +16,19 @@ using viewshed::MemoryRaster;
 using viewshed::Point;
 using viewshed::ViewshedValues;
 
-InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double observerOffset,
-                                  std::shared_ptr<QgsRasterLayer> dem,
-                                  std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
-                                  bool applyCurvatureCorrections, double earthDiameter, double refractionCoeff,
-                                  double minimalAngle, double maximalAngle )
+InverseViewshed::InverseViewshed(
+    std::shared_ptr<Point> targetPoint, double observerOffset, std::shared_ptr<QgsRasterLayer> dem,
+    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices,
+    bool applyCurvatureCorrections, double earthDiameter, double refractionCoeff, double minimalAngle,
+    double maximalAngle )
 {
     mValid = false;
 
     mInverseViewshed = true;
 
     mPoint = targetPoint;
-    mInputDem = dem;
-    mAlgs = algs;
+    mInputDsm = dem;
+    mVisibilityIndices = visibilityIndices;
 
     mCurvatureCorrections = applyCurvatureCorrections;
     mEarthDiameter = earthDiameter;
@@ -36,7 +36,7 @@ InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double obs
 
     setAngles( minimalAngle, maximalAngle );
 
-    mCellSize = mInputDem->rasterUnitsPerPixelX();
+    mCellSize = mInputDsm->rasterUnitsPerPixelX();
 
     mThreadPool.reset( mThreadPool.get_thread_count() - 1 );
 
@@ -91,7 +91,7 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
     los->setViewPoint( poi, mObserverOffset );
     los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
-    mResultPixels.push_back( mThreadPool.submit( viewshed::evaluateLoSForPoI, los, mAlgs ) );
+    mThreadPool.push_task( viewshed::evaluateLoS, los, mVisibilityIndices, mResults );
 }
 
 void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pixelValue,

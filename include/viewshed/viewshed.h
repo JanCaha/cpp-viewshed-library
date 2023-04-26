@@ -17,7 +17,7 @@ namespace viewshed
     {
       public:
         Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterLayer> dem,
-                  std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
+                  std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices,
                   bool applyCurvatureCorrections = true, double earthDiameter = EARTH_DIAMETER,
                   double refractionCoeff = REFRACTION_COEFFICIENT,
                   double minimalAngle = std::numeric_limits<double>::quiet_NaN(),

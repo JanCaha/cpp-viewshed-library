@@ -9,20 +9,20 @@ using viewshed::MemoryRaster;
 
 void AbstractViewshed::prepareMemoryRasters()
 {
-    mResults.clear();
-    mResults.reserve( mAlgs->size() );
+    mResults->clear();
+    mResults->reserve( mVisibilityIndices->size() );
 
-    for ( int i = 0; i < mAlgs->size(); i++ )
+    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
     {
-        mResults.push_back( std::make_shared<MemoryRaster>(
-            mInputDem, mDataType, mInputDem->dataProvider()->sourceNoDataValue( mDefaultBand ) ) );
+        mResults->push_back( std::make_shared<MemoryRaster>(
+            mInputDsm, mDataType, mInputDsm->dataProvider()->sourceNoDataValue( mDefaultBand ) ) );
     }
 }
 
 void AbstractViewshed::setDefaultResultDataType( Qgis::DataType dataType )
 {
     mDataType = dataType;
-    if ( !mResults.empty() )
+    if ( !mResults->empty() )
     {
         prepareMemoryRasters();
     }
@@ -38,15 +38,15 @@ void AbstractViewshed::initEventList()
 
     if ( mInverseViewshed )
     {
-        mCellEvents.reserve( mInputDem->height() * mInputDem->width() * 5 );
+        mCellEvents.reserve( mInputDsm->height() * mInputDsm->width() * 5 );
     }
     else
     {
-        mCellEvents.reserve( mInputDem->height() * mInputDem->width() * 3 );
+        mCellEvents.reserve( mInputDsm->height() * mInputDsm->width() * 3 );
     }
 
-    std::unique_ptr<QgsRasterBlock> rasterBlock( mInputDem->dataProvider()->block(
-        mDefaultBand, mInputDem->extent(), mInputDem->width(), mInputDem->height() ) );
+    std::unique_ptr<QgsRasterBlock> rasterBlock( mInputDsm->dataProvider()->block(
+        mDefaultBand, mInputDsm->extent(), mInputDsm->width(), mInputDsm->height() ) );
 
     bool isNoData = false;
     bool isMaskNoData = false;
@@ -57,7 +57,7 @@ void AbstractViewshed::initEventList()
     if ( mVisibilityMask )
     {
         maskBlock = std::unique_ptr<QgsRasterBlock>( mVisibilityMask->dataProvider()->block(
-            mDefaultBand, mInputDem->extent(), mInputDem->width(), mInputDem->height() ) );
+            mDefaultBand, mInputDsm->extent(), mInputDsm->width(), mInputDsm->height() ) );
     }
 
     for ( int row = 0; row < rasterBlock->height(); row++ )
@@ -211,44 +211,32 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
             }
         }
 
-        if ( mMaxNumberOfTasks < mThreadPool.get_tasks_total() || mMaxNumberOfResults < mResultPixels.size() )
+        if ( mMaxNumberOfTasks < mThreadPool.get_tasks_total() )
         {
             // parse result to rasters to avoid clutching in memory
-            parseCalculatedResults();
+            mThreadPool.wait_for_tasks();
         }
 
         i++;
     }
 
     // parse results left after the algorithm finished
-    parseCalculatedResults();
+    mThreadPool.wait_for_tasks();
 
-    for ( int j = 0; j < mAlgs->size(); j++ )
+    for ( int j = 0; j < mVisibilityIndices->size(); j++ )
     {
-        mResults.at( j )->setValue( mAlgs->at( j )->pointValue(), mPoint->col, mPoint->row );
+        mResults->at( j )->setValue( mVisibilityIndices->at( j )->pointValue(), mPoint->col, mPoint->row );
     }
 
     mTimeParse = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::high_resolution_clock::now() -
                                                                        startTime );
 }
 
-void AbstractViewshed::parseCalculatedResults()
-{
-    mThreadPool.wait_for_tasks();
-
-    for ( int j = 0; j < mResultPixels.size(); j++ )
-    {
-        setPixelData( mResultPixels[j].get() );
-    }
-
-    mResultPixels = BS::multi_future<ViewshedValues>();
-}
-
 void AbstractViewshed::setPixelData( ViewshedValues values )
 {
     for ( int j = 0; j < values.values.size(); j++ )
     {
-        mResults.at( j )->setValue( values.values.at( j ), values.col, values.row );
+        mResults->at( j )->setValue( values.values.at( j ), values.col, values.row );
     }
 }
 
@@ -305,7 +293,7 @@ double AbstractViewshed::getCornerValue( const CellEventPosition &pos, const std
     return ( value1 + value2 + value3 + value4 ) / 4;
 }
 
-std::shared_ptr<MemoryRaster> AbstractViewshed::resultRaster( int index ) { return mResults.at( index ); }
+std::shared_ptr<MemoryRaster> AbstractViewshed::resultRaster( int index ) { return mResults->at( index ); }
 
 void AbstractViewshed::saveResultsStdString( std::string location, std::string fileNamePrefix )
 {
@@ -314,7 +302,7 @@ void AbstractViewshed::saveResultsStdString( std::string location, std::string f
 
 void AbstractViewshed::saveResults( QString location, QString fileNamePrefix )
 {
-    for ( int i = 0; i < mAlgs->size(); i++ )
+    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
     {
         QString filePath = QString( "%1/%2" );
 
@@ -322,19 +310,19 @@ void AbstractViewshed::saveResults( QString location, QString fileNamePrefix )
 
         if ( fileNamePrefix.isEmpty() )
         {
-            fileName = QString( "%1.tif" ).arg( mAlgs->at( i )->name() );
+            fileName = QString( "%1.tif" ).arg( mVisibilityIndices->at( i )->name() );
         }
         else
         {
-            fileName = QString( "%1 %2.tif" ).arg( fileNamePrefix, mAlgs->at( i )->name() );
+            fileName = QString( "%1 %2.tif" ).arg( fileNamePrefix, mVisibilityIndices->at( i )->name() );
         }
-        mResults.at( i )->save( filePath.arg( location, fileName ) );
+        mResults->at( i )->save( filePath.arg( location, fileName ) );
     }
 }
 
 QgsPoint AbstractViewshed::point( int row, int col )
 {
-    QgsPoint p = mInputDem->dataProvider()->transformCoordinates(
+    QgsPoint p = mInputDsm->dataProvider()->transformCoordinates(
         QgsPoint( col + 0.5, row + 0.5 ), QgsRasterDataProvider::TransformType::TransformImageToLayer );
 
     return p;
@@ -342,7 +330,7 @@ QgsPoint AbstractViewshed::point( int row, int col )
 
 LoSNode AbstractViewshed::statusNodeFromPoint( QgsPoint point )
 {
-    QgsPoint pointRaster = mInputDem->dataProvider()->transformCoordinates(
+    QgsPoint pointRaster = mInputDsm->dataProvider()->transformCoordinates(
         point, QgsRasterDataProvider::TransformType::TransformLayerToImage );
 
     int row = pointRaster.y();
@@ -363,8 +351,6 @@ LoSNode AbstractViewshed::statusNodeFromPoint( QgsPoint point )
 }
 
 void AbstractViewshed::setMaxConcurentTaks( int maxTasks ) { mMaxNumberOfTasks = maxTasks; }
-
-void AbstractViewshed::setMaxResultsInMemory( int maxResults ) { mMaxNumberOfResults = maxResults; }
 
 void AbstractViewshed::setMaxThreads( int threads )
 {

@@ -18,7 +18,7 @@ namespace viewshed
     {
       public:
         CellEventPositionType eventType;
-        CELL_EVENT_DATA_TYPE dist2vp;
+        CELL_EVENT_DATA_TYPE dist2point;
         CELL_EVENT_DATA_TYPE angle;
         CELL_EVENT_DATA_TYPE elevation[3];
         bool behindTargetForInverseLoS = false;
