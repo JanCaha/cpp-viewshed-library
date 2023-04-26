@@ -42,10 +42,19 @@ namespace viewshed
          * @brief Save data vector of DataTriplets as CSV file.
          *
          * @param data
-         * @param header
-         * @param fileName
+         * @param header formatted header of CSV.
+         * @param fileName filename with path to store data into.
          */
         static void saveToCsv( std::vector<DataTriplet> data, std::string header, std::string fileName );
+
+        /**
+         * @brief Save arbitrary rows as CSV file.
+         *
+         * @param rows formatted rows of the CSV, "\n" is added automatically at the end of string.
+         * @param header formatted header of CSV.
+         * @param fileName filename with path to store data into.
+         */
+        static void saveToCsv( std::vector<std::string> rows, std::string header, std::string fileName );
 
         /**
          * @brief Extracts triplets of distance, elevation and target point (boolean) from provided LoS.
