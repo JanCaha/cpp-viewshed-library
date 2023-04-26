@@ -98,14 +98,6 @@ namespace viewshed
         void setMaxConcurentTaks( int maxTasks );
 
         /**
-         * @brief Set the maximal number of processed LoS that can be stored in memory, before the results are saved to
-         * prepared output rasters.
-         *
-         * @param maxResults
-         */
-        void setMaxResultsInMemory( int maxResults );
-
-        /**
          * @brief Set the maximal number of threads that can be used for calculation.
          *
          * @param threads
@@ -280,9 +272,9 @@ namespace viewshed
          */
         long long sizeOfOutputRaster()
         {
-            if ( mResults.size() > 0 )
+            if ( mResults->size() > 0 )
             {
-                return mResults[0]->dataSize();
+                return mResults->at( 0 )->dataSize();
             }
             return 0;
         }
@@ -292,7 +284,7 @@ namespace viewshed
          *
          * @return int
          */
-        int numberOfResultRasters() { return mResults.size(); }
+        int numberOfResultRasters() { return mResults->size(); }
 
         /**
          * @brief Size in bytes that all output raster takes.
@@ -366,11 +358,6 @@ namespace viewshed
          */
         int mMaxNumberOfTasks = 100;
 
-        /**
-         * @brief Maximal number of results that can be stored, before they are stored into output rasters.
-         *
-         */
-        int mMaxNumberOfResults = 500;
         double mCellSize;
         double mValid;
         bool mCurvatureCorrections = false;
@@ -390,24 +377,13 @@ namespace viewshed
         void setPixelData( ViewshedValues values );
 
         /**
-         * @brief Parse stored output values for output rasters.
-         *
-         */
-        void parseCalculatedResults();
-
-        /**
          * @brief Threadpool that takes care of preparing individual threads with LoS to be solved.
          *
          */
         BS::thread_pool mThreadPool;
 
-        /**
-         * @brief Results of individual threads in form out outputs, that are then stored in output rasters.
-         *
-         */
-        BS::multi_future<ViewshedValues> mResultPixels;
-
-        std::vector<std::shared_ptr<MemoryRaster>> mResults;
+        std::shared_ptr<std::vector<std::shared_ptr<MemoryRaster>>> mResults =
+            std::make_shared<std::vector<std::shared_ptr<MemoryRaster>>>();
 
         std::chrono::nanoseconds mTimeInit;
         std::chrono::nanoseconds mTimeSort;
@@ -425,7 +401,7 @@ namespace viewshed
         double getCornerValue( const CellEventPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
                                double defaultValue );
 
-                double mCellElevs[3];
+        double mCellElevs[3];
         double mAngleCenter, mAngleEnter, mAngleExit;
         double mEventDistance;
         CellEvent mEventCenter, mEventEnter, mEventExit = CellEvent();

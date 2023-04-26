@@ -9,12 +9,12 @@ using viewshed::MemoryRaster;
 
 void AbstractViewshed::prepareMemoryRasters()
 {
-    mResults.clear();
-    mResults.reserve( mAlgs->size() );
+    mResults->clear();
+    mResults->reserve( mAlgs->size() );
 
     for ( int i = 0; i < mAlgs->size(); i++ )
     {
-        mResults.push_back( std::make_shared<MemoryRaster>(
+        mResults->push_back( std::make_shared<MemoryRaster>(
             mInputDem, mDataType, mInputDem->dataProvider()->sourceNoDataValue( mDefaultBand ) ) );
     }
 }
@@ -22,7 +22,7 @@ void AbstractViewshed::prepareMemoryRasters()
 void AbstractViewshed::setDefaultResultDataType( Qgis::DataType dataType )
 {
     mDataType = dataType;
-    if ( !mResults.empty() )
+    if ( !mResults->empty() )
     {
         prepareMemoryRasters();
     }
@@ -211,44 +211,32 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
             }
         }
 
-        if ( mMaxNumberOfTasks < mThreadPool.get_tasks_total() || mMaxNumberOfResults < mResultPixels.size() )
+        if ( mMaxNumberOfTasks < mThreadPool.get_tasks_total() )
         {
             // parse result to rasters to avoid clutching in memory
-            parseCalculatedResults();
+            mThreadPool.wait_for_tasks();
         }
 
         i++;
     }
 
     // parse results left after the algorithm finished
-    parseCalculatedResults();
+    mThreadPool.wait_for_tasks();
 
     for ( int j = 0; j < mAlgs->size(); j++ )
     {
-        mResults.at( j )->setValue( mAlgs->at( j )->pointValue(), mPoint->col, mPoint->row );
+        mResults->at( j )->setValue( mAlgs->at( j )->pointValue(), mPoint->col, mPoint->row );
     }
 
     mTimeParse = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::high_resolution_clock::now() -
                                                                        startTime );
 }
 
-void AbstractViewshed::parseCalculatedResults()
-{
-    mThreadPool.wait_for_tasks();
-
-    for ( int j = 0; j < mResultPixels.size(); j++ )
-    {
-        setPixelData( mResultPixels[j].get() );
-    }
-
-    mResultPixels = BS::multi_future<ViewshedValues>();
-}
-
 void AbstractViewshed::setPixelData( ViewshedValues values )
 {
     for ( int j = 0; j < values.values.size(); j++ )
     {
-        mResults.at( j )->setValue( values.values.at( j ), values.col, values.row );
+        mResults->at( j )->setValue( values.values.at( j ), values.col, values.row );
     }
 }
 
@@ -305,7 +293,7 @@ double AbstractViewshed::getCornerValue( const CellEventPosition &pos, const std
     return ( value1 + value2 + value3 + value4 ) / 4;
 }
 
-std::shared_ptr<MemoryRaster> AbstractViewshed::resultRaster( int index ) { return mResults.at( index ); }
+std::shared_ptr<MemoryRaster> AbstractViewshed::resultRaster( int index ) { return mResults->at( index ); }
 
 void AbstractViewshed::saveResultsStdString( std::string location, std::string fileNamePrefix )
 {
@@ -328,7 +316,7 @@ void AbstractViewshed::saveResults( QString location, QString fileNamePrefix )
         {
             fileName = QString( "%1 %2.tif" ).arg( fileNamePrefix, mAlgs->at( i )->name() );
         }
-        mResults.at( i )->save( filePath.arg( location, fileName ) );
+        mResults->at( i )->save( filePath.arg( location, fileName ) );
     }
 }
 
@@ -363,8 +351,6 @@ LoSNode AbstractViewshed::statusNodeFromPoint( QgsPoint point )
 }
 
 void AbstractViewshed::setMaxConcurentTaks( int maxTasks ) { mMaxNumberOfTasks = maxTasks; }
-
-void AbstractViewshed::setMaxResultsInMemory( int maxResults ) { mMaxNumberOfResults = maxResults; }
 
 void AbstractViewshed::setMaxThreads( int threads )
 {

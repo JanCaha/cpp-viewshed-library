@@ -17,8 +17,9 @@ namespace viewshed
      * @param algs
      * @return ViewshedValues
      */
-    ViewshedValues evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
-                                      std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs );
+    void evaluateLoSForPoI( std::shared_ptr<AbstractLoS> los,
+                                      std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
+                                      std::shared_ptr<std::vector<std::shared_ptr<MemoryRaster>>> results );
 
 } // namespace viewshed
 
