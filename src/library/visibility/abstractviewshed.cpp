@@ -180,7 +180,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
                     break;
                 }
 
-                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize, mCalculationStyle );
                 mLosNodes.push_back( mLoSNodeTemp );
                 break;
             }

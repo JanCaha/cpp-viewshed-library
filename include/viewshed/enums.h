@@ -24,6 +24,16 @@ namespace viewshed
         CENTER = 1,
         EXIT = 2
     };
+
+    /**
+     * @brief Is the cell of LoS interpreted as discrete or continuous elevation unit.
+     *
+     */
+    enum LoSType
+    {
+        DISCRETE,
+        CONTINUOUS
+    };
 } // namespace viewshed
 
 #endif

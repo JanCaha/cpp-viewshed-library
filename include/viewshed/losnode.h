@@ -41,7 +41,8 @@ namespace viewshed
          * @param e Cell event with all the necessary information.
          * @param cellSize Cell size of raster from which the information was derived.
          */
-        LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize );
+        LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize,
+                 LoSType calculationStyle = LoSType::CONTINUOUS );
 
         bool operator==( const LoSNode &other );
         bool operator!=( const LoSNode &other );

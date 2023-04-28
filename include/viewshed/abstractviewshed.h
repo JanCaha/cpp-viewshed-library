@@ -293,6 +293,14 @@ namespace viewshed
          */
         long long sizeOfOutputRasters() { return mVisibilityIndices->size() * sizeOfOutputRaster(); }
 
+        /**
+         * @brief Set the calculation style. Should the LoS node be interpeted as dicrete or continuous model of
+         * elevation.
+         *
+         * @param calculationStyle
+         */
+        void setCalculationStyle( LoSType calculationStyle ) { mCalculationStyle = calculationStyle; }
+
       protected:
         /**
          * @brief LoSNodes in currently solved LoS while parsing event list.
@@ -408,6 +416,8 @@ namespace viewshed
         CellEvent mEventEnterOpposite, mEventExitOpposite = CellEvent();
         double mOppositeAngleEnter, mOppositeAngleExit;
         LoSNode mLoSNodeTemp = LoSNode();
+
+        LoSType mCalculationStyle = LoSType::CONTINUOUS;
     };
 
 } // namespace viewshed
