@@ -37,7 +37,7 @@ jobs:
       - name: Update and Upgrade
         run: |
           sudo apt update
-          sudo apt install ninja-build
+          sudo apt install ninja-build doxygen
 
       - name: Install QGIS
         run: |
@@ -55,7 +55,7 @@ jobs:
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=on \
-            -DBUILD_DOCUMENTATION:bool=on \
+            -DBUILD_DOCUMENTATION:bool=off \
             -DBUILD_TESTS:bool=on \
             -DCELL_EVENT_DATA_FLOAT:bool=on \
             -DOUTPUT_RASTER_DATA_FLOAT:bool=on
@@ -98,13 +98,14 @@ jobs:
         run: | 
           rm -rf build
           mkdir build
+          mkdir documentation
           cmake \
             -S. \
             -Bbuild \
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=on \
-            -DBUILD_DOCUMENTATION:bool=off \
+            -DBUILD_DOCUMENTATION:bool=on \
             -DBUILD_TESTS:bool=off \
             -DCELL_EVENT_DATA_FLOAT:bool=on \
             -DOUTPUT_RASTER_DATA_FLOAT:bool=on
@@ -119,3 +120,10 @@ jobs:
         with:
           name: _packages
           path: _packages/viewshed_*.deb
+      
+      - name: Deploy Documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./documentation
+          publish_branch: gh-pages 
