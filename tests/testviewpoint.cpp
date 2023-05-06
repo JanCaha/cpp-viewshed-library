@@ -6,8 +6,10 @@
 #include "testsettings.h"
 
 #include "point.h"
+#include "viewshedutils.h"
 
 using viewshed::Point;
+using namespace viewshed;
 
 class TestViewpoint : public QObject
 {
@@ -18,7 +20,7 @@ class TestViewpoint : public QObject
 
   private slots:
 
-    void initTestCase() { dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM, "dsm", "gdal" ); }
+    void initTestCase() { dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM ); }
 
     void constructOk()
     {
@@ -28,9 +30,9 @@ class TestViewpoint : public QObject
         QVERIFY( vp.y == -1189162.66 );
         QVERIFY( vp.row == 130 );
         QVERIFY( vp.col == 126 );
-        QVERIFY( qgsDoubleNear( vp.elevation, 1017.5416, 0.0001 ) );
-        QVERIFY( qgsDoubleNear( vp.offset, 1.6 ) );
-        QVERIFY( qgsDoubleNear( vp.totalElevation(), 1017.5416 + 1.6, 0.0001 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( vp.elevation, 1017.5416, 0.0001 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( vp.offset, 1.6 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( vp.totalElevation(), 1017.5416 + 1.6, 0.0001 ) );
     }
 
     void constructOutside()

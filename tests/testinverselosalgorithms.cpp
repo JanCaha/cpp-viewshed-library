@@ -137,23 +137,23 @@ class TestInverseLosAlgorithms : public QObject
 
         algs->push_back( std::make_shared<ViewAngle>() );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 0 ), -38.6, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 0 ), -38.6, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 1 ), -43.5, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 1 ), -43.5, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 2 ), -45.0, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 2 ), -45.0, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 3 ), -14.0, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 3 ), -14.0, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 4 ), -11.3, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 4 ), -11.3, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 5 ), -53.1, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 5 ), -53.1, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 6 ), -15.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 6 ), -15.9, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8 ), -59.0, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 8 ), -59.0, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 9 ), -45, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 9 ), -45, 0.1 ) );
     }
 
     void differenceLocalHorizon()
@@ -166,35 +166,35 @@ class TestInverseLosAlgorithms : public QObject
         algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( false, invisible, noHorizon ) );
         algs->push_back( std::make_shared<AngleDifferenceToLocalHorizon>( true, invisible, noHorizon ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), noHorizon, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), noHorizon, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 0, 0 ), noHorizon, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 0, 1 ), noHorizon, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 0 ), noHorizon, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 1 ), noHorizon, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 1, 0 ), noHorizon, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 1, 1 ), noHorizon, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 0 ), noHorizon, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 1 ), noHorizon, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 2, 0 ), noHorizon, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 2, 1 ), noHorizon, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 1 ), -77.4, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 3, 1 ), -77.4, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 1 ), -56.2, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 4, 1 ), -56.2, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), noHorizon, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 1 ), noHorizon, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 5, 0 ), noHorizon, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 5, 1 ), noHorizon, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 1 ), -96.4, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 6, 1 ), -96.4, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 1 ), -89.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 7, 1 ), -89.9, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), 7.7, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 1 ), 7.7, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 8, 0 ), 7.7, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 8, 1 ), 7.7, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 1 ), -123.6, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 9, 1 ), -123.6, 0.1 ) );
     }
 
     void isHorizon()
@@ -235,27 +235,27 @@ class TestInverseLosAlgorithms : public QObject
         algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( false, invisible ) );
         algs->push_back( std::make_shared<AngleDifferenceToGlobalHorizon>( true, invisible ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), -73.6, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 0 ), -57.5, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 0 ), -43.8, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), -20.6, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), -11.3, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 0, 0 ), -73.6, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 1, 0 ), -57.5, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 2, 0 ), -43.8, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 5, 0 ), -20.6, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 8, 0 ), -11.3, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), -73.6, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 1 ), -57.5, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 1 ), -43.8, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 1 ), -77.4, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 1 ), -56.2, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 1 ), -20.6, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 1 ), -96.4, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 1 ), -89.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 1 ), -11.3, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 1 ), -123.6, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 0, 1 ), -73.6, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 1, 1 ), -57.5, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 2, 1 ), -43.8, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 3, 1 ), -77.4, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 4, 1 ), -56.2, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 5, 1 ), -20.6, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 6, 1 ), -96.4, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 7, 1 ), -89.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 8, 1 ), -11.3, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 9, 1 ), -123.6, 0.1 ) );
     }
 
     void differenceElevationLocalHorizon()
@@ -270,27 +270,27 @@ class TestInverseLosAlgorithms : public QObject
 
         LoSEvaluator losEval = LoSEvaluator( los, algs );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), noHorizonBefore, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 0 ), noHorizonBefore, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 0 ), noHorizonBefore, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), noHorizonBefore, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), 6.0, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 0, 0 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 1, 0 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 2, 0 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 5, 0 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 8, 0 ), 6.0, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), noHorizonBefore, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 1 ), noHorizonBefore, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 1 ), noHorizonBefore, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 1 ), -8.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 1 ), -5.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 1 ), noHorizonBefore, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 1 ), -43.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 1 ), -19.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 1 ), 6.0, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 1 ), -59.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 0, 1 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 1, 1 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 2, 1 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 3, 1 ), -8.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 4, 1 ), -5.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 5, 1 ), noHorizonBefore, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 6, 1 ), -43.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 7, 1 ), -19.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 8, 1 ), 6.0, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 9, 1 ), -59.9, 0.1 ) );
     }
 
     void differenceElevationGlobalHorizon()
@@ -303,27 +303,27 @@ class TestInverseLosAlgorithms : public QObject
         algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( false, invisible, noHorizonBefore ) );
         algs->push_back( std::make_shared<ElevationDifferenceToGlobalHorizon>( true, invisible, noHorizonBefore ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 0 ), -1.5, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 0 ), -2.4, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 0 ), -2.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 0 ), -4.1, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 0 ), -5.0, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 0, 0 ), -1.5, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 1, 0 ), -2.4, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 2, 0 ), -2.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 3, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 4, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 5, 0 ), -4.1, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 6, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 7, 0 ), invisible, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 8, 0 ), -5.0, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 9, 0 ), invisible, 0.1 ) );
 
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 0, 1 ), -1.5, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 1, 1 ), -2.3, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 2, 1 ), -2.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 3, 1 ), -8.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 4, 1 ), -5.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 5, 1 ), -4.1, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 6, 1 ), -43.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 7, 1 ), -19.9, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 8, 1 ), -5.0, 0.1 ) );
-        QVERIFY( qgsDoubleNear( losEvalForPoint( 9, 1 ), -59.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 0, 1 ), -1.5, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 1, 1 ), -2.3, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 2, 1 ), -2.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 3, 1 ), -8.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 4, 1 ), -5.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 5, 1 ), -4.1, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 6, 1 ), -43.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 7, 1 ), -19.9, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 8, 1 ), -5.0, 0.1 ) );
+        QVERIFY( ViewshedUtils::doubleEqual( losEvalForPoint( 9, 1 ), -59.9, 0.1 ) );
     }
 };
 
