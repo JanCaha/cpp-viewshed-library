@@ -1,7 +1,7 @@
 # Binaries :
 macro(create_binary bin_name filename add_widgets)
     if(${add_widgets})
-        add_executable(${bin_name} ${filename} pointwidget.h pointwidget.cpp)
+        add_executable(${bin_name} ${filename} pointwidget.h pointwidget.cpp doublevalidator.h doublevalidator.cpp)
     else()
         add_executable(${bin_name} ${filename} commandlinehelper.h)
     endif()
@@ -28,7 +28,7 @@ create_binary(viewshed viewshed.cpp OFF)
 
 create_binary(inverseviewshed inverseviewshed.cpp OFF)
 
-# create_binary(viewshedcalculator viewshedcalculator.cpp ON)
+create_binary(viewshedcalculator viewshedcalculator.cpp ON)
 
 # create_binary(losextractor losextractor.cpp ON)
 add_custom_target(create_binaries)
@@ -38,8 +38,8 @@ add_dependencies(create_binaries viewshed)
 add_dependencies(create_binaries
     viewshed
     inverseviewshed
+    viewshedcalculator
 
-    # viewshedcalculator
     # losextractor
 )
 
