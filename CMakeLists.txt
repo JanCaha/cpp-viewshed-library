@@ -42,8 +42,13 @@ set(MINIMAL_QGIS_LIBS
     Qt5::Widgets
 )
 
+find_package(GDAL REQUIRED)
+
+# include(FindPkgConfig)
+# pkg_check_modules(SIMPLE_RASTERS REQUIRED simplerasters)
 set(LIBRARY_VIEWSHED_PRIVATE_HEADERS
     ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
+    ${CMAKE_BINARY_DIR}/_deps/simplerasters_src-src/src/api/simplerasters.h
 )
 
 set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
@@ -60,7 +65,6 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/losevaluator.h
     include/viewshed/losimportantvalues.h
     include/viewshed/losnode.h
-    include/viewshed/memoryraster.h
     include/viewshed/point.h
     include/viewshed/rasterposition.h
     include/viewshed/threadtasks.h
