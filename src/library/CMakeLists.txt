@@ -46,7 +46,7 @@ set_target_properties(library_viewshed PROPERTIES PRIVATE_HEADER "${LIBRARY_VIEW
 
 target_include_directories(library_viewshed PUBLIC ${CMAKE_SOURCE_DIR}/include/viewshed)
 target_include_directories(library_viewshed PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
-target_include_directories(library_viewshed PUBLIC ${CMAKE_BINARY_DIR}/_deps/simplerasters_src-src/src/api)
+target_include_directories(library_viewshed PUBLIC ${CMAKE_BINARY_DIR}/_deps/simplerasters-src/src/api)
 target_include_directories(library_viewshed PRIVATE ${GDAL_INCLUDE_DIR})
 
 target_link_libraries(library_viewshed

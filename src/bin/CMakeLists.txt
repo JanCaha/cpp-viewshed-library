@@ -12,7 +12,7 @@ macro(create_binary bin_name filename add_widgets)
     target_include_directories(${bin_name} PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
     target_include_directories(${bin_name} PRIVATE ${MINIMAL_QGIS_INCLUDES})
     target_include_directories(${bin_name} PRIVATE ${GDAL_INCLUDE_DIR})
-    target_include_directories(${bin_name} PUBLIC ${CMAKE_BINARY_DIR}/simplerasters_src-src/src/api)
+    target_include_directories(${bin_name} PUBLIC ${CMAKE_BINARY_DIR}/_deps/simplerasters-src/src/api)
 
     target_link_libraries(${bin_name}
         ${MINIMAL_QGIS_LIBS}

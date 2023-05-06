@@ -15,7 +15,7 @@ if(BUILD_TESTS)
         ${QGIS_INCLUDE_DIR}
         ${CMAKE_SOURCE_DIR}/include/viewshed
         ${CMAKE_CURRENT_BINARY_DIR}
-        ${CMAKE_BINARY_DIR}/simplerasters_src-src/src/api
+        ${CMAKE_BINARY_DIR}/simplerasters-src/src/api
         ${GDAL_INCLUDE_DIR}
     )
 
