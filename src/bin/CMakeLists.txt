@@ -28,16 +28,22 @@ create_binary(viewshed viewshed.cpp OFF)
 
 create_binary(inverseviewshed inverseviewshed.cpp OFF)
 
-create_binary(viewshedcalculator viewshedcalculator.cpp ON)
+# create_binary(viewshedcalculator viewshedcalculator.cpp ON)
 
-create_binary(losextractor losextractor.cpp ON)
-
+# create_binary(losextractor losextractor.cpp ON)
 add_custom_target(create_binaries)
 
 add_dependencies(create_binaries viewshed)
 
-add_dependencies(create_binaries viewshed inverseviewshed viewshedcalculator losextractor)
+add_dependencies(create_binaries
+    viewshed
+    inverseviewshed
+
+    # viewshedcalculator
+    # losextractor
+)
 
 install(TARGETS
-    viewshed inverseviewshed viewshedcalculator
-    RUNTIME DESTINATION bin)
+    viewshed inverseviewshed # viewshedcalculator
+    RUNTIME DESTINATION bin
+)
