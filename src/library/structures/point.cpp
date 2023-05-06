@@ -36,7 +36,7 @@ void Point::setUp( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, int ra
     bool ok = dem->isNoData( rowD, colD );
     elevation = dem->value( rowD, colD );
 
-    mValid = ok && dem->isInside( point );
+    mValid = !ok && dem->isInside( point );
 
     col = static_cast<int>( colD );
     row = static_cast<int>( rowD );
