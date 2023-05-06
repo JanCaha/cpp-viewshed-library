@@ -9,4 +9,4 @@ double ElevationDifference::result( std::shared_ptr<LoSImportantValues> losValue
 
 double ElevationDifference::pointValue() { return 0.0; }
 
-const QString ElevationDifference::name() { return QString( "Elevation_Difference" ); }
+const std::string ElevationDifference::name() { return "Elevation_Difference"; }

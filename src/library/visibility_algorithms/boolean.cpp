@@ -17,4 +17,4 @@ double Boolean::result( std::shared_ptr<LoSImportantValues> losValues, std::shar
         return mInvisibile;
 }
 
-const QString Boolean::name() { return QString( "Visibility" ); }
+const std::string Boolean::name() { return "Visibility"; }

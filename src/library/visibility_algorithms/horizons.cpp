@@ -33,4 +33,4 @@ double Horizons::result( std::shared_ptr<LoSImportantValues> losValues, std::sha
     return mNotHorizon;
 }
 
-const QString Horizons::name() { return QString( "Horizons" ); }
+const std::string Horizons::name() { return "Horizons"; }

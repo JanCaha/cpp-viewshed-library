@@ -37,4 +37,4 @@ double FuzzyVisibility::result( std::shared_ptr<LoSImportantValues> losValues, s
     return fuzzyVisibility;
 }
 
-const QString FuzzyVisibility::name() { return QString( "Fuzzy Visibility" ); }
+const std::string FuzzyVisibility::name() { return "Fuzzy Visibility"; }

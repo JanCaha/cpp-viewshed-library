@@ -25,12 +25,12 @@ double HorizonsCount::result( std::shared_ptr<LoSImportantValues> losValues, std
     return losValues->countHorizon - losValues->countHorizonBefore;
 }
 
-const QString HorizonsCount::name()
+const std::string HorizonsCount::name()
 {
     if ( mBeforeTarget )
     {
-        return QString( "Horizons Before Target Count" );
+        return "Horizons Before Target Count";
     }
 
-    return QString( "Horizons After Target Count" );
+    return "Horizons After Target Count";
 }

@@ -1,8 +1,7 @@
 #ifndef VIEWSHEDLIB_POINT_H
 #define VIEWSHEDLIB_POINT_H
 
-#include "qgspoint.h"
-#include "qgsrasterlayer.h"
+#include "simplerasters.h"
 
 #include "rasterposition.h"
 
@@ -33,14 +32,14 @@ namespace viewshed
          */
         Point( int row_, int col_, double elevation_, double offset_, double cellSize_ );
         /**
-         * @brief Construct a new Point object from QgsPoint, QgsRasterLayer and offset.
+         * @brief Construct a new Point object from OGRPoint, SingleBandRaster and offset.
          *
          * @param point
          * @param dem
          * @param offsetAtPoint
          * @param rasterBand
          */
-        Point( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offsetAtPoint = 1.6, int rasterBand = 1 );
+        Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint = 1.6, int rasterBand = 1 );
 
         double x, y;
         double elevation, offset;
@@ -70,8 +69,8 @@ namespace viewshed
       protected:
         bool mValid;
 
-        void setUp( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, int rasterBand = 1 );
-        void setUp( int row_, int col_, std::shared_ptr<QgsRasterLayer> dem, int rasterBand = 1 );
+        void setUp( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, int rasterBand = 1 );
+        void setUp( int row_, int col_, std::shared_ptr<SingleBandRaster> dem, int rasterBand = 1 );
     };
 
 } // namespace viewshed

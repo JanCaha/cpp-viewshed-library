@@ -17,48 +17,44 @@ Point::Point( int row_, int col_, double elevation_, double offset_, double cell
     mValid = true;
 }
 
-Point::Point( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offsetAtPoint, int rasterBand )
+Point::Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint, int rasterBand )
 {
 
     setUp( point, dem, rasterBand );
     offset = offsetAtPoint;
 }
 
-void Point::setUp( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, int rasterBand )
+void Point::setUp( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, int rasterBand )
 {
-    x = point.x();
-    y = point.y();
+    x = point.getX();
+    y = point.getY();
 
-    bool ok;
-    elevation = dem->dataProvider()->sample( QgsPointXY( point.x(), point.y() ), rasterBand, &ok );
+    double rowD, colD;
 
-    QgsPoint pointRaster =
-        dem->dataProvider()->transformCoordinates( point, QgsRasterDataProvider::TransformType::TransformLayerToImage );
+    dem->transformCoordinatesToRaster( x, y, rowD, colD );
 
-    mValid = ok && !pointRaster.isEmpty();
+    bool ok = dem->isNoData( rowD, colD );
+    elevation = dem->value( rowD, colD );
 
-    col = pointRaster.x();
-    row = pointRaster.y();
+    mValid = ok && dem->isInside( point );
 
-    cellSize = dem->rasterUnitsPerPixelX();
+    col = static_cast<int>( colD );
+    row = static_cast<int>( rowD );
+
+    cellSize = dem->xCellSize();
 }
 
-void Point::setUp( int row_, int col_, std::shared_ptr<QgsRasterLayer> dem, int rasterBand )
+void Point::setUp( int row_, int col_, std::shared_ptr<SingleBandRaster> dem, int rasterBand )
 {
     row = row_;
     col = col_;
 
-    cellSize = dem->rasterUnitsPerPixelX();
+    cellSize = dem->xCellSize();
 
-    QgsPoint pointRaster( col_, row_ );
+    dem->transformCoordinatesToWorld( row, col, x, y );
 
-    QgsPoint point = dem->dataProvider()->transformCoordinates(
-        pointRaster, QgsRasterDataProvider::TransformType::TransformImageToLayer );
-
-    bool ok;
-    elevation = dem->dataProvider()->sample( QgsPointXY( point.x(), point.y() ), rasterBand, &ok );
-
-    mValid = ok;
+    elevation = dem->value( row, col );
+    mValid = dem->isNoData( row, col );
 }
 
 double Point::totalElevation() { return elevation + offset; }

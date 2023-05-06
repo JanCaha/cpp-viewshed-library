@@ -13,8 +13,6 @@ set(LIBRARY_VIEWSHED_SRC
     visibility_algorithms/angledifferencetoglobalhorizon.cpp
     visibility_algorithms/slopetoviewangle.cpp
 
-    memory_raster/memoryraster.cpp
-
     utils/viewshedutils.cpp
 
     structures/cellevent.cpp
@@ -48,11 +46,13 @@ set_target_properties(library_viewshed PROPERTIES PRIVATE_HEADER "${LIBRARY_VIEW
 
 target_include_directories(library_viewshed PUBLIC ${CMAKE_SOURCE_DIR}/include/viewshed)
 target_include_directories(library_viewshed PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
-target_include_directories(library_viewshed PRIVATE ${MINIMAL_QGIS_INCLUDES})
+target_include_directories(library_viewshed PUBLIC ${CMAKE_BINARY_DIR}/simplerasters_src-src/src/api)
+target_include_directories(library_viewshed PRIVATE ${GDAL_INCLUDE_DIR})
 
 target_link_libraries(library_viewshed
-    ${MINIMAL_QGIS_LIBS}
     bs_thread_pool
+    simplerasters
+    ${GDAL_LIBRARY}
 )
 
 if(${CELL_EVENT_DATA_FLOAT})
@@ -65,10 +65,10 @@ else()
 endif()
 
 if(${OUTPUT_RASTER_DATA_FLOAT})
-    set(OUTPUT_RASTER_DATA_TYPE Qgis::DataType::Float32)
+    set(OUTPUT_RASTER_DATA_TYPE GDALDataType::GDT_Float32)
     message(STATUS "Output rasters will have data type `Float32`.")
 else()
-    set(OUTPUT_RASTER_DATA_TYPE Qgis::DataType::Float64)
+    set(OUTPUT_RASTER_DATA_TYPE GDALDataType::GDT_Float64)
     message(STATUS "Output rasters will have data type `Float64`.")
 endif()
 

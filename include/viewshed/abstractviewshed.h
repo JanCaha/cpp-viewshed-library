@@ -3,10 +3,9 @@
 
 #include <limits>
 
-#include "qgspoint.h"
-#include "qgsrasterlayer.h"
-
 #include "BS_thread_pool.hpp"
+
+#include "simplerasters.h"
 
 #include "abstractviewshedalgorithm.h"
 #include "cellevent.h"
@@ -14,7 +13,6 @@
 #include "defaultdatatypes.h"
 #include "los.h"
 #include "losnode.h"
-#include "memoryraster.h"
 #include "viewshedvalues.h"
 #include "visibility.h"
 
@@ -61,7 +59,7 @@ namespace viewshed
         void parseEventList( std::function<void( int, int )> progressCallback = []( int, int ) {} );
 
         void extractValuesFromEventList();
-        void extractValuesFromEventList( std::shared_ptr<QgsRasterLayer> dem_, QString fileName,
+        void extractValuesFromEventList( std::shared_ptr<ProjectedSquareCellRaster> dem_, std::string fileName,
                                          std::function<double( LoSNode )> func );
 
         /**
@@ -130,8 +128,7 @@ namespace viewshed
          * @param rasterBlock
          * @param solveCell Based on mask value, information whether center event for this cell should be created.
          */
-        virtual void addEventsFromCell( int &row, int &column, const double &pixelValue,
-                                        std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell ) = 0;
+        virtual void addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell ) = 0;
 
         /**
          * @brief Submit LoS with this \a CellEvent to threadpool for solving.
@@ -144,9 +141,9 @@ namespace viewshed
          * @brief Extract individual result raster.
          *
          * @param index
-         * @return std::shared_ptr<MemoryRaster>
+         * @return std::shared_ptr<SingleBandRaster>
          */
-        std::shared_ptr<MemoryRaster> resultRaster( int index = 0 );
+        std::shared_ptr<SingleBandRaster> resultRaster( int index = 0 );
 
         /**
          * @brief Save all result rasters into the folder, optionally using name prefix.
@@ -154,39 +151,31 @@ namespace viewshed
          * @param location
          * @param fileNamePrefix
          */
-        void saveResults( QString location, QString fileNamePrefix = QString() );
+        void saveResults( std::string location, std::string fileNamePrefix = "" );
 
         /**
-         * @brief Save all result rasters into the folder, optionally using name prefix.
-         *
-         * @param location
-         * @param fileNamePrefix
-         */
-        void saveResultsStdString( std::string location, std::string fileNamePrefix = "" );
-
-        /**
-         * @brief Create \a LoSNode from \a QgsPoint.
+         * @brief Create \a LoSNode from \a OGRPoint.
          *
          * @param point
          * @return LoSNode
          */
-        LoSNode statusNodeFromPoint( QgsPoint point );
+        LoSNode statusNodeFromPoint( OGRPoint point );
 
         /**
-         * @brief Create \a QgsPoint with coordinates of given row and column in the raster.
+         * @brief Create \a OGRPoint with coordinates of given row and column in the raster.
          *
          * @param row
          * @param col
-         * @return QgsPoint
+         * @return OGRPoint
          */
-        QgsPoint point( int row, int col );
+        OGRPoint point( int row, int col );
 
         /**
          * @brief Set the Default Result Data Type to use in output rasters.
          *
          * @param dataType
          */
-        void setDefaultResultDataType( Qgis::DataType dataType );
+        void setDefaultResultDataType( GDALDataType dataType );
 
         /**
          * @brief Number of valid cells in raster - cells not containing no data.
@@ -207,7 +196,7 @@ namespace viewshed
          *
          * @param mask
          */
-        void setVisibilityMask( std::shared_ptr<QgsRasterLayer> mask ) { mVisibilityMask = mask; }
+        void setVisibilityMask( std::shared_ptr<ProjectedSquareCellRaster> mask ) { mVisibilityMask = mask; }
 
         /**
          * @brief Overall number of solved LoSNodes in all evaluated LoS.
@@ -310,13 +299,13 @@ namespace viewshed
          * @brief Input raster with digital surface model.
          *
          */
-        std::shared_ptr<QgsRasterLayer> mInputDsm;
+        std::shared_ptr<ProjectedSquareCellRaster> mInputDsm;
 
         /**
          * @brief Input raster with visibility calculation mask.
          *
          */
-        std::shared_ptr<QgsRasterLayer> mVisibilityMask = nullptr;
+        std::shared_ptr<ProjectedSquareCellRaster> mVisibilityMask = nullptr;
 
         /**
          * @brief Important point for visibility calculation. Either viewpoint (normal viewshed) or target point
@@ -335,7 +324,7 @@ namespace viewshed
          * @brief Data type of output rasters.
          *
          */
-        Qgis::DataType mDataType = OUTPUT_RASTER_DATA_TYPE;
+        GDALDataType mDataType = OUTPUT_RASTER_DATA_TYPE;
 
         /**
          * @brief Default band to read from rasters.
@@ -366,7 +355,7 @@ namespace viewshed
 
         LoSNode mLosNodePoint;
 
-        std::vector<LoSNode> prepareLoSWithPoint( QgsPoint point );
+        std::vector<LoSNode> prepareLoSWithPoint( OGRPoint point );
         bool validAngles();
 
         /**
@@ -382,24 +371,12 @@ namespace viewshed
          */
         BS::thread_pool mThreadPool;
 
-        std::shared_ptr<std::vector<std::shared_ptr<MemoryRaster>>> mResults =
-            std::make_shared<std::vector<std::shared_ptr<MemoryRaster>>>();
+        std::shared_ptr<std::vector<std::shared_ptr<SingleBandRaster>>> mResults =
+            std::make_shared<std::vector<std::shared_ptr<SingleBandRaster>>>();
 
         std::chrono::nanoseconds mTimeInit;
         std::chrono::nanoseconds mTimeSort;
         std::chrono::nanoseconds mTimeParse;
-
-        /**
-         * @brief Get the Corner Value value for cell. Cell position specifies corner to interpolated from surrounding
-         * cells.
-         *
-         * @param pos
-         * @param block
-         * @param defaultValue
-         * @return * double
-         */
-        double getCornerValue( const CellEventPosition &pos, const std::unique_ptr<QgsRasterBlock> &block,
-                               double defaultValue );
 
         double mCellElevs[3];
         double mAngleCenter, mAngleEnter, mAngleExit;

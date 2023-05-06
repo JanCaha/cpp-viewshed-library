@@ -9,7 +9,7 @@ using viewshed::ViewshedValues;
 
 void viewshed::evaluateLoS( std::shared_ptr<AbstractLoS> los,
                             std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
-                            std::shared_ptr<std::vector<std::shared_ptr<MemoryRaster>>> results )
+                            std::shared_ptr<std::vector<std::shared_ptr<SingleBandRaster>>> results )
 {
     LoSEvaluator losEval( los, algs );
 
@@ -17,6 +17,6 @@ void viewshed::evaluateLoS( std::shared_ptr<AbstractLoS> los,
 
     for ( int j = 0; j < algs->size(); j++ )
     {
-        results->at( j )->setValue( losEval.resultAt( j ), losEval.results().col, losEval.results().row );
+        results->at( j )->writeValue( losEval.results().row, losEval.results().col, losEval.resultAt( j ) );
     }
 }

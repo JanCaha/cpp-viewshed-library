@@ -20,7 +20,7 @@ namespace viewshed
 
             double pointValue() override { return mPointValue; };
 
-            const QString name() override;
+            const std::string name() override;
 
           private:
             bool mAllPoints = false;

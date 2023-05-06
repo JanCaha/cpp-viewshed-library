@@ -41,11 +41,11 @@ double ElevationDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantVa
     }
 }
 
-const QString ElevationDifferenceToLocalHorizon::name()
+const std::string ElevationDifferenceToLocalHorizon::name()
 {
-    QString allPoints = QString::fromStdString( "False" );
+    std::string allPoints = "False";
     if ( mAllPoints )
-        allPoints = QString::fromStdString( "True" );
+        allPoints = "True";
 
-    return QString( "Elevation_Difference_To_Local_Horizon_All_Points_-_%1" ).arg( allPoints );
+    return "Elevation_Difference_To_Local_Horizon_All_Points_-_" + allPoints;
 }

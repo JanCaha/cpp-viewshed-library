@@ -1,6 +1,8 @@
 #ifndef VIEWSHEDLIB_UTILS_H
 #define VIEWSHEDLIB_UTILS_H
 
+#include "ogr_spatialref.h"
+
 #include "abstractlos.h"
 #include "abstractviewshedalgorithm.h"
 #include "losnode.h"
@@ -73,7 +75,7 @@ namespace viewshed
          * @param crs
          * @return double
          */
-        static double earthDiameter( QgsCoordinateReferenceSystem crs );
+        static double earthDiameter( OGRSpatialReference crs );
 
         /**
          * @brief Validate the raster for viewshed calculation, checks if it fulfills all the requirements.
@@ -83,7 +85,7 @@ namespace viewshed
          * @return true
          * @return false
          */
-        static bool validateRaster( std::shared_ptr<QgsRasterLayer> r1, std::string &error );
+        static bool validateRaster( std::shared_ptr<SingleBandRaster> r1, std::string &error );
 
         /**
          * @brief Checks if the two rasters have the same properties and that one can be used visibility calculation
@@ -95,7 +97,7 @@ namespace viewshed
          * @return true
          * @return false
          */
-        static bool compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<QgsRasterLayer> r2,
+        static bool compareRasters( std::shared_ptr<SingleBandRaster> r1, std::shared_ptr<SingleBandRaster> r2,
                                     std::string &error );
 
         /**
@@ -115,6 +117,8 @@ namespace viewshed
          */
         static std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>
         allAlgorithms( double invisibleValue );
+
+        static bool doubleEqual( double a, double b, double epsilon = 4 * std::numeric_limits<double>::epsilon() );
     };
 } // namespace viewshed
 

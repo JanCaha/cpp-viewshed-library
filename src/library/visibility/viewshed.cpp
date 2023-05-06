@@ -9,12 +9,11 @@
 using viewshed::AbstractViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 using viewshed::LoSNode;
-using viewshed::MemoryRaster;
 using viewshed::Point;
 using viewshed::Viewshed;
 using viewshed::ViewshedValues;
 
-Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterLayer> dem,
+Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<ProjectedSquareCellRaster> dem,
                     std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices,
                     bool applyCurvatureCorrections, double earthDiameter, double refractionCoeff, double minimalAngle,
                     double maximalAngle )
@@ -31,14 +30,14 @@ Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterL
 
     setAngles( minimalAngle, maximalAngle );
 
-    mCellSize = mInputDsm->rasterUnitsPerPixelX();
+    mCellSize = mInputDsm->xCellSize();
 
     mThreadPool.reset( mThreadPool.get_thread_count() - 1 );
 
     mValid = true;
 }
 
-std::shared_ptr<LoS> Viewshed::getLoS( QgsPoint point, bool onlyToPoi )
+std::shared_ptr<LoS> Viewshed::getLoS( OGRPoint point, bool onlyToPoi )
 {
 
     std::vector<LoSNode> losNodes = prepareLoSWithPoint( point );
@@ -95,14 +94,13 @@ void Viewshed::submitToThreadpool( CellEvent &e )
     mThreadPool.push_task( viewshed::evaluateLoS, los, mVisibilityIndices, mResults );
 }
 
-void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValue,
-                                  std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell )
+void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell )
 {
     mCellElevs[CellEventPositionType::CENTER] = pixelValue;
     CellEventPosition tempPosEnter = Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint );
-    mCellElevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::ENTER] = mInputDsm->cornerValue( tempPosEnter.row, tempPosEnter.col );
     CellEventPosition tempPosExit = Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint );
-    mCellElevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::EXIT] = mInputDsm->cornerValue( tempPosExit.row, tempPosExit.col );
 
     mAngleCenter = Visibility::angle( row, column, mPoint );
     mAngleEnter = Visibility::angle( &tempPosEnter, mPoint );

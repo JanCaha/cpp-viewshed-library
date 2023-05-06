@@ -20,4 +20,4 @@ double ViewAngle::result( std::shared_ptr<LoSImportantValues> losValues, std::sh
     return los->targetGradient();
 }
 
-const QString ViewAngle::name() { return QString( "Visibility_Angle" ); }
+const std::string ViewAngle::name() { return "Visibility_Angle"; }
