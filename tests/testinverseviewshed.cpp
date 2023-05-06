@@ -36,7 +36,7 @@ class TestInverseViewshed : public QObject
 
         dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM );
         tp = std::make_shared<Point>( OGRPoint( -336364.021, -1189108.615 ), dem, 0 );
-        double noData = dem->dataProvider()->sourceNoDataValue( 1 );
+        double noData = dem->noData();
         algs = ViewshedUtils::allAlgorithms();
     }
 
