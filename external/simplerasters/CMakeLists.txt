@@ -1,17 +1,19 @@
 include(FetchContent)
-FetchContent_Declare(simplerasters_src
+FetchContent_Declare(simplerasters
     GIT_REPOSITORY https://github.com/JanCaha/cpp-simplerasters
     GIT_TAG 734b8c7179394173427c89e6ab3da7dd0e645f11
 )
 
-FetchContent_GetProperties(simplerasters_src)
+FetchContent_GetProperties(simplerasters)
 
-if(NOT simplerasters_src_POPULATED)
-    FetchContent_Populate(simplerasters_src)
+if(NOT simplerasters_POPULATED)
+    FetchContent_Populate(simplerasters)
 
-    add_library(simplerasters INTERFACE)
-    target_include_directories(simplerasters INTERFACE ${simplerasters_src_SOURCE_DIR})
-    target_link_libraries(simplerasters INTERFACE ${GDAL_LIBRARY})
+    add_subdirectory(
+        "${simplerasters_SOURCE_DIR}"
+        "${simplerasters_BINARY_DIR}"
+        EXCLUDE_FROM_ALL
+    )
 
-    message(STATUS "SimpleRasters Installed. Dir: ${simplerasters_src_SOURCE_DIR}")
+    message(STATUS "SimpleRasters Installed. Dir: ${simplerasters_SOURCE_DIR}")
 endif()
