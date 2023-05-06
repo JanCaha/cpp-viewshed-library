@@ -5,9 +5,10 @@
 #include <QLineEdit>
 #include <QWidget>
 
-#include "qgsdoublevalidator.h"
-#include "qgspoint.h"
-#include "qgspointxy.h"
+#include "ogr_geometry.h"
+#include "ogr_spatialref.h"
+
+#include "doublevalidator.h"
 
 class PointWidget : public QWidget
 {
@@ -17,15 +18,13 @@ class PointWidget : public QWidget
     PointWidget( bool addCrsLabel = true, QWidget *parent = nullptr );
 
     bool isPointValid();
-    QgsPoint point();
-    QgsPointXY pointXY();
+    OGRPoint point();
     void setXY( double x, double y );
-    void setPoint( QgsPoint p );
-    void setCrs( QString crs );
+    void setPoint( OGRPoint p );
+    void setCrs( OGRSpatialReference crs );
 
   signals:
-    void pointChanged( QgsPoint point );
-    void pointXYChanged( QgsPointXY point );
+    void pointChanged( OGRPoint point );
 
   private:
     void updatePoint();
@@ -33,8 +32,8 @@ class PointWidget : public QWidget
     QLineEdit *mPointX = nullptr;
     QLineEdit *mPointY = nullptr;
     QLabel *mCrsLabel = nullptr;
-    QgsDoubleValidator *mDoubleValidator = nullptr;
-    QgsPoint mPoint;
+    DoubleValidator *mDoubleValidator = nullptr;
+    OGRPoint mPoint;
     bool mPointValid = false;
     bool mAddCrsLabel = true;
 };
