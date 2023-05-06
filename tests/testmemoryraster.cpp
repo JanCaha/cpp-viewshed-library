@@ -1,11 +1,9 @@
 #include "QObject"
 #include "QTest"
 
-#include "qgsrasterlayer.h"
+#include "simplerasters.h"
 
 #include "testsettings.h"
-
-#include "memoryraster.h"
 
 using viewshed::MemoryRaster;
 
@@ -14,11 +12,11 @@ class TestMemoryRaster : public QObject
     Q_OBJECT
 
   private:
-    std::shared_ptr<QgsRasterLayer> dem;
+    std::shared_ptr<ProjectedSquareCellRaster> dem;
 
   private slots:
 
-    void initTestCase() { dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM, "dsm", "gdal" ); }
+    void initTestCase() { dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM, "dsm", "gdal" ); }
 
     void constructWithDefaultSettings()
     {

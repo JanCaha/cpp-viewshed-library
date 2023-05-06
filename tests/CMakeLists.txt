@@ -15,6 +15,8 @@ if(BUILD_TESTS)
         ${QGIS_INCLUDE_DIR}
         ${CMAKE_SOURCE_DIR}/include/viewshed
         ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_BINARY_DIR}/simplerasters_src-src/src/api
+        ${GDAL_INCLUDE_DIR}
     )
 
     # ############################################################
@@ -44,6 +46,8 @@ if(BUILD_TESTS)
             Qt5::Widgets
             Qt5::Test
             library_viewshed
+            simplerasters
+            ${GDAL_LIBRARY}
         )
 
         add_test(${testname} ${testname} -maxwarnings 10000)

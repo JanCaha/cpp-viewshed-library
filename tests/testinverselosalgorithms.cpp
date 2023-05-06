@@ -11,7 +11,6 @@
 #include "inverselos.h"
 #include "losevaluator.h"
 #include "losnode.h"
-#include "memoryraster.h"
 #include "point.h"
 #include "viewshedutils.h"
 #include "visibilityalgorithms.h"

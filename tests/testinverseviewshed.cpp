@@ -1,7 +1,7 @@
 #include "QObject"
 #include "QTest"
 
-#include "qgsrasterlayer.h"
+#include "simplerasters.h"
 
 #include "testsettings.h"
 
@@ -22,7 +22,7 @@ class TestInverseViewshed : public QObject
     Q_OBJECT
 
   private:
-    std::shared_ptr<QgsRasterLayer> dem;
+    std::shared_ptr<ProjectedSquareCellRaster> dem;
     std::shared_ptr<Point> tp;
     std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs =
         std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
@@ -31,11 +31,11 @@ class TestInverseViewshed : public QObject
 
     void initTestCase()
     {
-        // dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM_SMALL, "dsm", "gdal" );
-        // tp = std::make_shared<Point>( QgsPoint( -336312.978, -1189034.372 ), dem, 0 );
+        // dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM_SMALL, "dsm", "gdal" );
+        // tp = std::make_shared<Point>( OGRPoint( -336312.978, -1189034.372 ), dem, 0 );
 
-        dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM, "dsm", "gdal" );
-        tp = std::make_shared<Point>( QgsPoint( -336364.021, -1189108.615 ), dem, 0 );
+        dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM );
+        tp = std::make_shared<Point>( OGRPoint( -336364.021, -1189108.615 ), dem, 0 );
         double noData = dem->dataProvider()->sourceNoDataValue( 1 );
         algs = ViewshedUtils::allAlgorithms();
     }
@@ -43,7 +43,7 @@ class TestInverseViewshed : public QObject
     void testLoS()
     {
 
-        QgsPoint poiPoint = QgsPoint( -336409.028, -1189172.056 );
+        OGRPoint poiPoint = OGRPoint( -336409.028, -1189172.056 );
 
         InverseViewshed v( tp, 3, dem, algs );
         v.initEventList();

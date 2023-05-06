@@ -11,7 +11,6 @@
 #include "los.h"
 #include "losevaluator.h"
 #include "losnode.h"
-#include "memoryraster.h"
 #include "point.h"
 #include "visibilityalgorithms.h"
 

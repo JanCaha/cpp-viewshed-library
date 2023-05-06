@@ -1,7 +1,7 @@
 #include "QObject"
 #include "QTest"
 
-#include "qgsrasterlayer.h"
+#include "simplerasters.h"
 
 #include "testsettings.h"
 
@@ -22,7 +22,7 @@ class TestViewshed : public QObject
     Q_OBJECT
 
   private:
-    std::shared_ptr<QgsRasterLayer> dem;
+    std::shared_ptr<ProjectedSquareCellRaster> dem;
     std::shared_ptr<Point> vp;
     std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs =
         std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
@@ -31,15 +31,15 @@ class TestViewshed : public QObject
 
     void initTestCase()
     {
-        dem = std::make_shared<QgsRasterLayer>( TEST_DATA_DSM, "dsm", "gdal" );
-        vp = std::make_shared<Point>( QgsPoint( -336364.021, -1189108.615 ), dem );
+        dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM );
+        vp = std::make_shared<Point>( OGRPoint( -336364.021, -1189108.615 ), dem );
         algs = ViewshedUtils::allAlgorithms();
     }
 
     void testLoS()
     {
 
-        QgsPoint poiPoint = QgsPoint( -336428.767, -1189102.785 );
+        OGRPoint poiPoint = OGRPoint( -336428.767, -1189102.785 );
 
         Viewshed v( vp, dem, algs );
         v.initEventList();
