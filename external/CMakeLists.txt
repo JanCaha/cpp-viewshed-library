@@ -1,1 +1,2 @@
 add_subdirectory(BSThreadPool)
+add_subdirectory(simplerasters)
