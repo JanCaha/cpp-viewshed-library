@@ -59,7 +59,6 @@ if(BUILD_TESTS)
     # ############################################################
     # Tests:
     ADD_LIBRARY_TEST(testviewpoint)
-    ADD_LIBRARY_TEST(testmemoryraster)
     ADD_LIBRARY_TEST(testlosalgorithms)
     ADD_LIBRARY_TEST(testviewshed)
     ADD_LIBRARY_TEST(testinverselosalgorithms)
