@@ -43,11 +43,10 @@ add_dependencies(create_binaries
     viewshed
     inverseviewshed
     viewshedcalculator
-
-    # losextractor
+    losextractor
 )
 
 install(TARGETS
-    viewshed inverseviewshed # viewshedcalculator
+    viewshed inverseviewshed viewshedcalculator losextractor
     RUNTIME DESTINATION bin
 )
