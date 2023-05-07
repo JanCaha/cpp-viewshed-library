@@ -7,6 +7,7 @@ cd docker
 
 mkdir install
 cp ../_packages/viewshed_*.deb install/
+cp ../build/_deps/simplerasters-build/src/*.so* install/ 
 
 IMAGE_NAME=viewshed
 DOCKER_IMAGE_NAME=cahik/viewshed:latest
