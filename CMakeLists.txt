@@ -20,25 +20,19 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(QGIS REQUIRED)
-
 find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
 
 find_package(Threads REQUIRED)
 
-set(MINIMAL_QGIS_INCLUDES
-    ${QGIS_INCLUDE_DIR}
+set(QT_INCLUDES
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5Xml_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
 )
 
-set(MINIMAL_QGIS_LIBS
-    ${QGIS_CORE_LIBRARY}
+set(QT_LIBS
     Qt5::Core
     Qt5::Gui
-    Qt5::Xml
     Qt5::Widgets
 )
 
