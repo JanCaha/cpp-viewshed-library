@@ -171,7 +171,7 @@ bool ViewshedUtils::validateRaster( std::shared_ptr<SingleBandRaster> rl, std::s
     //     return false;
     // }
 
-    if ( rl->isProjected() )
+    if ( !rl->isProjected() )
     {
         error = "Raster needs to be projected.";
         return false;
