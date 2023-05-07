@@ -19,11 +19,7 @@
 #include <QTextEdit>
 #include <QVariant>
 
-#include "qgsdoublevalidator.h"
-#include "qgsfilewidget.h"
-#include "qgspoint.h"
-#include "qgsproviderregistry.h"
-#include "qgsrasterlayer.h"
+#include "simplerasters.h"
 
 #include "abstractviewshedalgorithm.h"
 #include "inverseviewshed.h"
@@ -32,6 +28,8 @@
 #include "viewshedutils.h"
 #include "visibilityalgorithms.h"
 
+#include "doublevalidator.h"
+#include "fileselectorwidget.h"
 #include "pointwidget.h"
 
 using namespace viewshed;
@@ -67,7 +65,7 @@ class MainWindow : public QMainWindow
     {
         if ( mDem )
         {
-            double noData = mDem->dataProvider()->sourceNoDataValue( 1 );
+            double noData = mDem->noData();
 
             mAlgs = ViewshedUtils::allAlgorithms( noData );
         }
@@ -152,30 +150,33 @@ class MainWindow : public QMainWindow
 
         mTargetPointWidget = new PointWidget( true, this );
 
-        mCsvFileWidget = new QgsFileWidget( this );
-        mCsvFileWidget->setStorageMode( QgsFileWidget::StorageMode::SaveFile );
+        mCsvFileWidget = new FileSelectorWidget( this );
+        mCsvFileWidget->setStorageMode( FileSelectorWidget::StorageMode::SaveFile );
         mCsvFileWidget->setFilter( "*.csv" );
 
-        mFileWidget = new QgsFileWidget( this );
-        mFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
-        mFileWidget->setStorageMode( QgsFileWidget::GetFile );
-        mFileWidget->setOptions( QFileDialog::HideNameFilterDetails );
+        mFileWidget = new FileSelectorWidget( this );
+        mFileWidget->setStorageMode( FileSelectorWidget::GetFile );
 
         mFileWidget->setFilePath( mSettings.value( QStringLiteral( "dem" ), QStringLiteral( "" ) ).toString() );
 
-        mViewPoint.fromWkt(
-            mSettings.value( QStringLiteral( "viewpoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+        std::string p =
+            mSettings.value( QStringLiteral( "viewpoint" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
+        const char *poP = p.c_str();
+
+        mViewPoint.importFromWkt( const_cast<char **>( &poP ) );
 
         mViewPointLabel = new QLabel();
-        mViewPointLabel->setText( mViewPoint.asWkt( 5 ) );
+        mViewPointLabel->setText( QString::fromStdString( mViewPoint.exportToWkt() ) );
 
-        mTargetPoint.fromWkt(
-            mSettings.value( QStringLiteral( "targetpoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+        p = mSettings.value( QStringLiteral( "targetpoint" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
+        poP = p.c_str();
+
+        mTargetPoint.importFromWkt( const_cast<char **>( &poP ) );
 
         mTargetPointLabel = new QLabel();
-        mTargetPointLabel->setText( mTargetPoint.asWkt( 5 ) );
+        mTargetPointLabel->setText( QString::fromStdString( mViewPoint.exportToWkt() ) );
 
-        mDoubleValidator = new QgsDoubleValidator( this );
+        mDoubleValidator = new DoubleValidator( this );
 
         mObserverOffset = new QLineEdit( this );
         mObserverOffset->setValidator( mDoubleValidator );
@@ -220,11 +221,11 @@ class MainWindow : public QMainWindow
 
         connect( mViewshedType, qOverload<int>( &QComboBox::currentIndexChanged ), this, &MainWindow::saveSettings );
         connect( mViewPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateViewPoint );
-        connect( mViewPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateViewPointLabel );
+        connect( mViewPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateViewPointLabel );
         connect( mTargetPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateTargetPoint );
-        connect( mTargetPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updateTargetPointLabel );
-        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::demUpdated );
-        connect( mCsvFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updateResultCsv );
+        connect( mTargetPointWidget, &PointWidget::pointChanged, this, &MainWindow::updateTargetPointLabel );
+        connect( mFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::demUpdated );
+        connect( mCsvFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::updateResultCsv );
         connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
         connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainWindow::saveSettings );
         connect( mRefractionCoefficient, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
@@ -240,13 +241,18 @@ class MainWindow : public QMainWindow
         mFileWidget->setFilePath( settings.value( QStringLiteral( "dem" ), "" ).toString() );
         mCsvFileWidget->setFilePath( settings.value( QStringLiteral( "resultCsv" ), "" ).toString() );
 
-        mViewPoint.fromWkt(
-            settings.value( QStringLiteral( "viewPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+        std::string p =
+            mSettings.value( QStringLiteral( "viewpoint" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
+        const char *poP = p.c_str();
+
+        mViewPoint.importFromWkt( const_cast<char **>( &poP ) );
 
         mViewPointWidget->setPoint( mViewPoint );
 
-        mTargetPoint.fromWkt(
-            settings.value( QStringLiteral( "targetPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+        p = mSettings.value( QStringLiteral( "targetPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
+        poP = p.c_str();
+
+        mTargetPoint.importFromWkt( const_cast<char **>( &poP ) );
 
         mTargetPointWidget->setPoint( mTargetPoint );
 
@@ -276,8 +282,8 @@ class MainWindow : public QMainWindow
     {
         settings.setValue( QStringLiteral( "dem" ), mFileWidget->filePath() );
         settings.setValue( QStringLiteral( "resultCsv" ), mCsvFileWidget->filePath() );
-        settings.setValue( QStringLiteral( "viewPoint" ), mViewPoint.asWkt() );
-        settings.setValue( QStringLiteral( "targetPoint" ), mTargetPoint.asWkt() );
+        settings.setValue( QStringLiteral( "viewPoint" ), QString::fromStdString( mViewPoint.exportToWkt() ) );
+        settings.setValue( QStringLiteral( "targetPoint" ), QString::fromStdString( mTargetPoint.exportToWkt() ) );
         settings.setValue( QStringLiteral( "observerOffset" ), mObserverOffset->text() );
         settings.setValue( QStringLiteral( "targetOffset" ), mTargetOffset->text() );
         settings.setValue( QStringLiteral( "viewshedType" ), mViewshedType->currentData( Qt::UserRole ) );
@@ -291,16 +297,20 @@ class MainWindow : public QMainWindow
         validateDem();
         prepareAlgorithms();
         enableCalculation();
-        updateViewPointLabel( QgsPointXY( mViewPoint.x(), mViewPoint.y() ) );
-        updateTargetPointLabel( QgsPointXY( mTargetPoint.x(), mTargetPoint.y() ) );
+        updateViewPointLabel( OGRPoint( mViewPoint.getX(), mViewPoint.getY() ) );
+        updateTargetPointLabel( OGRPoint( mTargetPoint.getX(), mTargetPoint.getY() ) );
 
         saveSettings();
     }
 
     void validateDem()
     {
-        mViewPointWidget->setCrs( "Unkown" );
-        mTargetPointWidget->setCrs( "Unkown" );
+        std::string defaultCrs = "EPSG:4326";
+        OGRSpatialReference srs = OGRSpatialReference( nullptr );
+        srs.SetFromUserInput( defaultCrs.c_str() );
+
+        mViewPointWidget->setCrs( srs );
+        mTargetPointWidget->setCrs( srs );
         mEarthDiameter->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
 
         mDemValid = false;
@@ -311,43 +321,25 @@ class MainWindow : public QMainWindow
             return;
         }
 
-        QgsRasterLayer *rl =
-            new QgsRasterLayer( mFileWidget->filePath(), QStringLiteral( "dem" ), QStringLiteral( "gdal" ) );
+        std::shared_ptr<ProjectedSquareCellRaster> rl =
+            std::make_shared<ProjectedSquareCellRaster>( mFileWidget->filePath().toStdString() );
 
-        if ( !rl )
+        std::string rasterError;
+        if ( !ViewshedUtils::validateRaster( rl, rasterError ) )
         {
             mErrorMessageBox.critical( this, QStringLiteral( "Error" ),
-                                       QStringLiteral( "Could not load the raster." ) );
-            return;
-        }
-
-        if ( !rl->isValid() )
-        {
-            mErrorMessageBox.critical( this, QStringLiteral( "Error" ), QStringLiteral( "Raster is not valid." ) );
-            return;
-        }
-
-        if ( rl->bandCount() != 1 )
-        {
-            mErrorMessageBox.critical( this, QStringLiteral( "Error" ),
-                                       QStringLiteral( "Raster layer needs to have only one band." ) );
-            return;
-        }
-
-        if ( rl->crs().isGeographic() )
-        {
-            mErrorMessageBox.critical( this, QStringLiteral( "Error" ),
-                                       QStringLiteral( "Raster needs to be projected." ) );
+                                       mFileWidget->filePath() + QString( ": \n" ) +
+                                           QString::fromStdString( rasterError ) );
+            mFileWidget->setFilePath( "" );
             return;
         }
 
         mDemValid = true;
 
-        mDem = std::make_shared<QgsRasterLayer>( mFileWidget->filePath(), QStringLiteral( "dem" ),
-                                                 QStringLiteral( "gdal" ) );
+        mDem = std::make_shared<ProjectedSquareCellRaster>( mFileWidget->filePath().toStdString() );
 
-        mViewPointWidget->setCrs( mDem->crs().authid() );
-        mTargetPointWidget->setCrs( mDem->crs().authid() );
+        mViewPointWidget->setCrs( mDem->crs() );
+        mTargetPointWidget->setCrs( mDem->crs() );
 
         mEarthDiameter->setText( QString::number( ViewshedUtils::earthDiameter( mDem->crs() ), 'f' ) );
     }
@@ -365,87 +357,65 @@ class MainWindow : public QMainWindow
         enableCalculation();
     }
 
-    void updateViewPoint( QgsPoint point )
+    void updateViewPoint( OGRPoint point )
     {
         mViewPoint = point;
         saveSettings();
     }
 
-    void updateViewPointLabel( QgsPointXY point )
+    void updateViewPointLabel( OGRPoint point ) { updatePointLabel( point, mViewPointLabel ); }
+
+    void updatePointLabel( OGRPoint point, QLabel *label )
     {
         double elevation;
-        bool sampledOk = false;
+        bool sampledNoData = false;
 
         if ( mDemValid )
         {
 
-            if ( !mDem->extent().contains( point ) )
+            if ( !mDem->isInside( point ) )
             {
                 mViewPointLabel->setText( QStringLiteral( "Point is located outside of the raster." ) );
                 return;
             }
 
-            elevation = mDem->dataProvider()->sample( point, 1, &sampledOk );
+            double row, colum;
 
-            if ( !sampledOk )
+            mDem->transformCoordinatesToRaster( std::make_shared<OGRPoint>( point.getX(), point.getY() ), row, colum );
+
+            sampledNoData = mDem->isNoData( row, colum );
+
+            elevation = mDem->value( row, colum );
+
+            if ( sampledNoData )
             {
-                mViewPointLabel->setText( mViewPoint.asWkt( 5 ) + QString( " without valid elevation." ) );
+                label->setText( QString::fromStdString( mViewPoint.exportToWkt() ) +
+                                QString( " without valid elevation." ) );
                 return;
             }
         }
 
-        if ( sampledOk )
+        if ( sampledNoData )
         {
-            mViewPointLabel->setText( mViewPoint.asWkt( 5 ) + QString( " with elevation: %1" ).arg( elevation ) );
+            label->setText( QString::fromStdString( mViewPoint.exportToWkt() ) +
+                            QString( " with elevation: %1" ).arg( elevation ) );
         }
         else
         {
-            mViewPointLabel->setText( mViewPoint.asWkt( 5 ) + QString( " without valid elevation." ) );
+            label->setText( QString::fromStdString( mViewPoint.exportToWkt() ) +
+                            QString( " without valid elevation." ) );
         }
 
         enableCalculation();
     }
 
-    void updateTargetPoint( QgsPoint point )
+    void updateTargetPoint( OGRPoint point )
     {
         mTargetPoint = point;
         saveSettings();
     }
 
-    void updateTargetPointLabel( QgsPointXY point )
-    {
-        double elevation;
-        bool sampledOk = false;
-
-        if ( mDemValid )
-        {
-
-            if ( !mDem->extent().contains( point ) )
-            {
-                mTargetPointLabel->setText( QStringLiteral( "Point is located outside of the raster." ) );
-                return;
-            }
-
-            elevation = mDem->dataProvider()->sample( point, 1, &sampledOk );
-
-            if ( !sampledOk )
-            {
-                mTargetPointLabel->setText( mTargetPoint.asWkt( 5 ) + QString( " without valid elevation." ) );
-                return;
-            }
-        }
-
-        if ( sampledOk )
-        {
-            mTargetPointLabel->setText( mTargetPoint.asWkt( 5 ) + QString( " with elevation: %1" ).arg( elevation ) );
-        }
-        else
-        {
-            mTargetPointLabel->setText( mTargetPoint.asWkt( 5 ) + QString( " without valid elevation." ) );
-        }
-
-        enableCalculation();
-    }
+    void updateTargetPointLabel( OGRPoint point ) { updatePointLabel( point, mTargetPointLabel ); }
 
     void calculateViewshed()
     {
@@ -457,7 +427,7 @@ class MainWindow : public QMainWindow
         if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeClassicViewshed )
         {
             std::shared_ptr<Point> vp =
-                std::make_shared<Point>( mViewPoint, mDem, QgsDoubleValidator::toDouble( mObserverOffset->text() ) );
+                std::make_shared<Point>( mViewPoint, mDem, DoubleValidator::toDouble( mObserverOffset->text() ) );
 
             Viewshed v = Viewshed( vp, mDem, mAlgs );
             v.initEventList();
@@ -482,10 +452,10 @@ class MainWindow : public QMainWindow
         else if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeInverseViewshed )
         {
             std::shared_ptr<Point> tp =
-                std::make_shared<Point>( mTargetPoint, mDem, QgsDoubleValidator::toDouble( mTargetOffset->text() ) );
+                std::make_shared<Point>( mTargetPoint, mDem, DoubleValidator::toDouble( mTargetOffset->text() ) );
 
             InverseViewshed iv =
-                InverseViewshed( tp, QgsDoubleValidator::toDouble( mObserverOffset->text() ), mDem, mAlgs );
+                InverseViewshed( tp, DoubleValidator::toDouble( mObserverOffset->text() ), mDem, mAlgs );
             iv.initEventList();
             iv.sortEventList();
 
@@ -508,7 +478,7 @@ class MainWindow : public QMainWindow
 
         for ( int i = 0; i < mAlgs->size(); i++ )
         {
-            std::string row = "\"" + mAlgs->at( i )->name().toStdString() + "\";";
+            std::string row = "\"" + mAlgs->at( i )->name() + "\";";
             row += std::to_string( losEval.resultAt( i ) );
             rows.push_back( row );
         }
@@ -520,21 +490,21 @@ class MainWindow : public QMainWindow
     QFormLayout *mLayout = nullptr;
 
     QWidget *mWidget = nullptr;
-    QgsFileWidget *mFileWidget = nullptr;
-    QgsFileWidget *mCsvFileWidget = nullptr;
+    FileSelectorWidget *mFileWidget = nullptr;
+    FileSelectorWidget *mCsvFileWidget = nullptr;
     QLineEdit *mObserverOffset = nullptr;
     QLineEdit *mTargetOffset = nullptr;
     QLabel *mViewPointLabel = nullptr;
     QLabel *mTargetPointLabel = nullptr;
-    QgsDoubleValidator *mDoubleValidator = nullptr;
-    QgsPoint mViewPoint;
-    QgsPoint mTargetPoint;
+    DoubleValidator *mDoubleValidator = nullptr;
+    OGRPoint mViewPoint;
+    OGRPoint mTargetPoint;
     QPushButton *mCalculateButton;
     QComboBox *mViewshedType;
     QCheckBox *mCurvatureCorrections;
     QLineEdit *mRefractionCoefficient;
     QLineEdit *mEarthDiameter;
-    std::shared_ptr<QgsRasterLayer> mDem;
+    std::shared_ptr<ProjectedSquareCellRaster> mDem;
     QSettings mSettings;
     QMessageBox mErrorMessageBox;
     PointWidget *mViewPointWidget = nullptr;

@@ -1,6 +1,8 @@
 #include "chrono"
 #include <fstream>
 
+#include <QDebug>
+
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
@@ -19,9 +21,6 @@
 #include <QStatusBar>
 #include <QTextEdit>
 
-#include "qgsfilewidget.h"
-#include "qgsproviderregistry.h"
-
 #include "abstractviewshedalgorithm.h"
 #include "inverseviewshed.h"
 #include "point.h"
@@ -31,7 +30,10 @@
 #include "visibilityalgorithms.h"
 
 #include "doublevalidator.h"
+#include "fileselectorwidget.h"
 #include "pointwidget.h"
+
+#include "simplerasters.h"
 
 using namespace viewshed;
 using namespace viewshed::visibilityalgorithm;
@@ -182,15 +184,14 @@ class MainWindow : public QMainWindow
         mEarthDiameter->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
         mEarthDiameter->setValidator( mDoubleValidator );
 
-        mFileWidget = new QgsFileWidget( this );
-        mFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
-        mFileWidget->setStorageMode( QgsFileWidget::GetFile );
-        mFileWidget->setOptions( QFileDialog::HideNameFilterDetails );
+        mFileWidget = new FileSelectorWidget( this );
+        // mFileWidget->setFilter( simplerasters::rasterFormatsFileFilters() );
+        mFileWidget->setStorageMode( FileSelectorWidget::GetFile );
+        // mFileWidget->setOptions( QFileDialog::HideNameFilterDetails );
 
-        mMaskFileWidget = new QgsFileWidget( this );
-        mMaskFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
-        mMaskFileWidget->setStorageMode( QgsFileWidget::GetFile );
-        mMaskFileWidget->setOptions( QFileDialog::HideNameFilterDetails );
+        mMaskFileWidget = new FileSelectorWidget( this );
+        // mMaskFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
+        mMaskFileWidget->setStorageMode( FileSelectorWidget::GetFile );
 
         mPointLabel = new QLabel();
         mPointLabel->setText( QString::fromStdString( mPoint.exportToWkt() ) );
@@ -209,8 +210,8 @@ class MainWindow : public QMainWindow
         mNoDataForInvisible = new QCheckBox( this );
         mNoDataForInvisible->setChecked( true );
 
-        mFolderWidget = new QgsFileWidget( this );
-        mFolderWidget->setStorageMode( QgsFileWidget::StorageMode::GetDirectory );
+        mFolderWidget = new FileSelectorWidget( this );
+        mFolderWidget->setStorageMode( FileSelectorWidget::StorageMode::GetDirectory );
 
         mProgressBar = new QProgressBar( this );
 
@@ -237,13 +238,13 @@ class MainWindow : public QMainWindow
         connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainWindow::saveSettings );
         connect( mRefractionCoefficient, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
         connect( mEarthDiameter, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
-        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateDem );
-        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateMask );
-        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updatePointRaster );
-        connect( mMaskFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateMask );
+        connect( mFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::validateDem );
+        connect( mFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::validateMask );
+        connect( mFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::updatePointRaster );
+        connect( mMaskFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::validateMask );
         connect( mPointWidget, &PointWidget::pointChanged, this, &MainWindow::updatePoint );
         connect( mPointWidget, &PointWidget::pointChanged, this, &MainWindow::updatePointLabel );
-        connect( mFolderWidget, &QgsFileWidget::fileChanged, this, &MainWindow::saveSettings );
+        connect( mFolderWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::saveSettings );
         connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
         connect( mObserverOffset, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
         connect( mTargetOffset, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
@@ -315,6 +316,7 @@ class MainWindow : public QMainWindow
 
     void validateDem()
     {
+
         std::string defaultCrs = "EPSG:4326";
         OGRSpatialReference srs = OGRSpatialReference( nullptr );
         srs.SetFromUserInput( defaultCrs.c_str() );
@@ -337,7 +339,11 @@ class MainWindow : public QMainWindow
         std::string rasterError;
         if ( !ViewshedUtils::validateRaster( rl, rasterError ) )
         {
-            mErrorMessageBox.critical( this, QStringLiteral( "Error" ), QString::fromStdString( rasterError ) );
+            mErrorMessageBox.critical( this, QStringLiteral( "Error" ),
+                                       mFileWidget->filePath() + QString( ": \n" ) +
+                                           QString::fromStdString( rasterError ) );
+            mFileWidget->setFilePath( "" );
+            return;
         }
 
         mDemValid = true;
@@ -529,9 +535,9 @@ class MainWindow : public QMainWindow
   private:
     QFormLayout *mLayout = nullptr;
     QWidget *mWidget = nullptr;
-    QgsFileWidget *mFileWidget = nullptr;
-    QgsFileWidget *mMaskFileWidget = nullptr;
-    QgsFileWidget *mFolderWidget = nullptr;
+    FileSelectorWidget *mFileWidget = nullptr;
+    FileSelectorWidget *mMaskFileWidget = nullptr;
+    FileSelectorWidget *mFolderWidget = nullptr;
     QLineEdit *mObserverOffset = nullptr;
     QLineEdit *mTargetOffset = nullptr;
     QLabel *mPointLabel = nullptr;
