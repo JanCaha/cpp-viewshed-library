@@ -7,3 +7,4 @@ tests/data/*.qgz
 documentation/*
 include/viewshed/viewshedlibrary.h
 include/viewshed/defaultdatatypes.h
+docker/install
