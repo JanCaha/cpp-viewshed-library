@@ -1,5 +1,5 @@
-#include "QObject"
-#include "QTest"
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 #include "simplerasters.h"
 
@@ -11,36 +11,30 @@
 using viewshed::Point;
 using namespace viewshed;
 
-class TestViewpoint : public QObject
+TEST( ViewPoint, constructOk )
 {
-    Q_OBJECT
+    std::shared_ptr<ProjectedSquareCellRaster> dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM );
+    Point vp( OGRPoint( -336404.98, -1189162.66 ), dem, 1.6 );
+    ASSERT_TRUE( vp.isValid() );
+    ASSERT_NEAR( vp.x, -336404.98, 0.01 );
+    ASSERT_NEAR( vp.y, -1189162.66, 0.01 );
+    ASSERT_EQ( vp.row, 130 );
+    ASSERT_EQ( vp.col, 126 );
+    ASSERT_NEAR( vp.elevation, 1017.5416, 0.0001 );
+    ASSERT_NEAR( vp.offset, 1.6, 0.001 );
+    ASSERT_NEAR( vp.totalElevation(), 1017.5416 + 1.6, 0.0001 );
+}
 
-  private:
-    std::shared_ptr<ProjectedSquareCellRaster> dem;
+TEST( ViewPoint, constructOutside )
+{
+    std::shared_ptr<ProjectedSquareCellRaster> dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM );
+    Point vp( OGRPoint( -336699.62, -1189319.20 ), dem, 1.6 );
 
-  private slots:
+    ASSERT_FALSE( vp.isValid() );
+}
 
-    void initTestCase() { dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM ); }
-
-    void constructOk()
-    {
-        Point vp( OGRPoint( -336404.98, -1189162.66 ), dem, 1.6 );
-        QVERIFY( vp.isValid() );
-        QVERIFY( vp.x == -336404.98 );
-        QVERIFY( vp.y == -1189162.66 );
-        QVERIFY( vp.row == 130 );
-        QVERIFY( vp.col == 126 );
-        QVERIFY( ViewshedUtils::doubleEqual( vp.elevation, 1017.5416, 0.0001 ) );
-        QVERIFY( ViewshedUtils::doubleEqual( vp.offset, 1.6 ) );
-        QVERIFY( ViewshedUtils::doubleEqual( vp.totalElevation(), 1017.5416 + 1.6, 0.0001 ) );
-    }
-
-    void constructOutside()
-    {
-        Point vp( OGRPoint( -336699.62, -1189319.20 ), dem, 1.6 );
-        QVERIFY( vp.isValid() == false );
-    }
-};
-
-QTEST_MAIN( TestViewpoint )
-#include "testviewpoint.moc"
+int main( int argc, char **argv )
+{
+    testing::InitGoogleTest( &argc, argv );
+    return RUN_ALL_TESTS();
+}
