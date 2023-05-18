@@ -1,18 +1,30 @@
 if(BUILD_TESTS)
     message(STATUS "VIEWSHED LIBRARY: Tests will be build.")
 
+    include(FetchContent)
+
+    FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG v1.13.0
+    )
+
+    FetchContent_GetProperties(googletest)
+
+    if(NOT googletest_POPULATED)
+        FetchContent_Populate(googletest)
+        add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+    endif()
+
     include(CTest)
     enable_testing(true)
-
-    find_package(Qt5Test REQUIRED)
 
     set(TEST_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data")
 
     configure_file(testsettings.in.h testsettings.h @ONLY)
 
     include_directories(SYSTEM
-        ${QT_INCLUDE_DIR}
-        ${QGIS_INCLUDE_DIR}
+        ${GTEST_INCLUDE_DIRS}
         ${CMAKE_SOURCE_DIR}/include/viewshed
         ${CMAKE_CURRENT_BINARY_DIR}
         ${CMAKE_BINARY_DIR}/simplerasters-src/src/api
@@ -35,19 +47,14 @@ if(BUILD_TESTS)
     # Macro to add a test:
     macro(ADD_LIBRARY_TEST testname)
         add_executable(${testname} "${testname}.cpp")
-        set_target_properties(${testname} PROPERTIES AUTOMOC TRUE)
 
         target_link_libraries(${testname}
-            ${QGIS_CORE_LIBRARY}
-            ${QGIS_GUI_LIBRARY}
-            Qt5::Core
-            Qt5::Gui
-            Qt5::Xml
-            Qt5::Widgets
-            Qt5::Test
             library_viewshed
             simplerasters
             ${GDAL_LIBRARY}
+            gtest
+            gmock
+            gtest_main
         )
 
         add_test(${testname} ${testname} -maxwarnings 10000)
