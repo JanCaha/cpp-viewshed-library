@@ -1,8 +1,9 @@
 build
 .vscode/c_cpp_properties.json
 tests/data/*.aux.xml
-_packages
 tests/data/results/*
+tests/data/results*/*
+_packages
 tests/data/*.qgz
 documentation/*
 include/viewshed/viewshedlibrary.h
