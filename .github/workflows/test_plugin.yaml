@@ -34,9 +34,11 @@ jobs:
           sudo apt update
           sudo apt install ninja-build doxygen
 
-      - name: Install Qt5
-        run: |    
-          sudo apt install n qt5-default
+      -   name: Install Qt
+          uses: WillBrennan/yaqti
+          with:
+              version: '5.15.2'
+              host: 'linux'
 
       - name: Install GDAL
         run: |
