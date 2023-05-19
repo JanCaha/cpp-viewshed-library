@@ -10,9 +10,15 @@ void AbstractViewshed::prepareMemoryRasters()
     mResults->clear();
     mResults->reserve( mVisibilityIndices->size() );
 
+    GDALDataType dataType = GDALDataType::GDT_Float64;
+
+#if ( CELL_EVENT_USE_FLOAT )
+    dataType = GDALDataType::GDT_Float32;
+#endif
+
     for ( int i = 0; i < mVisibilityIndices->size(); i++ )
     {
-        mResults->push_back( std::make_shared<SingleBandRaster>( *mInputDsm.get() ) );
+        mResults->push_back( std::make_shared<SingleBandRaster>( *mInputDsm.get(), dataType ) );
     }
 }
 
