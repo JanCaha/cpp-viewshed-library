@@ -51,13 +51,12 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow: test_plugin.yaml
           repo: JanCaha/cpp-simplerasters
+          branch: master
       
-      - name: Print
+      - name: Install and remove artifact
         run: |
-          dir
-          cd _packages
-          dir
-          sudo apt install ./simplerasters*.deb
+          sudo apt install ./_packages/simplerasters*.deb
+          rm -rf _packages
 
       - name: Checkout
         uses: actions/checkout@v3
