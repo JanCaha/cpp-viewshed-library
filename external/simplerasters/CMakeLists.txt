@@ -1,7 +1,7 @@
 include(FetchContent)
 FetchContent_Declare(simplerasters
     GIT_REPOSITORY https://github.com/JanCaha/cpp-simplerasters
-    GIT_TAG 0b6254585a6c3a44abb64b968808f4f246f2d759
+    GIT_TAG 60b30a2bd3a0ed60ed581b258149fcfb2f55d8ac
 )
 
 FetchContent_GetProperties(simplerasters)
