@@ -34,11 +34,11 @@ jobs:
           sudo apt update
           sudo apt install ninja-build doxygen
 
-      -   name: Install Qt
-          uses: WillBrennan/yaqti
-          with:
-              version: '5.15.2'
-              host: 'linux'
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          host: 'linux'
 
       - name: Install GDAL
         run: |
