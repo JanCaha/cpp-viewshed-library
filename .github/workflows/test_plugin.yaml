@@ -29,20 +29,14 @@ jobs:
 
     steps:
 
-      - name: Add Sources
-        run: |
-          sudo gpg -k
-          sudo wget -qO /etc/apt/keyrings/qgis-archive-keyring.gpg https://download.qgis.org/downloads/qgis-archive-keyring.gpg
-          sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/qgis-archive-keyring.gpg] https://qgis.org/ubuntu `lsb_release -c -s` main" > /etc/apt/sources.list.d/qgis.list'
-      
       - name: Update and Upgrade
         run: |
           sudo apt update
           sudo apt install ninja-build doxygen
 
-      - name: Install QGIS
+      - name: Install GDAL
         run: |
-          sudo apt -y install qgis qgis-dev
+          sudo apt-get -y install gdal-bin libgdal-dev
 
       - name: Checkout
         uses: actions/checkout@v3
