@@ -11,7 +11,7 @@ TEST( CellEventTest, size )
 #if ( CELL_EVENT_USE_FLOAT )
     size = 36;
 #else
-    size = 54;
+    size = 64;
 #endif
     ASSERT_EQ( sizeof( CellEvent ), size );
 }
