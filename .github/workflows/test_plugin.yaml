@@ -49,7 +49,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v2
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
-          workflow: test_plugin.yaml
+          workflow: create_deb_file.yaml
           repo: JanCaha/cpp-simplerasters
           branch: master
       
