@@ -163,7 +163,7 @@ class MainWindow : public QMainWindow
             mSettings.value( QStringLiteral( "viewpoint" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
         const char *poP = p.c_str();
 
-        mViewPoint.importFromWkt( const_cast<char **>( &poP ) );
+        mViewPoint.importFromWkt( const_cast<const char **>( &poP ) );
 
         mViewPointLabel = new QLabel();
         mViewPointLabel->setText( QString::fromStdString( mViewPoint.exportToWkt() ) );
@@ -171,7 +171,7 @@ class MainWindow : public QMainWindow
         p = mSettings.value( QStringLiteral( "targetpoint" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
         poP = p.c_str();
 
-        mTargetPoint.importFromWkt( const_cast<char **>( &poP ) );
+        mTargetPoint.importFromWkt( const_cast<const char **>( &poP ) );
 
         mTargetPointLabel = new QLabel();
         mTargetPointLabel->setText( QString::fromStdString( mViewPoint.exportToWkt() ) );
@@ -245,14 +245,14 @@ class MainWindow : public QMainWindow
             mSettings.value( QStringLiteral( "viewpoint" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
         const char *poP = p.c_str();
 
-        mViewPoint.importFromWkt( const_cast<char **>( &poP ) );
+        mViewPoint.importFromWkt( const_cast<const char **>( &poP ) );
 
         mViewPointWidget->setPoint( mViewPoint );
 
         p = mSettings.value( QStringLiteral( "targetPoint" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
         poP = p.c_str();
 
-        mTargetPoint.importFromWkt( const_cast<char **>( &poP ) );
+        mTargetPoint.importFromWkt( const_cast<const char **>( &poP ) );
 
         mTargetPointWidget->setPoint( mTargetPoint );
 

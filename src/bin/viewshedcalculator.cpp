@@ -267,7 +267,7 @@ class MainWindow : public QMainWindow
             settings.value( QStringLiteral( "point" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
         const char *poP = p.c_str();
 
-        mPoint.importFromWkt( const_cast<char **>( &poP ) );
+        mPoint.importFromWkt( const_cast<const char **>( &poP ) );
         mPointWidget->setPoint( mPoint );
 
         mObserverOffset->setText( settings.value( QStringLiteral( "observerOffset" ), "1.6" ).toString() );
