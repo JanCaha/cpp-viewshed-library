@@ -55,6 +55,7 @@ jobs:
           dir
           cd _packages
           dir
+          sudo apt install ./simplerasters*.deb
 
       - name: Checkout
         uses: actions/checkout@v3
