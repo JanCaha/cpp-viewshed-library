@@ -65,6 +65,7 @@ if(BUILD_TESTS)
 
     # ############################################################
     # Tests:
+    ADD_LIBRARY_TEST(testcellevent)
     ADD_LIBRARY_TEST(testviewpoint)
     ADD_LIBRARY_TEST(testlosalgorithms)
     ADD_LIBRARY_TEST(testviewshed)
