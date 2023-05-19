@@ -34,6 +34,10 @@ jobs:
           sudo apt update
           sudo apt install ninja-build doxygen
 
+      - name: Install Qt5
+        run: |    
+          sudo apt install n qt5-default
+
       - name: Install GDAL
         run: |
           sudo apt-get -y install gdal-bin libgdal-dev
