@@ -38,6 +38,20 @@ jobs:
         run: |
           sudo apt-get -y install gdal-bin libgdal-dev
 
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: test_plugin.yaml
+          repo: JanCaha/cpp-simplerasters
+      
+      - name: Print
+        run: |
+          dir
+          cd _packages
+          dir
+
       - name: Checkout
         uses: actions/checkout@v3
 
