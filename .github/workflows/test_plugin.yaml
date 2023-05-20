@@ -128,7 +128,7 @@ jobs:
       - name: Build DEB
         run: | 
           cmake --build build --config Release --target all
-          cmake --build build --config Release --target pack_deb
+          cmake --build build --config Release --target pack_viewshed_library_deb
 
       - name: Upload DEB file as artifact
         uses: actions/upload-artifact@v3
