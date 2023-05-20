@@ -136,13 +136,13 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
             file(REMOVE ${old_versions})
         endif()
 
-        add_custom_target(pack_deb
+        add_custom_target(pack_viewshed_library_deb
             COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         )
 
-        add_dependencies(pack_deb library_viewshed)
-        add_dependencies(pack_deb simplerasters)
+        add_dependencies(pack_viewshed_library_deb library_viewshed)
+        add_dependencies(pack_viewshed_library_deb simplerasters)
     endif()
 endif()
 

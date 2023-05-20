@@ -24,7 +24,7 @@ sudo cmake --build build --config Release --target install
 
 # pack DEB
 # cmake -S. -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=on -DBUILD_DOCUMENTATION:bool=on -DBUILD_TESTS:bool=on
-# cmake --build build --config Release --target pack_deb
+# cmake --build build --config Release --target pack_viewshed_library_deb
 
 # sudo cmake --build build --target clean
 # cmake -S. -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release \
