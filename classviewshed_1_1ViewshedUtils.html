@@ -93,21 +93,24 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:abeac0b061c6bb17fc961640fdbb5205f"><td class="memItemLeft" align="right" valign="top"><a id="abeac0b061c6bb17fc961640fdbb5205f"></a>
 static std::vector&lt; std::pair&lt; double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>rasterCoordinates</b> (std::shared_ptr&lt; std::vector&lt; <a class="el" href="classviewshed_1_1LoSNode.html">LoSNode</a> &gt;&gt; los, <a class="el" href="classviewshed_1_1LoSNode.html">LoSNode</a> poi)</td></tr>
 <tr class="separator:abeac0b061c6bb17fc961640fdbb5205f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96cb2ec8e7d36e4cd279ba2e1ab11c4d"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1ViewshedUtils.html#a96cb2ec8e7d36e4cd279ba2e1ab11c4d">earthDiameter</a> (QgsCoordinateReferenceSystem crs)</td></tr>
-<tr class="memdesc:a96cb2ec8e7d36e4cd279ba2e1ab11c4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract Earth's diameter from ellipsoid associated with provided coordinate reference system.  <a href="classviewshed_1_1ViewshedUtils.html#a96cb2ec8e7d36e4cd279ba2e1ab11c4d">More...</a><br /></td></tr>
-<tr class="separator:a96cb2ec8e7d36e4cd279ba2e1ab11c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ffb6b19ce944e4b2be1bca332f980bf"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1ViewshedUtils.html#a8ffb6b19ce944e4b2be1bca332f980bf">validateRaster</a> (std::shared_ptr&lt; QgsRasterLayer &gt; r1, std::string &amp;error)</td></tr>
-<tr class="memdesc:a8ffb6b19ce944e4b2be1bca332f980bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate the raster for viewshed calculation, checks if it fulfills all the requirements.  <a href="classviewshed_1_1ViewshedUtils.html#a8ffb6b19ce944e4b2be1bca332f980bf">More...</a><br /></td></tr>
-<tr class="separator:a8ffb6b19ce944e4b2be1bca332f980bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a799424a718be806e1d4f4a335aae1541"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1ViewshedUtils.html#a799424a718be806e1d4f4a335aae1541">compareRasters</a> (std::shared_ptr&lt; QgsRasterLayer &gt; r1, std::shared_ptr&lt; QgsRasterLayer &gt; r2, std::string &amp;error)</td></tr>
-<tr class="memdesc:a799424a718be806e1d4f4a335aae1541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the two rasters have the same properties and that one can be used visibility calculation mask for the second raster, which should be raster of digital surface model.  <a href="classviewshed_1_1ViewshedUtils.html#a799424a718be806e1d4f4a335aae1541">More...</a><br /></td></tr>
-<tr class="separator:a799424a718be806e1d4f4a335aae1541"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a819e5565d105db7e7d492a3fe1c1ba7d"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1ViewshedUtils.html#a819e5565d105db7e7d492a3fe1c1ba7d">earthDiameter</a> (OGRSpatialReference crs)</td></tr>
+<tr class="memdesc:a819e5565d105db7e7d492a3fe1c1ba7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract Earth's diameter from ellipsoid associated with provided coordinate reference system.  <a href="classviewshed_1_1ViewshedUtils.html#a819e5565d105db7e7d492a3fe1c1ba7d">More...</a><br /></td></tr>
+<tr class="separator:a819e5565d105db7e7d492a3fe1c1ba7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb58168a70796031981d5030a35a87f4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1ViewshedUtils.html#aeb58168a70796031981d5030a35a87f4">validateRaster</a> (std::shared_ptr&lt; SingleBandRaster &gt; r1, std::string &amp;error)</td></tr>
+<tr class="memdesc:aeb58168a70796031981d5030a35a87f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate the raster for viewshed calculation, checks if it fulfills all the requirements.  <a href="classviewshed_1_1ViewshedUtils.html#aeb58168a70796031981d5030a35a87f4">More...</a><br /></td></tr>
+<tr class="separator:aeb58168a70796031981d5030a35a87f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7c196af0ad69970a85aff5faa9b262c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1ViewshedUtils.html#ab7c196af0ad69970a85aff5faa9b262c">compareRasters</a> (std::shared_ptr&lt; SingleBandRaster &gt; r1, std::shared_ptr&lt; SingleBandRaster &gt; r2, std::string &amp;error)</td></tr>
+<tr class="memdesc:ab7c196af0ad69970a85aff5faa9b262c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the two rasters have the same properties and that one can be used visibility calculation mask for the second raster, which should be raster of digital surface model.  <a href="classviewshed_1_1ViewshedUtils.html#ab7c196af0ad69970a85aff5faa9b262c">More...</a><br /></td></tr>
+<tr class="separator:ab7c196af0ad69970a85aff5faa9b262c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a649d2a6321c6281b37815dc4d55230f5"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; std::vector&lt; std::shared_ptr&lt; <a class="el" href="classviewshed_1_1AbstractViewshedAlgorithm.html">AbstractViewshedAlgorithm</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1ViewshedUtils.html#a649d2a6321c6281b37815dc4d55230f5">allAlgorithms</a> ()</td></tr>
 <tr class="memdesc:a649d2a6321c6281b37815dc4d55230f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns list of all implemented viewshed indices as algorithms to be used in viewshed of inverse viewshed calculation.  <a href="classviewshed_1_1ViewshedUtils.html#a649d2a6321c6281b37815dc4d55230f5">More...</a><br /></td></tr>
 <tr class="separator:a649d2a6321c6281b37815dc4d55230f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55e1c148d1855c3aeb22bc1f5b26bdb0"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; std::vector&lt; std::shared_ptr&lt; <a class="el" href="classviewshed_1_1AbstractViewshedAlgorithm.html">AbstractViewshedAlgorithm</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1ViewshedUtils.html#a55e1c148d1855c3aeb22bc1f5b26bdb0">allAlgorithms</a> (double invisibleValue)</td></tr>
 <tr class="memdesc:a55e1c148d1855c3aeb22bc1f5b26bdb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns list of all implemented viewshed indices as algorithms to be used in viewshed of inverse viewshed calculation. Allows setting specific value to be used in some algorithms as invisible value.  <a href="classviewshed_1_1ViewshedUtils.html#a55e1c148d1855c3aeb22bc1f5b26bdb0">More...</a><br /></td></tr>
 <tr class="separator:a55e1c148d1855c3aeb22bc1f5b26bdb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d88dc426b133f5bd657e6be965ed2e6"><td class="memItemLeft" align="right" valign="top"><a id="a0d88dc426b133f5bd657e6be965ed2e6"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>doubleEqual</b> (double a, double b, double epsilon=4 *std::numeric_limits&lt; double &gt;::epsilon())</td></tr>
+<tr class="separator:a0d88dc426b133f5bd657e6be965ed2e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that contains mostly static helper functions. </p>
@@ -175,8 +178,8 @@ static std::vector&lt; std::pair&lt; double, double &gt; &gt;&#160;</td><td clas
 
 </div>
 </div>
-<a id="a799424a718be806e1d4f4a335aae1541"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a799424a718be806e1d4f4a335aae1541">&#9670;&nbsp;</a></span>compareRasters()</h2>
+<a id="ab7c196af0ad69970a85aff5faa9b262c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7c196af0ad69970a85aff5faa9b262c">&#9670;&nbsp;</a></span>compareRasters()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,13 +190,13 @@ static std::vector&lt; std::pair&lt; double, double &gt; &gt;&#160;</td><td clas
         <tr>
           <td class="memname">bool ViewshedUtils::compareRasters </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; QgsRasterLayer &gt;&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; SingleBandRaster &gt;&#160;</td>
           <td class="paramname"><em>r1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::shared_ptr&lt; QgsRasterLayer &gt;&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; SingleBandRaster &gt;&#160;</td>
           <td class="paramname"><em>r2</em>, </td>
         </tr>
         <tr>
@@ -265,8 +268,8 @@ false </dd></dl>
 
 </div>
 </div>
-<a id="a96cb2ec8e7d36e4cd279ba2e1ab11c4d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96cb2ec8e7d36e4cd279ba2e1ab11c4d">&#9670;&nbsp;</a></span>earthDiameter()</h2>
+<a id="a819e5565d105db7e7d492a3fe1c1ba7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a819e5565d105db7e7d492a3fe1c1ba7d">&#9670;&nbsp;</a></span>earthDiameter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -277,7 +280,7 @@ false </dd></dl>
         <tr>
           <td class="memname">double ViewshedUtils::earthDiameter </td>
           <td>(</td>
-          <td class="paramtype">QgsCoordinateReferenceSystem&#160;</td>
+          <td class="paramtype">OGRSpatialReference&#160;</td>
           <td class="paramname"><em>crs</em></td><td>)</td>
           <td></td>
         </tr>
@@ -404,8 +407,8 @@ false </dd></dl>
 
 </div>
 </div>
-<a id="a8ffb6b19ce944e4b2be1bca332f980bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ffb6b19ce944e4b2be1bca332f980bf">&#9670;&nbsp;</a></span>validateRaster()</h2>
+<a id="aeb58168a70796031981d5030a35a87f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb58168a70796031981d5030a35a87f4">&#9670;&nbsp;</a></span>validateRaster()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -416,7 +419,7 @@ false </dd></dl>
         <tr>
           <td class="memname">bool ViewshedUtils::validateRaster </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; QgsRasterLayer &gt;&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; SingleBandRaster &gt;&#160;</td>
           <td class="paramname"><em>r1</em>, </td>
         </tr>
         <tr>

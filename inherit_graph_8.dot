@@ -4,5 +4,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
   rankdir="LR";
-  Node0 [label="viewshed::LoSEvaluator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classviewshed_1_1LoSEvaluator.html",tooltip="Class that takes care of analysing AbstractLoS with respect to given AbstractViewshedAlgorithms,..."];
+  Node0 [label="viewshed::DataTriplet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structviewshed_1_1DataTriplet.html",tooltip="Representation of triplet of data. First two values are doubles and third is boolean...."];
 }

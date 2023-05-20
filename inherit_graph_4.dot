@@ -4,9 +4,12 @@ digraph "Graphical Class Hierarchy"
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
   rankdir="LR";
-  Node0 [label="viewshed::AbstractViewshed",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classviewshed_1_1AbstractViewshed.html",tooltip="Abstract class that represents viewshed calculation from this class specific implementations ( Viewsh..."];
+  Node0 [label="viewshed::AbstractLoS",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classviewshed_1_1AbstractLoS.html",tooltip="Abstract class that represent line-of-sight (LoS). Consists of LoSNodes, view point and target point ..."];
   Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 [label="viewshed::InverseViewshed",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classviewshed_1_1InverseViewshed.html",tooltip=" "];
+  Node1 [label="viewshed::InverseLoS",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classviewshed_1_1InverseLoS.html",tooltip="Class that represents InverseLoS, that is LoS used in Inverse Viewshed calculation."];
   Node0 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 [label="viewshed::Viewshed",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classviewshed_1_1Viewshed.html",tooltip=" "];
+  Node2 [label="viewshed::LoS",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classviewshed_1_1LoS.html",tooltip="Class that represents LoS for classic Viewshed calculation."];
+  Node38 [label="std::vector",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node38 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node38 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

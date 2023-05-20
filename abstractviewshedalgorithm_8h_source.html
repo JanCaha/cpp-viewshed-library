@@ -75,30 +75,28 @@ $(function() {
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;QString&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;abstractlos.h&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;losimportantvalues.h&quot;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;losnode.h&quot;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;point.h&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>viewshed</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classviewshed_1_1AbstractViewshedAlgorithm.html">   19</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classviewshed_1_1AbstractViewshedAlgorithm.html">AbstractViewshedAlgorithm</a></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;      <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classviewshed_1_1AbstractViewshedAlgorithm.html#adc52a103fef38c4cda2fc33c0a1776f1">   29</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1AbstractViewshedAlgorithm.html#adc52a103fef38c4cda2fc33c0a1776f1">result</a>( std::shared_ptr&lt;LoSImportantValues&gt; losValues, std::shared_ptr&lt;AbstractLoS&gt; los ) = 0;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classviewshed_1_1AbstractViewshedAlgorithm.html#a9dda4fd39972b623268a95faa8e86313">   36</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1AbstractViewshedAlgorithm.html#a9dda4fd39972b623268a95faa8e86313">pointValue</a>() = 0;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classviewshed_1_1AbstractViewshedAlgorithm.html#a0e56b5644642b246f8fc8f51edc1d9c0">   43</a></span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> QString <a class="code" href="classviewshed_1_1AbstractViewshedAlgorithm.html#a0e56b5644642b246f8fc8f51edc1d9c0">name</a>() = 0;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    };</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;abstractlos.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;losimportantvalues.h&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;losnode.h&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;point.h&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>viewshed</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classviewshed_1_1AbstractViewshedAlgorithm.html">   17</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classviewshed_1_1AbstractViewshedAlgorithm.html">AbstractViewshedAlgorithm</a></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classviewshed_1_1AbstractViewshedAlgorithm.html#adc52a103fef38c4cda2fc33c0a1776f1">   27</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1AbstractViewshedAlgorithm.html#adc52a103fef38c4cda2fc33c0a1776f1">result</a>( std::shared_ptr&lt;LoSImportantValues&gt; losValues, std::shared_ptr&lt;AbstractLoS&gt; los ) = 0;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classviewshed_1_1AbstractViewshedAlgorithm.html#a9dda4fd39972b623268a95faa8e86313">   34</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1AbstractViewshedAlgorithm.html#a9dda4fd39972b623268a95faa8e86313">pointValue</a>() = 0;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classviewshed_1_1AbstractViewshedAlgorithm.html#a6163385804fddcd7c45614bfea6dc2cd">   41</a></span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> std::string <a class="code" href="classviewshed_1_1AbstractViewshedAlgorithm.html#a6163385804fddcd7c45614bfea6dc2cd">name</a>() = 0;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    };</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;} <span class="comment">// namespace viewshed</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;} <span class="comment">// namespace viewshed</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassviewshed_1_1AbstractViewshedAlgorithm_html"><div class="ttname"><a href="classviewshed_1_1AbstractViewshedAlgorithm.html">viewshed::AbstractViewshedAlgorithm</a></div><div class="ttdoc">Base class for all Viewshed Algorithms.</div><div class="ttdef"><b>Definition:</b> abstractviewshedalgorithm.h:20</div></div>
-<div class="ttc" id="aclassviewshed_1_1AbstractViewshedAlgorithm_html_a0e56b5644642b246f8fc8f51edc1d9c0"><div class="ttname"><a href="classviewshed_1_1AbstractViewshedAlgorithm.html#a0e56b5644642b246f8fc8f51edc1d9c0">viewshed::AbstractViewshedAlgorithm::name</a></div><div class="ttdeci">virtual const QString name()=0</div><div class="ttdoc">Name of the algorithm.</div></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassviewshed_1_1AbstractViewshedAlgorithm_html"><div class="ttname"><a href="classviewshed_1_1AbstractViewshedAlgorithm.html">viewshed::AbstractViewshedAlgorithm</a></div><div class="ttdoc">Base class for all Viewshed Algorithms.</div><div class="ttdef"><b>Definition:</b> abstractviewshedalgorithm.h:18</div></div>
+<div class="ttc" id="aclassviewshed_1_1AbstractViewshedAlgorithm_html_a6163385804fddcd7c45614bfea6dc2cd"><div class="ttname"><a href="classviewshed_1_1AbstractViewshedAlgorithm.html#a6163385804fddcd7c45614bfea6dc2cd">viewshed::AbstractViewshedAlgorithm::name</a></div><div class="ttdeci">virtual const std::string name()=0</div><div class="ttdoc">Name of the algorithm.</div></div>
 <div class="ttc" id="aclassviewshed_1_1AbstractViewshedAlgorithm_html_a9dda4fd39972b623268a95faa8e86313"><div class="ttname"><a href="classviewshed_1_1AbstractViewshedAlgorithm.html#a9dda4fd39972b623268a95faa8e86313">viewshed::AbstractViewshedAlgorithm::pointValue</a></div><div class="ttdeci">virtual double pointValue()=0</div><div class="ttdoc">Value at important point, either view point for viewshed or target point for inverse viewshed.</div></div>
 <div class="ttc" id="aclassviewshed_1_1AbstractViewshedAlgorithm_html_adc52a103fef38c4cda2fc33c0a1776f1"><div class="ttname"><a href="classviewshed_1_1AbstractViewshedAlgorithm.html#adc52a103fef38c4cda2fc33c0a1776f1">viewshed::AbstractViewshedAlgorithm::result</a></div><div class="ttdeci">virtual double result(std::shared_ptr&lt; LoSImportantValues &gt; losValues, std::shared_ptr&lt; AbstractLoS &gt; los)=0</div><div class="ttdoc">Extract resulting value based on LoSImportantValues and specific los.</div></div>
 </div><!-- fragment --></div><!-- contents -->

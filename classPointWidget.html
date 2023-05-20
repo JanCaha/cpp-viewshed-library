@@ -83,12 +83,9 @@ Collaboration diagram for PointWidget:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:a6a224300490eb633a3b6e38e4730103c"><td class="memItemLeft" align="right" valign="top"><a id="a6a224300490eb633a3b6e38e4730103c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>pointChanged</b> (QgsPoint point)</td></tr>
-<tr class="separator:a6a224300490eb633a3b6e38e4730103c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d99627ee146ef8fa6fb09602fa53f6a"><td class="memItemLeft" align="right" valign="top"><a id="a6d99627ee146ef8fa6fb09602fa53f6a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>pointXYChanged</b> (QgsPointXY point)</td></tr>
-<tr class="separator:a6d99627ee146ef8fa6fb09602fa53f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa306b2c2c844dcd970a5907246a4dca3"><td class="memItemLeft" align="right" valign="top"><a id="aa306b2c2c844dcd970a5907246a4dca3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>pointChanged</b> (OGRPoint point)</td></tr>
+<tr class="separator:aa306b2c2c844dcd970a5907246a4dca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -98,21 +95,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a48b59bd66d4bc550245fced73bb80d6e"><td class="memItemLeft" align="right" valign="top"><a id="a48b59bd66d4bc550245fced73bb80d6e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPointValid</b> ()</td></tr>
 <tr class="separator:a48b59bd66d4bc550245fced73bb80d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9151e7c66763cfd9afaec6373fe9d28"><td class="memItemLeft" align="right" valign="top"><a id="ac9151e7c66763cfd9afaec6373fe9d28"></a>
-QgsPoint&#160;</td><td class="memItemRight" valign="bottom"><b>point</b> ()</td></tr>
-<tr class="separator:ac9151e7c66763cfd9afaec6373fe9d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cb1b8bf73fab45348024242d7c19394"><td class="memItemLeft" align="right" valign="top"><a id="a1cb1b8bf73fab45348024242d7c19394"></a>
-QgsPointXY&#160;</td><td class="memItemRight" valign="bottom"><b>pointXY</b> ()</td></tr>
-<tr class="separator:a1cb1b8bf73fab45348024242d7c19394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc99aff62a59e38590204f0bfad658c4"><td class="memItemLeft" align="right" valign="top"><a id="afc99aff62a59e38590204f0bfad658c4"></a>
+OGRPoint&#160;</td><td class="memItemRight" valign="bottom"><b>point</b> ()</td></tr>
+<tr class="separator:afc99aff62a59e38590204f0bfad658c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad731d7feaa927c8c86840f4e6cd57b45"><td class="memItemLeft" align="right" valign="top"><a id="ad731d7feaa927c8c86840f4e6cd57b45"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setXY</b> (double x, double y)</td></tr>
 <tr class="separator:ad731d7feaa927c8c86840f4e6cd57b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d3231bf2b334fa649126641676f398f"><td class="memItemLeft" align="right" valign="top"><a id="a7d3231bf2b334fa649126641676f398f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setPoint</b> (QgsPoint p)</td></tr>
-<tr class="separator:a7d3231bf2b334fa649126641676f398f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4fbcb1b15610e57112648854e3bf5a0"><td class="memItemLeft" align="right" valign="top"><a id="ab4fbcb1b15610e57112648854e3bf5a0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setCrs</b> (QString crs)</td></tr>
-<tr class="separator:ab4fbcb1b15610e57112648854e3bf5a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a028ddee6135b4920d72a63da1f24ca85"><td class="memItemLeft" align="right" valign="top"><a id="a028ddee6135b4920d72a63da1f24ca85"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setPoint</b> (OGRPoint p)</td></tr>
+<tr class="separator:a028ddee6135b4920d72a63da1f24ca85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86f615265fdc600fb4fe05b9c2cf796e"><td class="memItemLeft" align="right" valign="top"><a id="a86f615265fdc600fb4fe05b9c2cf796e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setCrs</b> (OGRSpatialReference crs)</td></tr>
+<tr class="separator:a86f615265fdc600fb4fe05b9c2cf796e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/cpp-viewshed-library/cpp-viewshed-library/src/bin/<a class="el" href="pointwidget_8h_source.html">pointwidget.h</a></li>

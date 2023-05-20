@@ -92,15 +92,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9dda4fd39972b623268a95faa8e86313"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshedAlgorithm.html#a9dda4fd39972b623268a95faa8e86313">pointValue</a> ()=0</td></tr>
 <tr class="memdesc:a9dda4fd39972b623268a95faa8e86313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value at important point, either view point for viewshed or target point for inverse viewshed.  <a href="classviewshed_1_1AbstractViewshedAlgorithm.html#a9dda4fd39972b623268a95faa8e86313">More...</a><br /></td></tr>
 <tr class="separator:a9dda4fd39972b623268a95faa8e86313"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e56b5644642b246f8fc8f51edc1d9c0"><td class="memItemLeft" align="right" valign="top">virtual const QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshedAlgorithm.html#a0e56b5644642b246f8fc8f51edc1d9c0">name</a> ()=0</td></tr>
-<tr class="memdesc:a0e56b5644642b246f8fc8f51edc1d9c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the algorithm.  <a href="classviewshed_1_1AbstractViewshedAlgorithm.html#a0e56b5644642b246f8fc8f51edc1d9c0">More...</a><br /></td></tr>
-<tr class="separator:a0e56b5644642b246f8fc8f51edc1d9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6163385804fddcd7c45614bfea6dc2cd"><td class="memItemLeft" align="right" valign="top">virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshedAlgorithm.html#a6163385804fddcd7c45614bfea6dc2cd">name</a> ()=0</td></tr>
+<tr class="memdesc:a6163385804fddcd7c45614bfea6dc2cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the algorithm.  <a href="classviewshed_1_1AbstractViewshedAlgorithm.html#a6163385804fddcd7c45614bfea6dc2cd">More...</a><br /></td></tr>
+<tr class="separator:a6163385804fddcd7c45614bfea6dc2cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for all <a class="el" href="classviewshed_1_1Viewshed.html">Viewshed</a> Algorithms. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0e56b5644642b246f8fc8f51edc1d9c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e56b5644642b246f8fc8f51edc1d9c0">&#9670;&nbsp;</a></span>name()</h2>
+<a id="a6163385804fddcd7c45614bfea6dc2cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6163385804fddcd7c45614bfea6dc2cd">&#9670;&nbsp;</a></span>name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -109,7 +109,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual const QString viewshed::AbstractViewshedAlgorithm::name </td>
+          <td class="memname">virtual const std::string viewshed::AbstractViewshedAlgorithm::name </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -123,9 +123,9 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Name of the algorithm. </p>
-<dl class="section return"><dt>Returns</dt><dd>const QString </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>const std::string </dd></dl>
 
-<p>Implemented in <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1ViewAngle.html#afe91f167e1890069223272b512bf9c81">viewshed::visibilityalgorithm::ViewAngle</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#a2ca1f38d9d4d84a6367e4391f6742035">viewshed::visibilityalgorithm::LoSSlopeToViewAngle</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1HorizonsCount.html#a5d569e41449c4e257496f7e99958ebb0">viewshed::visibilityalgorithm::HorizonsCount</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1Horizons.html#a3078bf8b8b5e0815a51636de302aad08">viewshed::visibilityalgorithm::Horizons</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1FuzzyVisibility.html#a02824400924f80a105d0a503f72374ae">viewshed::visibilityalgorithm::FuzzyVisibility</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1ElevationDifferenceToLocalHorizon.html#a982d94e8ab6f534e52b1077fd3ca945c">viewshed::visibilityalgorithm::ElevationDifferenceToLocalHorizon</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1ElevationDifferenceToGlobalHorizon.html#a8d9c6e2a3d6b266d16e8a2d4ec6b0a06">viewshed::visibilityalgorithm::ElevationDifferenceToGlobalHorizon</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1ElevationDifference.html#a40df169a6cabefd286578e634e9b64dd">viewshed::visibilityalgorithm::ElevationDifference</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1DistanceLocalHorizon.html#a57c76c691c287e3bf399e33b4640e407">viewshed::visibilityalgorithm::DistanceLocalHorizon</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1DistanceGlobalHorizon.html#a95fcc0cef8cf53c37ac5fdfef1221ee5">viewshed::visibilityalgorithm::DistanceGlobalHorizon</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1Boolean.html#ae47d2e2bcb5d48876fec157ffee755ba">viewshed::visibilityalgorithm::Boolean</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1AngleDifferenceToLocalHorizon.html#afbc77b964d2044fdbd5f059ab04cb6f0">viewshed::visibilityalgorithm::AngleDifferenceToLocalHorizon</a>, and <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1AngleDifferenceToGlobalHorizon.html#a79cc072fbf698fbd9e2049bd53534e09">viewshed::visibilityalgorithm::AngleDifferenceToGlobalHorizon</a>.</p>
+<p>Implemented in <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1ViewAngle.html#a4150fee381a425a0192fbcc610c79139">viewshed::visibilityalgorithm::ViewAngle</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#a574b5206a948bd2802941ebb4ccb0019">viewshed::visibilityalgorithm::LoSSlopeToViewAngle</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1HorizonsCount.html#ab3b813a0ea18b1ac395071d9607b49df">viewshed::visibilityalgorithm::HorizonsCount</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1Horizons.html#ad5956a2e0e87afd8a39dc7e31eacb5ce">viewshed::visibilityalgorithm::Horizons</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1FuzzyVisibility.html#a1ec8188ae4613a0110ebeb91d516b296">viewshed::visibilityalgorithm::FuzzyVisibility</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1ElevationDifferenceToLocalHorizon.html#aa38ebf509b7d009751ba574ab04fdecc">viewshed::visibilityalgorithm::ElevationDifferenceToLocalHorizon</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1ElevationDifferenceToGlobalHorizon.html#aefbffcd0f40217581e1e605cdd410b45">viewshed::visibilityalgorithm::ElevationDifferenceToGlobalHorizon</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1ElevationDifference.html#afffa73218a7928a279697cc03cd460de">viewshed::visibilityalgorithm::ElevationDifference</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1DistanceLocalHorizon.html#a1fccd1b5745cb824b4ee88702ffe77b5">viewshed::visibilityalgorithm::DistanceLocalHorizon</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1DistanceGlobalHorizon.html#aa9ee4b976d4730f689bf15ecb3594c8e">viewshed::visibilityalgorithm::DistanceGlobalHorizon</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1Boolean.html#a2d5d2b6d61fdd726dac41f35848dc6b8">viewshed::visibilityalgorithm::Boolean</a>, <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1AngleDifferenceToLocalHorizon.html#a17b7b59c52c743dacff8f9494c969ca7">viewshed::visibilityalgorithm::AngleDifferenceToLocalHorizon</a>, and <a class="el" href="classviewshed_1_1visibilityalgorithm_1_1AngleDifferenceToGlobalHorizon.html#a14e539a37a6169ed50ddbadab22301d8">viewshed::visibilityalgorithm::AngleDifferenceToGlobalHorizon</a>.</p>
 
 </div>
 </div>
