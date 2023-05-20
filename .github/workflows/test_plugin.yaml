@@ -51,7 +51,7 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           workflow: create_deb_file.yaml
           repo: JanCaha/cpp-simplerasters
-          branch: master
+          branch: main
       
       - name: Install and remove artifact
         run: |
