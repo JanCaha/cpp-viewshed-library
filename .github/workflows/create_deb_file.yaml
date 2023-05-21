@@ -89,8 +89,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./documentation
           publish_branch: gh-pages
-      
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: _packages/viewshed_*.deb
