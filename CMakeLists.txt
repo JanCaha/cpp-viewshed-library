@@ -148,7 +148,6 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
         )
 
         add_dependencies(pack_viewshed_library_deb library_viewshed)
-        add_dependencies(pack_viewshed_library_deb simplerasters)
     endif()
 endif()
 
