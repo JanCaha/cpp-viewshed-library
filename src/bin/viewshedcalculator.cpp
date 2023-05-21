@@ -1,6 +1,8 @@
 #include "chrono"
 #include <fstream>
 
+#include <QDebug>
+
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
@@ -19,12 +21,6 @@
 #include <QStatusBar>
 #include <QTextEdit>
 
-#include "qgsdoublevalidator.h"
-#include "qgsfilewidget.h"
-#include "qgspoint.h"
-#include "qgsproviderregistry.h"
-#include "qgsrasterlayer.h"
-
 #include "abstractviewshedalgorithm.h"
 #include "inverseviewshed.h"
 #include "point.h"
@@ -33,7 +29,11 @@
 #include "visibility.h"
 #include "visibilityalgorithms.h"
 
+#include "doublevalidator.h"
+#include "fileselectorwidget.h"
 #include "pointwidget.h"
+
+#include "simplerasters.h"
 
 using namespace viewshed;
 using namespace viewshed::visibilityalgorithm;
@@ -65,7 +65,7 @@ class MainWindow : public QMainWindow
 
     void prepareAlgorithms()
     {
-        double noData = mDem->dataProvider()->sourceNoDataValue( 1 );
+        double noData = mDem->noData();
 
         mAlgs = std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
 
@@ -184,20 +184,19 @@ class MainWindow : public QMainWindow
         mEarthDiameter->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
         mEarthDiameter->setValidator( mDoubleValidator );
 
-        mFileWidget = new QgsFileWidget( this );
-        mFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
-        mFileWidget->setStorageMode( QgsFileWidget::GetFile );
-        mFileWidget->setOptions( QFileDialog::HideNameFilterDetails );
+        mFileWidget = new FileSelectorWidget( this );
+        // mFileWidget->setFilter( simplerasters::rasterFormatsFileFilters() );
+        mFileWidget->setStorageMode( FileSelectorWidget::GetFile );
+        // mFileWidget->setOptions( QFileDialog::HideNameFilterDetails );
 
-        mMaskFileWidget = new QgsFileWidget( this );
-        mMaskFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
-        mMaskFileWidget->setStorageMode( QgsFileWidget::GetFile );
-        mMaskFileWidget->setOptions( QFileDialog::HideNameFilterDetails );
+        mMaskFileWidget = new FileSelectorWidget( this );
+        // mMaskFileWidget->setFilter( QgsProviderRegistry::instance()->fileRasterFilters() );
+        mMaskFileWidget->setStorageMode( FileSelectorWidget::GetFile );
 
         mPointLabel = new QLabel();
-        mPointLabel->setText( mPoint.asWkt( 5 ) );
+        mPointLabel->setText( QString::fromStdString( mPoint.exportToWkt() ) );
 
-        mDoubleValidator = new QgsDoubleValidator( this );
+        mDoubleValidator = new DoubleValidator( this );
 
         mObserverOffset = new QLineEdit( this );
         mObserverOffset->setValidator( mDoubleValidator );
@@ -211,8 +210,8 @@ class MainWindow : public QMainWindow
         mNoDataForInvisible = new QCheckBox( this );
         mNoDataForInvisible->setChecked( true );
 
-        mFolderWidget = new QgsFileWidget( this );
-        mFolderWidget->setStorageMode( QgsFileWidget::StorageMode::GetDirectory );
+        mFolderWidget = new FileSelectorWidget( this );
+        mFolderWidget->setStorageMode( FileSelectorWidget::StorageMode::GetDirectory );
 
         mProgressBar = new QProgressBar( this );
 
@@ -239,13 +238,13 @@ class MainWindow : public QMainWindow
         connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainWindow::saveSettings );
         connect( mRefractionCoefficient, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
         connect( mEarthDiameter, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
-        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateDem );
-        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateMask );
-        connect( mFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::updatePointRaster );
-        connect( mMaskFileWidget, &QgsFileWidget::fileChanged, this, &MainWindow::validateMask );
+        connect( mFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::validateDem );
+        connect( mFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::validateMask );
+        connect( mFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::updatePointRaster );
+        connect( mMaskFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::validateMask );
         connect( mPointWidget, &PointWidget::pointChanged, this, &MainWindow::updatePoint );
-        connect( mPointWidget, &PointWidget::pointXYChanged, this, &MainWindow::updatePointLabel );
-        connect( mFolderWidget, &QgsFileWidget::fileChanged, this, &MainWindow::saveSettings );
+        connect( mPointWidget, &PointWidget::pointChanged, this, &MainWindow::updatePointLabel );
+        connect( mFolderWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::saveSettings );
         connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
         connect( mObserverOffset, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
         connect( mTargetOffset, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
@@ -264,7 +263,11 @@ class MainWindow : public QMainWindow
 
         mMaskFileWidget->setFilePath( settings.value( QStringLiteral( "mask" ), QStringLiteral( "" ) ).toString() );
 
-        mPoint.fromWkt( settings.value( QStringLiteral( "point" ), QStringLiteral( "POINT(0 0)" ) ).toString() );
+        std::string p =
+            settings.value( QStringLiteral( "point" ), QStringLiteral( "POINT(0 0)" ) ).toString().toStdString();
+        const char *poP = p.c_str();
+
+        mPoint.importFromWkt( const_cast<const char **>( &poP ) );
         mPointWidget->setPoint( mPoint );
 
         mObserverOffset->setText( settings.value( QStringLiteral( "observerOffset" ), "1.6" ).toString() );
@@ -288,7 +291,7 @@ class MainWindow : public QMainWindow
 
         validateDem();
         validateMask();
-        updatePointLabel( mPointWidget->pointXY() );
+        updatePointLabel( mPointWidget->point() );
     }
 
     void saveSettings() { saveCurrentValuesToSettings( mSettings ); }
@@ -298,7 +301,7 @@ class MainWindow : public QMainWindow
         settings.setValue( QStringLiteral( "viewshedType" ), mViewshedType->currentData( Qt::UserRole ) );
         settings.setValue( QStringLiteral( "dem" ), mFileWidget->filePath() );
         settings.setValue( QStringLiteral( "mask" ), mMaskFileWidget->filePath() );
-        settings.setValue( QStringLiteral( "point" ), mPointWidget->point().asWkt() );
+        settings.setValue( QStringLiteral( "point" ), QString::fromStdString( mPointWidget->point().exportToWkt() ) );
         settings.setValue( QStringLiteral( "observerOffset" ), mObserverOffset->text() );
         settings.setValue( QStringLiteral( "targetOffset" ), mTargetOffset->text() );
 
@@ -313,7 +316,12 @@ class MainWindow : public QMainWindow
 
     void validateDem()
     {
-        mPointWidget->setCrs( "Unkown" );
+
+        std::string defaultCrs = "EPSG:4326";
+        OGRSpatialReference srs = OGRSpatialReference( nullptr );
+        srs.SetFromUserInput( defaultCrs.c_str() );
+
+        mPointWidget->setCrs( srs );
         mEarthDiameter->setText( QString::number( (double)EARTH_DIAMETER, 'f', 1 ) );
 
         mCalculateButton->setEnabled( false );
@@ -325,21 +333,24 @@ class MainWindow : public QMainWindow
             return;
         }
 
-        std::shared_ptr<QgsRasterLayer> rl = std::make_shared<QgsRasterLayer>(
-            mFileWidget->filePath(), QStringLiteral( "dem" ), QStringLiteral( "gdal" ) );
+        std::shared_ptr<ProjectedSquareCellRaster> rl =
+            std::make_shared<ProjectedSquareCellRaster>( mFileWidget->filePath().toStdString() );
 
         std::string rasterError;
         if ( !ViewshedUtils::validateRaster( rl, rasterError ) )
         {
-            mErrorMessageBox.critical( this, QStringLiteral( "Error" ), QString::fromStdString( rasterError ) );
+            mErrorMessageBox.critical( this, QStringLiteral( "Error" ),
+                                       mFileWidget->filePath() + QString( ": \n" ) +
+                                           QString::fromStdString( rasterError ) );
+            mFileWidget->setFilePath( "" );
+            return;
         }
 
         mDemValid = true;
 
-        mDem = std::make_shared<QgsRasterLayer>( mFileWidget->filePath(), QStringLiteral( "dem" ),
-                                                 QStringLiteral( "gdal" ) );
+        mDem = std::make_shared<ProjectedSquareCellRaster>( mFileWidget->filePath().toStdString() );
 
-        mPointWidget->setCrs( mDem->crs().authid() );
+        mPointWidget->setCrs( mDem->crs() );
         mEarthDiameter->setText( QString::number( ViewshedUtils::earthDiameter( mDem->crs() ), 'f' ) );
 
         enableCalculation();
@@ -356,8 +367,8 @@ class MainWindow : public QMainWindow
 
         mMask = nullptr;
 
-        std::shared_ptr<QgsRasterLayer> mask = std::make_shared<QgsRasterLayer>(
-            mMaskFileWidget->filePath(), QStringLiteral( "mask" ), QStringLiteral( "gdal" ) );
+        std::shared_ptr<ProjectedSquareCellRaster> mask =
+            std::make_shared<ProjectedSquareCellRaster>( mMaskFileWidget->filePath().toStdString() );
 
         std::string rasterError;
         if ( !ViewshedUtils::validateRaster( mask, rasterError ) )
@@ -374,15 +385,14 @@ class MainWindow : public QMainWindow
                 QString::fromStdString( "Dem and Visibility Mask raster comparison. " + rasterError ) );
         }
 
-        mMask = std::make_shared<QgsRasterLayer>( mMaskFileWidget->filePath(), QStringLiteral( "mask" ),
-                                                  QStringLiteral( "gdal" ) );
+        mMask = std::make_shared<ProjectedSquareCellRaster>( mMaskFileWidget->filePath().toStdString() );
 
         saveSettings();
     }
 
     void enableCalculation() { mCalculateButton->setEnabled( mDemValid && mPointWidget->isPointValid() ); }
 
-    void updatePoint( QgsPoint point )
+    void updatePoint( OGRPoint point )
     {
         mPoint = point;
         saveSettings();
@@ -390,36 +400,45 @@ class MainWindow : public QMainWindow
 
     void updatePointRaster() { updatePoint( mPoint ); }
 
-    void updatePointLabel( QgsPointXY point )
+    void updatePointLabel( OGRPoint point )
     {
         double elevation;
-        bool sampledOk = false;
+        bool sampledNoData = false;
 
         if ( mDemValid )
         {
 
-            if ( !mDem->extent().contains( point ) )
+            if ( !mDem->isInside( point ) )
             {
                 mPointLabel->setText( QStringLiteral( "Point is located outside of the raster." ) );
                 return;
             }
 
-            elevation = mDem->dataProvider()->sample( point, 1, &sampledOk );
+            double row, colum;
 
-            if ( !sampledOk )
+            mDem->transformCoordinatesToRaster( std::make_shared<OGRPoint>( point.getX(), point.getY() ), row, colum );
+
+            sampledNoData = mDem->isNoData( row, colum );
+
+            elevation = mDem->value( row, colum );
+
+            if ( sampledNoData )
             {
-                mPointLabel->setText( mPoint.asWkt( 5 ) + QString( " without valid elevation." ) );
+                mPointLabel->setText( QString::fromStdString( mPoint.exportToWkt() ) +
+                                      QString( " without valid elevation." ) );
                 return;
             }
         }
 
-        if ( sampledOk )
+        if ( !sampledNoData )
         {
-            mPointLabel->setText( mPoint.asWkt( 5 ) + QString( " with elevation: %1" ).arg( elevation ) );
+            mPointLabel->setText( QString::fromStdString( mPoint.exportToWkt() ) +
+                                  QString( " with elevation: %1" ).arg( elevation ) );
         }
         else
         {
-            mPointLabel->setText( mPoint.asWkt( 5 ) + QString( " without valid elevation." ) );
+            mPointLabel->setText( QString::fromStdString( mPoint.exportToWkt() ) +
+                                  QString( " without valid elevation." ) );
         }
 
         enableCalculation();
@@ -439,8 +458,8 @@ class MainWindow : public QMainWindow
         prepareAlgorithms();
 
         bool useCurvartureCorrections = mCurvatureCorrections->checkState() == Qt::CheckState::Checked;
-        double refractionCoefficient = QgsDoubleValidator::toDouble( mRefractionCoefficient->text() );
-        double earthDimeter = QgsDoubleValidator::toDouble( mEarthDiameter->text() );
+        double refractionCoefficient = DoubleValidator::toDouble( mRefractionCoefficient->text() );
+        double earthDimeter = DoubleValidator::toDouble( mEarthDiameter->text() );
 
         mTimingMessages = "";
 
@@ -466,7 +485,7 @@ class MainWindow : public QMainWindow
         if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeClassicViewshed )
         {
             std::shared_ptr<Point> vp =
-                std::make_shared<Point>( mPoint, mDem, QgsDoubleValidator::toDouble( mObserverOffset->text() ) );
+                std::make_shared<Point>( mPoint, mDem, DoubleValidator::toDouble( mObserverOffset->text() ) );
             Viewshed v = Viewshed( vp, mDem, mAlgs, useCurvartureCorrections, earthDimeter, refractionCoefficient );
 
             if ( mMask )
@@ -478,15 +497,14 @@ class MainWindow : public QMainWindow
 
             mProgressBar->setValue( 100 );
 
-            v.saveResults( mFolderWidget->filePath() );
+            v.saveResults( mFolderWidget->filePath().toStdString() );
         }
         else if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeInverseViewshed )
         {
             std::shared_ptr<Point> tp =
-                std::make_shared<Point>( mPoint, mDem, QgsDoubleValidator::toDouble( mTargetOffset->text() ) );
-            InverseViewshed iv =
-                InverseViewshed( tp, QgsDoubleValidator::toDouble( mObserverOffset->text() ), mDem, mAlgs,
-                                 useCurvartureCorrections, earthDimeter, refractionCoefficient );
+                std::make_shared<Point>( mPoint, mDem, DoubleValidator::toDouble( mTargetOffset->text() ) );
+            InverseViewshed iv = InverseViewshed( tp, DoubleValidator::toDouble( mObserverOffset->text() ), mDem, mAlgs,
+                                                  useCurvartureCorrections, earthDimeter, refractionCoefficient );
 
             if ( mMask )
             {
@@ -497,7 +515,7 @@ class MainWindow : public QMainWindow
 
             mProgressBar->setValue( 100 );
 
-            iv.saveResults( mFolderWidget->filePath(), "Inverse" );
+            iv.saveResults( mFolderWidget->filePath().toStdString(), "Inverse" );
         }
 
         mCalculateButton->setEnabled( true );
@@ -517,13 +535,13 @@ class MainWindow : public QMainWindow
   private:
     QFormLayout *mLayout = nullptr;
     QWidget *mWidget = nullptr;
-    QgsFileWidget *mFileWidget = nullptr;
-    QgsFileWidget *mMaskFileWidget = nullptr;
-    QgsFileWidget *mFolderWidget = nullptr;
+    FileSelectorWidget *mFileWidget = nullptr;
+    FileSelectorWidget *mMaskFileWidget = nullptr;
+    FileSelectorWidget *mFolderWidget = nullptr;
     QLineEdit *mObserverOffset = nullptr;
     QLineEdit *mTargetOffset = nullptr;
     QLabel *mPointLabel = nullptr;
-    QgsDoubleValidator *mDoubleValidator = nullptr;
+    DoubleValidator *mDoubleValidator = nullptr;
     QProgressBar *mProgressBar;
     QPushButton *mCalculateButton;
     QComboBox *mViewshedType;
@@ -532,12 +550,12 @@ class MainWindow : public QMainWindow
     QLineEdit *mEarthDiameter;
     QCheckBox *mNoDataForInvisible;
 
-    std::shared_ptr<QgsRasterLayer> mDem;
-    std::shared_ptr<QgsRasterLayer> mMask;
+    std::shared_ptr<ProjectedSquareCellRaster> mDem;
+    std::shared_ptr<ProjectedSquareCellRaster> mMask;
     QSettings mSettings;
     QMessageBox mErrorMessageBox;
     PointWidget *mPointWidget = nullptr;
-    QgsPoint mPoint;
+    OGRPoint mPoint;
     std::string mTimingMessages;
 
     bool mDemValid;

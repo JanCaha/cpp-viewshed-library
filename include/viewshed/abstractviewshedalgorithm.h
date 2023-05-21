@@ -3,8 +3,6 @@
 
 #include <limits>
 
-#include "QString"
-
 #include "abstractlos.h"
 #include "losimportantvalues.h"
 #include "losnode.h"
@@ -38,9 +36,9 @@ namespace viewshed
         /**
          * @brief Name of the algorithm.
          *
-         * @return const QString
+         * @return const std::string
          */
-        virtual const QString name() = 0;
+        virtual const std::string name() = 0;
     };
 
 } // namespace viewshed

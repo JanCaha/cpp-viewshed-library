@@ -30,4 +30,4 @@ double LoSSlopeToViewAngle::result( std::shared_ptr<LoSImportantValues> losValue
         return mInvisibile;
 }
 
-const QString LoSSlopeToViewAngle::name() { return QString( "LoS Slope to View Angle" ); }
+const std::string LoSSlopeToViewAngle::name() { return "LoS Slope to View Angle"; }

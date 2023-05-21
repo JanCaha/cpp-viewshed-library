@@ -20,7 +20,7 @@ namespace viewshed
 
             double pointValue() override { return mNotHorizon; };
 
-            const QString name() override;
+            const std::string name() override;
 
           private:
             double mNotHorizon;

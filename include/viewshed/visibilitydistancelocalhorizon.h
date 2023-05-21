@@ -17,7 +17,7 @@ namespace viewshed
 
             double pointValue() override { return 0; };
 
-            const QString name() override;
+            const std::string name() override;
 
           private:
             double mNoHorizon = -1;

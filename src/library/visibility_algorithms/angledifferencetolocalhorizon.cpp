@@ -37,11 +37,12 @@ double AngleDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantValues
     }
 }
 
-const QString AngleDifferenceToLocalHorizon::name()
+const std::string AngleDifferenceToLocalHorizon::name()
 {
-    QString allPoints = QString::fromStdString( "False" );
-    if ( mAllPoints )
-        allPoints = QString::fromStdString( "True" );
+    std::string allPoints = "False";
 
-    return QString( "Angle_Difference_To_Local_Horizon_All_Points_-_%1" ).arg( allPoints );
+    if ( mAllPoints )
+        allPoints = "True";
+
+    return "Angle_Difference_To_Local_Horizon_All_Points_-_" + allPoints;
 }

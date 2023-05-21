@@ -1,7 +1,11 @@
 # Binaries :
 macro(create_binary bin_name filename add_widgets)
     if(${add_widgets})
-        add_executable(${bin_name} ${filename} pointwidget.h pointwidget.cpp)
+        add_executable(${bin_name} ${filename}
+            pointwidget.h pointwidget.cpp
+            doublevalidator.h doublevalidator.cpp
+            fileselectorwidget.h fileselectorwidget.cpp
+        )
     else()
         add_executable(${bin_name} ${filename} commandlinehelper.h)
     endif()
@@ -10,13 +14,29 @@ macro(create_binary bin_name filename add_widgets)
 
     target_include_directories(${bin_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/viewshed)
     target_include_directories(${bin_name} PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
-    target_include_directories(${bin_name} PRIVATE ${MINIMAL_QGIS_INCLUDES})
+    target_include_directories(${bin_name} PRIVATE ${QT_INCLUDES})
+    target_include_directories(${bin_name} PRIVATE ${GDAL_INCLUDE_DIR})
 
     target_link_libraries(${bin_name}
-        ${MINIMAL_QGIS_LIBS}
-        ${QGIS_GUI_LIBRARY}
+        ${QT_LIBS}
         bs_thread_pool
-        library_viewshed)
+        library_viewshed
+        ${GDAL_LIBRARY}
+    )
+
+    if(SIMPLERASTERS_SYS_DEP)
+        target_include_directories(${bin_name} PUBLIC ${simplerasters_INCLUDE_DIRS})
+
+        target_link_libraries(${bin_name}
+            ${simplerasters_LINK_LIBRARIES}
+        )
+    else()
+        target_include_directories(${bin_name} PUBLIC ${CMAKE_BINARY_DIR}/_deps/simplerasters-src/src/api)
+
+        target_link_libraries(${bin_name}
+            simplerasters
+        )
+    endif()
 endmacro(create_binary)
 
 create_binary(viewshed viewshed.cpp OFF)
@@ -31,8 +51,14 @@ add_custom_target(create_binaries)
 
 add_dependencies(create_binaries viewshed)
 
-add_dependencies(create_binaries viewshed inverseviewshed viewshedcalculator losextractor)
+add_dependencies(create_binaries
+    viewshed
+    inverseviewshed
+    viewshedcalculator
+    losextractor
+)
 
 install(TARGETS
-    viewshed inverseviewshed viewshedcalculator
-    RUNTIME DESTINATION bin)
+    viewshed inverseviewshed viewshedcalculator losextractor
+    RUNTIME DESTINATION bin
+)

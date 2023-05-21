@@ -18,4 +18,4 @@ double DistanceGlobalHorizon::result( std::shared_ptr<LoSImportantValues> losVal
     }
 }
 
-const QString DistanceGlobalHorizon::name() { return QString( "Distance From Global Horizon" ); }
+const std::string DistanceGlobalHorizon::name() { return "Distance From Global Horizon"; }

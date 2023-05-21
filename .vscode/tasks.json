@@ -83,7 +83,7 @@
                 "--config",
                 "Release",
                 "--target",
-                "pack_deb"
+                "pack_viewshed_library_deb"
             ],
             "problemMatcher": []
         }

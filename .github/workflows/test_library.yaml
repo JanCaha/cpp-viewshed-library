@@ -1,0 +1,97 @@
+name: Tests for Library
+
+on: [push, pull_request]
+
+jobs:
+
+  Tests-Viewshed-library:
+
+    runs-on: ubuntu-latest
+
+    env:
+      DEBIAN_FRONTEND: "noninteractive"
+      QT_QPA_PLATFORM: "offscreen"
+      XDG_RUNTIME_DIR: "/tmp"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+
+      - name: Update and Upgrade
+        run: |
+          sudo apt update
+          sudo apt install ninja-build doxygen
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          host: 'linux'
+
+      - name: Install GDAL
+        run: |
+          sudo apt-get -y install gdal-bin libgdal-dev
+
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: create_deb_file.yaml
+          repo: JanCaha/cpp-simplerasters
+          branch: main
+      
+      - name: Install and remove artifact
+        run: |
+          sudo apt install ./_packages/simplerasters*.deb
+          rm -rf _packages
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure
+        run: | 
+           mkdir build
+           cmake \
+             -S. \
+            -Bbuild \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPACK_DEB:bool=on \
+            -DBUILD_DOCUMENTATION:bool=off \
+            -DBUILD_TESTS:bool=on \
+            -DCELL_EVENT_DATA_FLOAT:bool=on \
+            -DOUTPUT_RASTER_DATA_FLOAT:bool=on
+
+      - name: Build
+        run: | 
+           cmake --build build --config Release --target viewshed
+
+      - name: Run Tests
+        id: unittests
+        run: |
+           cmake --build build --config Release --target build_tests
+           cmake --build build --config Release --target run_tests
+      
+      - name: Test install
+        run: |
+          sudo cmake --build build --config Release --target install
+
+      - name: Clean Build
+        run: |
+          sudo cmake --build build --target clean
+
+      - name: Run Tests with double
+        id: unittestsdouble
+        run: |
+           cmake \
+             -S. \
+            -Bbuild \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPACK_DEB:bool=off \
+            -DBUILD_DOCUMENTATION:bool=off \
+            -DBUILD_TESTS:bool=on \
+            -DCELL_EVENT_DATA_FLOAT:bool=off \
+            -DOUTPUT_RASTER_DATA_FLOAT:bool=off
+           cmake --build build --config Release --target build_tests
+           cmake --build build --config Release --target run_tests

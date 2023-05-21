@@ -16,7 +16,8 @@ namespace viewshed
     class InverseViewshed : public AbstractViewshed
     {
       public:
-        InverseViewshed( std::shared_ptr<Point> targetPoint, double observerOffset, std::shared_ptr<QgsRasterLayer> dem,
+        InverseViewshed( std::shared_ptr<Point> targetPoint, double observerOffset,
+                         std::shared_ptr<ProjectedSquareCellRaster> dem,
                          std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices,
                          bool applyCurvatureCorrections = true, double earthDiameter = EARTH_DIAMETER,
                          double refractionCoeff = REFRACTION_COEFFICIENT,
@@ -25,15 +26,14 @@ namespace viewshed
 
         void calculate(
             std::function<void( std::string, double )> stepsTimingCallback = []( std::string text, double time )
-            { qDebug() << QString::fromStdString( text ) << time; },
+            { std::cout << text << time << std::endl; },
             std::function<void( int, int )> progressCallback = []( int, int ) {} ) override;
 
-        std::shared_ptr<InverseLoS> getLoS( QgsPoint point, bool onlyToPoint = false );
+        std::shared_ptr<InverseLoS> getLoS( OGRPoint point, bool onlyToPoint = false );
 
         void submitToThreadpool( CellEvent &e ) override;
 
-        void addEventsFromCell( int &row, int &column, const double &pixelValue,
-                                std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell ) override;
+        void addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell ) override;
 
       private:
         double mObserverOffset;

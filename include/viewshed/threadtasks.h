@@ -19,7 +19,7 @@ namespace viewshed
      */
     void evaluateLoS( std::shared_ptr<AbstractLoS> los,
                       std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
-                      std::shared_ptr<std::vector<std::shared_ptr<MemoryRaster>>> results );
+                      std::shared_ptr<std::vector<std::shared_ptr<SingleBandRaster>>> results );
 
 } // namespace viewshed
 

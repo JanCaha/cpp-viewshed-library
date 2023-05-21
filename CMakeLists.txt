@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 1.9.9 DESCRIPTION "Viewshed library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 2.0.0 DESCRIPTION "Viewshed library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
 option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." ON)
+option(SIMPLERASTERS_SYS_DEP "USE simpleRasters library from system" ON)
 
 option(CELL_EVENT_DATA_FLOAT "Create CellEvents with data stored `float` instead of `double`. Lowers significantly RAM memory usage." ON)
 option(OUTPUT_RASTER_DATA_FLOAT "Create output rasters with data stored `Float32` instead of `Float64`. Lowers RAM memory usage." ON)
@@ -20,28 +21,31 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(QGIS REQUIRED)
-
 find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
 
 find_package(Threads REQUIRED)
 
-set(MINIMAL_QGIS_INCLUDES
-    ${QGIS_INCLUDE_DIR}
+if(SIMPLERASTERS_SYS_DEP)
+    message(STATUS "Searching for library simplerasters in system!")
+    find_package(SimpleRasters)
+endif()
+
+set(QT_INCLUDES
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5Xml_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
 )
 
-set(MINIMAL_QGIS_LIBS
-    ${QGIS_CORE_LIBRARY}
+set(QT_LIBS
     Qt5::Core
     Qt5::Gui
-    Qt5::Xml
     Qt5::Widgets
 )
 
+find_package(GDAL REQUIRED)
+
+# include(FindPkgConfig)
+# pkg_check_modules(SIMPLE_RASTERS REQUIRED simplerasters)
 set(LIBRARY_VIEWSHED_PRIVATE_HEADERS
     ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
 )
@@ -60,7 +64,6 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/losevaluator.h
     include/viewshed/losimportantvalues.h
     include/viewshed/losnode.h
-    include/viewshed/memoryraster.h
     include/viewshed/point.h
     include/viewshed/rasterposition.h
     include/viewshed/threadtasks.h
@@ -138,12 +141,12 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
             file(REMOVE ${old_versions})
         endif()
 
-        add_custom_target(pack_deb
+        add_custom_target(pack_viewshed_library_deb
             COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         )
 
-        add_dependencies(pack_deb library_viewshed)
+        add_dependencies(pack_viewshed_library_deb library_viewshed)
     endif()
 endif()
 

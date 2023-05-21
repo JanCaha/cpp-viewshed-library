@@ -42,11 +42,11 @@ double ElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantV
     }
 }
 
-const QString ElevationDifferenceToGlobalHorizon::name()
+const std::string ElevationDifferenceToGlobalHorizon::name()
 {
-    QString allPoints = QString::fromStdString( "False" );
+    std::string allPoints = "False";
     if ( mAllPoints )
-        allPoints = QString::fromStdString( "True" );
+        allPoints = "True";
 
-    return QString( "Elevation_Difference_To_Global_Horizon_All_Points_-_%1" ).arg( allPoints );
+    return "Elevation_Difference_To_Global_Horizon_All_Points_-_" + allPoints;
 }

@@ -18,7 +18,7 @@ namespace viewshed
 
             double pointValue() override { return 1; };
 
-            const QString name() override;
+            const std::string name() override;
 
           private:
             double mB1;

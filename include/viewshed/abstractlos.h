@@ -1,6 +1,8 @@
 #ifndef VIEWSHEDLIB_ABSTRACTLOS_H
 #define VIEWSHEDLIB_ABSTRACTLOS_H
 
+#include <algorithm>
+
 #include "cellevent.h"
 #include "enums.h"
 #include "losnode.h"

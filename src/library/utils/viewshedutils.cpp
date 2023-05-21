@@ -4,9 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "qgscoordinatereferencesystem.h"
-#include "qgsellipsoidutils.h"
-
 #include "abstractviewshedalgorithm.h"
 #include "inverselos.h"
 #include "viewshedutils.h"
@@ -101,22 +98,27 @@ std::vector<DataTriplet> ViewshedUtils::distanceElevation( std::shared_ptr<Abstr
     return data;
 }
 
-double ViewshedUtils::earthDiameter( QgsCoordinateReferenceSystem crs )
+double ViewshedUtils::earthDiameter( OGRSpatialReference crs )
 {
-    QString ellipsoid = crs.ellipsoidAcronym();
-    if ( !ellipsoid.isEmpty() )
+    if ( !crs.IsEmpty() )
     {
-        QgsEllipsoidUtils::EllipsoidParameters params = QgsEllipsoidUtils::ellipsoidParameters( ellipsoid );
-        return params.semiMajor * 2;
+        OGRErr *error;
+        double semiMajor = crs.GetSemiMajor( error );
+
+        if ( error == OGRERR_NONE )
+        {
+            return semiMajor * 2;
+        }
     }
     return EARTH_DIAMETER;
 };
 
-bool ViewshedUtils::compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::shared_ptr<QgsRasterLayer> r2,
+bool ViewshedUtils::compareRasters( std::shared_ptr<SingleBandRaster> r1, std::shared_ptr<SingleBandRaster> r2,
                                     std::string &error )
 {
+    OGRSpatialReference crs2 = r2->crs();
 
-    if ( r1->crs() != r2->crs() )
+    if ( !r1->crs().IsSame( &crs2 ) )
     {
         error = "Crs of rasters are not the same.";
         return false;
@@ -140,7 +142,7 @@ bool ViewshedUtils::compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::sha
         return false;
     }
 
-    if ( !qgsDoubleNear( r1->rasterUnitsPerPixelX(), r2->rasterUnitsPerPixelX(), 0.0001 ) )
+    if ( !doubleEqual( r1->xCellSize(), r2->xCellSize(), 0.0001 ) )
     {
         error = "Pixel size of rasters are not the same.";
         return false;
@@ -149,7 +151,7 @@ bool ViewshedUtils::compareRasters( std::shared_ptr<QgsRasterLayer> r1, std::sha
     return true;
 }
 
-bool ViewshedUtils::validateRaster( std::shared_ptr<QgsRasterLayer> rl, std::string &error )
+bool ViewshedUtils::validateRaster( std::shared_ptr<SingleBandRaster> rl, std::string &error )
 {
     if ( !rl )
     {
@@ -159,23 +161,23 @@ bool ViewshedUtils::validateRaster( std::shared_ptr<QgsRasterLayer> rl, std::str
 
     if ( !rl->isValid() )
     {
-        error = "Raster is not valid. " + rl->error().message().toStdString();
+        error = "Raster is not valid. " + rl->error();
         return false;
     }
 
-    if ( rl->bandCount() != 1 )
-    {
-        error = "Raster layer needs to have only one band.";
-        return false;
-    }
+    // if ( rl->bandCount() != 1 )
+    // {
+    //     error = "Raster layer needs to have only one band.";
+    //     return false;
+    // }
 
-    if ( rl->crs().isGeographic() )
+    if ( !rl->isProjected() )
     {
         error = "Raster needs to be projected.";
         return false;
     }
 
-    if ( !qgsDoubleNear( rl->rasterUnitsPerPixelX(), rl->rasterUnitsPerPixelY(), 0.0001 ) )
+    if ( !doubleEqual( rl->xCellSize(), rl->yCellSize(), 0.0001 ) )
     {
         error = "Raster needs to have rectangular cells.";
         return false;
@@ -235,4 +237,15 @@ ViewshedUtils::allAlgorithms( double invisibleValue )
     algs->push_back( std::make_shared<HorizonsCount>( false ) );
 
     return algs;
+}
+
+bool ViewshedUtils::doubleEqual( double a, double b, double epsilon )
+{
+    const bool aIsNan = std::isnan( a );
+    const bool bIsNan = std::isnan( b );
+    if ( aIsNan || bIsNan )
+        return aIsNan && bIsNan;
+
+    const double diff = a - b;
+    return diff > -epsilon && diff <= epsilon;
 }
