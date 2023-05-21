@@ -66,7 +66,6 @@ class MainWindow : public QMainWindow
         if ( mDem )
         {
             double noData = mDem->noData();
-
             mAlgs = ViewshedUtils::allAlgorithms( noData );
         }
     };
