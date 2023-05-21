@@ -26,6 +26,8 @@ jobs:
 
     steps:
 
+      if: startsWith(github.ref, 'refs/tags/v')
+  
       - name: Update and Upgrade
         run: |
           sudo apt update
