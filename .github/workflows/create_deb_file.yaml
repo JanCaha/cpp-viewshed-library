@@ -75,7 +75,6 @@ jobs:
       - name: Build DEB
         run: | 
           cmake --build build --config Release --target all
-          sudo cmake --build build --config Release --target install
           cmake --build build --config Release --target pack_viewshed_library_deb
 
       - name: Upload DEB file as artifact
