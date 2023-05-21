@@ -1,0 +1,73 @@
+name: Create release
+
+on:
+  workflow_run:
+    workflows: ["Tests for Library"]
+    types:
+      - completed
+    branches:
+      - 'main'
+      - 'master'
+      - 'v*'
+
+jobs:
+
+  Create-release:
+
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+
+      - name: Update and Upgrade
+        run: |
+          sudo apt update
+          sudo apt install ninja-build
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          host: 'linux'
+    
+      - name: Install GDAL
+        run: |
+          sudo apt-get -y install gdal-bin libgdal-dev
+      
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: create_deb_file.yaml
+          repo: JanCaha/cpp-simplerasters
+          branch: main
+      
+      - name: Install and remove artifact
+        run: |
+          sudo apt install ./_packages/simplerasters*.deb
+          rm -rf _packages
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure
+        run: | 
+          mkdir build
+          cmake \
+            -S. \
+            -Bbuild \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPACK_DEB:bool=on \
+            -DBUILD_DOCUMENTATION:bool=on \
+            -DBUILD_TESTS:bool=on \
+            -DCELL_EVENT_DATA_FLOAT:bool=on \
+            -DOUTPUT_RASTER_DATA_FLOAT:bool=on
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: _packages/viewshed_*.deb
