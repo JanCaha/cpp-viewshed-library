@@ -66,15 +66,15 @@ jobs:
         run: | 
            cmake --build build --config Release --target viewshed
 
-      - name: Test install
-        run: |
-          sudo cmake --build build --config Release --target install
-
       - name: Run Tests
         id: unittests
         run: |
            cmake --build build --config Release --target build_tests
            cmake --build build --config Release --target run_tests
+      
+      - name: Test install
+        run: |
+          sudo cmake --build build --config Release --target install
 
       - name: Clean Build
         run: |
