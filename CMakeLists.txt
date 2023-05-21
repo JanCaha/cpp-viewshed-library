@@ -48,7 +48,6 @@ find_package(GDAL REQUIRED)
 # pkg_check_modules(SIMPLE_RASTERS REQUIRED simplerasters)
 set(LIBRARY_VIEWSHED_PRIVATE_HEADERS
     ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
-    ${CMAKE_BINARY_DIR}/_deps/simplerasters-src/src/api/simplerasters.h
 )
 
 set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
