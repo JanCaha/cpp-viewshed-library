@@ -5,6 +5,7 @@ project(viewshed VERSION 2.0.0 DESCRIPTION "Viewshed library based on QGIS/Qt an
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
 option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." ON)
+option(SIMPLERASTERS_SYS_DEP "USE simpleRasters library from system" ON)
 
 option(CELL_EVENT_DATA_FLOAT "Create CellEvents with data stored `float` instead of `double`. Lowers significantly RAM memory usage." ON)
 option(OUTPUT_RASTER_DATA_FLOAT "Create output rasters with data stored `Float32` instead of `Float64`. Lowers RAM memory usage." ON)
@@ -23,6 +24,11 @@ endif()
 find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
 
 find_package(Threads REQUIRED)
+
+if(SIMPLERASTERS_SYS_DEP)
+    message(STATUS "Searching for library simplerasters in system!")
+    find_package(SimpleRasters)
+endif()
 
 set(QT_INCLUDES
     ${Qt5Core_INCLUDE_DIRS}

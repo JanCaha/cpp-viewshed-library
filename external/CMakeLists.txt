@@ -1,2 +1,5 @@
 add_subdirectory(BSThreadPool)
-add_subdirectory(simplerasters)
+
+if(NOT SIMPLERASTERS_SYS_DEP)
+    add_subdirectory(simplerasters)
+endif()
