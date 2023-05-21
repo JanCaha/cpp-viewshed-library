@@ -25,10 +25,10 @@ macro(create_binary bin_name filename add_widgets)
     )
 
     if(SIMPLERASTERS_SYS_DEP)
-        target_include_directories(${bin_name} PUBLIC ${simplerasters_INCLUDE_DIRS})
+        target_include_directories(${bin_name} PUBLIC ${simplerasters_INCLUDE_DIR})
 
         target_link_libraries(${bin_name}
-            ${simplerasters_LINK_LIBRARIES}
+            ${simplerasters_LIBRARY}
         )
     else()
         target_include_directories(${bin_name} PUBLIC ${CMAKE_BINARY_DIR}/_deps/simplerasters-src/src/api)
