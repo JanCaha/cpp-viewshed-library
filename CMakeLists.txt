@@ -44,8 +44,6 @@ set(QT_LIBS
 
 find_package(GDAL REQUIRED)
 
-# include(FindPkgConfig)
-# pkg_check_modules(SIMPLE_RASTERS REQUIRED simplerasters)
 set(LIBRARY_VIEWSHED_PRIVATE_HEADERS
     ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
 )

@@ -27,9 +27,18 @@ if(BUILD_TESTS)
         ${GTEST_INCLUDE_DIRS}
         ${CMAKE_SOURCE_DIR}/include/viewshed
         ${CMAKE_CURRENT_BINARY_DIR}
-        ${CMAKE_BINARY_DIR}/simplerasters-src/src/api
         ${GDAL_INCLUDE_DIR}
     )
+
+    if(SIMPLERASTERS_SYS_DEP)
+        include_directories(
+            ${simplerasters_LIBRARY}
+        )
+    else()
+        include_directories(
+            simplerasters
+        )
+    endif()
 
     # ############################################################
     # Prepare targets for tests:
@@ -50,12 +59,21 @@ if(BUILD_TESTS)
 
         target_link_libraries(${testname}
             library_viewshed
-            simplerasters
             ${GDAL_LIBRARY}
             gtest
             gmock
             gtest_main
         )
+
+        if(SIMPLERASTERS_SYS_DEP)
+            target_link_libraries(${testname}
+                ${simplerasters_LIBRARY}
+            )
+        else()
+            target_link_libraries(${testname}
+                simplerasters
+            )
+        endif()
 
         add_test(${testname} ${testname} -maxwarnings 10000)
         add_dependencies(build_tests ${testname})
