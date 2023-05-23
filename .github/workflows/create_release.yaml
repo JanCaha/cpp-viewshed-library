@@ -1,13 +1,11 @@
 name: Create release
 
 on:
-  workflow_run:
-    workflows: ["Tests for Library"]
-    types:
-      - completed
+  push:
     branches:
-      - 'main'
       - 'master'
+      - 'main'
+    tags:
       - 'v*'
 
 jobs:
