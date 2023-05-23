@@ -51,6 +51,7 @@ jobs:
       - name: Print packages
         run: |
           ls -l _packages
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -62,6 +63,7 @@ jobs:
           cd docker
           mkdir install
           cp ../_packages/viewshed_*.deb install/
+          cp ../_packages/simplerasters_*.deb install/
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
