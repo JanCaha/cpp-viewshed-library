@@ -68,6 +68,11 @@ jobs:
             -DCELL_EVENT_DATA_FLOAT:bool=on \
             -DOUTPUT_RASTER_DATA_FLOAT:bool=on
 
+      - name: Build DEB
+        run: | 
+          cmake --build build --config Release --target all
+          cmake --build build --config Release --target pack_viewshed_library_deb
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
