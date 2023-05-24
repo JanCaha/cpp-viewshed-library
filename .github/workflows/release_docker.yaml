@@ -59,8 +59,7 @@ jobs:
 
       - name: Prepare for docker build 
         run: |
-          cd docker
-          mkdir install
+          mkdir docker/install
           cp _packages/simplerasters_*.deb docker/install/
 
       - name: Configure
