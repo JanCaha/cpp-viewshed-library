@@ -19,7 +19,7 @@ RUN gpg -k && \
 RUN export DEBIAN_FRONTEND=noninteractive && \
     echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
     apt-get update && \
-    apt-get -y -q install --no-install-recommends gdal-bin libgdal-dev qtbase5-dev && \
+    apt-get -y -q install --no-install-recommends gdal-bin libgdal-dev qt5-default && \
     apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt/lists/*
