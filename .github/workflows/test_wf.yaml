@@ -86,11 +86,18 @@ jobs:
 
     steps:
 
+        - name: Checkout
+          uses: actions/checkout@v3
+
         - name: Download artifact
           uses: actions/download-artifact@v3
           with:
             name: _packages
         
+        - name: List Folders
+          run: |
+            ls -l
+
         - name: Prepare for docker build 
           run: |
             mkdir docker/install
