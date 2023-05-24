@@ -101,7 +101,7 @@ jobs:
         - name: Prepare for docker build 
           run: |
             mkdir docker/install
-            cp _packages/viewshed_*.deb docker/install/    
+            mv viewshed_*.deb docker/install/    
 
         - name: Download artifact
           id: download-artifact
@@ -115,7 +115,7 @@ jobs:
         - name: Copy simplerasters to docker folder
           run: |
             mkdir docker/install
-            cp _packages/simplerasters_*.deb docker/install/ 
+            mv _packages/simplerasters_*.deb docker/install/ 
 
         - name: Log in to Docker Hub
           uses: docker/login-action@v2
