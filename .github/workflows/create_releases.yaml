@@ -1,7 +1,13 @@
-name: Test WF
+name: Prepare Release and Docker Release
 
 on:
-  push
+  workflow_run:
+    workflows: ["Tests for Library"]
+    types:
+      - completed
+    branches:
+      - 'main'
+      - 'master'
 
 jobs:
 
@@ -78,7 +84,7 @@ jobs:
             publish_dir: ./documentation
             publish_branch: gh-pages
     
-  Relese-Docker:
+  Release-Docker:
 
     runs-on: ubuntu-latest
 
@@ -93,10 +99,6 @@ jobs:
           uses: actions/download-artifact@v3
           with:
             name: _packages
-        
-        - name: List Folders
-          run: |
-            ls -l
 
         - name: Copy viewshed to docker folder
           run: |
