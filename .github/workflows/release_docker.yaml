@@ -57,6 +57,12 @@ jobs:
         run: |
           sudo apt install ./_packages/simplerasters*.deb
 
+      - name: Prepare for docker build 
+        run: |
+          cd docker
+          mkdir install
+          cp _packages/simplerasters_*.deb docker/install/
+
       - name: Configure
         run: | 
           mkdir build
@@ -104,7 +110,6 @@ jobs:
           cd docker
           mkdir install
           cp ../_packages/viewshed_*.deb install/
-          cp ../_packages/simplerasters_*.deb install/
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4

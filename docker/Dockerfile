@@ -30,6 +30,6 @@ RUN touch /etc/ld.so.conf.d/usr-local.conf && \
 
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 
-COPY install/*simplerasters* /usr/local/lib
 COPY install/ /
+RUN dpkg -i simplerasters_*.deb
 RUN dpkg -i viewshed_*.deb
