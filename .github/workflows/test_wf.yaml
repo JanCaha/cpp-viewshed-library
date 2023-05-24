@@ -126,7 +126,6 @@ jobs:
         - name: Copy viewshed to docker folder
           run: |
             cd docker
-            mkdir install
             cp ../_packages/viewshed_*.deb install/
 
         - name: Build and push Docker image
