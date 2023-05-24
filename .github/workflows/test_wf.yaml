@@ -114,7 +114,6 @@ jobs:
         
         - name: Copy simplerasters to docker folder
           run: |
-            mkdir docker/install
             mv _packages/simplerasters_*.deb docker/install/ 
 
         - name: Log in to Docker Hub
