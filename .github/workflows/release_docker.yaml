@@ -57,7 +57,7 @@ jobs:
         run: |
           sudo apt install ./_packages/simplerasters*.deb
 
-       - name: Prepare for docker build 
+      - name: Prepare for docker build 
         run: |
           cd docker
           mkdir install
