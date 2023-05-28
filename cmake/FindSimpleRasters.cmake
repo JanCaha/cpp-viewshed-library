@@ -17,4 +17,12 @@ find_library(simplerasters_LIBRARY
 
 if(simplerasters_PKGCONF_FOUND)
     message(STATUS "Library simplerasters found at: ${simplerasters_LIBRARY}.")
+
+    if(NOT TARGET SimpleRasters::simplerasters)
+        add_library(SimpleRasters::simplerasters UNKNOWN IMPORTED)
+        set_target_properties(SimpleRasters::simplerasters PROPERTIES
+            IMPORTED_LOCATION "${simplerasters_LIBRARY}"
+            INTERFACE_INCLUDE_DIRECTORIES "${simplerasters_INCLUDE_DIR}"
+        )
+    endif()
 endif()
