@@ -67,7 +67,7 @@ if(BUILD_TESTS)
 
         if(SIMPLERASTERS_SYS_DEP)
             target_link_libraries(${testname}
-                ${simplerasters_LIBRARY}
+                SimpleRasters::simplerasters
             )
         else()
             target_link_libraries(${testname}
