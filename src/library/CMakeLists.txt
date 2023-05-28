@@ -53,9 +53,9 @@ target_link_libraries(library_viewshed
 )
 
 if(SIMPLERASTERS_SYS_DEP)
-    target_include_directories(library_viewshed PUBLIC ${simplerasters_INCLUDE_DIR})
+    target_include_directories(library_viewshed PUBLIC SimpleRasters::simplerasters)
     target_link_libraries(library_viewshed
-        ${simplerasters_LIBRARY}
+        SimpleRasters::simplerasters
     )
 else()
     target_include_directories(library_viewshed PUBLIC ${CMAKE_BINARY_DIR}/_deps/simplerasters-src/src/api)
