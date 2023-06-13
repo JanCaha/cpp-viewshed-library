@@ -19,7 +19,7 @@ jobs:
       - name: Update and Upgrade
         run: |
           sudo apt update
-          sudo apt install ninja-build doxygen
+          sudo apt install ninja-build doxygen libgtest-dev
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
