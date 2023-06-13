@@ -1,4 +1,5 @@
 build
+build_dir
 .vscode/c_cpp_properties.json
 tests/data/*.aux.xml
 tests/data/results/*
