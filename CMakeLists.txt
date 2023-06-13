@@ -160,4 +160,9 @@ add_subdirectory(docs)
 
 # ############################################################
 # add tests :
-add_subdirectory(tests)
+if(BUILD_TESTS)
+    include(CTest)
+    enable_testing(true)
+
+    add_subdirectory(tests)
+endif()
