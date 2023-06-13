@@ -5,7 +5,6 @@ project(viewshed VERSION 2.0.1 DESCRIPTION "Viewshed library based on QGIS/Qt an
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
 option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." ON)
-option(SIMPLERASTERS_SYS_DEP "USE simpleRasters library from system" ON)
 
 option(CELL_EVENT_DATA_FLOAT "Create CellEvents with data stored `float` instead of `double`. Lowers significantly RAM memory usage." ON)
 option(OUTPUT_RASTER_DATA_FLOAT "Create output rasters with data stored `Float32` instead of `Float64`. Lowers RAM memory usage." ON)
@@ -21,14 +20,13 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
+find_package(GDAL REQUIRED)
 
 find_package(Threads REQUIRED)
 
-if(SIMPLERASTERS_SYS_DEP)
-    message(STATUS "Searching for library simplerasters in system!")
-    find_package(SimpleRasters)
-endif()
+find_package(SimpleRasters REQUIRED)
+
+find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
 
 set(QT_INCLUDES
     ${Qt5Core_INCLUDE_DIRS}
@@ -40,12 +38,6 @@ set(QT_LIBS
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
-)
-
-find_package(GDAL REQUIRED)
-
-set(LIBRARY_VIEWSHED_PRIVATE_HEADERS
-    ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
 )
 
 set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
@@ -133,7 +125,7 @@ install(TARGETS
 
 # ############################################################
 # Pack :
-if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
     if(PACK_DEB)
         message(STATUS "VIEWSHED LIBRARY: DEB will be packed file.")
 
