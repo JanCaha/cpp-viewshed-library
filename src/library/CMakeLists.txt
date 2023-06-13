@@ -41,28 +41,17 @@ set_target_properties(library_viewshed PROPERTIES OUTPUT_NAME "viewshed")
 set_target_properties(library_viewshed PROPERTIES VERSION ${PROJECT_VERSION})
 
 set_target_properties(library_viewshed PROPERTIES PUBLIC_HEADER "${LIBRARY_VIEWSHED_PUBLIC_HEADERS}")
-set_target_properties(library_viewshed PROPERTIES PRIVATE_HEADER "${LIBRARY_VIEWSHED_PRIVATE_HEADERS}")
 
 target_include_directories(library_viewshed PUBLIC ${CMAKE_SOURCE_DIR}/include/viewshed)
-target_include_directories(library_viewshed PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
+target_include_directories(library_viewshed PUBLIC bs_thread_pool)
 target_include_directories(library_viewshed PRIVATE ${GDAL_INCLUDE_DIR})
+target_include_directories(library_viewshed PRIVATE SimpleRasters::SimpleRasters)
 
 target_link_libraries(library_viewshed
     bs_thread_pool
     ${GDAL_LIBRARY}
+    SimpleRasters::SimpleRasters
 )
-
-if(SIMPLERASTERS_SYS_DEP)
-    target_include_directories(library_viewshed PUBLIC SimpleRasters::simplerasters)
-    target_link_libraries(library_viewshed
-        SimpleRasters::simplerasters
-    )
-else()
-    target_include_directories(library_viewshed PUBLIC ${CMAKE_BINARY_DIR}/_deps/simplerasters-src/src/api)
-    target_link_libraries(library_viewshed
-        simplerasters
-    )
-endif()
 
 if(${CELL_EVENT_DATA_FLOAT})
     message(STATUS "CellEvents will have data type `float`.")
