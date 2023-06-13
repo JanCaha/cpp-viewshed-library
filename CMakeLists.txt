@@ -112,17 +112,23 @@ write_basic_package_version_file(
     COMPATIBILITY SameMajorVersion
 )
 
+include(GNUInstallDirs)
+
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
 )
 
-# include(GNUInstallDirs)
 install(TARGETS library_viewshed
-    LIBRARY DESTINATION lib
-    PUBLIC_HEADER DESTINATION include/viewshed
-    PRIVATE_HEADER DESTINATION include/viewshed
-    INCLUDES DESTINATION include
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+)
+
+install(TARGETS
+    viewshed inverseviewshed viewshedcalculator losextractor
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 # ############################################################
