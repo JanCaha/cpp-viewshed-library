@@ -1,0 +1,11 @@
+Source: viewshed
+Section: devel
+Priority: optional
+Maintainer: Jan Caha <jan.caha@outlook.com>
+Build-Depends: cmake, build-essential, gdal-bin, libgdal-dev, simplerasters, qtbase5-dev, qt5-qmake
+Homepage: https://www.cahik.cz
+
+Package: viewshed
+Architecture: any
+Depends: gdal-bin, libgdal-dev, simplerasters, qtbase5-dev, qt5-qmake
+Description: Calculate visibility indices for viewshed and inverse viewshed.
