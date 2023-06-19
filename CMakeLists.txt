@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 2.0.9 DESCRIPTION "Viewshed library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 2.0.17 DESCRIPTION "Viewshed library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
 
 SET(LIBRARY_NAME "viewshed")
 
@@ -111,9 +111,11 @@ include(GNUInstallDirs)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
+    COMPONENT lib
 )
 
 install(TARGETS library_viewshed
+    COMPONENT lib
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
     PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
@@ -122,6 +124,7 @@ install(TARGETS library_viewshed
 
 install(TARGETS
     viewshed inverseviewshed viewshedcalculator losextractor
+    COMPONENT bin
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
