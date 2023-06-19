@@ -19,11 +19,22 @@ binary: binary-indep binary-arch
 binary-indep:
 	# nothing to be done
 
-binary-arch:
-	cd $(BUILDDIR); cmake -P cmake_install.cmake
+binary-arch: build-library build-binaries
+ 
+build-library:
+	rm -rf debian/tmp
+	cd $(BUILDDIR); cmake -DCOMPONENT=lib -P cmake_install.cmake
 	mkdir debian/tmp/DEBIAN
 	dpkg-gencontrol -pviewshed
 	dpkg --build debian/tmp ..
+
+build-binaries:
+	rm -rf debian/tmp
+	cd $(BUILDDIR); cmake -DCOMPONENT=bin -P cmake_install.cmake
+	mkdir debian/tmp/DEBIAN
+	dpkg-gencontrol -pviewshed-bin
+	dpkg --build debian/tmp ..
+
 
 # firstly called by launchpad
 clean:
