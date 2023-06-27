@@ -1,9 +1,13 @@
 #include "los.h"
 #include "abstractlos.h"
+#include "cellevent.h"
+#include "losnode.h"
+#include "point.h"
 #include "visibility.h"
 
 using viewshed::AbstractLoS;
 using viewshed::LoS;
+using viewshed::LoSNode;
 using viewshed::Visibility;
 
 LoS::LoS() : std::vector<LoSNode>() {}

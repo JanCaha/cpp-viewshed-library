@@ -5,21 +5,18 @@
 #include <vector>
 
 #include "abstractlos.h"
-#include "cellevent.h"
 #include "enums.h"
-#include "losnode.h"
-#include "point.h"
-#include "visibility.h"
 
-using viewshed::CellEvent;
-using viewshed::LoSNode;
-using viewshed::Point;
 using viewshed::ValueType;
 
 // using viewshed::Visibility;
 
 namespace viewshed
 {
+    class CellEvent;
+    class LosNode;
+    class Point;
+
     /**
      * @brief Class that represents LoS for classic Viewshed calculation.
      *

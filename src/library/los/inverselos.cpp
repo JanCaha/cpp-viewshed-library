@@ -1,11 +1,16 @@
 #include <cmath>
 
 #include "abstractlos.h"
+#include "cellevent.h"
 #include "inverselos.h"
+#include "los.h"
+#include "losnode.h"
+#include "point.h"
 #include "visibility.h"
 
 using viewshed::AbstractLoS;
 using viewshed::InverseLoS;
+using viewshed::LoSNode;
 using viewshed::Visibility;
 
 InverseLoS::InverseLoS() {}
