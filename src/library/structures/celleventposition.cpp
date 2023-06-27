@@ -2,8 +2,8 @@
 
 using viewshed::CellEventPosition;
 
-CellEventPosition::CellEventPosition( double row_, double col_ )
+CellEventPosition::CellEventPosition( double row, double col )
 {
-    row = row_;
-    col = col_;
+    mRow = row;
+    mCol = col;
 }
