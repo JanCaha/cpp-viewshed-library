@@ -6,8 +6,8 @@ using viewshed::CellEventPositionType;
 CellEvent::CellEvent()
 {
     eventType = CellEventPositionType::CENTER;
-    row = -1;
-    col = -1;
+    mRow = -1;
+    mCol = -1;
     dist2point = -1;
     angle = -1;
     elevation[CellEventPositionType::ENTER] = -1;
@@ -19,8 +19,8 @@ CellEvent::CellEvent( CellEventPositionType eventType_, int row_, int col_, doub
                       double elevation_[3] )
 {
     eventType = eventType_;
-    row = row_;
-    col = col_;
+    mRow = row_;
+    mCol = col_;
     angle = angle_;
     dist2point = dist_;
     elevation[CellEventPositionType::ENTER] = elevation_[CellEventPositionType::ENTER];
@@ -30,14 +30,14 @@ CellEvent::CellEvent( CellEventPositionType eventType_, int row_, int col_, doub
 
 bool CellEvent::operator==( const CellEvent other ) const
 {
-    return row == other.row && col == other.col && eventType == other.eventType &&
+    return mRow == other.mRow && mCol == other.mCol && eventType == other.eventType &&
            behindTargetForInverseLoS == other.behindTargetForInverseLoS;
 }
 
 bool CellEvent::operator<( const CellEvent other ) const
 {
 
-    if ( row == other.row && col == other.col && eventType == other.eventType && behindTargetForInverseLoS &&
+    if ( mRow == other.mRow && mCol == other.mCol && eventType == other.eventType && behindTargetForInverseLoS &&
          other.behindTargetForInverseLoS )
         return false;
 

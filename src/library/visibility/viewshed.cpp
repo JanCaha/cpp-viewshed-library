@@ -118,14 +118,14 @@ void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValu
                                 Visibility::distance( &tempPosExit, mPoint, mCellSize ), mAngleExit, mCellElevs );
 
         // Target or ViewPoint are not part CellEvents - handled separately
-        if ( mPoint->row == row && mPoint->col == column )
+        if ( mPoint->mRow == row && mPoint->mCol == column )
         {
             mLosNodePoint = LoSNode( mPoint, &mEventCenter, mCellSize );
             return;
         }
 
         // LosNode prefill
-        if ( mPoint->row == row && mPoint->col < column )
+        if ( mPoint->mRow == row && mPoint->mCol < column )
         {
             mLoSNodeTemp = LoSNode( mPoint, &mEventEnter, mCellSize );
             mLosNodes.push_back( mLoSNodeTemp );

@@ -23,8 +23,8 @@ namespace viewshed
 
         ViewshedValues( int row_, int col_ )
         {
-            row = row_;
-            col = col_;
+            mRow = row_;
+            mCol = col_;
         };
     };
 } // namespace viewshed

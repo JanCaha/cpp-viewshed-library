@@ -17,6 +17,6 @@ void viewshed::evaluateLoS( std::shared_ptr<AbstractLoS> los,
 
     for ( int j = 0; j < algs->size(); j++ )
     {
-        results->at( j )->writeValue( losEval.results().row, losEval.results().col, losEval.resultAt( j ) );
+        results->at( j )->writeValue( losEval.results().mRow, losEval.results().mCol, losEval.resultAt( j ) );
     }
 }

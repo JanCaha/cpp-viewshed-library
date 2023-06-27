@@ -2,6 +2,7 @@
 #define VIEWSHEDLIB_ABSTRACTLOS_H
 
 #include <algorithm>
+#include <memory>
 
 #include "cellevent.h"
 #include "enums.h"
@@ -224,7 +225,7 @@ namespace viewshed
          *
          * @return double
          */
-        double viewPointElevation() { return mVp->elevation; }
+        double viewPointElevation() { return mVp->mElevation; }
 
         /**
          * @brief Surface elevation of viewpoint with offset.

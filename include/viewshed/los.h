@@ -1,6 +1,9 @@
 #ifndef VIEWSHEDLIB_LOS_H
 #define VIEWSHEDLIB_LOS_H
 
+#include <memory>
+#include <vector>
+
 #include "abstractlos.h"
 #include "cellevent.h"
 #include "enums.h"

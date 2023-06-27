@@ -1,5 +1,7 @@
-#include "inverselos.h"
+#include <cmath>
+
 #include "abstractlos.h"
+#include "inverselos.h"
 #include "visibility.h"
 
 using viewshed::AbstractLoS;
@@ -34,19 +36,19 @@ double InverseLoS::elevation( int i )
 void InverseLoS::setTargetPoint( std::shared_ptr<Point> tp, double targetOffset )
 {
     mTargetIndex = -1;
-    mTp = std::make_shared<Point>( tp->row, tp->col, tp->elevation, targetOffset, tp->cellSize );
+    mTp = std::make_shared<Point>( tp->mRow, tp->mCol, tp->mElevation, targetOffset, tp->mCellSize );
 }
 
 void InverseLoS::setUpTargetLoSNode()
 {
-    LoSNode ln = LoSNode( mTp->row, mTp->col );
-    double angle = Visibility::angle( mVp->row, mVp->col, mTp );
+    LoSNode ln = LoSNode( mTp->mRow, mTp->mCol );
+    double angle = Visibility::angle( mVp->mRow, mVp->mCol, mTp );
     ln.angle[CellEventPositionType::ENTER] = angle;
     ln.angle[CellEventPositionType::CENTER] = angle;
     ln.angle[CellEventPositionType::EXIT] = angle;
-    ln.elevs[CellEventPositionType::ENTER] = mTp->elevation;
-    ln.elevs[CellEventPositionType::CENTER] = mTp->elevation;
-    ln.elevs[CellEventPositionType::EXIT] = mTp->elevation;
+    ln.elevs[CellEventPositionType::ENTER] = mTp->mElevation;
+    ln.elevs[CellEventPositionType::CENTER] = mTp->mElevation;
+    ln.elevs[CellEventPositionType::EXIT] = mTp->mElevation;
     ln.distances[CellEventPositionType::ENTER] = 0;
     ln.distances[CellEventPositionType::CENTER] = 0;
     ln.distances[CellEventPositionType::EXIT] = 0;
@@ -56,7 +58,7 @@ void InverseLoS::setUpTargetLoSNode()
 void InverseLoS::setViewPoint( std::shared_ptr<LoSNode> vp, double observerOffset )
 {
     mTargetIndex = -1;
-    mVp = std::make_shared<Point>( vp->row, vp->col, vp->centreElevation(), observerOffset, 0 );
+    mVp = std::make_shared<Point>( vp->mRow, vp->mCol, vp->centreElevation(), observerOffset, 0 );
     mPointDistance = mTp->distance( mVp );
     mAngleHorizontal = vp->centreAngle();
 }
@@ -97,9 +99,9 @@ void InverseLoS::removePointsAfterViewPoint()
 
 LoSNode InverseLoS::nodeAt( int i ) { return at( i ); }
 
-int InverseLoS::resultRow() { return mVp->row; }
+int InverseLoS::resultRow() { return mVp->mRow; }
 
-int InverseLoS::resultCol() { return mVp->col; }
+int InverseLoS::resultCol() { return mVp->mCol; }
 
 // TODO fix !!!!!
 bool InverseLoS::isValid() { return true; }
