@@ -14,7 +14,7 @@ double Visibility::angle( RasterPosition *pos, std::shared_ptr<Point> point )
 
 double Visibility::angle( CellEventPosition *pos, std::shared_ptr<Point> point )
 {
-    return angle( pos->row, pos->col, point );
+    return angle( pos->mRow, pos->mCol, point );
 }
 
 double Visibility::angle( double row, double column, std::shared_ptr<Point> point )
@@ -71,7 +71,7 @@ double Visibility::distance( const double &x1, const double &y1, const double &x
 
 double Visibility::distance( CellEventPosition *pos, std::shared_ptr<Point> point, double &cellSize )
 {
-    return distance( pos->col, pos->row, point->mCol, point->mRow, cellSize );
+    return distance( pos->mCol, pos->mRow, point->mCol, point->mRow, cellSize );
 }
 
 double Visibility::distance( double &row, double &column, std::shared_ptr<Point> point, double &cellSize )
