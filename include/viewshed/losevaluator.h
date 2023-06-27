@@ -2,18 +2,17 @@
 #define VIEWSHEDLIB_LOSEVALUATOR_H
 
 #include <limits>
+#include <memory>
+#include <vector>
 
-#include "abstractlos.h"
-#include "abstractviewshedalgorithm.h"
 #include "losimportantvalues.h"
-#include "losnode.h"
-#include "point.h"
 #include "viewshedvalues.h"
-
-using viewshed::AbstractLoS;
 
 namespace viewshed
 {
+    class AbstractLoS;
+    class AbstractViewshedAlgorithm;
+
     /**
      * @brief Class that takes care of analysing AbstractLoS with respect to given AbstractViewshedAlgorithms, the
      * result can be obtained from
