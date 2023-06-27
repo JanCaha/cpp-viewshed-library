@@ -1,7 +1,11 @@
 #include "abstractlos.h"
+#include "cellevent.h"
+#include "losnode.h"
+#include "point.h"
 #include "visibility.h"
 
 using viewshed::AbstractLoS;
+using viewshed::Point;
 using viewshed::Visibility;
 
 AbstractLoS::AbstractLoS(){};

@@ -4,21 +4,15 @@
 #include <algorithm>
 #include <memory>
 
-#include "cellevent.h"
 #include "enums.h"
-#include "losnode.h"
-#include "point.h"
 #include "visibility.h"
-
-using viewshed::CellEvent;
-using viewshed::LoSNode;
-using viewshed::Point;
-using viewshed::ValueType;
-
-// using viewshed::Visibility;
 
 namespace viewshed
 {
+    class CellEvent;
+    class LoSNode;
+    class Point;
+
     /**
      * @brief Abstract class that represent line-of-sight (LoS). Consists of LoSNodes, view point and target point (both
      * with potential offset from the surface).
