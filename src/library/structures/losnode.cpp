@@ -2,7 +2,9 @@
 #include <iterator>
 #include <limits>
 
+#include "cellevent.h"
 #include "losnode.h"
+#include "point.h"
 #include "visibility.h"
 
 using viewshed::LoSNode;

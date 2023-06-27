@@ -1,13 +1,16 @@
 #ifndef VIEWSHEDLIB_LOSNODE_H
 #define VIEWSHEDLIB_LOSNODE_H
 
-#include "cellevent.h"
+#include <memory>
+
 #include "enums.h"
-#include "point.h"
 #include "rasterposition.h"
 
 namespace viewshed
 {
+    class Point;
+    class CellEvent;
+
     /**
      * @brief Representation of single cell that creates a point on LoS.
      *
