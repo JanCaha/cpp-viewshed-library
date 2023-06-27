@@ -45,3 +45,7 @@ int AbstractLoS::targetCol() { return mTp->mCol; }
 int AbstractLoS::targetRow() { return mTp->mRow; }
 
 std::shared_ptr<Point> AbstractLoS::vp() { return mVp; }
+
+double AbstractLoS::viewPointElevation() { return mVp->mElevation; }
+
+double AbstractLoS::viewPointTotalElevation() { return mVp->totalElevation(); }

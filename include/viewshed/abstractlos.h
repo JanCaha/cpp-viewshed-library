@@ -11,7 +11,6 @@ namespace viewshed
 {
     class CellEvent;
     class LoSNode;
-    class Point;
 
     /**
      * @brief Abstract class that represent line-of-sight (LoS). Consists of LoSNodes, view point and target point (both
@@ -219,14 +218,14 @@ namespace viewshed
          *
          * @return double
          */
-        double viewPointElevation() { return mVp->mElevation; }
+        double viewPointElevation();
 
         /**
          * @brief Surface elevation of viewpoint with offset.
          *
          * @return double
          */
-        double viewPointTotalElevation() { return mVp->totalElevation(); }
+        double viewPointTotalElevation();
 
       protected:
         AbstractLoS();
