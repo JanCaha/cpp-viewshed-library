@@ -1,14 +1,13 @@
 #ifndef VIEWSHEDLIB_THREADTASK_H
 #define VIEWSHEDLIB_THREADTASK_H
 
-#include "abstractlos.h"
-#include "enums.h"
-#include "losnode.h"
-#include "point.h"
-#include "viewshed.h"
+#include "simplerasters.h"
 
 namespace viewshed
 {
+    class AbstractLoS;
+    class AbstractViewshedAlgorithm;
+
     /**
      * @brief Function that can be run in separate thread and evaluates given \a AbstractLoS and calculates all
      * visibility indices for the vector of provided \a AbstractViewshedAlgorithm.

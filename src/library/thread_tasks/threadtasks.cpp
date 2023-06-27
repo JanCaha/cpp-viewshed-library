@@ -1,9 +1,13 @@
 #include "threadtasks.h"
+#include "abstractlos.h"
 #include "abstractviewshed.h"
+#include "losevaluator.h"
 #include "losnode.h"
 #include "point.h"
 #include "viewshedvalues.h"
 
+using viewshed::AbstractLoS;
+using viewshed::AbstractViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 using viewshed::ViewshedValues;
 
