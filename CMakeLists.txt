@@ -48,6 +48,7 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/abstractviewshedalgorithm.h
     include/viewshed/cellevent.h
     include/viewshed/celleventposition.h
+    include/viewshed/constants.h
     include/viewshed/defaultdatatypes.h
     include/viewshed/enums.h
     include/viewshed/inverselos.h
