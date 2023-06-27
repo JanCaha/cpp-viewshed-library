@@ -15,10 +15,10 @@ namespace viewshed
     class LoSNode : public RasterPosition
     {
       public:
-        double angle[3];
-        double elevs[3];
-        double distances[3];
-        bool inverseLoSBehindTarget = false;
+        double mAngle[3];
+        double mElevs[3];
+        double mDistances[3];
+        bool mInverseLoSBehindTarget = false;
 
         /**
          * @brief Construct a new empty LoSNode object.
@@ -29,10 +29,10 @@ namespace viewshed
         /**
          * @brief Construct a new LoSNode object at specific row and column.
          *
-         * @param row_
-         * @param col_
+         * @param row
+         * @param col
          */
-        LoSNode( int row_, int col_ );
+        LoSNode( int row, int col );
 
         /**
          * @brief Construct a new LoSNode object build from Point, CellEvent and cell size.

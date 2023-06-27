@@ -13,10 +13,10 @@ LoSNode::LoSNode()
     mCol = 0;
 }
 
-LoSNode::LoSNode( int row_, int col_ )
+LoSNode::LoSNode( int row, int col )
 {
-    mRow = row_;
-    mCol = col_;
+    mRow = row;
+    mCol = col;
 }
 
 LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
@@ -24,33 +24,33 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
     mRow = e->mRow;
     mCol = e->mCol;
 
-    elevs[CellEventPositionType::CENTER] = e->mElevation[CellEventPositionType::CENTER];
-    elevs[CellEventPositionType::ENTER] = e->mElevation[CellEventPositionType::ENTER];
-    elevs[CellEventPositionType::EXIT] = e->mElevation[CellEventPositionType::EXIT];
+    mElevs[CellEventPositionType::CENTER] = e->mElevation[CellEventPositionType::CENTER];
+    mElevs[CellEventPositionType::ENTER] = e->mElevation[CellEventPositionType::ENTER];
+    mElevs[CellEventPositionType::EXIT] = e->mElevation[CellEventPositionType::EXIT];
 
-    angle[CellEventPositionType::CENTER] = Visibility::angle( mRow, mCol, point );
+    mAngle[CellEventPositionType::CENTER] = Visibility::angle( mRow, mCol, point );
 
     CellEventPosition posEnter = Visibility::eventPosition( CellEventPositionType::ENTER, e->mRow, e->mCol, point );
     double angleEnter = Visibility::angle( &posEnter, point );
 
-    if ( angleEnter > angle[CellEventPositionType::CENTER] )
+    if ( angleEnter > mAngle[CellEventPositionType::CENTER] )
     {
         angleEnter = angleEnter - ( 2 * M_PI );
     }
 
-    angle[CellEventPositionType::ENTER] = angleEnter;
+    mAngle[CellEventPositionType::ENTER] = angleEnter;
 
     CellEventPosition posExit = Visibility::eventPosition( CellEventPositionType::EXIT, e->mRow, e->mCol, point );
-    angle[CellEventPositionType::EXIT] = Visibility::angle( &posExit, point );
+    mAngle[CellEventPositionType::EXIT] = Visibility::angle( &posExit, point );
 
     if ( e->mBehindTargetForInverseLoS )
     {
-        inverseLoSBehindTarget = true;
+        mInverseLoSBehindTarget = true;
     }
 
-    distances[CellEventPositionType::CENTER] = Visibility::distance( mRow, mCol, point, cellSize );
-    distances[CellEventPositionType::ENTER] = Visibility::distance( &posEnter, point, cellSize );
-    distances[CellEventPositionType::EXIT] = Visibility::distance( &posExit, point, cellSize );
+    mDistances[CellEventPositionType::CENTER] = Visibility::distance( mRow, mCol, point, cellSize );
+    mDistances[CellEventPositionType::ENTER] = Visibility::distance( &posEnter, point, cellSize );
+    mDistances[CellEventPositionType::EXIT] = Visibility::distance( &posExit, point, cellSize );
 }
 
 double LoSNode::value( CellEventPositionType position, ValueType valueType )
@@ -59,15 +59,15 @@ double LoSNode::value( CellEventPositionType position, ValueType valueType )
     {
         case ValueType::Angle:
         {
-            return angle[position];
+            return mAngle[position];
         }
         case ValueType::Distance:
         {
-            return distances[position];
+            return mDistances[position];
         }
         case ValueType::Elevation:
         {
-            return elevs[position];
+            return mElevs[position];
         }
         default:
         {
@@ -78,33 +78,33 @@ double LoSNode::value( CellEventPositionType position, ValueType valueType )
 
 double LoSNode::valueAtAngle( const double &specificAngle, ValueType valueType )
 {
-    if ( specificAngle == angle[CellEventPositionType::CENTER] )
+    if ( specificAngle == mAngle[CellEventPositionType::CENTER] )
         return value( CellEventPositionType::CENTER, valueType );
-    else if ( specificAngle == angle[CellEventPositionType::ENTER] )
+    else if ( specificAngle == mAngle[CellEventPositionType::ENTER] )
         return value( CellEventPositionType::ENTER, valueType );
-    else if ( specificAngle == angle[CellEventPositionType::EXIT] )
+    else if ( specificAngle == mAngle[CellEventPositionType::EXIT] )
         return value( CellEventPositionType::EXIT, valueType );
-    else if ( angle[CellEventPositionType::ENTER] < specificAngle &&
-              specificAngle < angle[CellEventPositionType::CENTER] )
+    else if ( mAngle[CellEventPositionType::ENTER] < specificAngle &&
+              specificAngle < mAngle[CellEventPositionType::CENTER] )
     {
-        double difference = angle[CellEventPositionType::CENTER] - angle[CellEventPositionType::ENTER];
-        double ratio = ( specificAngle - angle[CellEventPositionType::ENTER] ) / difference;
+        double difference = mAngle[CellEventPositionType::CENTER] - mAngle[CellEventPositionType::ENTER];
+        double ratio = ( specificAngle - mAngle[CellEventPositionType::ENTER] ) / difference;
         return ( ratio * value( CellEventPositionType::CENTER, valueType ) +
                  ( 1 - ratio ) * value( CellEventPositionType::ENTER, valueType ) );
     }
-    else if ( angle[CellEventPositionType::CENTER] < specificAngle &&
-              specificAngle < angle[CellEventPositionType::EXIT] )
+    else if ( mAngle[CellEventPositionType::CENTER] < specificAngle &&
+              specificAngle < mAngle[CellEventPositionType::EXIT] )
     {
-        double difference = angle[CellEventPositionType::EXIT] - angle[CellEventPositionType::CENTER];
-        double ratio = ( angle[CellEventPositionType::EXIT] - specificAngle ) / difference;
+        double difference = mAngle[CellEventPositionType::EXIT] - mAngle[CellEventPositionType::CENTER];
+        double ratio = ( mAngle[CellEventPositionType::EXIT] - specificAngle ) / difference;
         return ( ratio * value( CellEventPositionType::CENTER, valueType ) +
                  ( 1 - ratio ) * value( CellEventPositionType::EXIT, valueType ) );
     }
     // special case for rotation ending LoS
-    else if ( specificAngle > ( M_PI * 1.5 ) && angle[CellEventPositionType::ENTER] < specificAngle - ( 2 * M_PI ) )
+    else if ( specificAngle > ( M_PI * 1.5 ) && mAngle[CellEventPositionType::ENTER] < specificAngle - ( 2 * M_PI ) )
     {
-        double difference = angle[CellEventPositionType::CENTER] - angle[CellEventPositionType::ENTER];
-        double ratio = ( ( specificAngle - ( 2 * M_PI ) ) - angle[CellEventPositionType::ENTER] ) / difference;
+        double difference = mAngle[CellEventPositionType::CENTER] - mAngle[CellEventPositionType::ENTER];
+        double ratio = ( ( specificAngle - ( 2 * M_PI ) ) - mAngle[CellEventPositionType::ENTER] ) / difference;
         return ( ratio * value( CellEventPositionType::CENTER, valueType ) +
                  ( 1 - ratio ) * value( CellEventPositionType::ENTER, valueType ) );
     }
@@ -114,11 +114,11 @@ double LoSNode::valueAtAngle( const double &specificAngle, ValueType valueType )
     }
 }
 
-double LoSNode::centreAngle() { return angle[CellEventPositionType::CENTER]; }
+double LoSNode::centreAngle() { return mAngle[CellEventPositionType::CENTER]; }
 
-double LoSNode::centreElevation() { return elevs[CellEventPositionType::CENTER]; }
+double LoSNode::centreElevation() { return mElevs[CellEventPositionType::CENTER]; }
 
-double LoSNode::centreDistance() { return distances[CellEventPositionType::CENTER]; }
+double LoSNode::centreDistance() { return mDistances[CellEventPositionType::CENTER]; }
 
 bool LoSNode::operator==( const LoSNode &other )
 {
@@ -138,5 +138,5 @@ bool LoSNode::operator!=( const LoSNode &other )
 
 bool LoSNode::operator<( const LoSNode other )
 {
-    return distances[CellEventPositionType::CENTER] < other.distances[CellEventPositionType::CENTER];
+    return mDistances[CellEventPositionType::CENTER] < other.mDistances[CellEventPositionType::CENTER];
 }
