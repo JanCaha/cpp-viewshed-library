@@ -167,7 +167,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
     {
         progressCallback( mCellEvents.size(), i );
 
-        switch ( e.eventType )
+        switch ( e.mEventType )
         {
             case CellEventPositionType::ENTER:
             {
@@ -244,7 +244,7 @@ void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSqua
     int i = 0;
     for ( CellEvent event : mCellEvents )
     {
-        if ( event.eventType == CellEventPositionType::CENTER )
+        if ( event.mEventType == CellEventPositionType::CENTER )
         {
             mLoSNodeTemp = LoSNode( mPoint, &event, mCellSize );
             result.writeValue( mLoSNodeTemp.mRow, mLoSNodeTemp.mCol, func( mLoSNodeTemp ) );
@@ -303,7 +303,7 @@ LoSNode AbstractViewshed::statusNodeFromPoint( OGRPoint point )
 
     for ( CellEvent e : mCellEvents )
     {
-        if ( e.eventType == CellEventPositionType::CENTER && e.mCol == col && e.mRow == row )
+        if ( e.mEventType == CellEventPositionType::CENTER && e.mCol == col && e.mRow == row )
         {
             ln = LoSNode( mPoint, &e, mCellSize );
             return ln;
@@ -334,7 +334,7 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( OGRPoint point )
 
     for ( CellEvent e : mCellEvents )
     {
-        switch ( e.eventType )
+        switch ( e.mEventType )
         {
             case CellEventPositionType::ENTER:
             {

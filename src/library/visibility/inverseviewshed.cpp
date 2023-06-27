@@ -139,12 +139,12 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         mEventEnterOpposite =
             CellEvent( CellEventPositionType::ENTER, row, column,
                        Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mOppositeAngleEnter, mCellElevs );
-        mEventEnterOpposite.behindTargetForInverseLoS = true;
+        mEventEnterOpposite.mBehindTargetForInverseLoS = true;
 
         mEventExitOpposite =
             CellEvent( CellEventPositionType::EXIT, row, column,
                        Visibility::distance( &tempPosExit, mPoint, mCellSize ), mOppositeAngleExit, mCellElevs );
-        mEventExitOpposite.behindTargetForInverseLoS = true;
+        mEventExitOpposite.mBehindTargetForInverseLoS = true;
 
         // Target or ViewPoint are not part CellEvents - handled separately
         if ( mPoint->mRow == row && mPoint->mCol == column )

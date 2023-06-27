@@ -24,9 +24,9 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
     mRow = e->mRow;
     mCol = e->mCol;
 
-    elevs[CellEventPositionType::CENTER] = e->elevation[CellEventPositionType::CENTER];
-    elevs[CellEventPositionType::ENTER] = e->elevation[CellEventPositionType::ENTER];
-    elevs[CellEventPositionType::EXIT] = e->elevation[CellEventPositionType::EXIT];
+    elevs[CellEventPositionType::CENTER] = e->mElevation[CellEventPositionType::CENTER];
+    elevs[CellEventPositionType::ENTER] = e->mElevation[CellEventPositionType::ENTER];
+    elevs[CellEventPositionType::EXIT] = e->mElevation[CellEventPositionType::EXIT];
 
     angle[CellEventPositionType::CENTER] = Visibility::angle( mRow, mCol, point );
 
@@ -43,7 +43,7 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
     CellEventPosition posExit = Visibility::eventPosition( CellEventPositionType::EXIT, e->mRow, e->mCol, point );
     angle[CellEventPositionType::EXIT] = Visibility::angle( &posExit, point );
 
-    if ( e->behindTargetForInverseLoS )
+    if ( e->mBehindTargetForInverseLoS )
     {
         inverseLoSBehindTarget = true;
     }
