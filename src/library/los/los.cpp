@@ -1,9 +1,13 @@
 #include "los.h"
 #include "abstractlos.h"
+#include "cellevent.h"
+#include "losnode.h"
+#include "point.h"
 #include "visibility.h"
 
 using viewshed::AbstractLoS;
 using viewshed::LoS;
+using viewshed::LoSNode;
 using viewshed::Visibility;
 
 LoS::LoS() : std::vector<LoSNode>() {}
@@ -39,13 +43,13 @@ bool LoS::isValid() { return mVp->isValid(); }
 void LoS::setTargetPoint( std::shared_ptr<LoSNode> poi, double targetOffset )
 {
     mAngleHorizontal = poi->centreAngle();
-    mTp = std::make_shared<Point>( poi->row, poi->col, poi->centreElevation(), targetOffset, 0 );
+    mTp = std::make_shared<Point>( poi->mRow, poi->mCol, poi->centreElevation(), targetOffset, 0 );
     mPointDistance = mVp->distance( mTp );
 }
 
 void LoS::findTargetPointIndex()
 {
-    LoSNode ln = LoSNode( mTp->row, mTp->col );
+    LoSNode ln = LoSNode( mTp->mRow, mTp->mCol );
 
     std::vector<LoSNode>::iterator index = std::find( begin(), end(), ln );
     if ( index != end() )
@@ -66,9 +70,9 @@ int LoS::numberOfNodes() { return size(); };
 
 LoSNode LoS::nodeAt( int i ) { return at( i ); }
 
-int LoS::resultRow() { return mTp->row; }
+int LoS::resultRow() { return mTp->mRow; }
 
-int LoS::resultCol() { return mTp->col; }
+int LoS::resultCol() { return mTp->mCol; }
 
 void LoS::removePointsAfterTarget()
 {

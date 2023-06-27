@@ -19,7 +19,7 @@ jobs:
       - name: Update and Upgrade
         run: |
           sudo apt update
-          sudo apt install ninja-build doxygen
+          sudo apt install ninja-build doxygen libgtest-dev libgmock-dev
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
@@ -47,6 +47,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
 
       - name: Configure
         run: | 

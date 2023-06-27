@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 2.0.1 DESCRIPTION "Viewshed library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 2.1.0 DESCRIPTION "Viewshed library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+
+SET(LIBRARY_NAME "viewshed")
 
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
 option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." ON)
-option(SIMPLERASTERS_SYS_DEP "USE simpleRasters library from system" ON)
 
 option(CELL_EVENT_DATA_FLOAT "Create CellEvents with data stored `float` instead of `double`. Lowers significantly RAM memory usage." ON)
 option(OUTPUT_RASTER_DATA_FLOAT "Create output rasters with data stored `Float32` instead of `Float64`. Lowers RAM memory usage." ON)
@@ -21,14 +22,13 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
+find_package(GDAL REQUIRED)
 
 find_package(Threads REQUIRED)
 
-if(SIMPLERASTERS_SYS_DEP)
-    message(STATUS "Searching for library simplerasters in system!")
-    find_package(SimpleRasters)
-endif()
+find_package(SimpleRasters REQUIRED)
+
+find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
 
 set(QT_INCLUDES
     ${Qt5Core_INCLUDE_DIRS}
@@ -42,18 +42,13 @@ set(QT_LIBS
     Qt5::Widgets
 )
 
-find_package(GDAL REQUIRED)
-
-set(LIBRARY_VIEWSHED_PRIVATE_HEADERS
-    ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
-)
-
 set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/abstractlos.h
     include/viewshed/abstractviewshed.h
     include/viewshed/abstractviewshedalgorithm.h
     include/viewshed/cellevent.h
     include/viewshed/celleventposition.h
+    include/viewshed/constants.h
     include/viewshed/defaultdatatypes.h
     include/viewshed/enums.h
     include/viewshed/inverselos.h
@@ -112,22 +107,31 @@ write_basic_package_version_file(
     COMPATIBILITY SameMajorVersion
 )
 
+include(GNUInstallDirs)
+
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
+    COMPONENT lib
 )
 
-# include(GNUInstallDirs)
 install(TARGETS library_viewshed
-    LIBRARY DESTINATION lib
-    PUBLIC_HEADER DESTINATION include/viewshed
-    PRIVATE_HEADER DESTINATION include/viewshed
-    INCLUDES DESTINATION include
+    COMPONENT lib
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+)
+
+install(TARGETS
+    viewshed inverseviewshed viewshedcalculator losextractor
+    COMPONENT bin
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 # ############################################################
 # Pack :
-if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
     if(PACK_DEB)
         message(STATUS "VIEWSHED LIBRARY: DEB will be packed file.")
 
@@ -154,4 +158,9 @@ add_subdirectory(docs)
 
 # ############################################################
 # add tests :
-add_subdirectory(tests)
+if(BUILD_TESTS)
+    include(CTest)
+    enable_testing(true)
+
+    add_subdirectory(tests)
+endif()

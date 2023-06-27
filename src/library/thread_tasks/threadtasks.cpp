@@ -1,9 +1,13 @@
 #include "threadtasks.h"
+#include "abstractlos.h"
 #include "abstractviewshed.h"
+#include "losevaluator.h"
 #include "losnode.h"
 #include "point.h"
 #include "viewshedvalues.h"
 
+using viewshed::AbstractLoS;
+using viewshed::AbstractViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 using viewshed::ViewshedValues;
 
@@ -17,6 +21,6 @@ void viewshed::evaluateLoS( std::shared_ptr<AbstractLoS> los,
 
     for ( int j = 0; j < algs->size(); j++ )
     {
-        results->at( j )->writeValue( losEval.results().row, losEval.results().col, losEval.resultAt( j ) );
+        results->at( j )->writeValue( losEval.results().mRow, losEval.results().mCol, losEval.resultAt( j ) );
     }
 }

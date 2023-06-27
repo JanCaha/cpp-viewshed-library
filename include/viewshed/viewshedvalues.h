@@ -3,11 +3,11 @@
 
 #include <vector>
 
-#include "point.h"
 #include "rasterposition.h"
 
 namespace viewshed
 {
+    class Point;
 
     /**
      * @brief A simple class that stores results of visibility indices calculation (in form of vector of doubles) for
@@ -23,8 +23,8 @@ namespace viewshed
 
         ViewshedValues( int row_, int col_ )
         {
-            row = row_;
-            col = col_;
+            mRow = row_;
+            mCol = col_;
         };
     };
 } // namespace viewshed

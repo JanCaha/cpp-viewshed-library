@@ -2,6 +2,7 @@
 #define VIEWSHEDLIB_ABSTRACTVIEWSHEDALGORITHM_H
 
 #include <limits>
+#include <string>
 
 #include "abstractlos.h"
 #include "losimportantvalues.h"

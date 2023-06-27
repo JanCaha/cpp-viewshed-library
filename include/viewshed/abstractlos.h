@@ -2,22 +2,16 @@
 #define VIEWSHEDLIB_ABSTRACTLOS_H
 
 #include <algorithm>
+#include <memory>
 
-#include "cellevent.h"
 #include "enums.h"
-#include "losnode.h"
-#include "point.h"
 #include "visibility.h"
-
-using viewshed::CellEvent;
-using viewshed::LoSNode;
-using viewshed::Point;
-using viewshed::ValueType;
-
-// using viewshed::Visibility;
 
 namespace viewshed
 {
+    class CellEvent;
+    class LoSNode;
+
     /**
      * @brief Abstract class that represent line-of-sight (LoS). Consists of LoSNodes, view point and target point (both
      * with potential offset from the surface).
@@ -224,14 +218,14 @@ namespace viewshed
          *
          * @return double
          */
-        double viewPointElevation() { return mVp->elevation; }
+        double viewPointElevation();
 
         /**
          * @brief Surface elevation of viewpoint with offset.
          *
          * @return double
          */
-        double viewPointTotalElevation() { return mVp->totalElevation(); }
+        double viewPointTotalElevation();
 
       protected:
         AbstractLoS();

@@ -1,9 +1,12 @@
 #ifndef VIEWSHEDLIB_POINT_H
 #define VIEWSHEDLIB_POINT_H
 
-#include "simplerasters.h"
+#include <memory>
 
 #include "rasterposition.h"
+
+class SingleBandRaster;
+class OGRPoint;
 
 namespace viewshed
 {
@@ -24,13 +27,13 @@ namespace viewshed
         /**
          * @brief Construct a new Point object by manually specifying all the necessary information.
          *
-         * @param row_
-         * @param col_
-         * @param elevation_
-         * @param offset_
-         * @param cellSize_
+         * @param row
+         * @param col
+         * @param elevation
+         * @param offset
+         * @param cellSize
          */
-        Point( int row_, int col_, double elevation_, double offset_, double cellSize_ );
+        Point( int row_, int col_, double elevation, double offset, double cellSize );
         /**
          * @brief Construct a new Point object from OGRPoint, SingleBandRaster and offset.
          *
@@ -39,11 +42,11 @@ namespace viewshed
          * @param offsetAtPoint
          * @param rasterBand
          */
-        Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint = 1.6, int rasterBand = 1 );
+        Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint = 1.6 );
 
-        double x, y;
-        double elevation, offset;
-        double cellSize;
+        double mX, mY;
+        double mElevation, mOffset;
+        double mCellSize;
 
         /**
          * @brief Combination of elevation plus offset;
@@ -69,8 +72,8 @@ namespace viewshed
       protected:
         bool mValid;
 
-        void setUp( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, int rasterBand = 1 );
-        void setUp( int row_, int col_, std::shared_ptr<SingleBandRaster> dem, int rasterBand = 1 );
+        void setUp( OGRPoint point, std::shared_ptr<SingleBandRaster> dem );
+        void setUp( int row, int col, std::shared_ptr<SingleBandRaster> dem );
     };
 
 } // namespace viewshed

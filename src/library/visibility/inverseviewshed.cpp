@@ -52,7 +52,7 @@ std::shared_ptr<InverseLoS> InverseViewshed::getLoS( OGRPoint point, bool onlyTo
     std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( statusNodeFromPoint( point ) );
 
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( losNodes );
-    los->setTargetPoint( mPoint, mPoint->offset );
+    los->setTargetPoint( mPoint, mPoint->mOffset );
     los->setViewPoint( poi, mObserverOffset );
     los->setRemovePointsAfterTarget( onlyToPoi );
     los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
@@ -85,7 +85,7 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
     std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint, &e, mCellSize );
 
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( mLosNodes );
-    los->setTargetPoint( mPoint, mPoint->offset );
+    los->setTargetPoint( mPoint, mPoint->mOffset );
     los->setViewPoint( poi, mObserverOffset );
     los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
@@ -96,9 +96,9 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
 {
     mCellElevs[CellEventPositionType::CENTER] = pixelValue;
     CellEventPosition tempPosEnter = Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint );
-    mCellElevs[CellEventPositionType::ENTER] = mInputDsm->cornerValue( tempPosEnter.row, tempPosEnter.col );
+    mCellElevs[CellEventPositionType::ENTER] = mInputDsm->cornerValue( tempPosEnter.mRow, tempPosEnter.mCol );
     CellEventPosition tempPosExit = Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint );
-    mCellElevs[CellEventPositionType::EXIT] = mInputDsm->cornerValue( tempPosExit.row, tempPosExit.col );
+    mCellElevs[CellEventPositionType::EXIT] = mInputDsm->cornerValue( tempPosExit.mRow, tempPosExit.mCol );
 
     mAngleCenter = Visibility::angle( row, column, mPoint );
     mAngleEnter = Visibility::angle( &tempPosEnter, mPoint );
@@ -139,24 +139,24 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         mEventEnterOpposite =
             CellEvent( CellEventPositionType::ENTER, row, column,
                        Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mOppositeAngleEnter, mCellElevs );
-        mEventEnterOpposite.behindTargetForInverseLoS = true;
+        mEventEnterOpposite.mBehindTargetForInverseLoS = true;
 
         mEventExitOpposite =
             CellEvent( CellEventPositionType::EXIT, row, column,
                        Visibility::distance( &tempPosExit, mPoint, mCellSize ), mOppositeAngleExit, mCellElevs );
-        mEventExitOpposite.behindTargetForInverseLoS = true;
+        mEventExitOpposite.mBehindTargetForInverseLoS = true;
 
         // Target or ViewPoint are not part CellEvents - handled separately
-        if ( mPoint->row == row && mPoint->col == column )
+        if ( mPoint->mRow == row && mPoint->mCol == column )
         {
             mLosNodePoint = LoSNode( mPoint, &mEventCenter, mCellSize );
             return;
         }
 
         // LosNode prefill
-        if ( mPoint->row == row )
+        if ( mPoint->mRow == row )
         {
-            if ( mPoint->col < column )
+            if ( mPoint->mCol < column )
             {
                 mLoSNodeTemp = LoSNode( mPoint, &mEventCenter, mCellSize );
                 mLosNodes.push_back( mLoSNodeTemp );

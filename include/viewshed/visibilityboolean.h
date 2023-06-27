@@ -1,7 +1,7 @@
 #ifndef VIEWSHEDLIB_VIEWSHEDVISIBILITY_H
 #define VIEWSHEDLIB_VIEWSHEDVISIBILITY_H
 
-#include "limits"
+#include <limits>
 
 #include "abstractviewshedalgorithm.h"
 

@@ -1,4 +1,6 @@
 build
+build_dir
+debian/files
 .vscode/c_cpp_properties.json
 tests/data/*.aux.xml
 tests/data/results/*

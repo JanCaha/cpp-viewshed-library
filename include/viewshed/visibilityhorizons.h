@@ -1,7 +1,7 @@
 #ifndef VIEWSHEDLIB_VIEWSHEDHORIZON_H
 #define VIEWSHEDLIB_VIEWSHEDHORIZON_H
 
-#include "limits"
+#include <limits>
 
 #include "abstractviewshedalgorithm.h"
 

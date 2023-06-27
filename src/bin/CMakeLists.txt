@@ -13,30 +13,18 @@ macro(create_binary bin_name filename add_widgets)
     set_target_properties(${bin_name} PROPERTIES AUTOMOC TRUE)
 
     target_include_directories(${bin_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/viewshed)
-    target_include_directories(${bin_name} PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
+    target_include_directories(${bin_name} PUBLIC bs_thread_pool)
     target_include_directories(${bin_name} PRIVATE ${QT_INCLUDES})
     target_include_directories(${bin_name} PRIVATE ${GDAL_INCLUDE_DIR})
+    target_include_directories(${bin_name} PRIVATE SimpleRasters::SimpleRasters)
 
     target_link_libraries(${bin_name}
         ${QT_LIBS}
         bs_thread_pool
         library_viewshed
         ${GDAL_LIBRARY}
+        SimpleRasters::SimpleRasters
     )
-
-    if(SIMPLERASTERS_SYS_DEP)
-        target_include_directories(${bin_name} PUBLIC ${simplerasters_INCLUDE_DIR})
-
-        target_link_libraries(${bin_name}
-            ${simplerasters_LIBRARY}
-        )
-    else()
-        target_include_directories(${bin_name} PUBLIC ${CMAKE_BINARY_DIR}/_deps/simplerasters-src/src/api)
-
-        target_link_libraries(${bin_name}
-            simplerasters
-        )
-    endif()
 endmacro(create_binary)
 
 create_binary(viewshed viewshed.cpp OFF)
@@ -56,9 +44,4 @@ add_dependencies(create_binaries
     inverseviewshed
     viewshedcalculator
     losextractor
-)
-
-install(TARGETS
-    viewshed inverseviewshed viewshedcalculator losextractor
-    RUNTIME DESTINATION bin
 )

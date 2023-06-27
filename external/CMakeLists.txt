@@ -1,5 +1,3 @@
-add_subdirectory(BSThreadPool)
-
-if(NOT SIMPLERASTERS_SYS_DEP)
-    add_subdirectory(simplerasters)
-endif()
+add_library(bs_thread_pool INTERFACE)
+target_include_directories(bs_thread_pool INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/bsthreadpool/include)
+target_link_libraries(bs_thread_pool INTERFACE Threads::Threads)

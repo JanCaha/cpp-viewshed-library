@@ -1,3 +1,5 @@
+#include "simplerasters.h"
+
 #include "point.h"
 #include "visibility.h"
 
@@ -6,59 +8,59 @@ using viewshed::Visibility;
 
 Point::Point() {}
 
-Point::Point( int row_, int col_, double elevation_, double offset_, double cellSize_ )
+Point::Point( int row, int col, double elevation, double offset, double cellSize )
 {
-    row = row_;
-    col = col_;
-    elevation = elevation_;
-    offset = offset_;
-    cellSize = cellSize_;
+    mRow = row;
+    mCol = col;
+    mElevation = elevation;
+    mOffset = offset;
+    mCellSize = cellSize;
 
     mValid = true;
 }
 
-Point::Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint, int rasterBand )
+Point::Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint )
 {
 
-    setUp( point, dem, rasterBand );
-    offset = offsetAtPoint;
+    setUp( point, dem );
+    mOffset = offsetAtPoint;
 }
 
-void Point::setUp( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, int rasterBand )
+void Point::setUp( OGRPoint point, std::shared_ptr<SingleBandRaster> dem )
 {
-    x = point.getX();
-    y = point.getY();
+    mX = point.getX();
+    mY = point.getY();
 
     double rowD, colD;
 
-    dem->transformCoordinatesToRaster( x, y, rowD, colD );
+    dem->transformCoordinatesToRaster( mX, mY, rowD, colD );
 
     bool ok = dem->isNoData( rowD, colD );
-    elevation = dem->value( rowD, colD );
+    mElevation = dem->value( rowD, colD );
 
     mValid = !ok && dem->isInside( point );
 
-    col = static_cast<int>( colD );
-    row = static_cast<int>( rowD );
+    mCol = static_cast<int>( colD );
+    mRow = static_cast<int>( rowD );
 
-    cellSize = dem->xCellSize();
+    mCellSize = dem->xCellSize();
 }
 
-void Point::setUp( int row_, int col_, std::shared_ptr<SingleBandRaster> dem, int rasterBand )
+void Point::setUp( int row, int col, std::shared_ptr<SingleBandRaster> dem )
 {
-    row = row_;
-    col = col_;
+    mRow = row;
+    mCol = col;
 
-    cellSize = dem->xCellSize();
+    mCellSize = dem->xCellSize();
 
-    dem->transformCoordinatesToWorld( row, col, x, y );
+    dem->transformCoordinatesToWorld( mRow, mCol, mX, mY );
 
-    elevation = dem->value( row, col );
-    mValid = dem->isNoData( row, col );
+    mElevation = dem->value( mRow, mCol );
+    mValid = dem->isNoData( mRow, mCol );
 }
 
-double Point::totalElevation() { return elevation + offset; }
+double Point::totalElevation() { return mElevation + mOffset; }
 
 bool Point::isValid() { return mValid; }
 
-double Point::distance( std::shared_ptr<Point> point ) { return Visibility::distance( row, col, point, cellSize ); }
+double Point::distance( std::shared_ptr<Point> point ) { return Visibility::distance( mRow, mCol, point, mCellSize ); }

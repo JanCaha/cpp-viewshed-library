@@ -58,15 +58,15 @@ class InverseLoSAlgorithmTest : public ::testing::Test
         eventList.push_back( CellEvent( CellEventPositionType::CENTER, 0, 10, 10.0, 0.0, elevs ) );
         resetArray( elevs, 2.0 - 0.2 );
         CellEvent e = CellEvent( CellEventPositionType::CENTER, 0, -1, 1.0, 0.0, elevs );
-        e.behindTargetForInverseLoS = true;
+        e.mBehindTargetForInverseLoS = true;
         eventList.push_back( e );
         resetArray( elevs, 3.0 - 0.1 );
         e = CellEvent( CellEventPositionType::CENTER, 0, -2, 2.0, 0.0, elevs );
-        e.behindTargetForInverseLoS = true;
+        e.mBehindTargetForInverseLoS = true;
         eventList.push_back( e );
         resetArray( elevs, 1.0 );
         e = CellEvent( CellEventPositionType::CENTER, 0, -3, 3.0, 0.0, elevs );
-        e.behindTargetForInverseLoS = true;
+        e.mBehindTargetForInverseLoS = true;
         eventList.push_back( e );
 
         double cellSize = 1.0;
@@ -83,7 +83,7 @@ class InverseLoSAlgorithmTest : public ::testing::Test
     {
         std::shared_ptr<InverseLoS> tmpLos = std::make_shared<InverseLoS>( *los );
         losEval = LoSEvaluator( tmpLos, algs );
-        tmpLos->setTargetPoint( tp, tp->offset );
+        tmpLos->setTargetPoint( tp, tp->mOffset );
         tmpLos->setViewPoint( getPointLoS( position ), 0.001 );
 
         losEval.calculate();

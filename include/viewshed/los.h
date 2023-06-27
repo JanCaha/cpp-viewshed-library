@@ -1,22 +1,22 @@
 #ifndef VIEWSHEDLIB_LOS_H
 #define VIEWSHEDLIB_LOS_H
 
-#include "abstractlos.h"
-#include "cellevent.h"
-#include "enums.h"
-#include "losnode.h"
-#include "point.h"
-#include "visibility.h"
+#include <memory>
+#include <vector>
 
-using viewshed::CellEvent;
-using viewshed::LoSNode;
-using viewshed::Point;
+#include "abstractlos.h"
+#include "enums.h"
+
 using viewshed::ValueType;
 
 // using viewshed::Visibility;
 
 namespace viewshed
 {
+    class CellEvent;
+    class LosNode;
+    class Point;
+
     /**
      * @brief Class that represents LoS for classic Viewshed calculation.
      *

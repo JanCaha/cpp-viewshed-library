@@ -1,5 +1,9 @@
 #include "losevaluator.h"
 #include "abstractviewshed.h"
+#include "abstractviewshedalgorithm.h"
+#include "losnode.h"
+#include "point.h"
+#include "viewshedvalues.h"
 #include "visibility.h"
 
 using viewshed::AbstractViewshedAlgorithm;

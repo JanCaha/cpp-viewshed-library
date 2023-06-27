@@ -9,9 +9,9 @@ namespace viewshed
      */
     struct CellEventPosition
     {
-        double row, col;
+        double mRow, mCol;
 
-        CellEventPosition( double row_, double col_ );
+        CellEventPosition( double row, double col );
     };
 } // namespace viewshed
 
