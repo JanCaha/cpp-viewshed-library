@@ -3,10 +3,12 @@
 #include <limits>
 
 #include "cellevent.h"
+#include "celleventposition.h"
 #include "losnode.h"
 #include "point.h"
 #include "visibility.h"
 
+using viewshed::CellEventPosition;
 using viewshed::LoSNode;
 
 LoSNode::LoSNode()
