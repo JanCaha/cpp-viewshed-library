@@ -1,22 +1,19 @@
 #ifndef VIEWSHEDLIB_UTILS_H
 #define VIEWSHEDLIB_UTILS_H
 
-#include "ogr_spatialref.h"
-
-#include "abstractlos.h"
-#include "abstractviewshedalgorithm.h"
-#include "losnode.h"
-#include "viewshed.h"
-#include "visibilityalgorithms.h"
-
-using namespace viewshed::visibilityalgorithm;
+class OGRSpatialReference;
+class SingleBandRaster;
 
 namespace viewshed
 {
 
-    /**
-     * @brief Representation of triplet of data. First two values are doubles and third is boolean. Used to export LoS
-     * to CSV where the values are point's distance, elevation and whether the point is target point.
+    class AbstractViewshedAlgorithm;
+    class AbstractLoS;
+    class LoSNode;
+
+        /**
+     * @brief Representation of triplet of data. First two values are doubles and third is boolean. Used to export
+     * LoS to CSV where the values are point's distance, elevation and whether the point is target point.
      *
      */
     struct DataTriplet

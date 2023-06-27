@@ -4,10 +4,18 @@
 #include <string>
 #include <vector>
 
+#include "ogr_spatialref.h"
+
+#include "simplerasters.h"
+
+#include "abstractlos.h"
 #include "abstractviewshedalgorithm.h"
 #include "inverselos.h"
+#include "losnode.h"
+#include "viewshed.h"
 #include "viewshedutils.h"
 #include "visibility.h"
+#include "visibilityalgorithms.h"
 
 using viewshed::AbstractViewshedAlgorithm;
 using viewshed::DataTriplet;
