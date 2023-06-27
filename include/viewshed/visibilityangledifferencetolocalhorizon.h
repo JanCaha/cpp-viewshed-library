@@ -1,7 +1,7 @@
 #ifndef VIEWSHEDLIB_VIEWSHEDANGLEDIFFLOCAL_H
 #define VIEWSHEDLIB_VIEWSHEDANGLEDIFFLOCAL_H
 
-#include "limits"
+#include <limits>
 
 #include "abstractviewshedalgorithm.h"
 
