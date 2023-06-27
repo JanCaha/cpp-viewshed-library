@@ -1,16 +1,17 @@
 #ifndef VIEWSHEDLIB_VISIBILITY_H
 #define VIEWSHEDLIB_VISIBILITY_H
 
-#include "celleventposition.h"
+#include "constants.h"
 #include "enums.h"
-#include "point.h"
-#include "rasterposition.h"
 
-#define REFRACTION_COEFFICIENT 0.142860
-#define EARTH_DIAMETER 12740000
+using viewshed::CellEventPositionType;
 
 namespace viewshed
 {
+    class Point;
+    class RasterPosition;
+    class CellEventPosition;
+
     /**
      * @brief Class that provides static functions to assist with viewshed calculation.
      *
@@ -132,8 +133,8 @@ namespace viewshed
          * raster DEM.
          * @return double
          */
-        static double curvatureCorrections( double distance, double refractionCoeff = REFRACTION_COEFFICIENT,
-                                            double earthDiameter = EARTH_DIAMETER );
+        static double curvatureCorrections( double distance, double refractionCoeff = viewshed::REFRACTION_COEFFICIENT,
+                                            double earthDiameter = viewshed::EARTH_DIAMETER );
     };
 } // namespace viewshed
 

@@ -1,9 +1,12 @@
 #include "math.h"
 
+#include "celleventposition.h"
+#include "point.h"
 #include "rasterposition.h"
 #include "visibility.h"
 
 using viewshed::CellEventPosition;
+using viewshed::Point;
 using viewshed::RasterPosition;
 using viewshed::Visibility;
 
