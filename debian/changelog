@@ -1,3 +1,9 @@
+viewshed (2.1.0-0ppa0) jammy; urgency=low
+
+  * Refactor and simplification of API.
+
+ -- Jan Caha <jan.caha@outlook.com>  Tue, 27 Jun 2023 14:36:07 +0200
+
 viewshed (2.0.17-0ppa0) jammy; urgency=low
 
   * Split packages!
