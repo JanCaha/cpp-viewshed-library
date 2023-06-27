@@ -43,15 +43,15 @@ void InverseLoS::setUpTargetLoSNode()
 {
     LoSNode ln = LoSNode( mTp->mRow, mTp->mCol );
     double angle = Visibility::angle( mVp->mRow, mVp->mCol, mTp );
-    ln.angle[CellEventPositionType::ENTER] = angle;
-    ln.angle[CellEventPositionType::CENTER] = angle;
-    ln.angle[CellEventPositionType::EXIT] = angle;
-    ln.elevs[CellEventPositionType::ENTER] = mTp->mElevation;
-    ln.elevs[CellEventPositionType::CENTER] = mTp->mElevation;
-    ln.elevs[CellEventPositionType::EXIT] = mTp->mElevation;
-    ln.distances[CellEventPositionType::ENTER] = 0;
-    ln.distances[CellEventPositionType::CENTER] = 0;
-    ln.distances[CellEventPositionType::EXIT] = 0;
+    ln.mAngle[CellEventPositionType::ENTER] = angle;
+    ln.mAngle[CellEventPositionType::CENTER] = angle;
+    ln.mAngle[CellEventPositionType::EXIT] = angle;
+    ln.mElevs[CellEventPositionType::ENTER] = mTp->mElevation;
+    ln.mElevs[CellEventPositionType::CENTER] = mTp->mElevation;
+    ln.mElevs[CellEventPositionType::EXIT] = mTp->mElevation;
+    ln.mDistances[CellEventPositionType::ENTER] = 0;
+    ln.mDistances[CellEventPositionType::CENTER] = 0;
+    ln.mDistances[CellEventPositionType::EXIT] = 0;
     push_back( ln );
 }
 
@@ -93,7 +93,7 @@ void InverseLoS::removePointsAfterViewPoint()
     double dist = mPointDistance;
     erase( std::remove_if( begin(), end(),
                            [&dist]( LoSNode &node )
-                           { return ( dist <= node.centreDistance() && !node.inverseLoSBehindTarget ); } ),
+                           { return ( dist <= node.centreDistance() && !node.mInverseLoSBehindTarget ); } ),
            end() );
 }
 
@@ -110,32 +110,32 @@ void InverseLoS::fixDistancesAngles()
 {
     for ( int i = 0; i < size(); i++ )
     {
-        if ( at( i ).inverseLoSBehindTarget )
+        if ( at( i ).mInverseLoSBehindTarget )
         {
-            at( i ).distances[CellEventPositionType::ENTER] += mPointDistance;
-            at( i ).distances[CellEventPositionType::CENTER] += mPointDistance;
-            at( i ).distances[CellEventPositionType::EXIT] += mPointDistance;
+            at( i ).mDistances[CellEventPositionType::ENTER] += mPointDistance;
+            at( i ).mDistances[CellEventPositionType::CENTER] += mPointDistance;
+            at( i ).mDistances[CellEventPositionType::EXIT] += mPointDistance;
 
             double addValue = -M_PI;
 
-            if ( at( i ).angle[CellEventPositionType::CENTER] < M_PI ||
-                 at( i ).angle[CellEventPositionType::CENTER] == 0 )
+            if ( at( i ).mAngle[CellEventPositionType::CENTER] < M_PI ||
+                 at( i ).mAngle[CellEventPositionType::CENTER] == 0 )
             {
                 addValue = +M_PI;
             }
 
-            at( i ).angle[CellEventPositionType::ENTER] += addValue;
-            at( i ).angle[CellEventPositionType::CENTER] += addValue;
-            at( i ).angle[CellEventPositionType::EXIT] += addValue;
+            at( i ).mAngle[CellEventPositionType::ENTER] += addValue;
+            at( i ).mAngle[CellEventPositionType::CENTER] += addValue;
+            at( i ).mAngle[CellEventPositionType::EXIT] += addValue;
         }
         else
         {
-            at( i ).distances[CellEventPositionType::ENTER] =
-                mPointDistance - at( i ).distances[CellEventPositionType::ENTER];
-            at( i ).distances[CellEventPositionType::CENTER] =
-                mPointDistance - at( i ).distances[CellEventPositionType::CENTER];
-            at( i ).distances[CellEventPositionType::EXIT] =
-                mPointDistance - at( i ).distances[CellEventPositionType::EXIT];
+            at( i ).mDistances[CellEventPositionType::ENTER] =
+                mPointDistance - at( i ).mDistances[CellEventPositionType::ENTER];
+            at( i ).mDistances[CellEventPositionType::CENTER] =
+                mPointDistance - at( i ).mDistances[CellEventPositionType::CENTER];
+            at( i ).mDistances[CellEventPositionType::EXIT] =
+                mPointDistance - at( i ).mDistances[CellEventPositionType::EXIT];
         }
     }
 }
