@@ -18,7 +18,7 @@ void LoS::sort() { std::sort( begin(), end() ); }
 
 void LoS::setLoSNodes( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
 
-double LoS::gradient( int i ) { return Visibility::gradient( mVp, elevation( i ), distance( i ) ); }
+double LoS::gradient( int i ) { return Visibility::gradient( elevation( i ) - mVp->totalElevation(), distance( i ) ); }
 
 double LoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
 

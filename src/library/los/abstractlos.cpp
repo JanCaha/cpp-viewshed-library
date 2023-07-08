@@ -19,7 +19,10 @@ void AbstractLoS::setViewPoint( std::shared_ptr<LoSNode> poi, double observerOff
 
 double AbstractLoS::targetDistance() { return mPointDistance; }
 
-double AbstractLoS::targetGradient() { return Visibility::gradient( mVp, mTp->totalElevation(), mPointDistance ); }
+double AbstractLoS::targetGradient()
+{
+    return Visibility::gradient( mTp->totalElevation() - mVp->totalElevation(), mPointDistance );
+}
 
 double AbstractLoS::targetElevation() { return mTp->totalElevation(); }
 
