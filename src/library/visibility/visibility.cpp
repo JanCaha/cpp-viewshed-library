@@ -96,12 +96,15 @@ double Visibility::distance( int &row, int &column, std::shared_ptr<Point> point
 
 double Visibility::gradient( std::shared_ptr<Point> point, double elevation, double distance )
 {
-    double elevationDifference = elevation - point->totalElevation();
+    return gradient( elevation - point->totalElevation(), distance );
+}
 
-    if ( elevationDifference == 0 )
+double Visibility::gradient( double elevationDiff, double distance )
+{
+    if ( elevationDiff == 0 )
         return 0;
 
-    return atan( elevationDifference / distance ) * ( 180 / M_PI );
+    return atan( elevationDiff / distance ) * ( 180 / M_PI );
 }
 
 CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, int row, int col,

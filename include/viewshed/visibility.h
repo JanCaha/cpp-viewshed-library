@@ -125,6 +125,15 @@ namespace viewshed
         static double gradient( std::shared_ptr<Point> point, double elevation, double distance );
 
         /**
+         * @brief Calculate gradient.
+         *
+         * @param elevationDiff
+         * @param distance
+         * @return double
+         */
+        static double gradient( double elevationDiff, double distance );
+
+        /**
          * @brief Recalculate elevation with inclusion of atmospheric refraction and earth curvature;
          *
          * @param distance
