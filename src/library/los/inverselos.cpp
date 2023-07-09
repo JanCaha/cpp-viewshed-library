@@ -81,7 +81,7 @@ void InverseLoS::removePointsAfterViewPoint()
            end() );
 }
 
-LoSNode InverseLoS::nodeAt( std::size_t i ) { return at( i ); }
+LoSNode InverseLoS::nodeAt( std::size_t i ) { return this->operator[]( i ); }
 
 int InverseLoS::resultRow() { return mVp->mRow; }
 
@@ -130,7 +130,7 @@ void InverseLoS::findTargetPointIndex()
     {
         if ( i + 1 < numberOfNodes() )
         {
-            if ( at( i ).centreDistance() == targetDistance() )
+            if ( this->operator[]( i ).centreDistance() == targetDistance() )
             {
                 mTargetIndex = i;
                 break;

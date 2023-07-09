@@ -48,7 +48,7 @@ void LoS::prepareForCalculation()
 
 int LoS::numberOfNodes() { return size(); };
 
-LoSNode LoS::nodeAt( std::size_t i ) { return at( i ); }
+LoSNode LoS::nodeAt( std::size_t i ) { return this->operator[]( i ); }
 
 int LoS::resultRow() { return mTp->mRow; }
 

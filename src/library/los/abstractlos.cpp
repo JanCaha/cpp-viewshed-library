@@ -78,13 +78,13 @@ double AbstractLoS::curvatureCorrectionsFix( const double distance )
 double AbstractLoS::elevation( std::size_t i )
 {
 
-    double elevation = at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
+    double elevation = this->operator[]( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
 
     if ( mCurvatureCorrections )
     {
-        return elevation +
-               Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
-                                                 mRefractionCoefficient, mEarthDiameter );
+        return elevation + Visibility::curvatureCorrections(
+                               this->operator[]( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
+                               mRefractionCoefficient, mEarthDiameter );
     }
     else
     {
@@ -92,11 +92,14 @@ double AbstractLoS::elevation( std::size_t i )
     }
 }
 
-double AbstractLoS::distance( std::size_t i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
+double AbstractLoS::distance( std::size_t i )
+{
+    return this->operator[]( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance );
+}
 
 double AbstractLoS::gradient( std::size_t i )
 {
     return Visibility::gradient( elevation( i ) - mVp->totalElevation(), distance( i ) );
 }
 
-void AbstractLoS::setCurrentLoSNode( std::size_t i ) { mCurrentLoSNode = at( i ); }
+void AbstractLoS::setCurrentLoSNode( std::size_t i ) { mCurrentLoSNode = this->operator[]( i ); }
