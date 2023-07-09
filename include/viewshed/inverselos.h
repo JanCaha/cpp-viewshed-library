@@ -21,7 +21,7 @@ namespace viewshed
      * @brief Class that represents InverseLoS, that is LoS used in Inverse Viewshed calculation.
      *
      */
-    class InverseLoS : public std::vector<LoSNode>, public AbstractLoS
+    class InverseLoS : public AbstractLoS
     {
       public:
         InverseLoS();
@@ -42,10 +42,6 @@ namespace viewshed
         int resultRow() override;
         int resultCol() override;
         int targetPointIndex() override;
-
-        double distance( int i ) override;
-        double gradient( int i ) override;
-        double elevation( int i ) override;
 
         LoSNode nodeAt( int i ) override;
 

@@ -17,30 +17,6 @@ InverseLoS::InverseLoS() {}
 
 InverseLoS::InverseLoS( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
 
-double InverseLoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
-
-double InverseLoS::gradient( int i )
-{
-    return Visibility::gradient( elevation( i ) - mVp->totalElevation(), distance( i ) );
-}
-
-double InverseLoS::elevation( int i )
-{
-
-    double elevation = at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
-
-    if ( mCurvatureCorrections )
-    {
-        return elevation +
-               Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
-                                                 mRefractionCoefficient, mEarthDiameter );
-    }
-    else
-    {
-        return elevation;
-    }
-}
-
 void InverseLoS::setTargetPoint( std::shared_ptr<Point> tp, double targetOffset )
 {
     mTargetIndex = -1;
