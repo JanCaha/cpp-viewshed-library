@@ -3,9 +3,13 @@
 
 #include <algorithm>
 #include <memory>
+#include <vector>
 
 #include "enums.h"
+#include "losnode.h"
 #include "visibility.h"
+
+using viewshed::LoSNode;
 
 namespace viewshed
 {
@@ -17,7 +21,7 @@ namespace viewshed
      * with potential offset from the surface).
      *
      */
-    class AbstractLoS
+    class AbstractLoS : public std::vector<LoSNode>
     {
       public:
         /**
@@ -66,7 +70,7 @@ namespace viewshed
          * @param i
          * @return double
          */
-        virtual double gradient( int i ) = 0;
+        double gradient( int i );
 
         /**
          * @brief Extract distance for line-of-sight LoSNode at position `i`.
@@ -74,7 +78,7 @@ namespace viewshed
          * @param i
          * @return double
          */
-        virtual double distance( int i ) = 0;
+        double distance( int i );
 
         /**
          * @brief Extract elevation for line-of-sight LoSNode at position `i`.
@@ -82,7 +86,7 @@ namespace viewshed
          * @param i
          * @return double
          */
-        virtual double elevation( int i ) = 0;
+        double elevation( int i );
 
         virtual bool isValid() = 0;
 
@@ -227,6 +231,37 @@ namespace viewshed
          */
         double viewPointTotalElevation();
 
+        /**
+         * @brief Set the Current LoS Node object.
+         *
+         * @param i
+         */
+        virtual void setCurrentLoSNode( std::size_t i );
+
+        /**
+         * @brief Distance to current node.
+         * \see setCurrentLoSNode( std::size_t i )
+         *
+         * @return double
+         */
+        double currentDistance();
+
+        /**
+         * @brief Gradient to current node.
+         * \see setCurrentLoSNode( std::size_t i )
+         *
+         * @return double
+         */
+        double currentGradient();
+
+        /**
+         * @brief Elevation to current node.
+         * \see setCurrentLoSNode( std::size_t i )
+         *
+         * @return double
+         */
+        double currentElevation();
+
       protected:
         AbstractLoS();
 
@@ -289,6 +324,20 @@ namespace viewshed
          *
          */
         virtual void sort() = 0;
+
+        /**
+         * @brief Currently solved LoS Node.
+         *
+         */
+        LoSNode mCurrentLoSNode;
+
+        /**
+         * @brief Elevation changes using currently set curvature corrections for specific distance.
+         *
+         * @param distance
+         * @return double
+         */
+        double curvatureCorrectionsFix( const double distance );
     };
 
 } // namespace viewshed
