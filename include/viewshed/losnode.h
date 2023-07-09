@@ -76,14 +76,6 @@ namespace viewshed
         double centreAngle();
 
         /**
-         * @brief Shortcut call to obtain gradient (vertical) angle at center of raster cell that this LoSNode
-         * represents.
-         *
-         * @return double
-         */
-        double centreGradient();
-
-        /**
          * @brief Shortcut call to obtain elevation angle at center of raster cell that this LoSNode represents.
          *
          * @return double
