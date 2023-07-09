@@ -75,7 +75,7 @@ double AbstractLoS::curvatureCorrectionsFix( const double distance )
     return 0;
 }
 
-double AbstractLoS::elevation( int i )
+double AbstractLoS::elevation( std::size_t i )
 {
 
     double elevation = at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
@@ -92,9 +92,9 @@ double AbstractLoS::elevation( int i )
     }
 }
 
-double AbstractLoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
+double AbstractLoS::distance( std::size_t i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
 
-double AbstractLoS::gradient( int i )
+double AbstractLoS::gradient( std::size_t i )
 {
     return Visibility::gradient( elevation( i ) - mVp->totalElevation(), distance( i ) );
 }

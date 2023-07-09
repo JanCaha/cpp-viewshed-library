@@ -16,7 +16,7 @@ void AbstractViewshed::prepareMemoryRasters()
     dataType = GDALDataType::GDT_Float32;
 #endif
 
-    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
+    for ( std::size_t i = 0; i < mVisibilityIndices->size(); i++ )
     {
         mResults->push_back( std::make_shared<SingleBandRaster>( *mInputDsm.get(), dataType ) );
     }
@@ -162,7 +162,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
 
     ViewshedValues rasterValues;
 
-    int i = 0;
+    std::size_t i = 0;
     for ( CellEvent e : mCellEvents )
     {
         progressCallback( mCellEvents.size(), i );
@@ -241,7 +241,7 @@ void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSqua
 {
     SingleBandRaster result = SingleBandRaster( *dem_.get() );
 
-    int i = 0;
+    std::size_t i = 0;
     for ( CellEvent event : mCellEvents )
     {
         if ( event.mEventType == CellEventPositionType::CENTER )
@@ -262,7 +262,7 @@ void AbstractViewshed::saveResults( std::string location, std::string fileNamePr
     std::string filePath;
     std::string fileName;
 
-    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
+    for ( std::size_t i = 0; i < mVisibilityIndices->size(); i++ )
     {
         if ( fileNamePrefix.empty() )
         {

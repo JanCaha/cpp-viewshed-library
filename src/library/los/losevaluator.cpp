@@ -105,7 +105,7 @@ void LoSEvaluator::calculate()
 
     mResultValues = ViewshedValues( mLos->resultRow(), mLos->resultCol() );
 
-    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
+    for ( std::size_t i = 0; i < mVisibilityIndices->size(); i++ )
     {
         mResultValues.values.push_back( mVisibilityIndices->at( i )->result( mLosValues, mLos ) );
     }

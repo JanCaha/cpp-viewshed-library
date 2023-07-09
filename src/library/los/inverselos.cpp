@@ -81,7 +81,7 @@ void InverseLoS::removePointsAfterViewPoint()
            end() );
 }
 
-LoSNode InverseLoS::nodeAt( int i ) { return at( i ); }
+LoSNode InverseLoS::nodeAt( std::size_t i ) { return at( i ); }
 
 int InverseLoS::resultRow() { return mVp->mRow; }
 
@@ -92,7 +92,7 @@ bool InverseLoS::isValid() { return true; }
 
 void InverseLoS::fixDistancesAngles()
 {
-    for ( int i = 0; i < size(); i++ )
+    for ( std::size_t i = 0; i < size(); i++ )
     {
         if ( at( i ).mInverseLoSBehindTarget )
         {
@@ -126,7 +126,7 @@ void InverseLoS::fixDistancesAngles()
 
 void InverseLoS::findTargetPointIndex()
 {
-    for ( int i = 0; i < numberOfNodes(); i++ )
+    for ( std::size_t i = 0; i < numberOfNodes(); i++ )
     {
         if ( i + 1 < numberOfNodes() )
         {

@@ -38,7 +38,7 @@ namespace viewshed
         int resultRow() override;
         int resultCol() override;
 
-        LoSNode nodeAt( int i ) override;
+        LoSNode nodeAt( std::size_t i ) override;
         void removePointsAfterTarget();
 
       protected:

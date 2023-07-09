@@ -70,7 +70,7 @@ namespace viewshed
          * @param i
          * @return double
          */
-        double gradient( int i );
+        double gradient( std::size_t i );
 
         /**
          * @brief Extract distance for line-of-sight LoSNode at position `i`.
@@ -78,7 +78,7 @@ namespace viewshed
          * @param i
          * @return double
          */
-        double distance( int i );
+        double distance( std::size_t i );
 
         /**
          * @brief Extract elevation for line-of-sight LoSNode at position `i`.
@@ -86,7 +86,7 @@ namespace viewshed
          * @param i
          * @return double
          */
-        double elevation( int i );
+        double elevation( std::size_t i );
 
         virtual bool isValid() = 0;
 
@@ -124,7 +124,7 @@ namespace viewshed
          * @param i
          * @return LoSNode
          */
-        virtual LoSNode nodeAt( int i ) = 0;
+        virtual LoSNode nodeAt( std::size_t i ) = 0;
 
         /**
          * @brief Horizontal angle for this line-of-sight.

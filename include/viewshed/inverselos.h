@@ -43,7 +43,7 @@ namespace viewshed
         int resultCol() override;
         int targetPointIndex() override;
 
-        LoSNode nodeAt( int i ) override;
+        LoSNode nodeAt( std::size_t i ) override;
 
       protected:
         void sort() override;
