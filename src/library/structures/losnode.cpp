@@ -144,3 +144,7 @@ bool LoSNode::operator<( const LoSNode other )
 {
     return mDistances[CellEventPositionType::CENTER] < other.mDistances[CellEventPositionType::CENTER];
 }
+
+double LoSNode::elevationAtAngle( const double &angle ) { return valueAtAngle( angle, ValueType::Elevation ); }
+
+double LoSNode::distanceAtAngle( const double &angle ) { return valueAtAngle( angle, ValueType::Distance ); }

@@ -88,6 +88,10 @@ namespace viewshed
          * @return double
          */
         double centreDistance();
+
+        double elevationAtAngle( const double &angle );
+
+        double distanceAtAngle( const double &angle );
     };
 } // namespace viewshed
 
