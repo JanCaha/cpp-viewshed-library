@@ -94,32 +94,32 @@ void InverseLoS::fixDistancesAngles()
 {
     for ( std::size_t i = 0; i < size(); i++ )
     {
-        if ( at( i ).mInverseLoSBehindTarget )
+        if ( this->operator[]( i ).mInverseLoSBehindTarget )
         {
-            at( i ).mDistances[CellEventPositionType::ENTER] += mPointDistance;
-            at( i ).mDistances[CellEventPositionType::CENTER] += mPointDistance;
-            at( i ).mDistances[CellEventPositionType::EXIT] += mPointDistance;
+            this->operator[]( i ).mDistances[CellEventPositionType::ENTER] += mPointDistance;
+            this->operator[]( i ).mDistances[CellEventPositionType::CENTER] += mPointDistance;
+            this->operator[]( i ).mDistances[CellEventPositionType::EXIT] += mPointDistance;
 
             double addValue = -M_PI;
 
-            if ( at( i ).mAngle[CellEventPositionType::CENTER] < M_PI ||
-                 at( i ).mAngle[CellEventPositionType::CENTER] == 0 )
+            if ( this->operator[]( i ).mAngle[CellEventPositionType::CENTER] < M_PI ||
+                 this->operator[]( i ).mAngle[CellEventPositionType::CENTER] == 0 )
             {
                 addValue = +M_PI;
             }
 
-            at( i ).mAngle[CellEventPositionType::ENTER] += addValue;
-            at( i ).mAngle[CellEventPositionType::CENTER] += addValue;
-            at( i ).mAngle[CellEventPositionType::EXIT] += addValue;
+            this->operator[]( i ).mAngle[CellEventPositionType::ENTER] += addValue;
+            this->operator[]( i ).mAngle[CellEventPositionType::CENTER] += addValue;
+            this->operator[]( i ).mAngle[CellEventPositionType::EXIT] += addValue;
         }
         else
         {
-            at( i ).mDistances[CellEventPositionType::ENTER] =
-                mPointDistance - at( i ).mDistances[CellEventPositionType::ENTER];
-            at( i ).mDistances[CellEventPositionType::CENTER] =
-                mPointDistance - at( i ).mDistances[CellEventPositionType::CENTER];
-            at( i ).mDistances[CellEventPositionType::EXIT] =
-                mPointDistance - at( i ).mDistances[CellEventPositionType::EXIT];
+            this->operator[]( i ).mDistances[CellEventPositionType::ENTER] =
+                mPointDistance - this->operator[]( i ).mDistances[CellEventPositionType::ENTER];
+            this->operator[]( i ).mDistances[CellEventPositionType::CENTER] =
+                mPointDistance - this->operator[]( i ).mDistances[CellEventPositionType::CENTER];
+            this->operator[]( i ).mDistances[CellEventPositionType::EXIT] =
+                mPointDistance - this->operator[]( i ).mDistances[CellEventPositionType::EXIT];
         }
     }
 }
