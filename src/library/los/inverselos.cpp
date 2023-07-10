@@ -26,7 +26,7 @@ void InverseLoS::setTargetPoint( std::shared_ptr<Point> tp, double targetOffset 
 void InverseLoS::setUpTargetLoSNode()
 {
     LoSNode ln = LoSNode( mTp->mRow, mTp->mCol );
-    double angle = Visibility::angle( mVp->mRow, mVp->mCol, mTp );
+    double angle = Visibility::angle( mVp->mRow, mVp->mCol, mTp->mRow, mTp->mCol );
     ln.mAngle[CellEventPositionType::ENTER] = angle;
     ln.mAngle[CellEventPositionType::CENTER] = angle;
     ln.mAngle[CellEventPositionType::EXIT] = angle;

@@ -95,25 +95,34 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
 void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell )
 {
     mCellElevs[CellEventPositionType::CENTER] = pixelValue;
-    CellEventPosition tempPosEnter = Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint );
+    CellEventPosition tempPosEnter =
+        Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint->mRow, mPoint->mCol );
     mCellElevs[CellEventPositionType::ENTER] = mInputDsm->cornerValue( tempPosEnter.mRow, tempPosEnter.mCol );
-    CellEventPosition tempPosExit = Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint );
+    CellEventPosition tempPosExit =
+        Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint->mRow, mPoint->mCol );
     mCellElevs[CellEventPositionType::EXIT] = mInputDsm->cornerValue( tempPosExit.mRow, tempPosExit.mCol );
 
-    mAngleCenter = Visibility::angle( row, column, mPoint );
-    mAngleEnter = Visibility::angle( &tempPosEnter, mPoint );
-    mAngleExit = Visibility::angle( &tempPosExit, mPoint );
+    mAngleCenter = Visibility::angle( row, column, mPoint->mRow, mPoint->mCol );
+    mAngleEnter = Visibility::angle( tempPosEnter.mRow, tempPosEnter.mCol, mPoint->mRow, mPoint->mCol );
+    mAngleExit = Visibility::angle( tempPosExit.mRow, tempPosExit.mCol, mPoint->mRow, mPoint->mCol );
 
-    mEventDistance = Visibility::distance( row, column, mPoint, mCellSize );
+    mEventDistance = Visibility::distance( row, column, static_cast<double>( mPoint->mRow ),
+                                           static_cast<double>( mPoint->mCol ), mCellSize );
 
     if ( mEventDistance < mMaxDistance && isInsideAngles( mAngleEnter, mAngleExit ) )
     {
         mEventCenter =
             CellEvent( CellEventPositionType::CENTER, row, column, mEventDistance, mAngleCenter, mCellElevs );
-        mEventEnter = CellEvent( CellEventPositionType::ENTER, row, column,
-                                 Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mAngleEnter, mCellElevs );
-        mEventExit = CellEvent( CellEventPositionType::EXIT, row, column,
-                                Visibility::distance( &tempPosExit, mPoint, mCellSize ), mAngleExit, mCellElevs );
+        mEventEnter =
+            CellEvent( CellEventPositionType::ENTER, row, column,
+                       Visibility::distance( tempPosEnter.mRow, tempPosEnter.mCol, static_cast<double>( mPoint->mRow ),
+                                             static_cast<double>( mPoint->mCol ), mCellSize ),
+                       mAngleEnter, mCellElevs );
+        mEventExit =
+            CellEvent( CellEventPositionType::EXIT, row, column,
+                       Visibility::distance( tempPosExit.mRow, tempPosExit.mCol, static_cast<double>( mPoint->mRow ),
+                                             static_cast<double>( mPoint->mCol ), mCellSize ),
+                       mAngleExit, mCellElevs );
 
         mOppositeAngleEnter = mAngleEnter;
         mOppositeAngleExit = mAngleExit;
@@ -138,12 +147,16 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
 
         mEventEnterOpposite =
             CellEvent( CellEventPositionType::ENTER, row, column,
-                       Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mOppositeAngleEnter, mCellElevs );
+                       Visibility::distance( tempPosEnter.mRow, tempPosEnter.mCol, static_cast<double>( mPoint->mRow ),
+                                             static_cast<double>( mPoint->mCol ), mCellSize ),
+                       mOppositeAngleEnter, mCellElevs );
         mEventEnterOpposite.mBehindTargetForInverseLoS = true;
 
         mEventExitOpposite =
             CellEvent( CellEventPositionType::EXIT, row, column,
-                       Visibility::distance( &tempPosExit, mPoint, mCellSize ), mOppositeAngleExit, mCellElevs );
+                       Visibility::distance( tempPosExit.mRow, tempPosExit.mCol, static_cast<double>( mPoint->mRow ),
+                                             static_cast<double>( mPoint->mCol ), mCellSize ),
+                       mOppositeAngleExit, mCellElevs );
         mEventExitOpposite.mBehindTargetForInverseLoS = true;
 
         // Target or ViewPoint are not part CellEvents - handled separately
