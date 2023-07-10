@@ -1,0 +1,43 @@
+name: Prepare Release and Docker Release
+
+on:
+  push
+
+jobs:
+
+  Relese-to-PPA:
+
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set env
+        run: echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+
+      - name: install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install debhelper devscripts dput
+      
+      - name: import gpg key 55C76CE00DD5C647
+        run: |
+          echo "${GPG_PRIVATE_KEY}" | gpg --batch --quiet --import
+          echo "${GPG_PASSPHRASE}" | gpg --batch --quiet --passphrase-fd 0 --pinentry-mode loopback -u 55C76CE00DD5C647 --dry-run --sign dist/linux/debian/rules
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: debuild
+        run: debuild -S -sa -d
+        env:
+          DEBSIGN_PROGRAM: gpg --batch --pinentry-mode loopback
+          DEBSIGN_KEYID: 55C76CE00DD5C647
+
+      - name: dput to beta repo
+        run: dput ppa:jancaha/gis-tools viewshed_${VERSION}_source.changes
