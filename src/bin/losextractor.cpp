@@ -475,7 +475,7 @@ class MainWindow : public QMainWindow
 
         losEval.calculate();
 
-        for ( int i = 0; i < mAlgs->size(); i++ )
+        for ( std::size_t i = 0; i < mAlgs->size(); i++ )
         {
             std::string row = "\"" + mAlgs->at( i )->name() + "\";";
             row += std::to_string( losEval.resultAt( i ) );

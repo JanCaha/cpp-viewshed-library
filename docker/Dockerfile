@@ -1,7 +1,7 @@
 FROM ubuntu:jammy
 
 RUN apt-get update && \
-    apt-get -y -q install gpg wget lsb-core && \
+    apt-get -y -q install gpg wget lsb-core software-properties-common && \
     apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt/lists/*
@@ -18,18 +18,10 @@ RUN gpg -k && \
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
+    add-apt-repository ppa:jancaha/gis-tools && \
     apt-get update && \
-    apt-get -y -q install --no-install-recommends gdal-bin libgdal-dev  qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools && \
+    apt-get -y -q install --no-install-recommends gdal-bin libgdal-dev qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools && \
+    apt-get -y install simplerasters viewshed viewshed-bin && \
     apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt/lists/*
-
-RUN touch /etc/ld.so.conf.d/usr-local.conf && \
-    echo '/usr/local/lib' | tee -a /etc/ld.so.conf.d/usr-local.conf && \
-    ldconfig
-
-ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
-
-COPY install/ /
-RUN dpkg -i simplerasters_*.deb
-RUN dpkg -i viewshed_*.deb

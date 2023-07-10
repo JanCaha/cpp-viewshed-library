@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 2.1.0 DESCRIPTION "Viewshed library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 2.2.0 DESCRIPTION "Viewshed library based on QGIS/Qt and C++ 20" LANGUAGES CXX)
 
 SET(LIBRARY_NAME "viewshed")
 
@@ -13,7 +13,7 @@ option(OUTPUT_RASTER_DATA_FLOAT "Create output rasters with data stored `Float32
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_AUTOMOC TRUE)

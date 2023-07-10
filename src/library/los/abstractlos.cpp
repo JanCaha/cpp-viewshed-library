@@ -19,7 +19,10 @@ void AbstractLoS::setViewPoint( std::shared_ptr<LoSNode> poi, double observerOff
 
 double AbstractLoS::targetDistance() { return mPointDistance; }
 
-double AbstractLoS::targetGradient() { return Visibility::gradient( mVp, mTp->totalElevation(), mPointDistance ); }
+double AbstractLoS::targetGradient()
+{
+    return Visibility::gradient( mTp->totalElevation() - mVp->totalElevation(), mPointDistance );
+}
 
 double AbstractLoS::targetElevation() { return mTp->totalElevation(); }
 
@@ -49,3 +52,54 @@ std::shared_ptr<Point> AbstractLoS::vp() { return mVp; }
 double AbstractLoS::viewPointElevation() { return mVp->mElevation; }
 
 double AbstractLoS::viewPointTotalElevation() { return mVp->totalElevation(); }
+
+double AbstractLoS::currentDistance() { return mCurrentLoSNode.distanceAtAngle( mAngleHorizontal ); }
+
+double AbstractLoS::currentElevation()
+{
+    return mCurrentLoSNode.elevationAtAngle( mAngleHorizontal ) + curvatureCorrectionsFix( currentDistance() );
+}
+
+double AbstractLoS::currentGradient()
+{
+    return Visibility::gradient( currentElevation() - mVp->totalElevation(), currentDistance() );
+}
+
+double AbstractLoS::curvatureCorrectionsFix( const double distance )
+{
+    if ( mCurvatureCorrections )
+    {
+        return Visibility::curvatureCorrections( distance, mRefractionCoefficient, mEarthDiameter );
+    }
+
+    return 0;
+}
+
+double AbstractLoS::elevation( std::size_t i )
+{
+
+    double elevation = this->operator[]( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
+
+    if ( mCurvatureCorrections )
+    {
+        return elevation + Visibility::curvatureCorrections(
+                               this->operator[]( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
+                               mRefractionCoefficient, mEarthDiameter );
+    }
+    else
+    {
+        return elevation;
+    }
+}
+
+double AbstractLoS::distance( std::size_t i )
+{
+    return this->operator[]( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance );
+}
+
+double AbstractLoS::gradient( std::size_t i )
+{
+    return Visibility::gradient( elevation( i ) - mVp->totalElevation(), distance( i ) );
+}
+
+void AbstractLoS::setCurrentLoSNode( std::size_t i ) { mCurrentLoSNode = this->operator[]( i ); }

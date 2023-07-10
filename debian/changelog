@@ -1,3 +1,9 @@
+viewshed (2.2.0-0ppa0) jammy; urgency=low
+
+  * Refactor and simplification of API, remove calls in functions that slows down the calculation.
+
+ -- Jan Caha <jan.caha@outlook.com>  Sun, 09 Jul 2023 13:55:59 +0200
+
 viewshed (2.1.0-0ppa0) jammy; urgency=low
 
   * Refactor and simplification of API.

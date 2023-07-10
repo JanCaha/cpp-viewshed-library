@@ -97,3 +97,13 @@ docker run --rm -it --name losextractor \
         -e DISPLAY=unix$DISPLAY cahik/viewshed:latest losextractor
 xhost -
 ```
+
+### Install on Linux (Debian based)
+
+On distributions based on Debian, the tools can be installed from PPA.
+
+```bash
+sudo add-apt-repository ppa:jancaha/gis-tools
+sudo apt-get update
+apt-get -y install simplerasters viewshed viewshed-bin 
+```
