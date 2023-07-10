@@ -3,14 +3,17 @@
 #include <QLocale>
 #include <QRegularExpressionValidator>
 
-class DoubleValidator : public QRegularExpressionValidator
+namespace ViewshedBinaries
 {
-  public:
-    DoubleValidator( QObject *parent );
+    class DoubleValidator : public QRegularExpressionValidator
+    {
+      public:
+        DoubleValidator( QObject *parent );
 
-    QValidator::State validate( QString &input ) const;
-    QValidator::State validate( QString &input, int & ) const override;
+        QValidator::State validate( QString &input ) const;
+        QValidator::State validate( QString &input, int & ) const override;
 
-    static double toDouble( const QString &input, bool *ok );
-    static double toDouble( const QString &input );
-};
+        static double toDouble( const QString &input, bool *ok );
+        static double toDouble( const QString &input );
+    };
+} // namespace ViewshedBinaries

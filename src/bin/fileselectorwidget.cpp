@@ -5,6 +5,8 @@
 #include <QIcon>
 #include <QStyle>
 
+using ViewshedBinaries::FileSelectorWidget;
+
 FileSelectorWidget::FileSelectorWidget( QWidget *parent ) : QWidget( parent )
 {
 
