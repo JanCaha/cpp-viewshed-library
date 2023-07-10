@@ -27,7 +27,7 @@ jobs:
       
       - name: import gpg key 55C76CE00DD5C647
         run: |
-          echo "${GPG_PRIVATE_KEY}" | gpg --batch --quiet --import
+          echo "${GPG_PRIVATE_KEY}" | base64 --decode | gpg --batch --quiet --import
           echo "${GPG_PASSPHRASE}" | gpg --batch --quiet --passphrase-fd 0 --pinentry-mode loopback -u 55C76CE00DD5C647 --dry-run --sign dist/linux/debian/rules
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
