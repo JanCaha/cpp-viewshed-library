@@ -63,4 +63,4 @@ jobs:
       - name: Dput to Repo
         run: |
           cd ..
-          dput ppa:jancaha/gis-tools viewshed_${VERSION}_source.changes
+          dput ppa:jancaha/gis-tools "${PACKAGE}"_"${VERSION}"-0ppa0_source.changes
