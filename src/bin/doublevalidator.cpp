@@ -6,6 +6,8 @@
 
 const QString PERMISSIVE_DOUBLE = R"(-?[\d]{0,1000}([\.%1][\d]{0,1000})?(e[+-]?[\d]{0,%2})?)";
 
+using ViewshedBinaries::DoubleValidator;
+
 DoubleValidator::DoubleValidator( QObject *parent ) : QRegularExpressionValidator( parent )
 {
     const QRegularExpression reg( PERMISSIVE_DOUBLE.arg( locale().decimalPoint() ).arg( 1000 ) );

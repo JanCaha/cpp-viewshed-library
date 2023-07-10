@@ -3,6 +3,8 @@
 
 #include "pointwidget.h"
 
+using ViewshedBinaries::PointWidget;
+
 PointWidget::PointWidget( bool addCrsLabel, QWidget *parent ) : QWidget( parent ), mAddCrsLabel( addCrsLabel )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );

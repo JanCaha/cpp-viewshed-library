@@ -1,5 +1,4 @@
-#ifndef POINTWIDGET_H
-#define POINTWIDGET_H
+#pragma once
 
 #include <QLabel>
 #include <QLineEdit>
@@ -10,32 +9,33 @@
 
 #include "doublevalidator.h"
 
-class PointWidget : public QWidget
+namespace ViewshedBinaries
 {
-    Q_OBJECT
+    class PointWidget : public QWidget
+    {
+        Q_OBJECT
 
-  public:
-    PointWidget( bool addCrsLabel = true, QWidget *parent = nullptr );
+      public:
+        PointWidget( bool addCrsLabel = true, QWidget *parent = nullptr );
 
-    bool isPointValid();
-    OGRPoint point();
-    void setXY( double x, double y );
-    void setPoint( OGRPoint p );
-    void setCrs( OGRSpatialReference crs );
+        bool isPointValid();
+        OGRPoint point();
+        void setXY( double x, double y );
+        void setPoint( OGRPoint p );
+        void setCrs( OGRSpatialReference crs );
 
-  signals:
-    void pointChanged( OGRPoint point );
+      signals:
+        void pointChanged( OGRPoint point );
 
-  private:
-    void updatePoint();
+      private:
+        void updatePoint();
 
-    QLineEdit *mPointX = nullptr;
-    QLineEdit *mPointY = nullptr;
-    QLabel *mCrsLabel = nullptr;
-    DoubleValidator *mDoubleValidator = nullptr;
-    OGRPoint mPoint;
-    bool mPointValid = false;
-    bool mAddCrsLabel = true;
-};
-
-#endif
+        QLineEdit *mPointX = nullptr;
+        QLineEdit *mPointY = nullptr;
+        QLabel *mCrsLabel = nullptr;
+        DoubleValidator *mDoubleValidator = nullptr;
+        OGRPoint mPoint;
+        bool mPointValid = false;
+        bool mAddCrsLabel = true;
+    };
+} // namespace ViewshedBinaries
