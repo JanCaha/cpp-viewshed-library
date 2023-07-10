@@ -11,6 +11,7 @@ jobs:
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PACKAGE: viewshed
     
     steps:
       
@@ -24,6 +25,7 @@ jobs:
         run: |
           echo "-----"
           echo "Project Version"
+          echo ${PACKAGE}
           echo ${VERSION}
           echo "-----"
 
@@ -39,8 +41,14 @@ jobs:
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      
+      - name: Create tar.gz package
+        run: |
+          cd ..
+          dir
+          tar -acf "${PACKAGE}"_"${VERSION}".orig.tar.gz cpp-viewshed-library
 
-      - name: debuild
+      - name: Debuild
         run: debuild -S -sa -d
         env:
           DEBSIGN_PROGRAM: gpg --batch --pinentry-mode loopback
