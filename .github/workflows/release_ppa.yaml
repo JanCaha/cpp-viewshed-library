@@ -1,4 +1,4 @@
-name: Prepare Release and Docker Release
+name: Release to PPA
 
 on:
   push
