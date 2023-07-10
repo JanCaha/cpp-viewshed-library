@@ -120,7 +120,7 @@ void AbstractViewshed::setAngles( double minAngle, double maxAngle )
 
 bool AbstractViewshed::validAngles() { return !( std::isnan( mMinAngle ) || std::isnan( mMaxAngle ) ); }
 
-bool AbstractViewshed::isInsideAngles( double eventEnterAngle, double eventExitAngle )
+bool AbstractViewshed::isInsideAngles( const double &eventEnterAngle, const double &eventExitAngle )
 {
     if ( validAngles() )
     {
