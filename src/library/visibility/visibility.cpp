@@ -10,93 +10,9 @@ using viewshed::Point;
 using viewshed::RasterPosition;
 using viewshed::Visibility;
 
-double Visibility::angle( RasterPosition *pos, std::shared_ptr<Point> point )
-{
-    return angle( (double)pos->mRow, (double)pos->mCol, point );
-}
-
-double Visibility::angle( CellEventPosition *pos, std::shared_ptr<Point> point )
-{
-    return angle( pos->mRow, pos->mCol, point );
-}
-
-double Visibility::angle( double row, double column, std::shared_ptr<Point> point )
-{
-    double angle = atan( fabs( row - point->mRow ) / fabs( column - point->mCol ) );
-
-    if ( point->mRow == row && column > point->mCol )
-    {
-        return 0; /*between 1st and 4th quadrant */
-    }
-    else if ( column > point->mCol && row < point->mRow )
-    {
-        /*first quadrant */
-        return angle;
-    }
-    else if ( point->mCol == column && point->mRow > row )
-    {
-        /*between 1st and 2nd quadrant */
-        return M_PI / 2;
-    }
-    else if ( column < point->mCol && row < point->mRow )
-    {
-        /*second quadrant */
-        return ( M_PI - angle );
-    }
-    else if ( point->mRow == row && column < point->mCol )
-    {
-        /*between 1st and 3rd quadrant */
-        return M_PI;
-    }
-    else if ( row > point->mRow && column < point->mCol )
-    {
-        /*3rd quadrant */
-        return ( M_PI + angle );
-    }
-    else if ( point->mCol == column && point->mRow < row )
-    {
-        /*between 3rd and 4th quadrant */
-        return ( ( M_PI * 3.0 ) / 2.0 );
-    }
-    else if ( column > point->mCol && row > point->mRow )
-    {
-        /*4th quadrant */
-        return ( M_PI * 2.0 - angle );
-    }
-
-    return 0;
-}
-
 double Visibility::distance( const double &x1, const double &y1, const double &x2, const double &y2, double &cellSize )
 {
     return sqrt( pow( x1 - x2, 2 ) + pow( y1 - y2, 2 ) ) * cellSize;
-}
-
-double Visibility::distance( CellEventPosition *pos, std::shared_ptr<Point> point, double &cellSize )
-{
-    return distance( pos->mCol, pos->mRow, point->mCol, point->mRow, cellSize );
-}
-
-double Visibility::distance( double &row, double &column, std::shared_ptr<Point> point, double &cellSize )
-{
-    return distance( column, row, point->mCol, point->mRow, cellSize );
-}
-
-double Visibility::distance( std::shared_ptr<Point> point1, std::shared_ptr<Point> point2, double &cellSize )
-{
-    return distance( point1->mCol, point1->mRow, point2->mCol, point2->mRow, cellSize );
-}
-
-double Visibility::distance( int &row, int &column, std::shared_ptr<Point> point, double &cellSize )
-{
-    double r = (double)row;
-    double c = (double)column;
-    return distance( r, c, point, cellSize );
-}
-
-double Visibility::gradient( std::shared_ptr<Point> point, double elevation, double distance )
-{
-    return gradient( elevation - point->totalElevation(), distance );
 }
 
 double Visibility::gradient( double elevationDiff, double distance )
@@ -107,8 +23,14 @@ double Visibility::gradient( double elevationDiff, double distance )
     return atan( elevationDiff / distance ) * ( 180 / M_PI );
 }
 
-CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, int row, int col,
-                                             std::shared_ptr<Point> point )
+double Visibility::curvatureCorrections( const double &distance, const double &refractionCoeff,
+                                         const double &earthDiameter )
+{
+    return -( pow( distance, 2 ) / earthDiameter ) + refractionCoeff * ( pow( distance, 2 ) / earthDiameter );
+}
+
+CellEventPosition Visibility::eventPosition( const CellEventPositionType &eventType, const int &row, const int &col,
+                                             const int &pointRow, const int &pointCol )
 {
     double rRow, rCol;
 
@@ -119,7 +41,7 @@ CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, in
         rCol = col;
     }
 
-    if ( row < point->mRow && col < point->mCol )
+    if ( row < pointRow && col < pointCol )
     {
         /*first quadrant */
         if ( eventType == CellEventPositionType::ENTER )
@@ -135,7 +57,7 @@ CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, in
             rCol = col - 0.5;
         }
     }
-    else if ( col == point->mCol && row < point->mRow )
+    else if ( col == pointCol && row < pointRow )
     {
         /*between the first and second quadrant */
         if ( eventType == CellEventPositionType::ENTER )
@@ -151,7 +73,7 @@ CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, in
             rCol = col - 0.5;
         }
     }
-    else if ( col > point->mCol && row < point->mRow )
+    else if ( col > pointCol && row < pointRow )
     {
         /*second quadrant */
         if ( eventType == CellEventPositionType::ENTER )
@@ -166,7 +88,7 @@ CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, in
             rCol = col - 0.5;
         }
     }
-    else if ( row == point->mRow && col > point->mCol )
+    else if ( row == pointRow && col > pointCol )
     {
         /*between the second and the fourth quadrant */
         if ( eventType == CellEventPositionType::ENTER )
@@ -182,7 +104,7 @@ CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, in
             rCol = col - 0.5;
         }
     }
-    else if ( col > point->mCol && row > point->mRow )
+    else if ( col > pointCol && row > pointRow )
     {
         /*fourth quadrant */
         if ( eventType == CellEventPositionType::ENTER )
@@ -198,7 +120,7 @@ CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, in
             rCol = col + 0.5;
         }
     }
-    else if ( col == point->mCol && row > point->mRow )
+    else if ( col == pointCol && row > pointRow )
     {
         /*between the third and fourth quadrant */
         if ( eventType == CellEventPositionType::ENTER )
@@ -214,7 +136,7 @@ CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, in
             rCol = col + 0.5;
         }
     }
-    else if ( col < point->mCol && row > point->mRow )
+    else if ( col < pointCol && row > pointRow )
     {
         /*third quadrant */
         if ( eventType == CellEventPositionType::ENTER )
@@ -230,7 +152,7 @@ CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, in
             rCol = col + 0.5;
         }
     }
-    else if ( row == point->mRow && col < point->mCol )
+    else if ( row == pointRow && col < pointCol )
     {
         /*between first and third quadrant */
         if ( eventType == CellEventPositionType::ENTER )
@@ -255,7 +177,49 @@ CellEventPosition Visibility::eventPosition( CellEventPositionType eventType, in
     return CellEventPosition( rRow, rCol );
 }
 
-double Visibility::curvatureCorrections( double distance, double refractionCoeff, double earthDiameter )
+double Visibility::angle( const double &row, const double &column, const int &pointRow, const int &pointCol )
 {
-    return -( pow( distance, 2 ) / earthDiameter ) + refractionCoeff * ( pow( distance, 2 ) / earthDiameter );
+    double angle = atan( fabs( row - pointRow ) / fabs( column - pointCol ) );
+
+    if ( pointRow == row && column > pointCol )
+    {
+        return 0; /*between 1st and 4th quadrant */
+    }
+    else if ( column > pointCol && row < pointRow )
+    {
+        /*first quadrant */
+        return angle;
+    }
+    else if ( pointCol == column && pointRow > row )
+    {
+        /*between 1st and 2nd quadrant */
+        return M_PI / 2;
+    }
+    else if ( column < pointCol && row < pointRow )
+    {
+        /*second quadrant */
+        return ( M_PI - angle );
+    }
+    else if ( pointRow == row && column < pointCol )
+    {
+        /*between 1st and 3rd quadrant */
+        return M_PI;
+    }
+    else if ( row > pointRow && column < pointCol )
+    {
+        /*3rd quadrant */
+        return ( M_PI + angle );
+    }
+    else if ( pointCol == column && pointRow < row )
+    {
+        /*between 3rd and 4th quadrant */
+        return ( ( M_PI * 3.0 ) / 2.0 );
+    }
+    else if ( column > pointCol && row > pointRow )
+    {
+        /*4th quadrant */
+        return ( M_PI * 2.0 - angle );
+    }
+
+    return 0;
 }
