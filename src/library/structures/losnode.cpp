@@ -23,7 +23,7 @@ LoSNode::LoSNode( int row, int col )
     mCol = col;
 }
 
-LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
+LoSNode::LoSNode( const int &pointRow, const int &pointCol, const CellEvent *e, const double &cellSize )
 {
     mRow = e->mRow;
     mCol = e->mCol;
@@ -32,11 +32,11 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
     mElevs[CellEventPositionType::ENTER] = e->mElevation[CellEventPositionType::ENTER];
     mElevs[CellEventPositionType::EXIT] = e->mElevation[CellEventPositionType::EXIT];
 
-    mAngle[CellEventPositionType::CENTER] = Visibility::angle( mRow, mCol, point->mRow, point->mCol );
+    mAngle[CellEventPositionType::CENTER] = Visibility::angle( mRow, mCol, pointRow, pointCol );
 
     CellEventPosition posEnter =
-        Visibility::eventPosition( CellEventPositionType::ENTER, e->mRow, e->mCol, point->mRow, point->mCol );
-    double angleEnter = Visibility::angle( posEnter.mRow, posEnter.mCol, point->mRow, point->mCol );
+        Visibility::eventPosition( CellEventPositionType::ENTER, e->mRow, e->mCol, pointRow, pointCol );
+    double angleEnter = Visibility::angle( posEnter.mRow, posEnter.mCol, pointRow, pointCol );
 
     if ( angleEnter > mAngle[CellEventPositionType::CENTER] )
     {
@@ -46,8 +46,8 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
     mAngle[CellEventPositionType::ENTER] = angleEnter;
 
     CellEventPosition posExit =
-        Visibility::eventPosition( CellEventPositionType::EXIT, e->mRow, e->mCol, point->mRow, point->mCol );
-    mAngle[CellEventPositionType::EXIT] = Visibility::angle( posExit.mRow, posExit.mCol, point->mRow, point->mCol );
+        Visibility::eventPosition( CellEventPositionType::EXIT, e->mRow, e->mCol, pointRow, pointCol );
+    mAngle[CellEventPositionType::EXIT] = Visibility::angle( posExit.mRow, posExit.mCol, pointRow, pointCol );
 
     if ( e->mBehindTargetForInverseLoS )
     {
@@ -55,16 +55,16 @@ LoSNode::LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize )
     }
 
     mDistances[CellEventPositionType::CENTER] =
-        Visibility::distance( static_cast<double>( mRow ), static_cast<double>( mCol ),
-                              static_cast<double>( point->mRow ), static_cast<double>( point->mCol ), cellSize );
+        Visibility::distance( static_cast<double>( mRow ), static_cast<double>( mCol ), static_cast<double>( pointRow ),
+                              static_cast<double>( pointCol ), cellSize );
 
     mDistances[CellEventPositionType::ENTER] =
         Visibility::distance( static_cast<double>( posEnter.mRow ), static_cast<double>( posEnter.mCol ),
-                              static_cast<double>( point->mRow ), static_cast<double>( point->mCol ), cellSize );
+                              static_cast<double>( pointRow ), static_cast<double>( pointCol ), cellSize );
 
     mDistances[CellEventPositionType::EXIT] =
         Visibility::distance( static_cast<double>( posExit.mRow ), static_cast<double>( posExit.mCol ),
-                              static_cast<double>( point->mRow ), static_cast<double>( point->mCol ), cellSize );
+                              static_cast<double>( pointRow ), static_cast<double>( pointCol ), cellSize );
 }
 
 double LoSNode::value( CellEventPositionType position, ValueType valueType )

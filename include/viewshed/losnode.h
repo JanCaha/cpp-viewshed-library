@@ -38,13 +38,16 @@ namespace viewshed
         LoSNode( int row, int col );
 
         /**
-         * @brief Construct a new LoSNode object build from Point, CellEvent and cell size.
+         * @brief @brief Construct a new LoSNode object build from Point position, CellEvent and cell size.
          *
-         * @param point Impotant point of viewshed (either view point for viewshed or target point for inver viewshed).
+         * @param pointRow Important point row of viewshed (either view point for viewshed or target point for
+         * inverseviewshed).
+         * @param pointCol Important point column of viewshed (either view point for viewshed or target point for
+         * inverseviewshed).
          * @param e Cell event with all the necessary information.
          * @param cellSize Cell size of raster from which the information was derived.
          */
-        LoSNode( std::shared_ptr<Point> point, CellEvent *e, double &cellSize );
+        LoSNode( const int &pointRow, const int &pointCol, const CellEvent *e, const double &cellSize );
 
         bool operator==( const LoSNode &other );
         bool operator!=( const LoSNode &other );
