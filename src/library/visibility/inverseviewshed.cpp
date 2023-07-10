@@ -82,7 +82,7 @@ void InverseViewshed::calculate( std::function<void( std::string, double )> step
 
 void InverseViewshed::submitToThreadpool( CellEvent &e )
 {
-    std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint, &e, mCellSize );
+    std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint->mRow, mPoint->mCol, &e, mCellSize );
 
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( mLosNodes );
     los->setTargetPoint( mPoint, mPoint->mOffset );
@@ -162,7 +162,7 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         // Target or ViewPoint are not part CellEvents - handled separately
         if ( mPoint->mRow == row && mPoint->mCol == column )
         {
-            mLosNodePoint = LoSNode( mPoint, &mEventCenter, mCellSize );
+            mLosNodePoint = LoSNode( mPoint->mRow, mPoint->mCol, &mEventCenter, mCellSize );
             return;
         }
 
@@ -171,12 +171,12 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         {
             if ( mPoint->mCol < column )
             {
-                mLoSNodeTemp = LoSNode( mPoint, &mEventCenter, mCellSize );
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &mEventCenter, mCellSize );
                 mLosNodes.push_back( mLoSNodeTemp );
             }
             else
             {
-                mLoSNodeTemp = LoSNode( mPoint, &mEventEnterOpposite, mCellSize );
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &mEventEnterOpposite, mCellSize );
                 mLosNodes.push_back( mLoSNodeTemp );
             }
         }

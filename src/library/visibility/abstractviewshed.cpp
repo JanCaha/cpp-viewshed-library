@@ -176,7 +176,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
                     break;
                 }
 
-                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
                 mLosNodes.push_back( mLoSNodeTemp );
                 break;
             }
@@ -246,7 +246,7 @@ void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSqua
     {
         if ( event.mEventType == CellEventPositionType::CENTER )
         {
-            mLoSNodeTemp = LoSNode( mPoint, &event, mCellSize );
+            mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &event, mCellSize );
             result.writeValue( mLoSNodeTemp.mRow, mLoSNodeTemp.mCol, func( mLoSNodeTemp ) );
         }
         i++;
@@ -305,7 +305,7 @@ LoSNode AbstractViewshed::statusNodeFromPoint( OGRPoint point )
     {
         if ( e.mEventType == CellEventPositionType::CENTER && e.mCol == col && e.mRow == row )
         {
-            ln = LoSNode( mPoint, &e, mCellSize );
+            ln = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
             return ln;
         }
     }
@@ -342,7 +342,7 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( OGRPoint point )
                 {
                     break;
                 }
-                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
                 losNodes.push_back( mLoSNodeTemp );
                 break;
             }
@@ -364,7 +364,7 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( OGRPoint point )
 
             case CellEventPositionType::CENTER:
             {
-                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
                 if ( mLoSNodeTemp.mCol == poi.mCol && mLoSNodeTemp.mRow == poi.mRow )
                 {
                     return losNodes;

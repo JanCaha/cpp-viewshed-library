@@ -30,7 +30,7 @@ namespace viewshed
          * @return double
          */
         static double distance( const double &x1, const double &y1, const double &x2, const double &y2,
-                                double &cellSize );
+                                const double &cellSize );
 
         /**
          * @brief Calculate gradient.

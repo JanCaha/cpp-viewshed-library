@@ -61,7 +61,7 @@ class LoSAlgorithmTest : public ::testing::Test
         for ( int i = 0; i < eventList.size(); i++ )
         {
             CellEvent e = eventList.at( i );
-            los->push_back( LoSNode( vp, &e, cellSize ) );
+            los->push_back( LoSNode( vp->mRow, vp->mCol, &e, cellSize ) );
         }
 
         los->setViewPoint( vp );

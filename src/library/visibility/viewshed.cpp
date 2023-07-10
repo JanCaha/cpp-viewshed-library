@@ -84,7 +84,7 @@ void Viewshed::calculate( std::function<void( std::string, double )> stepsTiming
 
 void Viewshed::submitToThreadpool( CellEvent &e )
 {
-    std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint, &e, mCellSize );
+    std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint->mRow, mPoint->mCol, &e, mCellSize );
 
     std::shared_ptr<LoS> los = std::make_shared<LoS>( mLosNodes );
     los->setViewPoint( mPoint );
@@ -129,14 +129,14 @@ void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValu
         // Target or ViewPoint are not part CellEvents - handled separately
         if ( mPoint->mRow == row && mPoint->mCol == column )
         {
-            mLosNodePoint = LoSNode( mPoint, &mEventCenter, mCellSize );
+            mLosNodePoint = LoSNode( mPoint->mRow, mPoint->mCol, &mEventCenter, mCellSize );
             return;
         }
 
         // LosNode prefill
         if ( mPoint->mRow == row && mPoint->mCol < column )
         {
-            mLoSNodeTemp = LoSNode( mPoint, &mEventEnter, mCellSize );
+            mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &mEventEnter, mCellSize );
             mLosNodes.push_back( mLoSNodeTemp );
         }
 

@@ -10,7 +10,8 @@ using viewshed::Point;
 using viewshed::RasterPosition;
 using viewshed::Visibility;
 
-double Visibility::distance( const double &x1, const double &y1, const double &x2, const double &y2, double &cellSize )
+double Visibility::distance( const double &x1, const double &y1, const double &x2, const double &y2,
+                             const double &cellSize )
 {
     return sqrt( pow( x1 - x2, 2 ) + pow( y1 - y2, 2 ) ) * cellSize;
 }
