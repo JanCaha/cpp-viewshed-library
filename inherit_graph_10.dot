@@ -4,5 +4,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
   rankdir="LR";
-  Node0 [label="viewshed::LoSImportantValues",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structviewshed_1_1LoSImportantValues.html",tooltip="Representation of important values and LoSNode indexes that can be extracted from LoS and are importa..."];
+  Node0 [label="ViewshedLibrary",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classViewshedLibrary.html",tooltip=" "];
 }
