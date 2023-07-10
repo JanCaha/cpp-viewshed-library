@@ -47,12 +47,20 @@ jobs:
           cd ..
           dir
           tar -acf "${PACKAGE}"_"${VERSION}".orig.tar.gz cpp-viewshed-library
+          ls -l
 
       - name: Debuild
         run: debuild -S -sa -d
         env:
           DEBSIGN_PROGRAM: gpg --batch --pinentry-mode loopback
           DEBSIGN_KEYID: 55C76CE00DD5C647
+      
+      - name: Show Files
+        run: |
+          cd ..
+          ls -l
 
-      - name: dput to beta repo
-        run: dput ppa:jancaha/gis-tools viewshed_${VERSION}_source.changes
+      - name: Dput to Repo
+        run: |
+          cd ..
+          dput ppa:jancaha/gis-tools viewshed_${VERSION}_source.changes
