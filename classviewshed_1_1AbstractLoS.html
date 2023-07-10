@@ -85,6 +85,11 @@ Inheritance diagram for viewshed::AbstractLoS:</div>
 <div class="dyncontent">
 <div class="center"><img src="classviewshed_1_1AbstractLoS__inherit__graph.png" border="0" usemap="#aviewshed_1_1AbstractLoS_inherit__map" alt="Inheritance graph"/></div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for viewshed::AbstractLoS:</div>
+<div class="dyncontent">
+<div class="center"><img src="classviewshed_1_1AbstractLoS__coll__graph.png" border="0" usemap="#aviewshed_1_1AbstractLoS_coll__map" alt="Collaboration graph"/></div>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -107,15 +112,15 @@ Public Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#ad7542021d2a29f93c8be15db81589b2b">prepareForCalculation</a> ()=0</td></tr>
 <tr class="memdesc:ad7542021d2a29f93c8be15db81589b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare line-of-sight for calculation. For example inverse <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a> needs some preprocessing before being able to be analysed. <br /></td></tr>
 <tr class="separator:ad7542021d2a29f93c8be15db81589b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a808e9a0452600ec7ae90566db96bc015"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a808e9a0452600ec7ae90566db96bc015">gradient</a> (int i)=0</td></tr>
-<tr class="memdesc:a808e9a0452600ec7ae90566db96bc015"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract gradient value for line-of-sight <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> at position <code>i</code>.  <a href="classviewshed_1_1AbstractLoS.html#a808e9a0452600ec7ae90566db96bc015">More...</a><br /></td></tr>
-<tr class="separator:a808e9a0452600ec7ae90566db96bc015"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48506bbbb77060e9dd60ef6c2d3b4b7a"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a48506bbbb77060e9dd60ef6c2d3b4b7a">distance</a> (int i)=0</td></tr>
-<tr class="memdesc:a48506bbbb77060e9dd60ef6c2d3b4b7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract distance for line-of-sight <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> at position <code>i</code>.  <a href="classviewshed_1_1AbstractLoS.html#a48506bbbb77060e9dd60ef6c2d3b4b7a">More...</a><br /></td></tr>
-<tr class="separator:a48506bbbb77060e9dd60ef6c2d3b4b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae877fb51319b56c18814ef54d4375d61"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#ae877fb51319b56c18814ef54d4375d61">elevation</a> (int i)=0</td></tr>
-<tr class="memdesc:ae877fb51319b56c18814ef54d4375d61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract elevation for line-of-sight <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> at position <code>i</code>.  <a href="classviewshed_1_1AbstractLoS.html#ae877fb51319b56c18814ef54d4375d61">More...</a><br /></td></tr>
-<tr class="separator:ae877fb51319b56c18814ef54d4375d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3bcc20774647e93c5205fde2973d26b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#af3bcc20774647e93c5205fde2973d26b">gradient</a> (std::size_t i)</td></tr>
+<tr class="memdesc:af3bcc20774647e93c5205fde2973d26b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract gradient value for line-of-sight <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> at position <code>i</code>.  <a href="classviewshed_1_1AbstractLoS.html#af3bcc20774647e93c5205fde2973d26b">More...</a><br /></td></tr>
+<tr class="separator:af3bcc20774647e93c5205fde2973d26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af78612441983fc242d8f55fdfd292557"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#af78612441983fc242d8f55fdfd292557">distance</a> (std::size_t i)</td></tr>
+<tr class="memdesc:af78612441983fc242d8f55fdfd292557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract distance for line-of-sight <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> at position <code>i</code>.  <a href="classviewshed_1_1AbstractLoS.html#af78612441983fc242d8f55fdfd292557">More...</a><br /></td></tr>
+<tr class="separator:af78612441983fc242d8f55fdfd292557"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adba3f98c78e69fd46d25aee9e5332dbc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#adba3f98c78e69fd46d25aee9e5332dbc">elevation</a> (std::size_t i)</td></tr>
+<tr class="memdesc:adba3f98c78e69fd46d25aee9e5332dbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract elevation for line-of-sight <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> at position <code>i</code>.  <a href="classviewshed_1_1AbstractLoS.html#adba3f98c78e69fd46d25aee9e5332dbc">More...</a><br /></td></tr>
+<tr class="separator:adba3f98c78e69fd46d25aee9e5332dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac853ba5880a9d778e25cbe5abdc7f665"><td class="memItemLeft" align="right" valign="top"><a id="ac853ba5880a9d778e25cbe5abdc7f665"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b> ()=0</td></tr>
 <tr class="separator:ac853ba5880a9d778e25cbe5abdc7f665"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,9 +136,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b> (
 <tr class="memitem:a9dea6e16d89e5b0d8fca0ae32a8efed4"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a9dea6e16d89e5b0d8fca0ae32a8efed4">resultCol</a> ()=0</td></tr>
 <tr class="memdesc:a9dea6e16d89e5b0d8fca0ae32a8efed4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column number where the outcome of <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a> analysis should be stored.  <a href="classviewshed_1_1AbstractLoS.html#a9dea6e16d89e5b0d8fca0ae32a8efed4">More...</a><br /></td></tr>
 <tr class="separator:a9dea6e16d89e5b0d8fca0ae32a8efed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa843c028bdb66edb73553fd96a598a6f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classviewshed_1_1LoSNode.html">LoSNode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#aa843c028bdb66edb73553fd96a598a6f">nodeAt</a> (int i)=0</td></tr>
-<tr class="memdesc:aa843c028bdb66edb73553fd96a598a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> at specific index.  <a href="classviewshed_1_1AbstractLoS.html#aa843c028bdb66edb73553fd96a598a6f">More...</a><br /></td></tr>
-<tr class="separator:aa843c028bdb66edb73553fd96a598a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6db66a06e4cf900900ab90db457fef1d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classviewshed_1_1LoSNode.html">LoSNode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a6db66a06e4cf900900ab90db457fef1d">nodeAt</a> (std::size_t i)=0</td></tr>
+<tr class="memdesc:a6db66a06e4cf900900ab90db457fef1d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> at specific index.  <a href="classviewshed_1_1AbstractLoS.html#a6db66a06e4cf900900ab90db457fef1d">More...</a><br /></td></tr>
+<tr class="separator:a6db66a06e4cf900900ab90db457fef1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a798393acd3c6471e19520ba60e99d567"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a798393acd3c6471e19520ba60e99d567">horizontalAngle</a> ()</td></tr>
 <tr class="memdesc:a798393acd3c6471e19520ba60e99d567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Horizontal angle for this line-of-sight.  <a href="classviewshed_1_1AbstractLoS.html#a798393acd3c6471e19520ba60e99d567">More...</a><br /></td></tr>
 <tr class="separator:a798393acd3c6471e19520ba60e99d567"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,6 +181,18 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b> (
 <tr class="memitem:a8c42883b7cb1aee225fd9cba9f724496"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a8c42883b7cb1aee225fd9cba9f724496">viewPointTotalElevation</a> ()</td></tr>
 <tr class="memdesc:a8c42883b7cb1aee225fd9cba9f724496"><td class="mdescLeft">&#160;</td><td class="mdescRight">Surface elevation of viewpoint with offset.  <a href="classviewshed_1_1AbstractLoS.html#a8c42883b7cb1aee225fd9cba9f724496">More...</a><br /></td></tr>
 <tr class="separator:a8c42883b7cb1aee225fd9cba9f724496"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac09e0883b7877d171445662cb92083e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#aac09e0883b7877d171445662cb92083e">setCurrentLoSNode</a> (std::size_t i)</td></tr>
+<tr class="memdesc:aac09e0883b7877d171445662cb92083e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Current <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a> Node object.  <a href="classviewshed_1_1AbstractLoS.html#aac09e0883b7877d171445662cb92083e">More...</a><br /></td></tr>
+<tr class="separator:aac09e0883b7877d171445662cb92083e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a495375c7b95130d7819138d9dfc2f12f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a495375c7b95130d7819138d9dfc2f12f">currentDistance</a> ()</td></tr>
+<tr class="memdesc:a495375c7b95130d7819138d9dfc2f12f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance to current node.  <a href="classviewshed_1_1AbstractLoS.html#a495375c7b95130d7819138d9dfc2f12f">More...</a><br /></td></tr>
+<tr class="separator:a495375c7b95130d7819138d9dfc2f12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfef387e09178d03739d573ecf913c85"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#adfef387e09178d03739d573ecf913c85">currentGradient</a> ()</td></tr>
+<tr class="memdesc:adfef387e09178d03739d573ecf913c85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient to current node.  <a href="classviewshed_1_1AbstractLoS.html#adfef387e09178d03739d573ecf913c85">More...</a><br /></td></tr>
+<tr class="separator:adfef387e09178d03739d573ecf913c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bb183989827cde2dd1b8df2892ce736"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a1bb183989827cde2dd1b8df2892ce736">currentElevation</a> ()</td></tr>
+<tr class="memdesc:a1bb183989827cde2dd1b8df2892ce736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elevation to current node.  <a href="classviewshed_1_1AbstractLoS.html#a1bb183989827cde2dd1b8df2892ce736">More...</a><br /></td></tr>
+<tr class="separator:a1bb183989827cde2dd1b8df2892ce736"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -187,6 +204,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a887514ce5144c64051907a60d251c169">sort</a> ()=0</td></tr>
 <tr class="memdesc:a887514ce5144c64051907a60d251c169"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort LoSNodes by distance from View point. <br /></td></tr>
 <tr class="separator:a887514ce5144c64051907a60d251c169"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a427c92b4be046dfac719b3d325f6f219"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a427c92b4be046dfac719b3d325f6f219">curvatureCorrectionsFix</a> (const double <a class="el" href="classviewshed_1_1AbstractLoS.html#af78612441983fc242d8f55fdfd292557">distance</a>)</td></tr>
+<tr class="memdesc:a427c92b4be046dfac719b3d325f6f219"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elevation changes using currently set curvature corrections for specific distance.  <a href="classviewshed_1_1AbstractLoS.html#a427c92b4be046dfac719b3d325f6f219">More...</a><br /></td></tr>
+<tr class="separator:a427c92b4be046dfac719b3d325f6f219"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -222,6 +242,10 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a68b681d492d9786cc7ed923e0ceed4cd">mRefractionCoefficient</a> = REFRACTION_COEFFICIENT</td></tr>
 <tr class="memdesc:a68b681d492d9786cc7ed923e0ceed4cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refraction coefficient for curvature corrections. <br /></td></tr>
 <tr class="separator:a68b681d492d9786cc7ed923e0ceed4cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88f5ece19ae01624764bceb966ead26e"><td class="memItemLeft" align="right" valign="top"><a id="a88f5ece19ae01624764bceb966ead26e"></a>
+<a class="el" href="classviewshed_1_1LoSNode.html">LoSNode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractLoS.html#a88f5ece19ae01624764bceb966ead26e">mCurrentLoSNode</a></td></tr>
+<tr class="memdesc:a88f5ece19ae01624764bceb966ead26e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Currently solved <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a> Node. <br /></td></tr>
+<tr class="separator:a88f5ece19ae01624764bceb966ead26e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract class that represent line-of-sight (<a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a>). Consists of LoSNodes, view point and target point (both with potential offset from the surface). </p>
@@ -312,8 +336,71 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 
 </div>
 </div>
-<a id="a48506bbbb77060e9dd60ef6c2d3b4b7a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48506bbbb77060e9dd60ef6c2d3b4b7a">&#9670;&nbsp;</a></span>distance()</h2>
+<a id="a495375c7b95130d7819138d9dfc2f12f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a495375c7b95130d7819138d9dfc2f12f">&#9670;&nbsp;</a></span>currentDistance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double AbstractLoS::currentDistance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Distance to current node. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classviewshed_1_1AbstractLoS.html#aac09e0883b7877d171445662cb92083e" title="Set the Current LoS Node object.">setCurrentLoSNode( std::size_t i )</a></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>double </dd></dl>
+
+</div>
+</div>
+<a id="a1bb183989827cde2dd1b8df2892ce736"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bb183989827cde2dd1b8df2892ce736">&#9670;&nbsp;</a></span>currentElevation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double AbstractLoS::currentElevation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Elevation to current node. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classviewshed_1_1AbstractLoS.html#aac09e0883b7877d171445662cb92083e" title="Set the Current LoS Node object.">setCurrentLoSNode( std::size_t i )</a></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>double </dd></dl>
+
+</div>
+</div>
+<a id="adfef387e09178d03739d573ecf913c85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfef387e09178d03739d573ecf913c85">&#9670;&nbsp;</a></span>currentGradient()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double AbstractLoS::currentGradient </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gradient to current node. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classviewshed_1_1AbstractLoS.html#aac09e0883b7877d171445662cb92083e" title="Set the Current LoS Node object.">setCurrentLoSNode( std::size_t i )</a></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>double </dd></dl>
+
+</div>
+</div>
+<a id="a427c92b4be046dfac719b3d325f6f219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a427c92b4be046dfac719b3d325f6f219">&#9670;&nbsp;</a></span>curvatureCorrectionsFix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -322,18 +409,45 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double viewshed::AbstractLoS::distance </td>
+          <td class="memname">double AbstractLoS::curvatureCorrectionsFix </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>distance</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+<p>Elevation changes using currently set curvature corrections for specific distance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">distance</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double </dd></dl>
+
+</div>
+</div>
+<a id="af78612441983fc242d8f55fdfd292557"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af78612441983fc242d8f55fdfd292557">&#9670;&nbsp;</a></span>distance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double AbstractLoS::distance </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 <p>Extract distance for line-of-sight <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> at position <code>i</code>. </p>
@@ -345,32 +459,22 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>double </dd></dl>
 
-<p>Implemented in <a class="el" href="classviewshed_1_1LoS.html#a440b855858c513207f1a6f1051700953">viewshed::LoS</a>, and <a class="el" href="classviewshed_1_1InverseLoS.html#a3862a5e8f10bc629b0ece925e8a01c30">viewshed::InverseLoS</a>.</p>
-
 </div>
 </div>
-<a id="ae877fb51319b56c18814ef54d4375d61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae877fb51319b56c18814ef54d4375d61">&#9670;&nbsp;</a></span>elevation()</h2>
+<a id="adba3f98c78e69fd46d25aee9e5332dbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adba3f98c78e69fd46d25aee9e5332dbc">&#9670;&nbsp;</a></span>elevation()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double viewshed::AbstractLoS::elevation </td>
+          <td class="memname">double AbstractLoS::elevation </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>i</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Extract elevation for line-of-sight <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> at position <code>i</code>. </p>
@@ -382,32 +486,22 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>double </dd></dl>
 
-<p>Implemented in <a class="el" href="classviewshed_1_1LoS.html#aa0f43a1328c764eaacef038037e93ac2">viewshed::LoS</a>, and <a class="el" href="classviewshed_1_1InverseLoS.html#af92ea50d8549084a4eefb33df077945f">viewshed::InverseLoS</a>.</p>
-
 </div>
 </div>
-<a id="a808e9a0452600ec7ae90566db96bc015"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a808e9a0452600ec7ae90566db96bc015">&#9670;&nbsp;</a></span>gradient()</h2>
+<a id="af3bcc20774647e93c5205fde2973d26b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3bcc20774647e93c5205fde2973d26b">&#9670;&nbsp;</a></span>gradient()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double viewshed::AbstractLoS::gradient </td>
+          <td class="memname">double AbstractLoS::gradient </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>i</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Extract gradient value for line-of-sight <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> at position <code>i</code>. </p>
@@ -418,8 +512,6 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>double </dd></dl>
-
-<p>Implemented in <a class="el" href="classviewshed_1_1LoS.html#a49213cd1925723455bbbbddb93f7a05b">viewshed::LoS</a>, and <a class="el" href="classviewshed_1_1InverseLoS.html#a524bc210a1878358f3143d514a3eaf1c">viewshed::InverseLoS</a>.</p>
 
 </div>
 </div>
@@ -443,8 +535,8 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 
 </div>
 </div>
-<a id="aa843c028bdb66edb73553fd96a598a6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa843c028bdb66edb73553fd96a598a6f">&#9670;&nbsp;</a></span>nodeAt()</h2>
+<a id="a6db66a06e4cf900900ab90db457fef1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6db66a06e4cf900900ab90db457fef1d">&#9670;&nbsp;</a></span>nodeAt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -455,7 +547,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
         <tr>
           <td class="memname">virtual <a class="el" href="classviewshed_1_1LoSNode.html">LoSNode</a> viewshed::AbstractLoS::nodeAt </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>i</em></td><td>)</td>
           <td></td>
         </tr>
@@ -476,7 +568,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classviewshed_1_1LoS.html#a66792d7c7d13f332931583cd9618c395">viewshed::LoS</a>, and <a class="el" href="classviewshed_1_1InverseLoS.html#a07c924a1ba44c5fd5ff208965240e258">viewshed::InverseLoS</a>.</p>
+<p>Implemented in <a class="el" href="classviewshed_1_1LoS.html#aa4e6f514587728e02a63dc752fd905f4">viewshed::LoS</a>, and <a class="el" href="classviewshed_1_1InverseLoS.html#a02fc682c4e9ee7bb2d44c79fe46f1c5e">viewshed::InverseLoS</a>.</p>
 
 </div>
 </div>
@@ -590,6 +682,40 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">angle</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aac09e0883b7877d171445662cb92083e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac09e0883b7877d171445662cb92083e">&#9670;&nbsp;</a></span>setCurrentLoSNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AbstractLoS::setCurrentLoSNode </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the Current <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a> Node object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td></td></tr>
   </table>
   </dd>
 </dl>
