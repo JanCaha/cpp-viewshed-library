@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 2.2.0 DESCRIPTION "Viewshed library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 2.2.0 DESCRIPTION "Viewshed library based on QGIS/Qt and C++ 20" LANGUAGES CXX)
 
 SET(LIBRARY_NAME "viewshed")
 
