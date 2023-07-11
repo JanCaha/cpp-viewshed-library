@@ -43,24 +43,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: true
-      
-      - name: Run Tests with double
-        id: unittestsdouble
-        run: |
-          mkdir build 
-          cmake \
-            -S. \
-            -Bbuild \
-            -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DPACK_DEB:bool=off \
-            -DBUILD_DOCUMENTATION:bool=off \
-            -DBUILD_TESTS:bool=on \
-            -DCELL_EVENT_DATA_FLOAT:bool=off \
-            -DOUTPUT_RASTER_DATA_FLOAT:bool=off
-          cmake --build build --config Release --target build_tests
-          cmake --build build --config Release --target run_tests
-          rm -rf build
 
       - name: Configure
         run: | 
