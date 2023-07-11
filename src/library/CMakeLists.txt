@@ -40,7 +40,12 @@ set_target_properties(library_viewshed PROPERTIES OUTPUT_NAME "viewshed")
 
 set_target_properties(library_viewshed PROPERTIES VERSION ${PROJECT_VERSION})
 
-set_target_properties(library_viewshed PROPERTIES PUBLIC_HEADER "${LIBRARY_VIEWSHED_PUBLIC_HEADERS}")
+set(INSTALL_HEADERS
+    "${LIBRARY_VIEWSHED_PUBLIC_HEADERS}"
+    ${CMAKE_CURRENT_SOURCE_DIR}/bsthreadpool/include/BS_thread_pool.hpp
+)
+
+set_target_properties(library_viewshed PROPERTIES PUBLIC_HEADER "${INSTALL_HEADERS}")
 
 target_include_directories(library_viewshed PUBLIC ${CMAKE_SOURCE_DIR}/include/viewshed)
 target_include_directories(library_viewshed PUBLIC bs_thread_pool)
