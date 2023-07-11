@@ -21,12 +21,6 @@ jobs:
           sudo apt update
           sudo apt install ninja-build doxygen libgtest-dev libgmock-dev
 
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v3
-        with:
-          version: '5.15.2'
-          host: 'linux'
-
       - name: Install GDAL
         run: |
           sudo apt-get -y install gdal-bin libgdal-dev
@@ -49,12 +43,30 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: true
+      
+      - name: Run Tests with double
+        id: unittestsdouble
+        run: |
+          mkdir build 
+          cmake \
+            -S. \
+            -Bbuild \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPACK_DEB:bool=off \
+            -DBUILD_DOCUMENTATION:bool=off \
+            -DBUILD_TESTS:bool=on \
+            -DCELL_EVENT_DATA_FLOAT:bool=off \
+            -DOUTPUT_RASTER_DATA_FLOAT:bool=off
+          cmake --build build --config Release --target build_tests
+          cmake --build build --config Release --target run_tests
+          rm -rf build
 
       - name: Configure
         run: | 
-           mkdir build
-           cmake \
-             -S. \
+          mkdir build
+          cmake \
+            -S. \
             -Bbuild \
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
@@ -66,34 +78,20 @@ jobs:
 
       - name: Build
         run: | 
-           cmake --build build --config Release --target viewshed
+          cmake --build build --config Release --target viewshed
 
       - name: Run Tests
         id: unittests
         run: |
-           cmake --build build --config Release --target build_tests
-           cmake --build build --config Release --target run_tests
+          cmake --build build --config Release --target build_tests
+          cmake --build build --config Release --target run_tests
       
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          host: 'linux'
+
       - name: Test install
         run: |
           sudo cmake --build build --config Release --target install
-
-      - name: Clean Build
-        run: |
-          sudo cmake --build build --target clean
-
-      - name: Run Tests with double
-        id: unittestsdouble
-        run: |
-           cmake \
-             -S. \
-            -Bbuild \
-            -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DPACK_DEB:bool=off \
-            -DBUILD_DOCUMENTATION:bool=off \
-            -DBUILD_TESTS:bool=on \
-            -DCELL_EVENT_DATA_FLOAT:bool=off \
-            -DOUTPUT_RASTER_DATA_FLOAT:bool=off
-           cmake --build build --config Release --target build_tests
-           cmake --build build --config Release --target run_tests
