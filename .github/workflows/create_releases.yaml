@@ -46,8 +46,8 @@ jobs:
         
         - name: Install and remove artifact
           run: |
-            sudo apt install ./_packages/simplerasters*.deb
-            rm -rf _packages
+            sudo apt install ./simplerasters/simplerasters*.deb
+            rm -rf simplerasters
 
         - name: Checkout
           uses: actions/checkout@v3
@@ -76,7 +76,7 @@ jobs:
         - name: Upload DEB file as artifact
           uses: actions/upload-artifact@v3
           with:
-            name: _packages
+            name: viewshed
             path: _packages/viewshed_*.deb
         
         - name: Deploy Documentation
@@ -100,7 +100,7 @@ jobs:
         - name: Download artifact
           uses: actions/download-artifact@v3
           with:
-            name: _packages
+            name: viewshed
 
         - name: Copy viewshed to docker folder
           run: |
@@ -118,7 +118,7 @@ jobs:
         
         - name: Copy simplerasters to docker folder
           run: |
-            mv _packages/simplerasters_*.deb docker/install/ 
+            mv simplerasters/simplerasters_*.deb docker/install/ 
 
         - name: Log in to Docker Hub
           uses: docker/login-action@v2
