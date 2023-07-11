@@ -76,7 +76,7 @@ jobs:
         - name: Upload DEB file as artifact
           uses: actions/upload-artifact@v3
           with:
-            name: _packages
+            name: viewshed
             path: _packages/viewshed_*.deb
         
         - name: Deploy Documentation
@@ -100,7 +100,7 @@ jobs:
         - name: Download artifact
           uses: actions/download-artifact@v3
           with:
-            name: _packages
+            name: viewshed
 
         - name: Copy viewshed to docker folder
           run: |
