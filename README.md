@@ -107,3 +107,16 @@ sudo add-apt-repository ppa:jancaha/gis-tools
 sudo apt-get update
 apt-get -y install simplerasters viewshed viewshed-bin 
 ```
+
+## Citation
+
+```bibtex
+@Software{Caha2023,
+  author  = {Jan Caha},
+  title   = {viewshed ({C++ Viewshed library based on GDAL and Qt})},
+  year    = {2023},
+  date    = {2023-07-11},
+  version = {2.2.0},
+  url     = {https://github.com/JanCaha/cpp-viewshed-library},
+}
+```
