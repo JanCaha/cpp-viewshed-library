@@ -21,6 +21,8 @@ using namespace viewshed;
 using namespace viewshed::visibilityalgorithm;
 using namespace std::chrono::_V2;
 
+using MiliSeconds = std::chrono::milliseconds;
+
 class ViewshedTimingTest : public ::testing::Test
 {
   protected:
@@ -30,7 +32,7 @@ class ViewshedTimingTest : public ::testing::Test
     std::shared_ptr<Viewshed> viewshed = std::make_shared<Viewshed>( vp, dem, algs );
 };
 
-u_long estimateTime( u_long measuredTime, double percent = 0.05 )
+u_long estimateTime( u_long measuredTime, double percent = 0.1 )
 {
     return measuredTime + static_cast<u_long>( measuredTime * percent );
 }
@@ -41,9 +43,9 @@ TEST_F( ViewshedTimingTest, initEventList )
     viewshed->initEventList();
     system_clock::time_point endTime = high_resolution_clock::now();
 
-    std::chrono::nanoseconds diff = std::chrono::duration_cast<std::chrono::nanoseconds>( endTime - startTime );
+    MiliSeconds diff = std::chrono::duration_cast<MiliSeconds>( endTime - startTime );
 
-    ASSERT_GE( estimateTime( 99805811 ), diff.count() );
+    ASSERT_GE( estimateTime( 60 ), diff.count() );
 }
 
 TEST_F( ViewshedTimingTest, sortEventList )
@@ -54,23 +56,24 @@ TEST_F( ViewshedTimingTest, sortEventList )
     viewshed->sortEventList();
     system_clock::time_point endTime = high_resolution_clock::now();
 
-    std::chrono::nanoseconds diff = std::chrono::duration_cast<std::chrono::nanoseconds>( endTime - startTime );
+    MiliSeconds diff = std::chrono::duration_cast<MiliSeconds>( endTime - startTime );
 
-    ASSERT_GE( estimateTime( 81400891 ), diff.count() );
+    ASSERT_GE( estimateTime( 30 ), diff.count() );
 }
 
 TEST_F( ViewshedTimingTest, parseEventList )
 {
     viewshed->initEventList();
     viewshed->sortEventList();
+    viewshed->setMaxThreads( 1 );
 
     system_clock::time_point startTime = high_resolution_clock::now();
     viewshed->parseEventList();
     system_clock::time_point endTime = high_resolution_clock::now();
 
-    std::chrono::nanoseconds diff = std::chrono::duration_cast<std::chrono::nanoseconds>( endTime - startTime );
+    MiliSeconds diff = std::chrono::duration_cast<MiliSeconds>( endTime - startTime );
 
-    ASSERT_GE( estimateTime( 2355788714 ), diff.count() );
+    ASSERT_GE( estimateTime( 1300 ), diff.count() );
 }
 
 int main( int argc, char **argv )
