@@ -110,9 +110,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>extractValuesFromEven
 <tr class="memitem:a910e1ee31cdba3fa8ce16a41d93bad41"><td class="memItemLeft" align="right" valign="top"><a id="a910e1ee31cdba3fa8ce16a41d93bad41"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>extractValuesFromEventList</b> (std::shared_ptr&lt; ProjectedSquareCellRaster &gt; dem_, std::string fileName, std::function&lt; double(<a class="el" href="classviewshed_1_1LoSNode.html">LoSNode</a>)&gt; func)</td></tr>
 <tr class="separator:a910e1ee31cdba3fa8ce16a41d93bad41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5843239be3d6d4b7fb070013e77d3dd8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a5843239be3d6d4b7fb070013e77d3dd8">isInsideAngles</a> (const double &amp;eventEnterAngle, const double &amp;eventExitAngle)</td></tr>
-<tr class="memdesc:a5843239be3d6d4b7fb070013e77d3dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if cell with these enter and exit angles falls inside the angle limit.  <a href="classviewshed_1_1AbstractViewshed.html#a5843239be3d6d4b7fb070013e77d3dd8">More...</a><br /></td></tr>
-<tr class="separator:a5843239be3d6d4b7fb070013e77d3dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8a294bafa7c7a944bb2efe2f1784386"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#af8a294bafa7c7a944bb2efe2f1784386">isInsideAngles</a> (double eventEnterAngle, double eventExitAngle)</td></tr>
+<tr class="memdesc:af8a294bafa7c7a944bb2efe2f1784386"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if cell with these enter and exit angles falls inside the angle limit.  <a href="classviewshed_1_1AbstractViewshed.html#af8a294bafa7c7a944bb2efe2f1784386">More...</a><br /></td></tr>
+<tr class="separator:af8a294bafa7c7a944bb2efe2f1784386"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c52b4a6d57576250ea994e1be7847ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a1c52b4a6d57576250ea994e1be7847ff">setMaximalDistance</a> (double distance)</td></tr>
 <tr class="memdesc:a1c52b4a6d57576250ea994e1be7847ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Maximal Distance limit value. Limits event list creation to cells within this distance limit. Value is in the same units as CRS of input raster.  <a href="classviewshed_1_1AbstractViewshed.html#a1c52b4a6d57576250ea994e1be7847ff">More...</a><br /></td></tr>
 <tr class="separator:a1c52b4a6d57576250ea994e1be7847ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -483,8 +483,8 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>mOppositeAngleExit<
 
 </div>
 </div>
-<a id="a5843239be3d6d4b7fb070013e77d3dd8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5843239be3d6d4b7fb070013e77d3dd8">&#9670;&nbsp;</a></span>isInsideAngles()</h2>
+<a id="af8a294bafa7c7a944bb2efe2f1784386"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8a294bafa7c7a944bb2efe2f1784386">&#9670;&nbsp;</a></span>isInsideAngles()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -492,13 +492,13 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>mOppositeAngleExit<
         <tr>
           <td class="memname">bool AbstractViewshed::isInsideAngles </td>
           <td>(</td>
-          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>eventEnterAngle</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>eventExitAngle</em>&#160;</td>
         </tr>
         <tr>
