@@ -27,23 +27,17 @@ void LoSEvaluator::parseNodes()
     mLosValues->targetIndex = mLos->targetIndex();
 
     double snGradient;
-    double nextGradient;
 
-    for ( std::size_t i = 0; i < mLos->numberOfNodes(); i++ )
+    for ( int i = 0; i < mLos->numberOfNodes(); i++ )
     {
-        mLos->setCurrentLoSNode( i );
-
-        snGradient = mLos->currentGradient();
+        snGradient = mLos->gradient( i );
 
         if ( i + 1 < mLos->numberOfNodes() )
         {
-
-            nextGradient = mLos->gradient( i + 1 );
-
             // is current PoI horizon?
             if ( i == mLos->targetPointIndex() )
             {
-                if ( nextGradient < snGradient && mLosValues->maxGradientBefore < snGradient )
+                if ( mLos->gradient( i + 1 ) < snGradient && mLosValues->maxGradientBefore < snGradient )
                 {
                     mLosValues->targetHorizon = true;
                 }
@@ -52,7 +46,7 @@ void LoSEvaluator::parseNodes()
             // is LoSNode horizon before PoI?
             if ( mLos->distance( i + 1 ) <= mLos->targetDistance() )
             {
-                if ( mLosValues->maxGradientBefore < snGradient && nextGradient < snGradient )
+                if ( mLosValues->maxGradientBefore < snGradient && mLos->gradient( i + 1 ) < snGradient )
                 {
                     mLosValues->indexHorizonBefore = i;
                     mLosValues->countHorizonBefore++;
@@ -60,14 +54,14 @@ void LoSEvaluator::parseNodes()
             }
 
             // is this LoSNode horizon?
-            if ( mLosValues->maxGradient < snGradient && nextGradient < snGradient )
+            if ( mLosValues->maxGradient < snGradient && mLos->gradient( i + 1 ) < snGradient )
             {
                 mLosValues->indexHorizon = i;
                 mLosValues->countHorizon++;
             }
         }
 
-        if ( mLos->currentDistance() < mLos->targetDistance() )
+        if ( mLos->distance( i ) < mLos->targetDistance() )
         {
             if ( mLosValues->maxGradientBefore < snGradient )
             {
@@ -105,7 +99,7 @@ void LoSEvaluator::calculate()
 
     mResultValues = ViewshedValues( mLos->resultRow(), mLos->resultCol() );
 
-    for ( std::size_t i = 0; i < mVisibilityIndices->size(); i++ )
+    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
     {
         mResultValues.values.push_back( mVisibilityIndices->at( i )->result( mLosValues, mLos ) );
     }

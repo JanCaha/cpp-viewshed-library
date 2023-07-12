@@ -84,7 +84,7 @@ void Viewshed::calculate( std::function<void( std::string, double )> stepsTiming
 
 void Viewshed::submitToThreadpool( CellEvent &e )
 {
-    std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint->mRow, mPoint->mCol, &e, mCellSize );
+    std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint, &e, mCellSize );
 
     std::shared_ptr<LoS> los = std::make_shared<LoS>( mLosNodes );
     los->setViewPoint( mPoint );
@@ -97,46 +97,37 @@ void Viewshed::submitToThreadpool( CellEvent &e )
 void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell )
 {
     mCellElevs[CellEventPositionType::CENTER] = pixelValue;
-    CellEventPosition tempPosEnter =
-        Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint->mRow, mPoint->mCol );
+    CellEventPosition tempPosEnter = Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint );
     mCellElevs[CellEventPositionType::ENTER] = mInputDsm->cornerValue( tempPosEnter.mRow, tempPosEnter.mCol );
-    CellEventPosition tempPosExit =
-        Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint->mRow, mPoint->mCol );
+    CellEventPosition tempPosExit = Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint );
     mCellElevs[CellEventPositionType::EXIT] = mInputDsm->cornerValue( tempPosExit.mRow, tempPosExit.mCol );
 
-    mAngleCenter = Visibility::angle( row, column, mPoint->mRow, mPoint->mCol );
-    mAngleEnter = Visibility::angle( tempPosEnter.mRow, tempPosEnter.mCol, mPoint->mRow, mPoint->mCol );
-    mAngleExit = Visibility::angle( tempPosExit.mRow, tempPosExit.mCol, mPoint->mRow, mPoint->mCol );
+    mAngleCenter = Visibility::angle( row, column, mPoint );
+    mAngleEnter = Visibility::angle( &tempPosEnter, mPoint );
+    mAngleExit = Visibility::angle( &tempPosExit, mPoint );
 
-    mEventDistance = Visibility::distance( row, column, static_cast<double>( mPoint->mRow ),
-                                           static_cast<double>( mPoint->mCol ), mCellSize );
+    mEventDistance = Visibility::distance( row, column, mPoint, mCellSize );
 
     if ( mEventDistance < mMaxDistance && isInsideAngles( mAngleEnter, mAngleExit ) )
     {
         mEventCenter =
             CellEvent( CellEventPositionType::CENTER, row, column, mEventDistance, mAngleCenter, mCellElevs );
-        mEventEnter =
-            CellEvent( CellEventPositionType::ENTER, row, column,
-                       Visibility::distance( tempPosEnter.mRow, tempPosEnter.mCol, static_cast<double>( mPoint->mRow ),
-                                             static_cast<double>( mPoint->mCol ), mCellSize ),
-                       mAngleEnter, mCellElevs );
-        mEventExit =
-            CellEvent( CellEventPositionType::EXIT, row, column,
-                       Visibility::distance( tempPosExit.mRow, tempPosExit.mCol, static_cast<double>( mPoint->mRow ),
-                                             static_cast<double>( mPoint->mCol ), mCellSize ),
-                       mAngleExit, mCellElevs );
+        mEventEnter = CellEvent( CellEventPositionType::ENTER, row, column,
+                                 Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mAngleEnter, mCellElevs );
+        mEventExit = CellEvent( CellEventPositionType::EXIT, row, column,
+                                Visibility::distance( &tempPosExit, mPoint, mCellSize ), mAngleExit, mCellElevs );
 
         // Target or ViewPoint are not part CellEvents - handled separately
         if ( mPoint->mRow == row && mPoint->mCol == column )
         {
-            mLosNodePoint = LoSNode( mPoint->mRow, mPoint->mCol, &mEventCenter, mCellSize );
+            mLosNodePoint = LoSNode( mPoint, &mEventCenter, mCellSize );
             return;
         }
 
         // LosNode prefill
         if ( mPoint->mRow == row && mPoint->mCol < column )
         {
-            mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &mEventEnter, mCellSize );
+            mLoSNodeTemp = LoSNode( mPoint, &mEventEnter, mCellSize );
             mLosNodes.push_back( mLoSNodeTemp );
         }
 

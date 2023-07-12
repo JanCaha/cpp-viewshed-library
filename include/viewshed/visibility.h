@@ -20,6 +20,46 @@ namespace viewshed
     {
       public:
         /**
+         * @brief Obtain cell event postion based on cell event position type, row, column and important point.
+         *
+         * @param eventType
+         * @param row
+         * @param col
+         * @param point
+         * @return CellEventPosition
+         */
+        static CellEventPosition eventPosition( CellEventPositionType eventType, int row, int col,
+                                                std::shared_ptr<Point> point );
+
+        /**
+         * @brief Calculate horizontal angle.
+         *
+         * @param row
+         * @param column
+         * @param point
+         * @return double
+         */
+        static double angle( double row, double column, std::shared_ptr<Point> point );
+
+        /**
+         * @brief Calculate horizontal angle.
+         *
+         * @param pos
+         * @param point
+         * @return double
+         */
+        static double angle( CellEventPosition *pos, std::shared_ptr<Point> point );
+
+        /**
+         * @brief Calculate horizontal angle.
+         *
+         * @param pos
+         * @param point
+         * @return double
+         */
+        static double angle( RasterPosition *pos, std::shared_ptr<Point> point );
+
+        /**
          * @brief Calculate distance.
          *
          * @param x1
@@ -30,63 +70,71 @@ namespace viewshed
          * @return double
          */
         static double distance( const double &x1, const double &y1, const double &x2, const double &y2,
-                                const double &cellSize );
+                                double &cellSize );
+
+        /**
+         * @brief Calculate distance.
+         *
+         * @param row
+         * @param column
+         * @param point
+         * @param cellSize
+         * @return double
+         */
+        static double distance( int &row, int &column, std::shared_ptr<Point> point, double &cellSize );
+
+        /**
+         * @brief Calculate distance.
+         *
+         * @param point1
+         * @param point2
+         * @param cellSize
+         * @return double
+         */
+        static double distance( std::shared_ptr<Point> point1, std::shared_ptr<Point> point2, double &cellSize );
+
+        /**
+         * @brief Calculate distance.
+         *
+         * @param row
+         * @param column
+         * @param point
+         * @param cellSize
+         * @return double
+         */
+        static double distance( double &row, double &column, std::shared_ptr<Point> point, double &cellSize );
+
+        /**
+         * @brief Calculate distance.
+         *
+         * @param pos
+         * @param point
+         * @param cellSize
+         * @return double
+         */
+        static double distance( CellEventPosition *pos, std::shared_ptr<Point> point, double &cellSize );
 
         /**
          * @brief Calculate gradient.
          *
-         * @param elevationDiff
+         * @param point
+         * @param elevation
          * @param distance
          * @return double
          */
-        static double gradient( double elevationDiff, double distance );
+        static double gradient( std::shared_ptr<Point> point, double elevation, double distance );
 
         /**
-         * @brief Calculate elevation change based on distance, atmospheric refraction and earth curvature.
+         * @brief Recalculate elevation with inclusion of atmospheric refraction and earth curvature;
          *
          * @param distance
-         * @param refractionCoeff Refraction coefficient.
-         * @param earthDiameter Diameter of Earth to use.
+         * @param refractionCoeff Refraction coefficient. Default value is 0.142860.
+         * @param earthDiameter Diameter of Earth to use. Default value is 12740000, the units should be the same as for
+         * raster DEM.
          * @return double
          */
-        static double curvatureCorrections( const double &distance, const double &refractionCoeff,
-                                            const double &earthDiameter );
-
-        /**
-         * @brief Calculate elevation change based on distance, atmospheric refraction and earth curvature. This version
-         * uses default values of refraction coefficient 0.142860 and earth diameter 12740000.
-         *
-         * @param distance
-         * @return double
-         */
-        static double curvatureCorrections( double &distance )
-        {
-            return curvatureCorrections( distance, viewshed::REFRACTION_COEFFICIENT, viewshed::EARTH_DIAMETER );
-        };
-
-        /**
-         * @brief Obtain cell event postion based on cell event position type, row, column and important point.
-         *
-         * @param eventType
-         * @param row
-         * @param col
-         * @param pointRow
-         * @param pointCol
-         * @return CellEventPosition
-         */
-        static CellEventPosition eventPosition( const CellEventPositionType &eventType, const int &row, const int &col,
-                                                const int &pointRow, const int &pointCol );
-
-        /**
-         * @brief Calculate horizontal angle.
-         *
-         * @param row
-         * @param column
-         * @param pointRow
-         * @param pointCol
-         * @return double
-         */
-        static double angle( const double &row, const double &column, const int &pointRow, const int &pointCol );
+        static double curvatureCorrections( double distance, double refractionCoeff = viewshed::REFRACTION_COEFFICIENT,
+                                            double earthDiameter = viewshed::EARTH_DIAMETER );
     };
 } // namespace viewshed
 

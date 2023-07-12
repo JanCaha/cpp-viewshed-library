@@ -21,7 +21,7 @@ namespace viewshed
      * @brief Class that represents LoS for classic Viewshed calculation.
      *
      */
-    class LoS : public AbstractLoS
+    class LoS : public std::vector<LoSNode>, public AbstractLoS
     {
       public:
         LoS();
@@ -38,7 +38,11 @@ namespace viewshed
         int resultRow() override;
         int resultCol() override;
 
-        LoSNode nodeAt( std::size_t i ) override;
+        double gradient( int i ) override;
+        double distance( int i ) override;
+        double elevation( int i ) override;
+
+        LoSNode nodeAt( int i ) override;
         void removePointsAfterTarget();
 
       protected:

@@ -17,6 +17,27 @@ InverseLoS::InverseLoS() {}
 
 InverseLoS::InverseLoS( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
 
+double InverseLoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
+
+double InverseLoS::gradient( int i ) { return Visibility::gradient( mVp, elevation( i ), distance( i ) ); }
+
+double InverseLoS::elevation( int i )
+{
+
+    double elevation = at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
+
+    if ( mCurvatureCorrections )
+    {
+        return elevation +
+               Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
+                                                 mRefractionCoefficient, mEarthDiameter );
+    }
+    else
+    {
+        return elevation;
+    }
+}
+
 void InverseLoS::setTargetPoint( std::shared_ptr<Point> tp, double targetOffset )
 {
     mTargetIndex = -1;
@@ -26,7 +47,7 @@ void InverseLoS::setTargetPoint( std::shared_ptr<Point> tp, double targetOffset 
 void InverseLoS::setUpTargetLoSNode()
 {
     LoSNode ln = LoSNode( mTp->mRow, mTp->mCol );
-    double angle = Visibility::angle( mVp->mRow, mVp->mCol, mTp->mRow, mTp->mCol );
+    double angle = Visibility::angle( mVp->mRow, mVp->mCol, mTp );
     ln.mAngle[CellEventPositionType::ENTER] = angle;
     ln.mAngle[CellEventPositionType::CENTER] = angle;
     ln.mAngle[CellEventPositionType::EXIT] = angle;
@@ -81,7 +102,7 @@ void InverseLoS::removePointsAfterViewPoint()
            end() );
 }
 
-LoSNode InverseLoS::nodeAt( std::size_t i ) { return this->operator[]( i ); }
+LoSNode InverseLoS::nodeAt( int i ) { return at( i ); }
 
 int InverseLoS::resultRow() { return mVp->mRow; }
 
@@ -92,45 +113,45 @@ bool InverseLoS::isValid() { return true; }
 
 void InverseLoS::fixDistancesAngles()
 {
-    for ( std::size_t i = 0; i < size(); i++ )
+    for ( int i = 0; i < size(); i++ )
     {
-        if ( this->operator[]( i ).mInverseLoSBehindTarget )
+        if ( at( i ).mInverseLoSBehindTarget )
         {
-            this->operator[]( i ).mDistances[CellEventPositionType::ENTER] += mPointDistance;
-            this->operator[]( i ).mDistances[CellEventPositionType::CENTER] += mPointDistance;
-            this->operator[]( i ).mDistances[CellEventPositionType::EXIT] += mPointDistance;
+            at( i ).mDistances[CellEventPositionType::ENTER] += mPointDistance;
+            at( i ).mDistances[CellEventPositionType::CENTER] += mPointDistance;
+            at( i ).mDistances[CellEventPositionType::EXIT] += mPointDistance;
 
             double addValue = -M_PI;
 
-            if ( this->operator[]( i ).mAngle[CellEventPositionType::CENTER] < M_PI ||
-                 this->operator[]( i ).mAngle[CellEventPositionType::CENTER] == 0 )
+            if ( at( i ).mAngle[CellEventPositionType::CENTER] < M_PI ||
+                 at( i ).mAngle[CellEventPositionType::CENTER] == 0 )
             {
                 addValue = +M_PI;
             }
 
-            this->operator[]( i ).mAngle[CellEventPositionType::ENTER] += addValue;
-            this->operator[]( i ).mAngle[CellEventPositionType::CENTER] += addValue;
-            this->operator[]( i ).mAngle[CellEventPositionType::EXIT] += addValue;
+            at( i ).mAngle[CellEventPositionType::ENTER] += addValue;
+            at( i ).mAngle[CellEventPositionType::CENTER] += addValue;
+            at( i ).mAngle[CellEventPositionType::EXIT] += addValue;
         }
         else
         {
-            this->operator[]( i ).mDistances[CellEventPositionType::ENTER] =
-                mPointDistance - this->operator[]( i ).mDistances[CellEventPositionType::ENTER];
-            this->operator[]( i ).mDistances[CellEventPositionType::CENTER] =
-                mPointDistance - this->operator[]( i ).mDistances[CellEventPositionType::CENTER];
-            this->operator[]( i ).mDistances[CellEventPositionType::EXIT] =
-                mPointDistance - this->operator[]( i ).mDistances[CellEventPositionType::EXIT];
+            at( i ).mDistances[CellEventPositionType::ENTER] =
+                mPointDistance - at( i ).mDistances[CellEventPositionType::ENTER];
+            at( i ).mDistances[CellEventPositionType::CENTER] =
+                mPointDistance - at( i ).mDistances[CellEventPositionType::CENTER];
+            at( i ).mDistances[CellEventPositionType::EXIT] =
+                mPointDistance - at( i ).mDistances[CellEventPositionType::EXIT];
         }
     }
 }
 
 void InverseLoS::findTargetPointIndex()
 {
-    for ( std::size_t i = 0; i < numberOfNodes(); i++ )
+    for ( int i = 0; i < numberOfNodes(); i++ )
     {
         if ( i + 1 < numberOfNodes() )
         {
-            if ( this->operator[]( i ).centreDistance() == targetDistance() )
+            if ( at( i ).centreDistance() == targetDistance() )
             {
                 mTargetIndex = i;
                 break;
