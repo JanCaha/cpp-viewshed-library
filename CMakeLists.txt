@@ -8,6 +8,8 @@ option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
 option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." ON)
 
+option(NEEDS_QT "Allows optionally building library without searching for Qt. Cannot build binaries with this set to OFF. For running test mainly." ON)
+
 option(CELL_EVENT_DATA_FLOAT "Create CellEvents with data stored `float` instead of `double`. Lowers significantly RAM memory usage." ON)
 option(OUTPUT_RASTER_DATA_FLOAT "Create output rasters with data stored `Float32` instead of `Float64`. Lowers RAM memory usage." ON)
 
@@ -15,8 +17,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(CMAKE_AUTOMOC TRUE)
 
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -28,19 +28,25 @@ find_package(Threads REQUIRED)
 
 find_package(SimpleRasters REQUIRED)
 
-find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
+if(NEEDS_QT)
+    set(CMAKE_AUTOMOC TRUE)
 
-set(QT_INCLUDES
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5Gui_INCLUDE_DIRS}
-)
+    find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
 
-set(QT_LIBS
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-)
+    set(QT_INCLUDES
+        ${Qt5Core_INCLUDE_DIRS}
+        ${Qt5Widgets_INCLUDE_DIRS}
+        ${Qt5Gui_INCLUDE_DIRS}
+    )
+
+    set(QT_LIBS
+        Qt5::Core
+        Qt5::Gui
+        Qt5::Widgets
+    )
+
+    set(HAS_QT TRUE)
+endif()
 
 set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/abstractlos.h
@@ -123,11 +129,13 @@ install(TARGETS library_viewshed
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
 )
 
-install(TARGETS
-    viewshed inverseviewshed viewshedcalculator losextractor
-    COMPONENT bin
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+if(HAS_QT)
+    install(TARGETS
+        viewshed inverseviewshed viewshedcalculator losextractor
+        COMPONENT bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+endif()
 
 # ############################################################
 # Pack :
