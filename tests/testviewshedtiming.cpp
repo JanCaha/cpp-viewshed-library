@@ -37,6 +37,8 @@ std::string TRUE_VALUE = "true";
 
 u_long estimateTime( u_long measuredTime, double percent = 0.1 )
 {
+    std::cout << std::getenv( "GITHUB_ACTIONS" ) << std::endl;
+
     if ( TRUE_VALUE.compare( std::getenv( "GITHUB_ACTIONS" ) ) )
     {
         percent = 0.75;
