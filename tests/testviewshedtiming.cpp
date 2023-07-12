@@ -39,7 +39,7 @@ u_long estimateTime( u_long measuredTime, double percent = 0.1 )
 {
     if ( TRUE_VALUE.compare( std::getenv( "GITHUB_ACTIONS" ) ) == 0 )
     {
-        percent = 0.5;
+        percent = 0.75;
     }
 
     return measuredTime + static_cast<u_long>( measuredTime * percent );
