@@ -21,12 +21,6 @@ jobs:
           sudo apt update
           sudo apt install ninja-build doxygen libgtest-dev libgmock-dev
 
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v3
-        with:
-          version: '5.15.2'
-          host: 'linux'
-
       - name: Install GDAL
         run: |
           sudo apt-get -y install gdal-bin libgdal-dev
@@ -66,18 +60,14 @@ jobs:
 
       - name: Build
         run: | 
-          cmake --build build --config Release --target viewshed
+          cmake --build build --config Release --target library_viewshed
 
       - name: Run Tests
         id: unittests
         run: |
           cmake --build build --config Release --target build_tests
           cmake --build build --config Release --target run_tests
-
-      - name: Test install
-        run: |
-          sudo cmake --build build --config Release --target install
-
+      
       - name: Clean Build
         run: |
           sudo cmake --build build --target clean
@@ -97,3 +87,16 @@ jobs:
             -DOUTPUT_RASTER_DATA_FLOAT:bool=off
           cmake --build build --config Release --target build_tests
           cmake --build build --config Release --target run_tests
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          host: 'linux'
+
+      - name: Test Install
+        run: |
+          cmake --build build --config Release --target all
+          sudo cmake --build build --config Release --target install
+
+      
