@@ -1,6 +1,7 @@
-viewshed (2.3.0-0ppa0) jammy; urgency=low
+viewshed (2.3.1-0ppa0) jammy; urgency=low
 
   * Remove optimization, that does not work
+  * Fix build type
 
  -- Jan Caha <jan.caha@outlook.com>  Wed, 12 Jul 2023 09:11:07 +0200
 
