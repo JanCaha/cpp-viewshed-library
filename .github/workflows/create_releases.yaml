@@ -9,17 +9,40 @@ on:
       - 'main'
       - 'master'
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PACKAGE: viewshed
+        
 jobs:
 
   Create-deb-file-library:
 
     runs-on: ubuntu-latest
 
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
     steps:
-  
+
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            submodules: true
+        
+        - name: Set env
+          run: echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+        
+        - name: Print Version
+          run: |
+            echo "-----"
+            echo "Project Version"
+            echo ${PACKAGE}
+            echo ${VERSION}
+            echo "-----"
+              
+        - name: Push tag
+          uses: anothrNick/github-tag-action@1.64.0 
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+            CUSTOM_TAG : "v${VERSION}"
+            
         - name: Update and Upgrade
           run: |
             sudo apt update
@@ -48,11 +71,6 @@ jobs:
           run: |
             sudo apt install ./simplerasters/simplerasters*.deb
             rm -rf simplerasters
-
-        - name: Checkout
-          uses: actions/checkout@v3
-          with:
-            submodules: true
 
         - name: Configure
           run: | 
@@ -138,10 +156,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      PACKAGE: viewshed
-    
     steps:
       
       - name: Checkout
