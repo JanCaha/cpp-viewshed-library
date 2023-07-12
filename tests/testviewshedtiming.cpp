@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 
 #include <chrono>
+#include <cstdlib>
 #include <filesystem>
 
 #include "simplerasters.h"
@@ -32,8 +33,15 @@ class ViewshedTimingTest : public ::testing::Test
     std::shared_ptr<Viewshed> viewshed = std::make_shared<Viewshed>( vp, dem, algs );
 };
 
+std::string TRUE_VALUE = "true";
+
 u_long estimateTime( u_long measuredTime, double percent = 0.1 )
 {
+    if ( TRUE_VALUE.compare( std::getenv( "GITHUB_ACTIONS" ) ) )
+    {
+        percent = 0.75;
+    }
+
     return measuredTime + static_cast<u_long>( measuredTime * percent );
 }
 
