@@ -63,8 +63,4 @@ double Point::totalElevation() { return mElevation + mOffset; }
 
 bool Point::isValid() { return mValid; }
 
-double Point::distance( std::shared_ptr<Point> point )
-{
-    return Visibility::distance( mRow, mCol, static_cast<double>( point->mRow ), static_cast<double>( point->mCol ),
-                                 mCellSize );
-}
+double Point::distance( std::shared_ptr<Point> point ) { return Visibility::distance( mRow, mCol, point, mCellSize ); }

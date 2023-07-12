@@ -10,13 +10,33 @@ using viewshed::LoS;
 using viewshed::LoSNode;
 using viewshed::Visibility;
 
-LoS::LoS() {}
+LoS::LoS() : std::vector<LoSNode>() {}
 
 LoS::LoS( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
 
 void LoS::sort() { std::sort( begin(), end() ); }
 
 void LoS::setLoSNodes( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
+
+double LoS::gradient( int i ) { return Visibility::gradient( mVp, elevation( i ), distance( i ) ); }
+
+double LoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
+
+double LoS::elevation( int i )
+{
+    double elevation = at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
+
+    if ( mCurvatureCorrections )
+    {
+        return elevation +
+               Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
+                                                 mRefractionCoefficient, mEarthDiameter );
+    }
+    else
+    {
+        return elevation;
+    }
+}
 
 bool LoS::isValid() { return mVp->isValid(); }
 
@@ -48,7 +68,7 @@ void LoS::prepareForCalculation()
 
 int LoS::numberOfNodes() { return size(); };
 
-LoSNode LoS::nodeAt( std::size_t i ) { return this->operator[]( i ); }
+LoSNode LoS::nodeAt( int i ) { return at( i ); }
 
 int LoS::resultRow() { return mTp->mRow; }
 
