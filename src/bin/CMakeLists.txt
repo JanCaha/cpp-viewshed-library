@@ -27,21 +27,25 @@ macro(create_binary bin_name filename add_widgets)
     )
 endmacro(create_binary)
 
-create_binary(viewshed viewshed.cpp OFF)
+if(HAS_QT)
+    message(STATUS "Has Qt so binaries can be build.")
 
-create_binary(inverseviewshed inverseviewshed.cpp OFF)
+    create_binary(viewshed viewshed.cpp OFF)
 
-create_binary(viewshedcalculator viewshedcalculator.cpp ON)
+    create_binary(inverseviewshed inverseviewshed.cpp OFF)
 
-create_binary(losextractor losextractor.cpp ON)
+    create_binary(viewshedcalculator viewshedcalculator.cpp ON)
 
-add_custom_target(create_binaries)
+    create_binary(losextractor losextractor.cpp ON)
 
-add_dependencies(create_binaries viewshed)
+    add_custom_target(create_binaries)
 
-add_dependencies(create_binaries
-    viewshed
-    inverseviewshed
-    viewshedcalculator
-    losextractor
-)
+    add_dependencies(create_binaries viewshed)
+
+    add_dependencies(create_binaries
+        viewshed
+        inverseviewshed
+        viewshedcalculator
+        losextractor
+    )
+endif()
