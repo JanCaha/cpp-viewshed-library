@@ -1,4 +1,4 @@
-viewshed (2.4.0-0ppa0) jammy; urgency=low
+viewshed (2.4.2-0ppa0) jammy; urgency=low
 
   * Compile using cmake, creating a proper version build as RELEASE
 
