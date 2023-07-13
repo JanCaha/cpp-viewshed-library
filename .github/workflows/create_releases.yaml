@@ -37,12 +37,6 @@ jobs:
             echo ${PACKAGE}
             echo ${VERSION}
             echo "-----"
-              
-        - name: Push tag
-          uses: anothrNick/github-tag-action@1.64.0 
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
-            CUSTOM_TAG : "v${{steps.version.outputs.VERSION}}"
             
         - name: Update and Upgrade
           run: |
@@ -97,6 +91,16 @@ jobs:
           with:
             name: viewshed
             path: _packages/viewshed_*.deb
+        
+        - name: Move deb file
+          run: |
+          mv _packages/viewshed_*.deb .      
+
+        - name: Release
+          uses: softprops/action-gh-release@v1
+          with:
+            files: viewshed_*.deb
+            tag_name: "v${{steps.version.outputs.VERSION}}"
         
         - name: Deploy Documentation
           uses: peaceiris/actions-gh-pages@v3
