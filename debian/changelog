@@ -1,5 +1,11 @@
 viewshed (2.5.0-0ppa0) jammy; urgency=low
   
+  * fix version
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 31 Jul 2023 22:44:12 +0200
+
+viewshed (2.5.0-0ppa0) jammy; urgency=low
+  
   * refactor InverseLoS and LoS functions into AbstractLoS
   * minor optimization
 
