@@ -27,6 +27,7 @@ jobs:
             submodules: true
         
         - name: Set env
+          id: version
           run: echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
         
         - name: Print Version
@@ -41,7 +42,7 @@ jobs:
           uses: anothrNick/github-tag-action@1.64.0 
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
-            CUSTOM_TAG : "v${VERSION}"
+            CUSTOM_TAG : "v${{steps.version.outputs.VERSION}}"
             
         - name: Update and Upgrade
           run: |
