@@ -26,7 +26,7 @@ void LoSEvaluator::parseNodes()
 
     mLosValues->targetIndex = mLos->targetIndex();
 
-    double snGradient;
+    double snGradient, nextGradient;
 
     for ( int i = 0; i < mLos->numberOfNodes(); i++ )
     {
@@ -34,10 +34,12 @@ void LoSEvaluator::parseNodes()
 
         if ( i + 1 < mLos->numberOfNodes() )
         {
+            nextGradient = mLos->gradient( i + 1 );
+
             // is current PoI horizon?
             if ( i == mLos->targetPointIndex() )
             {
-                if ( mLos->gradient( i + 1 ) < snGradient && mLosValues->maxGradientBefore < snGradient )
+                if ( nextGradient < snGradient && mLosValues->maxGradientBefore < snGradient )
                 {
                     mLosValues->targetHorizon = true;
                 }
@@ -46,7 +48,7 @@ void LoSEvaluator::parseNodes()
             // is LoSNode horizon before PoI?
             if ( mLos->distance( i + 1 ) <= mLos->targetDistance() )
             {
-                if ( mLosValues->maxGradientBefore < snGradient && mLos->gradient( i + 1 ) < snGradient )
+                if ( mLosValues->maxGradientBefore < snGradient && nextGradient < snGradient )
                 {
                     mLosValues->indexHorizonBefore = i;
                     mLosValues->countHorizonBefore++;
@@ -54,7 +56,7 @@ void LoSEvaluator::parseNodes()
             }
 
             // is this LoSNode horizon?
-            if ( mLosValues->maxGradient < snGradient && mLos->gradient( i + 1 ) < snGradient )
+            if ( mLosValues->maxGradient < snGradient && nextGradient < snGradient )
             {
                 mLosValues->indexHorizon = i;
                 mLosValues->countHorizon++;
@@ -77,11 +79,14 @@ void LoSEvaluator::parseNodes()
         }
     }
 
+    int oneBeforeLast = mLos->numberOfNodes() - 1;
+    double gradientOneBeforeLast = mLos->gradient( oneBeforeLast );
+
     // if last point on LoS is visible and higher then global horizon, then move global horizon to this point
-    if ( mLos->gradient( mLos->numberOfNodes() - 1 ) > mLos->gradient( mLosValues->indexHorizon ) &&
-         mLos->gradient( mLos->numberOfNodes() - 1 ) > mLosValues->maxGradient )
+    if ( gradientOneBeforeLast > mLosValues->maxGradient &&
+         gradientOneBeforeLast > mLos->gradient( mLosValues->indexHorizon ) )
     {
-        mLosValues->indexHorizon = mLos->numberOfNodes() - 1;
+        mLosValues->indexHorizon = oneBeforeLast;
     }
 
     mAlreadyParsed = true;

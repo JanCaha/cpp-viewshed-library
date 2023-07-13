@@ -2,7 +2,6 @@
 #define VIEWSHEDLIB_LOS_H
 
 #include <memory>
-#include <vector>
 
 #include "abstractlos.h"
 #include "enums.h"
@@ -21,7 +20,7 @@ namespace viewshed
      * @brief Class that represents LoS for classic Viewshed calculation.
      *
      */
-    class LoS : public std::vector<LoSNode>, public AbstractLoS
+    class LoS : public AbstractLoS
     {
       public:
         LoS();
@@ -34,19 +33,10 @@ namespace viewshed
         bool isValid() override;
 
         int targetPointIndex() override;
-        int numberOfNodes() override;
         int resultRow() override;
         int resultCol() override;
 
-        double gradient( int i ) override;
-        double distance( int i ) override;
-        double elevation( int i ) override;
-
-        LoSNode nodeAt( int i ) override;
-        void removePointsAfterTarget();
-
       protected:
-        void sort() override;
         void findTargetPointIndex() override;
     };
 

@@ -10,35 +10,21 @@ using viewshed::LoS;
 using viewshed::LoSNode;
 using viewshed::Visibility;
 
-LoS::LoS() : std::vector<LoSNode>() {}
+LoS::LoS() { mValid = false; }
 
-LoS::LoS( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
-
-void LoS::sort() { std::sort( begin(), end() ); }
-
-void LoS::setLoSNodes( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
-
-double LoS::gradient( int i ) { return Visibility::gradient( mVp, elevation( i ), distance( i ) ); }
-
-double LoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
-
-double LoS::elevation( int i )
+LoS::LoS( std::vector<LoSNode> losNodes )
 {
-    double elevation = at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
-
-    if ( mCurvatureCorrections )
-    {
-        return elevation +
-               Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
-                                                 mRefractionCoefficient, mEarthDiameter );
-    }
-    else
-    {
-        return elevation;
-    }
+    assign( losNodes.begin(), losNodes.end() );
+    mValid = false;
 }
 
-bool LoS::isValid() { return mVp->isValid(); }
+void LoS::setLoSNodes( std::vector<LoSNode> losNodes )
+{
+    assign( losNodes.begin(), losNodes.end() );
+    mValid = false;
+}
+
+bool LoS::isValid() { return mVp->isValid() && mValid; }
 
 void LoS::setTargetPoint( std::shared_ptr<LoSNode> poi, double targetOffset )
 {
@@ -62,21 +48,12 @@ int LoS::targetPointIndex() { return mTargetIndex; }
 
 void LoS::prepareForCalculation()
 {
+    mValid = true;
+
     sort();
     findTargetPointIndex();
 };
 
-int LoS::numberOfNodes() { return size(); };
-
-LoSNode LoS::nodeAt( int i ) { return at( i ); }
-
 int LoS::resultRow() { return mTp->mRow; }
 
 int LoS::resultCol() { return mTp->mCol; }
-
-void LoS::removePointsAfterTarget()
-{
-
-    erase( std::remove_if( begin(), end(), [=]( LoSNode &node ) { return mPointDistance <= node.centreDistance(); } ),
-           end() );
-}

@@ -10,14 +10,15 @@ cmake -S. \
     -DBUILD_DOCUMENTATION:bool=off \
     -DBUILD_TESTS:bool=on \
     -DCELL_EVENT_DATA_FLOAT:bool=on \
-    -DOUTPUT_RASTER_DATA_FLOAT:bool=on
+    -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
+    -DNEEDS_QT:bool=off
 
-cmake --build build --config Release --target viewshed
+cmake --build build --config Release --target library_viewshed
 
 # testing
 # cmake --build build --config Debug --target run_tests
-cmake --build build --config Release --target all
-cmake --build build --config Release --target run_tests
+# cmake --build build --config Release --target all
+# cmake --build build --config Release --target run_tests
 
 # install
 sudo cmake --build build --config Release --target install
