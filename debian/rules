@@ -3,7 +3,7 @@
 BUILDDIR = build_dir
 
 # secondly called by launchpad
-build:
+build: : export CXX=$(whereis clang++)
 	mkdir $(BUILDDIR);
 	cmake \
 		-B $(BUILDDIR) \
