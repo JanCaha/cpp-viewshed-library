@@ -94,7 +94,7 @@ jobs:
         
         - name: Move deb file
           run: |
-          mv _packages/viewshed_*.deb .      
+            mv _packages/viewshed_*.deb .      
 
         - name: Release
           uses: softprops/action-gh-release@v1
