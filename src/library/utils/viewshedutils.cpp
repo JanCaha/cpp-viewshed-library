@@ -150,12 +150,6 @@ bool ViewshedUtils::compareRasters( std::shared_ptr<SingleBandRaster> r1, std::s
         return false;
     }
 
-    if ( !doubleEqual( r1->xCellSize(), r2->xCellSize(), 0.0001 ) )
-    {
-        error = "Pixel size of rasters are not the same.";
-        return false;
-    }
-
     return true;
 }
 
@@ -182,12 +176,6 @@ bool ViewshedUtils::validateRaster( std::shared_ptr<SingleBandRaster> rl, std::s
     if ( !rl->isProjected() )
     {
         error = "Raster needs to be projected.";
-        return false;
-    }
-
-    if ( !doubleEqual( rl->xCellSize(), rl->yCellSize(), 0.0001 ) )
-    {
-        error = "Raster needs to have rectangular cells.";
         return false;
     }
 
