@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 1.9.9 DESCRIPTION "Viewshed Library based on QGIS/Qt and C++ 17" LANGUAGES CXX)
+project(viewshed VERSION 2.4.0 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
+
+SET(LIBRARY_NAME "viewshed")
 
 option(BUILD_TESTS "Build tests." OFF)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
@@ -9,54 +11,47 @@ option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and deriva
 option(CELL_EVENT_DATA_FLOAT "Create CellEvents with data stored `float` instead of `double`. Lowers significantly RAM memory usage." ON)
 option(OUTPUT_RASTER_DATA_FLOAT "Create output rasters with data stored `Float32` instead of `Float64`. Lowers RAM memory usage." ON)
 
+option(NEEDS_QT "Allows optionally building library without searching for Qt. Cannot build binaries with this set to OFF. For running test mainly." ON)
+
 option(CELL_EVENT_DATA_FLOAT "Create CellEvents with data stored `float` instead of `double`. Lowers significantly RAM memory usage." ON)
 option(OUTPUT_RASTER_DATA_FLOAT "Create output rasters with data stored `Float32` instead of `Float64`. Lowers RAM memory usage." ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(CMAKE_AUTOMOC TRUE)
 
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(QGIS REQUIRED)
-
-find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
+find_package(GDAL REQUIRED)
 
 find_package(Threads REQUIRED)
 
-# find_package(SQLite3 REQUIRED)
 find_package(PQXX REQUIRED)
 
-set(MINIMAL_QGIS_INCLUDES
-    ${QGIS_INCLUDE_DIR}
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5Xml_INCLUDE_DIRS}
-    ${Qt5Gui_INCLUDE_DIRS}
+find_package(SimpleRasters REQUIRED)
 
-    # ${SQLITE3_INCLUDE_DIRS}
-    ${PQXX_INCLUDE_DIRECTORIES}
-)
+if(NEEDS_QT)
+    set(CMAKE_AUTOMOC TRUE)
 
-set(MINIMAL_QGIS_LIBS
-    ${QGIS_CORE_LIBRARY}
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Xml
-    Qt5::Widgets
+    find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
 
-    # ${SQLITE3_LIBRARIES}
-    ${PQXX_LIBRARIES}
-)
+    set(QT_INCLUDES
+        ${Qt5Core_INCLUDE_DIRS}
+        ${Qt5Widgets_INCLUDE_DIRS}
+        ${Qt5Gui_INCLUDE_DIRS}
+    )
 
-set(LIBRARY_VIEWSHED_PRIVATE_HEADERS
-    ${CMAKE_BINARY_DIR}/_deps/bs_thread_pool_src-src/BS_thread_pool.hpp
-)
+    set(QT_LIBS
+        Qt5::Core
+        Qt5::Gui
+        Qt5::Widgets
+    )
+
+    set(HAS_QT TRUE)
+endif()
 
 set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/abstractlos.h
@@ -64,6 +59,7 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/abstractviewshedalgorithm.h
     include/viewshed/cellevent.h
     include/viewshed/celleventposition.h
+    include/viewshed/constants.h
     include/viewshed/defaultdatatypes.h
     include/viewshed/enums.h
     include/viewshed/inverselos.h
@@ -72,7 +68,6 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/losevaluator.h
     include/viewshed/losimportantvalues.h
     include/viewshed/losnode.h
-    include/viewshed/memoryraster.h
     include/viewshed/point.h
     include/viewshed/rasterposition.h
     include/viewshed/threadtasks.h
@@ -81,11 +76,14 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/visibility.h
     include/viewshed/visibilityangledifferencetoglobalhorizon.h
     include/viewshed/visibilityangledifferencetolocalhorizon.h
+    include/viewshed/visibilitydistanceglobalhorizon.h
+    include/viewshed/visibilitydistancelocalhorizon.h
     include/viewshed/visibilityelevationdifference.h
-    include/viewshed/visibilityhorizondistance.h
     include/viewshed/visibilityelevationdifferencetolocalhorizon.h
     include/viewshed/visibilityelevationdifferencetoglobalhorizon.h
+    include/viewshed/visibilityfuzzy.h
     include/viewshed/visibilityhorizons.h
+    include/viewshed/visibilityhorizonscount.h
     include/viewshed/visibilityviewangle.h
     include/viewshed/visibilityboolean.h
     include/viewshed/visibilityalgorithms.h
@@ -120,22 +118,33 @@ write_basic_package_version_file(
     COMPATIBILITY SameMajorVersion
 )
 
+include(GNUInstallDirs)
+
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
+    COMPONENT lib
 )
 
-# include(GNUInstallDirs)
 install(TARGETS library_viewshed
-    LIBRARY DESTINATION lib
-    PUBLIC_HEADER DESTINATION include/viewshed
-    PRIVATE_HEADER DESTINATION include/viewshed
-    INCLUDES DESTINATION include
+    COMPONENT lib
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
 )
+
+if(HAS_QT)
+    install(TARGETS
+        viewshed inverseviewshed viewshedcalculator losextractor
+        COMPONENT bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+endif()
 
 # ############################################################
 # Pack :
-if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
     if(PACK_DEB)
         message(STATUS "VIEWSHED LIBRARY: DEB will be packed file.")
 
@@ -147,12 +156,12 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
             file(REMOVE ${old_versions})
         endif()
 
-        add_custom_target(pack_deb
+        add_custom_target(pack_viewshed_library_deb
             COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         )
 
-        add_dependencies(pack_deb library_viewshed)
+        add_dependencies(pack_viewshed_library_deb library_viewshed)
     endif()
 endif()
 
@@ -162,4 +171,9 @@ add_subdirectory(docs)
 
 # ############################################################
 # add tests :
-add_subdirectory(tests)
+if(BUILD_TESTS)
+    include(CTest)
+    enable_testing(true)
+
+    add_subdirectory(tests)
+endif()

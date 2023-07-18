@@ -5,60 +5,60 @@ using viewshed::CellEventPositionType;
 
 CellEvent::CellEvent()
 {
-    eventType = CellEventPositionType::CENTER;
-    row = -1;
-    col = -1;
-    dist2vp = -1;
-    angle = -1;
-    elevation[CellEventPositionType::ENTER] = -1;
-    elevation[CellEventPositionType::CENTER] = -1;
-    elevation[CellEventPositionType::EXIT] = -1;
+    mEventType = CellEventPositionType::CENTER;
+    mRow = -1;
+    mCol = -1;
+    mDist2point = -1;
+    mAngle = -1;
+    mElevation[CellEventPositionType::ENTER] = -1;
+    mElevation[CellEventPositionType::CENTER] = -1;
+    mElevation[CellEventPositionType::EXIT] = -1;
 }
 
-CellEvent::CellEvent( CellEventPositionType eventType_, int row_, int col_, double dist_, double angle_,
-                      double elevation_[3] )
+CellEvent::CellEvent( CellEventPositionType eventType, int row, int col, double dist, double angle,
+                      double elevation[3] )
 {
-    eventType = eventType_;
-    row = row_;
-    col = col_;
-    angle = angle_;
-    dist2vp = dist_;
-    elevation[CellEventPositionType::ENTER] = elevation_[CellEventPositionType::ENTER];
-    elevation[CellEventPositionType::CENTER] = elevation_[CellEventPositionType::CENTER];
-    elevation[CellEventPositionType::EXIT] = elevation_[CellEventPositionType::EXIT];
+    mEventType = eventType;
+    mRow = row;
+    mCol = col;
+    mAngle = angle;
+    mDist2point = dist;
+    mElevation[CellEventPositionType::ENTER] = elevation[CellEventPositionType::ENTER];
+    mElevation[CellEventPositionType::CENTER] = elevation[CellEventPositionType::CENTER];
+    mElevation[CellEventPositionType::EXIT] = elevation[CellEventPositionType::EXIT];
 }
 
 bool CellEvent::operator==( const CellEvent other ) const
 {
-    return row == other.row && col == other.col && eventType == other.eventType &&
-           behindTargetForInverseLoS == other.behindTargetForInverseLoS;
+    return mRow == other.mRow && mCol == other.mCol && mEventType == other.mEventType &&
+           mBehindTargetForInverseLoS == other.mBehindTargetForInverseLoS;
 }
 
 bool CellEvent::operator<( const CellEvent other ) const
 {
 
-    if ( row == other.row && col == other.col && eventType == other.eventType && behindTargetForInverseLoS &&
-         other.behindTargetForInverseLoS )
+    if ( mRow == other.mRow && mCol == other.mCol && mEventType == other.mEventType && mBehindTargetForInverseLoS &&
+         other.mBehindTargetForInverseLoS )
         return false;
 
-    if ( angle > other.angle )
+    if ( mAngle > other.mAngle )
     {
         return false;
     }
-    else if ( angle < other.angle )
+    else if ( mAngle < other.mAngle )
     {
         return true;
     }
     else
     {
         /*a.angle == b.angle */
-        if ( eventType == CellEventPositionType::EXIT )
+        if ( mEventType == CellEventPositionType::EXIT )
             return true;
-        if ( other.eventType == CellEventPositionType::EXIT )
+        if ( other.mEventType == CellEventPositionType::EXIT )
             return false;
-        if ( eventType == CellEventPositionType::ENTER )
+        if ( mEventType == CellEventPositionType::ENTER )
             return false;
-        if ( other.eventType == CellEventPositionType::ENTER )
+        if ( other.mEventType == CellEventPositionType::ENTER )
             return true;
         return false;
     }

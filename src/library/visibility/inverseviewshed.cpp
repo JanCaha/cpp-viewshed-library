@@ -12,23 +12,22 @@ using viewshed::InverseLoS;
 using viewshed::InverseViewshed;
 using viewshed::LoSEvaluator;
 using viewshed::LoSNode;
-using viewshed::MemoryRaster;
 using viewshed::Point;
 using viewshed::ViewshedValues;
 
-InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double observerOffset,
-                                  std::shared_ptr<QgsRasterLayer> dem,
-                                  std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
-                                  bool applyCurvatureCorrections, double earthDiameter, double refractionCoeff,
-                                  double minimalAngle, double maximalAngle )
+InverseViewshed::InverseViewshed(
+    std::shared_ptr<Point> targetPoint, double observerOffset, std::shared_ptr<ProjectedSquareCellRaster> dem,
+    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices,
+    bool applyCurvatureCorrections, double earthDiameter, double refractionCoeff, double minimalAngle,
+    double maximalAngle )
 {
     mValid = false;
 
     mInverseViewshed = true;
 
     mPoint = targetPoint;
-    mInputDem = dem;
-    mAlgs = algs;
+    mInputDsm = dem;
+    mVisibilityIndices = visibilityIndices;
 
     mCurvatureCorrections = applyCurvatureCorrections;
     mEarthDiameter = earthDiameter;
@@ -36,7 +35,7 @@ InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double obs
 
     setAngles( minimalAngle, maximalAngle );
 
-    mCellSize = mInputDem->rasterUnitsPerPixelX();
+    mCellSize = mInputDsm->xCellSize();
 
     mThreadPool.reset( mThreadPool.get_thread_count() - 1 );
 
@@ -45,7 +44,7 @@ InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double obs
     mValid = true;
 }
 
-std::shared_ptr<InverseLoS> InverseViewshed::getLoS( QgsPoint point, bool onlyToPoi )
+std::shared_ptr<InverseLoS> InverseViewshed::getLoS( OGRPoint point, bool onlyToPoi )
 {
 
     std::vector<LoSNode> losNodes = prepareLoSWithPoint( point );
@@ -53,11 +52,10 @@ std::shared_ptr<InverseLoS> InverseViewshed::getLoS( QgsPoint point, bool onlyTo
     std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( statusNodeFromPoint( point ) );
 
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( losNodes );
-    los->setTargetPoint( mPoint, mPoint->offset );
+    los->setTargetPoint( mPoint, mPoint->mOffset );
     los->setViewPoint( poi, mObserverOffset );
-
     los->setRemovePointsAfterTarget( onlyToPoi );
-
+    los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
     los->prepareForCalculation();
 
     return los;
@@ -90,21 +88,20 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( mLosNodes );
     auto endTime = std::chrono::high_resolution_clock::now();
     los->timeToCopy = std::chrono::duration_cast<std::chrono::nanoseconds>( endTime - startTime );
-    los->setTargetPoint( mPoint, mPoint->offset );
+    los->setTargetPoint( mPoint, mPoint->mOffset );
     los->setViewPoint( poi, mObserverOffset );
     los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
-    mResultPixels.push_back( mThreadPool.submit( viewshed::evaluateLoSForPoI, los, mAlgs ) );
+    mThreadPool.push_task( viewshed::evaluateLoS, los, mVisibilityIndices, mResults );
 }
 
-void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pixelValue,
-                                         std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell )
+void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell )
 {
     mCellElevs[CellEventPositionType::CENTER] = pixelValue;
     CellEventPosition tempPosEnter = Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint );
-    mCellElevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::ENTER] = mInputDsm->cornerValue( tempPosEnter.mRow, tempPosEnter.mCol );
     CellEventPosition tempPosExit = Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint );
-    mCellElevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::EXIT] = mInputDsm->cornerValue( tempPosExit.mRow, tempPosExit.mCol );
 
     mAngleCenter = Visibility::angle( row, column, mPoint );
     mAngleEnter = Visibility::angle( &tempPosEnter, mPoint );
@@ -145,24 +142,24 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         mEventEnterOpposite =
             CellEvent( CellEventPositionType::ENTER, row, column,
                        Visibility::distance( &tempPosEnter, mPoint, mCellSize ), mOppositeAngleEnter, mCellElevs );
-        mEventEnterOpposite.behindTargetForInverseLoS = true;
+        mEventEnterOpposite.mBehindTargetForInverseLoS = true;
 
         mEventExitOpposite =
             CellEvent( CellEventPositionType::EXIT, row, column,
                        Visibility::distance( &tempPosExit, mPoint, mCellSize ), mOppositeAngleExit, mCellElevs );
-        mEventExitOpposite.behindTargetForInverseLoS = true;
+        mEventExitOpposite.mBehindTargetForInverseLoS = true;
 
         // Target or ViewPoint are not part CellEvents - handled separately
-        if ( mPoint->row == row && mPoint->col == column )
+        if ( mPoint->mRow == row && mPoint->mCol == column )
         {
             mLosNodePoint = LoSNode( mPoint, &mEventCenter, mCellSize );
             return;
         }
 
         // LosNode prefill
-        if ( mPoint->row == row )
+        if ( mPoint->mRow == row )
         {
-            if ( mPoint->col < column )
+            if ( mPoint->mCol < column )
             {
                 mLoSNodeTemp = LoSNode( mPoint, &mEventCenter, mCellSize );
                 mLosNodes.push_back( mLoSNodeTemp );

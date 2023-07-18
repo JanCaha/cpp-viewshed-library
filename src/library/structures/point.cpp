@@ -1,3 +1,5 @@
+#include "simplerasters.h"
+
 #include "point.h"
 #include "visibility.h"
 
@@ -6,63 +8,59 @@ using viewshed::Visibility;
 
 Point::Point() {}
 
-Point::Point( int row_, int col_, double elevation_, double offset_, double cellSize_ )
+Point::Point( int row, int col, double elevation, double offset, double cellSize )
 {
-    row = row_;
-    col = col_;
-    elevation = elevation_;
-    offset = offset_;
-    cellSize = cellSize_;
+    mRow = row;
+    mCol = col;
+    mElevation = elevation;
+    mOffset = offset;
+    mCellSize = cellSize;
 
     mValid = true;
 }
 
-Point::Point( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, double offsetAtPoint, int rasterBand )
+Point::Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint )
 {
 
-    setUp( point, dem, rasterBand );
-    offset = offsetAtPoint;
+    setUp( point, dem );
+    mOffset = offsetAtPoint;
 }
 
-void Point::setUp( QgsPoint point, std::shared_ptr<QgsRasterLayer> dem, int rasterBand )
+void Point::setUp( OGRPoint point, std::shared_ptr<SingleBandRaster> dem )
 {
-    x = point.x();
-    y = point.y();
+    mX = point.getX();
+    mY = point.getY();
 
-    bool ok;
-    elevation = dem->dataProvider()->sample( QgsPointXY( point.x(), point.y() ), rasterBand, &ok );
+    double rowD, colD;
 
-    QgsPoint pointRaster =
-        dem->dataProvider()->transformCoordinates( point, QgsRasterDataProvider::TransformType::TransformLayerToImage );
+    dem->transformCoordinatesToRaster( mX, mY, rowD, colD );
 
-    mValid = ok && !pointRaster.isEmpty();
+    bool ok = dem->isNoData( rowD, colD );
+    mElevation = dem->value( rowD, colD );
 
-    col = pointRaster.x();
-    row = pointRaster.y();
+    mValid = !ok && dem->isInside( point );
 
-    cellSize = dem->rasterUnitsPerPixelX();
+    mCol = static_cast<int>( colD );
+    mRow = static_cast<int>( rowD );
+
+    mCellSize = dem->xCellSize();
 }
 
-void Point::setUp( int row_, int col_, std::shared_ptr<QgsRasterLayer> dem, int rasterBand )
+void Point::setUp( int row, int col, std::shared_ptr<SingleBandRaster> dem )
 {
-    row = row_;
-    col = col_;
+    mRow = row;
+    mCol = col;
 
-    cellSize = dem->rasterUnitsPerPixelX();
+    mCellSize = dem->xCellSize();
 
-    QgsPoint pointRaster( col_, row_ );
+    dem->transformCoordinatesToWorld( mRow, mCol, mX, mY );
 
-    QgsPoint point = dem->dataProvider()->transformCoordinates(
-        pointRaster, QgsRasterDataProvider::TransformType::TransformImageToLayer );
-
-    bool ok;
-    elevation = dem->dataProvider()->sample( QgsPointXY( point.x(), point.y() ), rasterBand, &ok );
-
-    mValid = ok;
+    mElevation = dem->value( mRow, mCol );
+    mValid = dem->isNoData( mRow, mCol );
 }
 
-double Point::totalElevation() { return elevation + offset; }
+double Point::totalElevation() { return mElevation + mOffset; }
 
 bool Point::isValid() { return mValid; }
 
-double Point::distance( std::shared_ptr<Point> point ) { return Visibility::distance( row, col, point, cellSize ); }
+double Point::distance( std::shared_ptr<Point> point ) { return Visibility::distance( mRow, mCol, point, mCellSize ); }

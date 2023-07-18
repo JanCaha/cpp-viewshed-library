@@ -1,0 +1,42 @@
+viewshed (2.4.0-0ppa0) jammy; urgency=low
+
+  * Compile using cmake, creating a proper version build as RELEASE
+
+ -- Jan Caha <jan.caha@outlook.com>  Thu, 13 Jul 2023 07:26:11 +0200
+
+viewshed (2.3.1-0ppa0) jammy; urgency=low
+
+  * Remove optimization, that does not work
+  * Fix build type
+
+ -- Jan Caha <jan.caha@outlook.com>  Wed, 12 Jul 2023 09:11:07 +0200
+
+viewshed (2.2.2-0ppa0) jammy; urgency=low
+
+  * Text fixes
+
+ -- Jan Caha <jan.caha@outlook.com>  Tue, 11 Jul 2023 13:58:11 +0200
+
+viewshed (2.2.0-0ppa0) jammy; urgency=low
+
+  * Refactor and simplification of API, remove calls in functions that slows down the calculation.
+
+ -- Jan Caha <jan.caha@outlook.com>  Sun, 09 Jul 2023 13:55:59 +0200
+
+viewshed (2.1.0-0ppa0) jammy; urgency=low
+
+  * Refactor and simplification of API.
+
+ -- Jan Caha <jan.caha@outlook.com>  Tue, 27 Jun 2023 14:36:07 +0200
+
+viewshed (2.0.17-0ppa0) jammy; urgency=low
+
+  * Split packages!
+
+ -- Jan Caha <jan.caha@outlook.com>  Sun, 18 Jun 2023 13:11:18 +0200
+
+viewshed (2.0.9-0ppa0) jammy; urgency=low
+
+  * Initial upload!
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 12 Jun 2023 13:56:16 +0200

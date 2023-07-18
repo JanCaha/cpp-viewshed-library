@@ -3,13 +3,15 @@
 
 #include "pointwidget.h"
 
+using ViewshedBinaries::PointWidget;
+
 PointWidget::PointWidget( bool addCrsLabel, QWidget *parent ) : QWidget( parent ), mAddCrsLabel( addCrsLabel )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setContentsMargins( 0, 0, 0, 0 );
     setLayout( layout );
 
-    mDoubleValidator = new QgsDoubleValidator( this );
+    mDoubleValidator = new DoubleValidator( this );
 
     mPointX = new QLineEdit( this );
     mPointX->setValidator( mDoubleValidator );
@@ -42,18 +44,18 @@ void PointWidget::updatePoint()
 
     QString text = mPointX->text();
 
-    if ( mDoubleValidator->validate( text ) == QgsDoubleValidator::Acceptable )
+    if ( mDoubleValidator->validate( text ) == DoubleValidator::Acceptable )
     {
-        mPoint.setX( QgsDoubleValidator::toDouble( text ) );
+        mPoint.setX( DoubleValidator::toDouble( text ) );
     }
     else
         return;
 
     text = mPointY->text();
 
-    if ( mDoubleValidator->validate( text ) == QgsDoubleValidator::Acceptable )
+    if ( mDoubleValidator->validate( text ) == DoubleValidator::Acceptable )
     {
-        mPoint.setY( QgsDoubleValidator::toDouble( text ) );
+        mPoint.setY( DoubleValidator::toDouble( text ) );
     }
     else
         return;
@@ -61,14 +63,11 @@ void PointWidget::updatePoint()
     mPointValid = true;
 
     emit pointChanged( point() );
-    emit pointXYChanged( pointXY() );
 }
 
 bool PointWidget::isPointValid() { return mPointValid; }
 
-QgsPoint PointWidget::point() { return mPoint; };
-
-QgsPointXY PointWidget::pointXY() { return QgsPointXY( mPoint.x(), mPoint.y() ); };
+OGRPoint PointWidget::point() { return mPoint; };
 
 void PointWidget::setXY( double x, double y )
 {
@@ -77,10 +76,16 @@ void PointWidget::setXY( double x, double y )
     mPointValid = true;
 }
 
-void PointWidget::setPoint( QgsPoint p )
+void PointWidget::setPoint( OGRPoint p )
 {
-    setXY( p.x(), p.y() );
+    setXY( p.getX(), p.getY() );
     mPointValid = true;
 }
 
-void PointWidget::setCrs( QString crs ) { mCrsLabel->setText( QString( "[%1]" ).arg( crs ) ); }
+void PointWidget::setCrs( OGRSpatialReference crs )
+{
+    QString code = QString::fromStdString( crs.GetAuthorityCode( nullptr ) );
+    QString name = QString::fromStdString( crs.GetAuthorityName( nullptr ) );
+
+    mCrsLabel->setText( QString( "[%1:%2]" ).arg( name ).arg( code ) );
+}

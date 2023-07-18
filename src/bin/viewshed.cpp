@@ -7,9 +7,6 @@
 #include <QString>
 #include <QStringList>
 
-#include "qgspoint.h"
-#include "qgsrasterlayer.h"
-
 #include "abstractviewshedalgorithm.h"
 #include "point.h"
 #include "viewshed.h"
@@ -59,7 +56,8 @@ int main( int argc, char *argv[] )
 
     QString demFilePath = getDemFilePath( parser );
 
-    std::shared_ptr<QgsRasterLayer> rl = std::make_shared<QgsRasterLayer>( demFilePath, "dem", "gdal" );
+    std::shared_ptr<ProjectedSquareCellRaster> rl =
+        std::make_shared<ProjectedSquareCellRaster>( demFilePath.toStdString() );
 
     std::string rasterError;
     if ( !ViewshedUtils::validateRaster( rl, rasterError ) )
@@ -69,11 +67,11 @@ int main( int argc, char *argv[] )
 
     QString maskFilePath = getVisibilityMask( parser );
 
-    std::shared_ptr<QgsRasterLayer> mask = nullptr;
+    std::shared_ptr<ProjectedSquareCellRaster> mask = nullptr;
 
     if ( !maskFilePath.isEmpty() )
     {
-        mask = std::make_shared<QgsRasterLayer>( maskFilePath, "dem", "gdal" );
+        mask = std::make_shared<ProjectedSquareCellRaster>( maskFilePath.toStdString() );
 
         if ( !ViewshedUtils::validateRaster( mask, rasterError ) )
         {
@@ -101,9 +99,9 @@ int main( int argc, char *argv[] )
     bool invisibleNoData = getInvisibleNoData( parser );
 
     std::shared_ptr<viewshed::Point> vp =
-        std::make_shared<viewshed::Point>( QgsPoint( coord.x, coord.y ), rl, observerOffset );
+        std::make_shared<viewshed::Point>( OGRPoint( coord.x, coord.y ), rl, observerOffset );
 
-    if ( !rl->extent().contains( coord.x, coord.y ) )
+    if ( !rl->isInside( OGRPoint( coord.x, coord.y ) ) )
     {
         exitWithError( "Error: Viewpoint does not lie on the Dem raster.", parser );
     }
@@ -112,7 +110,7 @@ int main( int argc, char *argv[] )
 
     if ( invisibleNoData )
     {
-        double noData = rl->dataProvider()->sourceNoDataValue( 1 );
+        double noData = rl->noData();
         algs = ViewshedUtils::allAlgorithms( noData );
     }
     else
@@ -129,7 +127,7 @@ int main( int argc, char *argv[] )
 
     v.calculate( printTimeInfo, printProgressInfo );
 
-    v.saveResults( resultFolder );
+    v.saveResults( resultFolder.toStdString() );
 
     return 0;
 }

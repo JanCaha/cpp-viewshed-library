@@ -9,21 +9,20 @@
 using viewshed::AbstractViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 using viewshed::LoSNode;
-using viewshed::MemoryRaster;
 using viewshed::Point;
 using viewshed::Viewshed;
 using viewshed::ViewshedValues;
 
-Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterLayer> dem,
-                    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
+Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<ProjectedSquareCellRaster> dem,
+                    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices,
                     bool applyCurvatureCorrections, double earthDiameter, double refractionCoeff, double minimalAngle,
                     double maximalAngle )
 {
     mValid = false;
 
     mPoint = viewPoint;
-    mInputDem = dem;
-    mAlgs = algs;
+    mInputDsm = dem;
+    mVisibilityIndices = visibilityIndices;
 
     mCurvatureCorrections = applyCurvatureCorrections;
     mEarthDiameter = earthDiameter;
@@ -31,14 +30,14 @@ Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<QgsRasterL
 
     setAngles( minimalAngle, maximalAngle );
 
-    mCellSize = mInputDem->rasterUnitsPerPixelX();
+    mCellSize = mInputDsm->xCellSize();
 
     mThreadPool.reset( mThreadPool.get_thread_count() - 1 );
 
     mValid = true;
 }
 
-std::shared_ptr<LoS> Viewshed::getLoS( QgsPoint point, bool onlyToPoi )
+std::shared_ptr<LoS> Viewshed::getLoS( OGRPoint point, bool onlyToPoi )
 {
 
     std::vector<LoSNode> losNodes = prepareLoSWithPoint( point );
@@ -58,6 +57,7 @@ std::shared_ptr<LoS> Viewshed::getLoS( QgsPoint point, bool onlyToPoi )
     std::shared_ptr<LoS> los = std::make_shared<LoS>( losNodes );
     los->setViewPoint( mPoint );
     los->setTargetPoint( poi );
+    los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
     los->prepareForCalculation();
 
     return los;
@@ -94,17 +94,16 @@ void Viewshed::submitToThreadpool( CellEvent &e )
     los->setTargetPoint( poi );
     los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
-    mResultPixels.push_back( mThreadPool.submit( viewshed::evaluateLoSForPoI, los, mAlgs ) );
+    mThreadPool.push_task( viewshed::evaluateLoS, los, mVisibilityIndices, mResults );
 }
 
-void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValue,
-                                  std::unique_ptr<QgsRasterBlock> &rasterBlock, bool &solveCell )
+void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell )
 {
     mCellElevs[CellEventPositionType::CENTER] = pixelValue;
     CellEventPosition tempPosEnter = Visibility::eventPosition( CellEventPositionType::ENTER, row, column, mPoint );
-    mCellElevs[CellEventPositionType::ENTER] = getCornerValue( tempPosEnter, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::ENTER] = mInputDsm->cornerValue( tempPosEnter.mRow, tempPosEnter.mCol );
     CellEventPosition tempPosExit = Visibility::eventPosition( CellEventPositionType::EXIT, row, column, mPoint );
-    mCellElevs[CellEventPositionType::EXIT] = getCornerValue( tempPosExit, rasterBlock, pixelValue );
+    mCellElevs[CellEventPositionType::EXIT] = mInputDsm->cornerValue( tempPosExit.mRow, tempPosExit.mCol );
 
     mAngleCenter = Visibility::angle( row, column, mPoint );
     mAngleEnter = Visibility::angle( &tempPosEnter, mPoint );
@@ -122,14 +121,14 @@ void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValu
                                 Visibility::distance( &tempPosExit, mPoint, mCellSize ), mAngleExit, mCellElevs );
 
         // Target or ViewPoint are not part CellEvents - handled separately
-        if ( mPoint->row == row && mPoint->col == column )
+        if ( mPoint->mRow == row && mPoint->mCol == column )
         {
             mLosNodePoint = LoSNode( mPoint, &mEventCenter, mCellSize );
             return;
         }
 
         // LosNode prefill
-        if ( mPoint->row == row && mPoint->col < column )
+        if ( mPoint->mRow == row && mPoint->mCol < column )
         {
             mLoSNodeTemp = LoSNode( mPoint, &mEventEnter, mCellSize );
             mLosNodes.push_back( mLoSNodeTemp );

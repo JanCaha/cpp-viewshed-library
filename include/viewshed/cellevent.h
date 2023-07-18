@@ -3,7 +3,6 @@
 
 #include "defaultdatatypes.h"
 #include "enums.h"
-#include "point.h"
 #include "rasterposition.h"
 
 namespace viewshed
@@ -17,16 +16,15 @@ namespace viewshed
     class CellEvent : public RasterPosition
     {
       public:
-        CellEventPositionType eventType;
-        CELL_EVENT_DATA_TYPE dist2vp;
-        CELL_EVENT_DATA_TYPE angle;
-        CELL_EVENT_DATA_TYPE elevation[3];
-        bool behindTargetForInverseLoS = false;
+        CellEventPositionType mEventType;
+        CELL_EVENT_DATA_TYPE mDist2point;
+        CELL_EVENT_DATA_TYPE mAngle;
+        CELL_EVENT_DATA_TYPE mElevation[3];
+        bool mBehindTargetForInverseLoS = false;
 
         CellEvent();
 
-        CellEvent( CellEventPositionType eventType_, int row_, int col_, double dist_, double angle_,
-                   double elevation_[3] );
+        CellEvent( CellEventPositionType eventType, int row, int col, double dist, double angle, double elevation[3] );
 
         bool operator<( const CellEvent other ) const;
         bool operator==( const CellEvent other ) const;

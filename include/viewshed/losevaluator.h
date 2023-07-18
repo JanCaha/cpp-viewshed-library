@@ -2,18 +2,17 @@
 #define VIEWSHEDLIB_LOSEVALUATOR_H
 
 #include <limits>
+#include <memory>
+#include <vector>
 
-#include "abstractlos.h"
-#include "abstractviewshedalgorithm.h"
 #include "losimportantvalues.h"
-#include "losnode.h"
-#include "point.h"
 #include "viewshedvalues.h"
-
-using viewshed::AbstractLoS;
 
 namespace viewshed
 {
+    class AbstractLoS;
+    class AbstractViewshedAlgorithm;
+
     /**
      * @brief Class that takes care of analysing AbstractLoS with respect to given AbstractViewshedAlgorithms, the
      * result can be obtained from
@@ -23,7 +22,7 @@ namespace viewshed
     {
       public:
         LoSEvaluator( std::shared_ptr<AbstractLoS> los,
-                      std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs );
+                      std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices );
 
         /**
          * @brief Calculate results of LoS evaluation for every algorithms.
@@ -73,7 +72,7 @@ namespace viewshed
 
       private:
         std::shared_ptr<AbstractLoS> mLos;
-        std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
+        std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mVisibilityIndices;
         ViewshedValues mResultValues;
 
         void parseNodes();

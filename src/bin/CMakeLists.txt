@@ -1,7 +1,11 @@
 # Binaries :
 macro(create_binary bin_name filename add_widgets)
     if(${add_widgets})
-        add_executable(${bin_name} ${filename} pointwidget.h pointwidget.cpp)
+        add_executable(${bin_name} ${filename}
+            pointwidget.h pointwidget.cpp
+            doublevalidator.h doublevalidator.cpp
+            fileselectorwidget.h fileselectorwidget.cpp
+        )
     else()
         add_executable(${bin_name} ${filename} commandlinehelper.h)
     endif()
@@ -9,30 +13,39 @@ macro(create_binary bin_name filename add_widgets)
     set_target_properties(${bin_name} PROPERTIES AUTOMOC TRUE)
 
     target_include_directories(${bin_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/viewshed)
-    target_include_directories(${bin_name} PUBLIC ${CMAKE_BINARY_DIR}/bs_thread_pool_src-src)
-    target_include_directories(${bin_name} PRIVATE ${MINIMAL_QGIS_INCLUDES})
+    target_include_directories(${bin_name} PUBLIC bs_thread_pool)
+    target_include_directories(${bin_name} PRIVATE ${QT_INCLUDES})
+    target_include_directories(${bin_name} PRIVATE ${GDAL_INCLUDE_DIR})
+    target_include_directories(${bin_name} PRIVATE SimpleRasters::SimpleRasters)
 
     target_link_libraries(${bin_name}
-        ${MINIMAL_QGIS_LIBS}
-        ${QGIS_GUI_LIBRARY}
+        ${QT_LIBS}
         bs_thread_pool
-        library_viewshed)
+        library_viewshed
+        ${GDAL_LIBRARY}
+        SimpleRasters::SimpleRasters
+    )
 endmacro(create_binary)
 
-create_binary(viewshed viewshed.cpp OFF)
+if(HAS_QT)
+    message(STATUS "Has Qt so binaries can be build.")
 
-create_binary(inverseviewshed inverseviewshed.cpp OFF)
+    create_binary(viewshed viewshed.cpp OFF)
 
-create_binary(viewshedcalculator viewshedcalculator.cpp ON)
+    create_binary(inverseviewshed inverseviewshed.cpp OFF)
 
-create_binary(losextractor losextractor.cpp ON)
+    create_binary(viewshedcalculator viewshedcalculator.cpp ON)
 
-add_custom_target(create_binaries)
+    create_binary(losextractor losextractor.cpp ON)
 
-add_dependencies(create_binaries viewshed)
+    add_custom_target(create_binaries)
 
-add_dependencies(create_binaries viewshed inverseviewshed viewshedcalculator losextractor)
+    add_dependencies(create_binaries viewshed)
 
-install(TARGETS
-    viewshed inverseviewshed viewshedcalculator
-    RUNTIME DESTINATION bin)
+    add_dependencies(create_binaries
+        viewshed
+        inverseviewshed
+        viewshedcalculator
+        losextractor
+    )
+endif()

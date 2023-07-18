@@ -21,9 +21,8 @@ double ElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantV
 
     if ( losValues->horizonExist() )
     {
-        distance = los->targetDistance() - los->distance( losValues->mIndexHorizon );
-        change = std::tan( ( M_PI / 180 ) * losValues->mMaxGradient ) * distance;
-        difference = los->targetElevation() - ( los->elevation( losValues->mIndexHorizon ) + change );
+        change = std::tan( ( M_PI / 180 ) * los->gradient( losValues->indexHorizon ) ) * los->targetDistance();
+        difference = los->targetElevation() - ( los->vp()->totalElevation() + change );
     }
     else
     {
@@ -36,18 +35,18 @@ double ElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantV
     }
     else
     {
-        if ( los->targetGradient() < losValues->mMaxGradientBefore )
+        if ( los->targetGradient() < losValues->maxGradientBefore )
             return mInvisibleValue;
         else
             return difference;
     }
 }
 
-const QString ElevationDifferenceToGlobalHorizon::name()
+const std::string ElevationDifferenceToGlobalHorizon::name()
 {
-    QString allPoints = QString::fromStdString( "False" );
+    std::string allPoints = "False";
     if ( mAllPoints )
-        allPoints = QString::fromStdString( "True" );
+        allPoints = "True";
 
-    return QString( "Elevation_Difference_To_Global_Horizon_All_Points_-_%1" ).arg( allPoints );
+    return "Elevation_Difference_To_Global_Horizon_All_Points_-_" + allPoints;
 }

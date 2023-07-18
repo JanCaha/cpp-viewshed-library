@@ -4,12 +4,16 @@
 namespace viewshed
 {
 
+    /**
+     * @brief Class to represent position on raster in term of row and column.
+     *
+     */
     class RasterPosition
     {
       public:
         RasterPosition(){};
 
-        int row, col;
+        int mRow, mCol;
     };
 } // namespace viewshed
 

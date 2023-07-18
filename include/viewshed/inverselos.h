@@ -1,24 +1,26 @@
 #ifndef VIEWSHEDLIB_INVERSELOS_H
 #define VIEWSHEDLIB_INVERSELOS_H
 
-#include "abstractlos.h"
-#include "cellevent.h"
-#include "enums.h"
-#include "los.h"
-#include "losnode.h"
-#include "point.h"
-#include "visibility.h"
+#include <vector>
 
-using viewshed::CellEvent;
-using viewshed::LoS;
-using viewshed::LoSNode;
-using viewshed::Point;
+#include "abstractlos.h"
+#include "enums.h"
+
 using viewshed::ValueType;
 
 // using viewshed::Visibility;
 
 namespace viewshed
 {
+    class LoSNode;
+    class LoS;
+    class Point;
+    class CellEvent;
+
+    /**
+     * @brief Class that represents InverseLoS, that is LoS used in Inverse Viewshed calculation.
+     *
+     */
     class InverseLoS : public std::vector<LoSNode>, public AbstractLoS
     {
       public:
@@ -56,6 +58,7 @@ namespace viewshed
         void fixDistancesAngles();
         void removePointsAfterTarget();
         bool mRemovePointsAfterTarget = false;
+        void setUpTargetLoSNode();
     };
 
 } // namespace viewshed

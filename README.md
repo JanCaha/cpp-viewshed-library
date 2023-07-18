@@ -1,6 +1,12 @@
-# Viewshed a Cpp library to calculate Viewshed and extract LoS on Digital Surface Models
+# Viewshed is a Cpp library to calculate Viewshed and extract LoS on Digital Surface Models
 
-Library using QGIS, QT API and C++17 features to calculate visibility (viewshed), inverse visibility and additional information about it. The library is developed and tested on Linux.
+Library using QGIS, QT API and C++17 features to calculate visibility (viewshed), inverse visibility and additional information about it. The 
+library is developed and tested on Linux.
+
+## Status
+
+[![Tests for Library](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/test_plugin.yaml/badge.svg)](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/test_plugin.yaml)
+[![Release Latest version as Docker Image](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/release_docker.yaml/badge.svg)](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/release_docker.yaml)
 
 ## Using the library
 
@@ -90,4 +96,27 @@ docker run --rm -it --name losextractor \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         -e DISPLAY=unix$DISPLAY cahik/viewshed:latest losextractor
 xhost -
+```
+
+### Install on Linux (Debian based)
+
+On distributions based on Debian, the tools can be installed from PPA.
+
+```bash
+sudo add-apt-repository ppa:jancaha/gis-tools
+sudo apt-get update
+apt-get -y install simplerasters viewshed viewshed-bin 
+```
+
+## Citation
+
+```bibtex
+@Software{Caha2023,
+  author  = {Jan Caha},
+  title   = {viewshed ({C++ Viewshed library based on GDAL and Qt})},
+  year    = {2023},
+  date    = {2023-07-11},
+  version = {2.2.0},
+  url     = {https://github.com/JanCaha/cpp-viewshed-library},
+}
 ```

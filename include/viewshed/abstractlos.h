@@ -4,20 +4,17 @@
 #include <chrono>
 
 #include "cellevent.h"
+#include <algorithm>
+#include <memory>
+
 #include "enums.h"
-#include "losnode.h"
-#include "point.h"
 #include "visibility.h"
-
-using viewshed::CellEvent;
-using viewshed::LoSNode;
-using viewshed::Point;
-using viewshed::ValueType;
-
-// using viewshed::Visibility;
 
 namespace viewshed
 {
+    class CellEvent;
+    class LoSNode;
+
     /**
      * @brief Abstract class that represent line-of-sight (LoS). Consists of LoSNodes, view point and target point (both
      * with potential offset from the surface).
@@ -177,6 +174,13 @@ namespace viewshed
          */
         std::shared_ptr<Point> vp();
 
+        /**
+         * @brief Specify curvature corrections settings.
+         *
+         * @param apply
+         * @param refractionCoeff
+         * @param earthDiameter
+         */
         void applyCurvatureCorrections( bool apply, double refractionCoeff, double earthDiameter )
         {
             mCurvatureCorrections = apply;
@@ -184,20 +188,51 @@ namespace viewshed
             mEarthDiameter = earthDiameter;
         };
 
+        /**
+         * @brief Set curvature corrections on/off.
+         *
+         * @param apply
+         */
         void applyCurvatureCorrections( bool apply ) { mCurvatureCorrections = apply; };
 
+        /**
+         * @brief Set the Refraction Coeficient for curvature corrections.
+         *
+         * @param refractionCoeff
+         */
         void setRefractionCoeficient( double refractionCoeff ) { mRefractionCoefficient = refractionCoeff; };
 
+        /**
+         * @brief Set the Earth Diameter for curvature corrections.
+         *
+         * @param earthDiameter
+         */
         void setEarthDiameter( double earthDiameter ) { mEarthDiameter = earthDiameter; };
 
         std::chrono::nanoseconds timeToCopy;
         std::chrono::nanoseconds timeToEval;
 
+        /**
+         * @brief Get index of target point in the current LoS.
+         *
+         * @return int
+         */
+
         int targetIndex() { return mTargetIndex; }
 
-        double viewPointElevation() { return mVp->elevation; }
+        /**
+         * @brief Surface elevation of viewpoint;
+         *
+         * @return double
+         */
+        double viewPointElevation();
 
-        double viewPointTotalElevation() { return mVp->totalElevation(); }
+        /**
+         * @brief Surface elevation of viewpoint with offset.
+         *
+         * @return double
+         */
+        double viewPointTotalElevation();
 
       protected:
         AbstractLoS();
@@ -238,8 +273,22 @@ namespace viewshed
          */
         int mTargetIndex;
 
+        /**
+         * @brief Use curvature corrections for this LoS.
+         *
+         */
         bool mCurvatureCorrections = false;
+
+        /**
+         * @brief Earth diameter for curvature corrections.
+         *
+         */
         double mEarthDiameter = EARTH_DIAMETER;
+
+        /**
+         * @brief Refraction coefficient for curvature corrections.
+         *
+         */
         double mRefractionCoefficient = REFRACTION_COEFFICIENT;
 
         /**

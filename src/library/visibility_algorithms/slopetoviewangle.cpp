@@ -24,10 +24,10 @@ double LoSSlopeToViewAngle::result( std::shared_ptr<LoSImportantValues> losValue
                                               ( los->targetDistance() - los->distance( los->targetIndex() - 1 ) ) );
     }
 
-    if ( losValues->mMaxGradientBefore < los->targetGradient() )
+    if ( losValues->maxGradientBefore < los->targetGradient() )
         return gradientDiff - los->targetGradient();
     else
         return mInvisibile;
 }
 
-const QString LoSSlopeToViewAngle::name() { return QString( "LoS Slope to View Angle" ); }
+const std::string LoSSlopeToViewAngle::name() { return "LoS Slope to View Angle"; }

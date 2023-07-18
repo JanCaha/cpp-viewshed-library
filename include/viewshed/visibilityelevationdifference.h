@@ -15,7 +15,7 @@ namespace viewshed
 
             double pointValue() override;
 
-            const QString name() override;
+            const std::string name() override;
         };
     } // namespace visibilityalgorithm
 } // namespace viewshed

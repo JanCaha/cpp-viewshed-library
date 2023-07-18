@@ -1,7 +1,7 @@
 #ifndef VIEWSHEDLIB_VIEWSHEDSLOPETOVIEWANGLE_H
 #define VIEWSHEDLIB_VIEWSHEDSLOPETOVIEWANGLE_H
 
-#include "limits"
+#include <limits>
 
 #include "abstractviewshedalgorithm.h"
 
@@ -19,7 +19,7 @@ namespace viewshed
 
             double pointValue() override { return mPointValue; };
 
-            const QString name() override;
+            const std::string name() override;
 
           private:
             double mInvisibile;

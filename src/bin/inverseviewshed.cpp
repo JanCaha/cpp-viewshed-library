@@ -7,9 +7,6 @@
 #include <QString>
 #include <QStringList>
 
-#include "qgspoint.h"
-#include "qgsrasterlayer.h"
-
 #include "abstractviewshedalgorithm.h"
 #include "inverseviewshed.h"
 #include "point.h"
@@ -61,7 +58,8 @@ int main( int argc, char *argv[] )
 
     QString demFilePath = getDemFilePath( parser );
 
-    std::shared_ptr<QgsRasterLayer> rl = std::make_shared<QgsRasterLayer>( demFilePath, "dem", "gdal" );
+    std::shared_ptr<ProjectedSquareCellRaster> rl =
+        std::make_shared<ProjectedSquareCellRaster>( demFilePath.toStdString() );
 
     std::string rasterError;
     if ( !ViewshedUtils::validateRaster( rl, rasterError ) )
@@ -71,11 +69,11 @@ int main( int argc, char *argv[] )
 
     QString maskFilePath = getVisibilityMask( parser );
 
-    std::shared_ptr<QgsRasterLayer> mask = nullptr;
+    std::shared_ptr<ProjectedSquareCellRaster> mask = nullptr;
 
     if ( !maskFilePath.isEmpty() )
     {
-        mask = std::make_shared<QgsRasterLayer>( maskFilePath, "dem", "gdal" );
+        mask = std::make_shared<ProjectedSquareCellRaster>( maskFilePath.toStdString() );
 
         if ( !ViewshedUtils::validateRaster( mask, rasterError ) )
         {
@@ -105,9 +103,9 @@ int main( int argc, char *argv[] )
     bool invisibleNoData = getInvisibleNoData( parser );
 
     std::shared_ptr<viewshed::Point> tp =
-        std::make_shared<viewshed::Point>( QgsPoint( coord.x, coord.y ), rl, targetOffset );
+        std::make_shared<viewshed::Point>( OGRPoint( coord.x, coord.y ), rl, targetOffset );
 
-    if ( !rl->extent().contains( coord.x, coord.y ) )
+    if ( !rl->isInside( OGRPoint( coord.x, coord.y ) ) )
     {
         exitWithError( "Error: Target point does not lie on the Dem raster.", parser );
     }
@@ -116,7 +114,7 @@ int main( int argc, char *argv[] )
 
     if ( invisibleNoData )
     {
-        double noData = rl->dataProvider()->sourceNoDataValue( 1 );
+        double noData = rl->noData();
         algs = ViewshedUtils::allAlgorithms( noData );
     }
     else
@@ -133,7 +131,7 @@ int main( int argc, char *argv[] )
 
     iv.calculate( printTimeInfo, printProgressInfo );
 
-    iv.saveResults( resultFolder, "Inverse" );
+    iv.saveResults( resultFolder.toStdString(), "Inverse" );
 
     return 0;
 }

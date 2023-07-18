@@ -17,7 +17,7 @@ double AngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValue
     double difference;
     if ( losValues->horizonExist() )
     {
-        difference = los->targetGradient() - los->gradient( losValues->mIndexHorizon );
+        difference = los->targetGradient() - los->gradient( losValues->indexHorizon );
     }
     else
     {
@@ -30,18 +30,18 @@ double AngleDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantValue
     }
     else
     {
-        if ( los->targetGradient() < losValues->mMaxGradientBefore )
+        if ( los->targetGradient() < losValues->maxGradientBefore )
             return mInvisibleValue;
         else
             return difference;
     }
 }
 
-const QString AngleDifferenceToGlobalHorizon::name()
+const std::string AngleDifferenceToGlobalHorizon::name()
 {
-    QString allPoints = QString::fromStdString( "False" );
+    std::string allPoints = "False";
     if ( mAllPoints )
-        allPoints = QString::fromStdString( "True" );
+        allPoints = "True";
 
-    return QString( "Angle_Difference_To_Global_Horizon_All_Points_-_%1" ).arg( allPoints );
+    return "Angle_Difference_To_Global_Horizon_All_Points_-_" + allPoints;
 }

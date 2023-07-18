@@ -1,9 +1,13 @@
 build
+build_dir
+debian/files
 .vscode/c_cpp_properties.json
 tests/data/*.aux.xml
-_packages
 tests/data/results/*
+tests/data/results*/*
+_packages
 tests/data/*.qgz
 documentation/*
 include/viewshed/viewshedlibrary.h
 include/viewshed/defaultdatatypes.h
+docker/install

@@ -2,8 +2,7 @@
 #define VIEWSHEDLIB_ABSTRACTVIEWSHEDALGORITHM_H
 
 #include <limits>
-
-#include "QString"
+#include <string>
 
 #include "abstractlos.h"
 #include "losimportantvalues.h"
@@ -38,9 +37,9 @@ namespace viewshed
         /**
          * @brief Name of the algorithm.
          *
-         * @return const QString
+         * @return const std::string
          */
-        virtual const QString name() = 0;
+        virtual const std::string name() = 0;
     };
 
 } // namespace viewshed
