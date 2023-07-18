@@ -13,11 +13,13 @@ class PG
 
         pqxx::work W( *mConn );
 
+        std::string raster_size = getenv( "RASTER_SIZE" );
+
         std::string sql = "INSERT INTO " + table +
-                          "( time_to_copy, time_to_eval, los_size, inserted ) "
+                          "( time_to_copy, time_to_eval, los_size, inserted, raster_size ) "
                           " VALUES( " +
                           std::to_string( timeToCopy.count() ) + "," + std::to_string( timeToEval.count() ) + "," +
-                          std::to_string( losSize ) + ", now() );";
+                          std::to_string( losSize ) + ", now(), " + raster_size + " );";
         try
         {
             W.exec( sql );
