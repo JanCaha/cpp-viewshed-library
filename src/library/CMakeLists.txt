@@ -52,11 +52,13 @@ target_include_directories(library_viewshed PUBLIC ${CMAKE_SOURCE_DIR}/include/v
 target_include_directories(library_viewshed PUBLIC bs_thread_pool)
 target_include_directories(library_viewshed PRIVATE ${GDAL_INCLUDE_DIR})
 target_include_directories(library_viewshed PRIVATE SimpleRasters::SimpleRasters)
+target_include_directories(library_viewshed PRIVATE ${PQXX_INCLUDE_DIRECTORIES})
 
 target_link_libraries(library_viewshed
     bs_thread_pool
     ${GDAL_LIBRARY}
     SimpleRasters::SimpleRasters
+    ${PQXX_LIBRARIES}
 )
 
 target_compile_definitions(library_viewshed PUBLIC CALCULATE_INDIVIDUAL_LOS_TIMING=true)
