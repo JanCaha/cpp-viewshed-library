@@ -17,7 +17,7 @@ cmake --build build --config Release --target viewshed
 # testing
 # cmake --build build --config Debug --target run_tests
 cmake --build build --config Release --target all
-cmake --build build --config Release --target run_tests
+# cmake --build build --config Release --target run_tests
 
 # install
 sudo cmake --build build --config Release --target install
@@ -35,3 +35,7 @@ sudo cmake --build build --config Release --target install
 #     -DCELL_EVENT_DATA_FLOAT:bool=off \
 #     -DOUTPUT_RASTER_DATA_FLOAT:bool=off
 # cmake --build build --config Release --target run_tests
+
+# sudo rm /usr/local/bin/inverseviewshed /usr/local/bin/viewshed /usr/local/bin/viewshedcalculator /usr/local/bin/losextractor
+# sudo rm /usr/local/libviewshed.so /usr/local/libviewshed.so.2.4.0
+# sudo rm -rf /usr/local/include/viewshed
