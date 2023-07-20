@@ -86,9 +86,9 @@ void Viewshed::submitToThreadpool( CellEvent &e )
 {
     std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint, &e, mCellSize );
 
-    auto startTime = std::chrono::high_resolution_clock::now();
+    auto startTime = std::chrono::_V2::high_resolution_clock::now();
     std::shared_ptr<LoS> los = std::make_shared<LoS>( mLosNodes );
-    auto endTime = std::chrono::high_resolution_clock::now();
+    auto endTime = std::chrono::_V2::high_resolution_clock::now();
     los->timeToCopy = std::chrono::duration_cast<std::chrono::nanoseconds>( endTime - startTime );
     los->setViewPoint( mPoint );
     los->setTargetPoint( poi );
