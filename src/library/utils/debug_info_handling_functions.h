@@ -1,15 +1,16 @@
 #include <chrono>
 
+#include "abstractlos.h"
 #include "db.h"
 
-void handle_inverse_viewshed_los_timing( std::chrono::nanoseconds timeToCopy, std::chrono::nanoseconds timeToEval,
-                                         long long losSize )
+using viewshed::AbstractLoS;
+
+void handle_inverse_viewshed_los_timing( std::shared_ptr<AbstractLoS> los )
 {
-    pg.add_los_timing_data_to( "inverseviewshed_los_timing", timeToCopy, timeToEval, losSize );
+    pg.add_los_timing_data_to( "inverseviewshed_los_timing", los );
 }
 
-void handle_viewshed_los_timing( std::chrono::nanoseconds timeToCopy, std::chrono::nanoseconds timeToEval,
-                                 long long losSize )
+void handle_viewshed_los_timing( std::shared_ptr<AbstractLoS> los )
 {
-    pg.add_los_timing_data_to( "viewshed_los_timing", timeToCopy, timeToEval, losSize );
+    pg.add_los_timing_data_to( "viewshed_los_timing", los );
 }
