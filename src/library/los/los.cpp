@@ -62,6 +62,7 @@ int LoS::targetPointIndex() { return mTargetIndex; }
 
 void LoS::prepareForCalculation()
 {
+    originalNodesCount = size();
     sort();
     findTargetPointIndex();
 };

@@ -80,6 +80,7 @@ void InverseLoS::sort() { std::sort( begin(), end() ); }
 
 void InverseLoS::prepareForCalculation()
 {
+    originalNodesCount = size();
     removePointsAfterViewPoint();
     setUpTargetLoSNode();
     fixDistancesAngles();

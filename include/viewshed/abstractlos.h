@@ -212,6 +212,7 @@ namespace viewshed
         std::chrono::nanoseconds timeToCopy;
         std::chrono::nanoseconds timeToEval;
         std::chrono::nanoseconds timeToPrepare;
+        unsigned long long originalNodesCount;
 
         /**
          * @brief Get index of target point in the current LoS.
