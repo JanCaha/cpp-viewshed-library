@@ -18,12 +18,13 @@ class PG
 
         std::string raster_size = getenv( "RASTER_SIZE" );
 
-        std::string sql = "INSERT INTO " + table +
-                          "( time_to_copy, time_to_eval, los_size, inserted, raster_size, time_to_prepare ) "
-                          " VALUES( " +
-                          std::to_string( los->timeToCopy.count() ) + "," + std::to_string( los->timeToEval.count() ) +
-                          "," + std::to_string( los->numberOfNodes() ) + ", now(), " + raster_size + ", " +
-                          std::to_string( los->timeToPrepare.count() ) + " );";
+        std::string sql =
+            "INSERT INTO " + table +
+            "( time_to_copy, time_to_eval, los_size, inserted, raster_size, time_to_prepare, los_size_original ) "
+            " VALUES( " +
+            std::to_string( los->timeToCopy.count() ) + "," + std::to_string( los->timeToEval.count() ) + "," +
+            std::to_string( los->numberOfNodes() ) + ", now(), " + raster_size + ", " +
+            std::to_string( los->timeToPrepare.count() ) + ", " + std::to_string( los->originalNodesCount ) + " );";
         try
         {
             W.exec( sql );
