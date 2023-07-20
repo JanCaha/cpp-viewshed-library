@@ -90,16 +90,18 @@ void LoSEvaluator::parseNodes()
 
 void LoSEvaluator::calculate()
 {
-    auto startTime = std::chrono::high_resolution_clock::now();
 
     if ( mAlreadyParsed )
         reset();
 
+    auto startTime = std::chrono::_V2::high_resolution_clock::now();
     mLos->prepareForCalculation();
+    auto endTime = std::chrono::_V2::high_resolution_clock::now();
+    mLos->timeToPrepare = std::chrono::duration_cast<std::chrono::nanoseconds>( endTime - startTime );
 
+    startTime = std::chrono::_V2::high_resolution_clock::now();
     parseNodes();
-
-    auto endTime = std::chrono::high_resolution_clock::now();
+    endTime = std::chrono::_V2::high_resolution_clock::now();
     mLos->timeToEval = std::chrono::duration_cast<std::chrono::nanoseconds>( endTime - startTime );
 
     mResultValues = ViewshedValues( mLos->resultRow(), mLos->resultCol() );
