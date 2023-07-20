@@ -37,11 +37,11 @@ void viewshed::evaluateLoS( std::shared_ptr<AbstractLoS> los,
     {
         if ( inverseLoS )
         {
-            handle_inverse_viewshed_los_timing( los->timeToCopy, los->timeToEval, los->numberOfNodes() );
+            handle_inverse_viewshed_los_timing( los );
         }
         else
         {
-            handle_viewshed_los_timing( los->timeToCopy, los->timeToEval, los->numberOfNodes() );
+            handle_viewshed_los_timing( los );
         }
     }
 #else
