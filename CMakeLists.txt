@@ -29,6 +29,7 @@ find_package(Threads REQUIRED)
 find_package(SimpleRasters REQUIRED)
 
 if(NEEDS_QT)
+    message(STATUS "Using Qt")
     set(CMAKE_AUTOMOC TRUE)
 
     find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
@@ -46,6 +47,8 @@ if(NEEDS_QT)
     )
 
     set(HAS_QT TRUE)
+else()
+    message(STATUS "Not using Qt")
 endif()
 
 set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
