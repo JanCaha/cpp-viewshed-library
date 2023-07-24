@@ -90,7 +90,7 @@ namespace ViewshedBinaries
             menu->addAction( saveFile );
 
             connect( saveFile, &QAction::triggered, this,
-                     [=]
+                     [this]
                      {
                          QString lastUsedDir =
                              mSettings.value( QStringLiteral( "lastUsedDirForSettings" ), QDir::homePath() ).toString();
@@ -119,7 +119,7 @@ namespace ViewshedBinaries
             menu->addAction( loadFile );
 
             connect( loadFile, &QAction::triggered, this,
-                     [=]
+                     [this]
                      {
                          QString lastUsedDir =
                              mSettings.value( QStringLiteral( "lastUsedDirForSettings" ), QDir::homePath() ).toString();
@@ -142,7 +142,7 @@ namespace ViewshedBinaries
             menu->addAction( resetSettings );
 
             connect( resetSettings, &QAction::triggered, this,
-                     [=]
+                     [this]
                      {
                          mFileWidget->setFilePath( "" );
                          mFolderWidget->setFilePath( "" );
@@ -469,10 +469,10 @@ namespace ViewshedBinaries
 
             mTimingMessages = "";
 
-            std::function addTimingMessage = [=]( std::string text, double time )
+            std::function addTimingMessage = [this]( std::string text, double time )
             { mTimingMessages = mTimingMessages + text + std::to_string( time / 1000000000 ) + " seconds.\n"; };
 
-            std::function setProgress = [=]( int size, int i )
+            std::function setProgress = [this]( int size, int i )
             {
                 if ( i % 1000 == 0 )
                 {

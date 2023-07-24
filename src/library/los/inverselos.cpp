@@ -13,29 +13,12 @@ using viewshed::InverseLoS;
 using viewshed::LoSNode;
 using viewshed::Visibility;
 
-InverseLoS::InverseLoS() {}
+InverseLoS::InverseLoS() { mValid = false; }
 
-InverseLoS::InverseLoS( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
-
-double InverseLoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
-
-double InverseLoS::gradient( int i ) { return Visibility::gradient( mVp, elevation( i ), distance( i ) ); }
-
-double InverseLoS::elevation( int i )
+InverseLoS::InverseLoS( std::vector<LoSNode> losNodes )
 {
-
-    double elevation = at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
-
-    if ( mCurvatureCorrections )
-    {
-        return elevation +
-               Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
-                                                 mRefractionCoefficient, mEarthDiameter );
-    }
-    else
-    {
-        return elevation;
-    }
+    assign( losNodes.begin(), losNodes.end() );
+    mValid = false;
 }
 
 void InverseLoS::setTargetPoint( std::shared_ptr<Point> tp, double targetOffset )
@@ -68,15 +51,19 @@ void InverseLoS::setViewPoint( std::shared_ptr<LoSNode> vp, double observerOffse
     mAngleHorizontal = vp->centreAngle();
 }
 
-void InverseLoS::setLoSNodes( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
+void InverseLoS::setLoSNodes( std::vector<LoSNode> losNodes )
+{
+    assign( losNodes.begin(), losNodes.end() );
+    mValid = false;
+}
 
-void InverseLoS::setLoSNodes( LoS los ) { assign( los.begin(), los.end() ); }
-
-int InverseLoS::numberOfNodes() { return size(); };
+void InverseLoS::setLoSNodes( LoS los )
+{
+    assign( los.begin(), los.end() );
+    mValid = false;
+}
 
 int InverseLoS::targetPointIndex() { return mTargetIndex; }
-
-void InverseLoS::sort() { std::sort( begin(), end() ); }
 
 void InverseLoS::prepareForCalculation()
 {
@@ -84,6 +71,8 @@ void InverseLoS::prepareForCalculation()
     removePointsAfterViewPoint();
     setUpTargetLoSNode();
     fixDistancesAngles();
+    mValid = true;
+
     sort();
 
     if ( mRemovePointsAfterTarget )
@@ -103,14 +92,11 @@ void InverseLoS::removePointsAfterViewPoint()
            end() );
 }
 
-LoSNode InverseLoS::nodeAt( int i ) { return at( i ); }
-
 int InverseLoS::resultRow() { return mVp->mRow; }
 
 int InverseLoS::resultCol() { return mVp->mCol; }
 
-// TODO fix !!!!!
-bool InverseLoS::isValid() { return true; }
+bool InverseLoS::isValid() { return mValid && mVp->isValid() && mTp->isValid(); }
 
 void InverseLoS::fixDistancesAngles()
 {
@@ -171,6 +157,7 @@ void InverseLoS::setRemovePointsAfterTarget( bool remove ) { mRemovePointsAfterT
 void InverseLoS::removePointsAfterTarget()
 {
 
-    erase( std::remove_if( begin(), end(), [=]( LoSNode &node ) { return mPointDistance <= node.centreDistance(); } ),
-           end() );
+    erase(
+        std::remove_if( begin(), end(), [this]( LoSNode &node ) { return mPointDistance <= node.centreDistance(); } ),
+        end() );
 }

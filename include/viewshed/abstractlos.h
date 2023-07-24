@@ -6,6 +6,7 @@
 #include "cellevent.h"
 #include <algorithm>
 #include <memory>
+#include <vector>
 
 #include "enums.h"
 #include "visibility.h"
@@ -20,7 +21,7 @@ namespace viewshed
      * with potential offset from the surface).
      *
      */
-    class AbstractLoS
+    class AbstractLoS : public std::vector<LoSNode>
     {
       public:
         /**
@@ -69,7 +70,7 @@ namespace viewshed
          * @param i
          * @return double
          */
-        virtual double gradient( int i ) = 0;
+        virtual double gradient( int i );
 
         /**
          * @brief Extract distance for line-of-sight LoSNode at position `i`.
@@ -77,7 +78,7 @@ namespace viewshed
          * @param i
          * @return double
          */
-        virtual double distance( int i ) = 0;
+        virtual double distance( int i );
 
         /**
          * @brief Extract elevation for line-of-sight LoSNode at position `i`.
@@ -85,7 +86,7 @@ namespace viewshed
          * @param i
          * @return double
          */
-        virtual double elevation( int i ) = 0;
+        virtual double elevation( int i );
 
         virtual bool isValid() = 0;
 
@@ -94,7 +95,7 @@ namespace viewshed
          *
          * @return int
          */
-        virtual int numberOfNodes() = 0;
+        virtual int numberOfNodes();
 
         /**
          * @brief Index of target point in the line-of-sight.
@@ -123,7 +124,7 @@ namespace viewshed
          * @param i
          * @return LoSNode
          */
-        virtual LoSNode nodeAt( int i ) = 0;
+        virtual LoSNode nodeAt( int i );
 
         /**
          * @brief Horizontal angle for this line-of-sight.
@@ -297,7 +298,13 @@ namespace viewshed
          * @brief Sort LoSNodes by distance from View point.
          *
          */
-        virtual void sort() = 0;
+        virtual void sort();
+
+        /**
+         * @brief Validity of LoS.
+         *
+         */
+        bool mValid;
     };
 
 } // namespace viewshed

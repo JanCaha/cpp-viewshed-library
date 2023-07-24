@@ -1,3 +1,10 @@
+viewshed (2.5.0-0ppa0) jammy; urgency=low
+  
+  * refactor InverseLoS and LoS functions into AbstractLoS
+  * minor optimization
+
+ -- Jan Caha <jan.caha@outlook.com>  Fri, 21 Jul 2023 15:44:28 +0200
+
 viewshed (2.4.0-0ppa0) jammy; urgency=low
 
   * Compile using cmake, creating a proper version build as RELEASE

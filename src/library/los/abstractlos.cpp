@@ -1,3 +1,5 @@
+#include <exception>
+
 #include "abstractlos.h"
 #include "cellevent.h"
 #include "losnode.h"
@@ -5,6 +7,7 @@
 #include "visibility.h"
 
 using viewshed::AbstractLoS;
+using viewshed::LoSNode;
 using viewshed::Point;
 using viewshed::Visibility;
 
@@ -49,3 +52,37 @@ std::shared_ptr<Point> AbstractLoS::vp() { return mVp; }
 double AbstractLoS::viewPointElevation() { return mVp->mElevation; }
 
 double AbstractLoS::viewPointTotalElevation() { return mVp->totalElevation(); }
+
+double AbstractLoS::gradient( int i ) { return Visibility::gradient( mVp, elevation( i ), distance( i ) ); }
+
+double AbstractLoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
+
+double AbstractLoS::elevation( int i )
+{
+    double elevation = at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
+
+    if ( mCurvatureCorrections )
+    {
+        return elevation +
+               Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
+                                                 mRefractionCoefficient, mEarthDiameter );
+    }
+    else
+    {
+        return elevation;
+    }
+}
+
+LoSNode AbstractLoS::nodeAt( int i ) { return at( i ); }
+
+int AbstractLoS::numberOfNodes() { return size(); };
+
+void AbstractLoS::sort()
+{
+    if ( !isValid() )
+    {
+        throw std::logic_error( "LoS is not valid." );
+    }
+
+    std::sort( begin(), end() );
+}
