@@ -81,7 +81,7 @@ namespace ViewshedBinaries
             menu->addAction( saveFile );
 
             connect( saveFile, &QAction::triggered, this,
-                     [=]
+                     [this]
                      {
                          QString lastUsedDir =
                              mSettings.value( QStringLiteral( "lastUsedDirForSettings" ), QDir::homePath() ).toString();
@@ -110,7 +110,7 @@ namespace ViewshedBinaries
             menu->addAction( loadFile );
 
             connect( loadFile, &QAction::triggered, this,
-                     [=]
+                     [this]
                      {
                          QString lastUsedDir =
                              mSettings.value( QStringLiteral( "lastUsedDirForSettings" ), QDir::homePath() ).toString();
