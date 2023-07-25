@@ -11,11 +11,6 @@ class PG
   public:
     void add_los_timing_data_to( std::string table, std::shared_ptr<AbstractLoS> los )
     {
-        pqxx::connection *mConn =
-            new pqxx::connection( "host=localhost dbname=habilitace user=admin password=root port=5430" );
-
-        pqxx::work W( *mConn );
-
         std::string raster_size = getenv( "RASTER_SIZE" );
 
         std::string sql =
@@ -25,6 +20,16 @@ class PG
             std::to_string( los->timeToCopy.count() ) + "," + std::to_string( los->timeToEval.count() ) + "," +
             std::to_string( los->numberOfNodes() ) + ", now(), " + raster_size + ", " +
             std::to_string( los->timeToPrepare.count() ) + ", " + std::to_string( los->originalNodesCount ) + " );";
+
+        executeSql( sql );
+    }
+
+    void executeSql( std::string &sql )
+    {
+        pqxx::connection mConn( mConnString );
+
+        pqxx::work W( mConn );
+
         try
         {
             W.exec( sql );
@@ -34,8 +39,11 @@ class PG
         {
             std::cout << e.what() << std::endl;
         }
-        delete mConn;
     }
+
+    std::string mConnString = "host=localhost dbname=habilitace user=admin password=root port=5430";
 };
 
 PG pg = PG();
+
+ulong CALLS = 0;
