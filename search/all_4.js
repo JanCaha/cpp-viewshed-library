@@ -1,7 +1,7 @@
 var searchData=
 [
   ['earthdiameter_25',['earthDiameter',['../classviewshed_1_1ViewshedUtils.html#a819e5565d105db7e7d492a3fe1c1ba7d',1,'viewshed::ViewshedUtils']]],
-  ['elevation_26',['elevation',['../classviewshed_1_1AbstractLoS.html#ae877fb51319b56c18814ef54d4375d61',1,'viewshed::AbstractLoS::elevation()'],['../classviewshed_1_1InverseLoS.html#af92ea50d8549084a4eefb33df077945f',1,'viewshed::InverseLoS::elevation()'],['../classviewshed_1_1LoS.html#aa0f43a1328c764eaacef038037e93ac2',1,'viewshed::LoS::elevation()']]],
+  ['elevation_26',['elevation',['../classviewshed_1_1AbstractLoS.html#ac595de77ce3ba74337cef54c2ff4062c',1,'viewshed::AbstractLoS']]],
   ['elevationdifference_27',['ElevationDifference',['../classviewshed_1_1visibilityalgorithm_1_1ElevationDifference.html',1,'viewshed::visibilityalgorithm']]],
   ['elevationdifferencetoglobalhorizon_28',['ElevationDifferenceToGlobalHorizon',['../classviewshed_1_1visibilityalgorithm_1_1ElevationDifferenceToGlobalHorizon.html',1,'viewshed::visibilityalgorithm']]],
   ['elevationdifferencetolocalhorizon_29',['ElevationDifferenceToLocalHorizon',['../classviewshed_1_1visibilityalgorithm_1_1ElevationDifferenceToLocalHorizon.html',1,'viewshed::visibilityalgorithm']]],
