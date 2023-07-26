@@ -1,8 +1,6 @@
 #ifndef VIEWSHEDLIB_INVERSELOS_H
 #define VIEWSHEDLIB_INVERSELOS_H
 
-#include <vector>
-
 #include "abstractlos.h"
 #include "enums.h"
 
@@ -21,7 +19,7 @@ namespace viewshed
      * @brief Class that represents InverseLoS, that is LoS used in Inverse Viewshed calculation.
      *
      */
-    class InverseLoS : public std::vector<LoSNode>, public AbstractLoS
+    class InverseLoS : public AbstractLoS
     {
       public:
         InverseLoS();
@@ -38,25 +36,16 @@ namespace viewshed
 
         bool isValid() override;
 
-        int numberOfNodes() override;
         int resultRow() override;
         int resultCol() override;
         int targetPointIndex() override;
 
-        double distance( int i ) override;
-        double gradient( int i ) override;
-        double elevation( int i ) override;
-
-        LoSNode nodeAt( int i ) override;
-
       protected:
-        void sort() override;
         void findTargetPointIndex() override;
 
       private:
         void removePointsAfterViewPoint();
         void fixDistancesAngles();
-        void removePointsAfterTarget();
         bool mRemovePointsAfterTarget = false;
         void setUpTargetLoSNode();
     };
