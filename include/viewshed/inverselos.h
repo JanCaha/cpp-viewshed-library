@@ -46,7 +46,6 @@ namespace viewshed
       private:
         void removePointsAfterViewPoint();
         void fixDistancesAngles();
-        void removePointsAfterTarget();
         bool mRemovePointsAfterTarget = false;
         void setUpTargetLoSNode();
     };

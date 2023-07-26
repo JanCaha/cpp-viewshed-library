@@ -152,11 +152,3 @@ void InverseLoS::findTargetPointIndex()
 }
 
 void InverseLoS::setRemovePointsAfterTarget( bool remove ) { mRemovePointsAfterTarget = remove; }
-
-void InverseLoS::removePointsAfterTarget()
-{
-
-    erase(
-        std::remove_if( begin(), end(), [this]( LoSNode &node ) { return mPointDistance <= node.centreDistance(); } ),
-        end() );
-}

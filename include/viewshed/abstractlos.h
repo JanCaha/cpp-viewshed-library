@@ -228,6 +228,12 @@ namespace viewshed
          */
         double viewPointTotalElevation();
 
+        /**
+         * @brief Remove points located after the target point.
+         *
+         */
+        void removePointsAfterTarget();
+
       protected:
         AbstractLoS();
 

@@ -86,3 +86,11 @@ void AbstractLoS::sort()
 
     std::sort( begin(), end() );
 }
+
+void AbstractLoS::removePointsAfterTarget()
+{
+
+    erase(
+        std::remove_if( begin(), end(), [this]( LoSNode &node ) { return mPointDistance <= node.centreDistance(); } ),
+        end() );
+}

@@ -36,8 +36,6 @@ namespace viewshed
         int resultRow() override;
         int resultCol() override;
 
-        void removePointsAfterTarget();
-
       protected:
         void findTargetPointIndex() override;
     };
