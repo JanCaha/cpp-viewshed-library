@@ -83,8 +83,8 @@ void LoSEvaluator::parseNodes()
     double gradientOneBeforeLast = mLos->gradient( oneBeforeLast );
 
     // if last point on LoS is visible and higher then global horizon, then move global horizon to this point
-    if ( gradientOneBeforeLast > mLos->gradient( mLosValues->indexHorizon ) &&
-         gradientOneBeforeLast > mLosValues->maxGradient )
+    if ( gradientOneBeforeLast > mLosValues->maxGradient &&
+         gradientOneBeforeLast > mLos->gradient( mLosValues->indexHorizon ) )
     {
         mLosValues->indexHorizon = oneBeforeLast;
     }
