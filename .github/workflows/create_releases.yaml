@@ -160,7 +160,7 @@ jobs:
             file: docker/Dockerfile
             context: docker/
             push: true
-            tags: "cahik/viewshed:${{steps.version.outputs.VERSION}}"
+            tags: "cahik/viewshed:v${{steps.version.outputs.VERSION}}"
 
         - name: Build and push Docker image
           uses: docker/build-push-action@v4
