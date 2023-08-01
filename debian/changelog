@@ -1,3 +1,35 @@
+viewshed (2.5.1-0ppa0) jammy; urgency=low
+  
+  * fix version
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 31 Jul 2023 22:44:12 +0200
+
+viewshed (2.5.0-0ppa0) jammy; urgency=low
+  
+  * refactor InverseLoS and LoS functions into AbstractLoS
+  * minor optimization
+
+ -- Jan Caha <jan.caha@outlook.com>  Fri, 21 Jul 2023 15:44:28 +0200
+
+viewshed (2.4.0-0ppa0) jammy; urgency=low
+
+  * Compile using cmake, creating a proper version build as RELEASE
+
+ -- Jan Caha <jan.caha@outlook.com>  Thu, 13 Jul 2023 07:26:11 +0200
+
+viewshed (2.3.1-0ppa0) jammy; urgency=low
+
+  * Remove optimization, that does not work
+  * Fix build type
+
+ -- Jan Caha <jan.caha@outlook.com>  Wed, 12 Jul 2023 09:11:07 +0200
+
+viewshed (2.2.2-0ppa0) jammy; urgency=low
+
+  * Text fixes
+
+ -- Jan Caha <jan.caha@outlook.com>  Tue, 11 Jul 2023 13:58:11 +0200
+
 viewshed (2.2.0-0ppa0) jammy; urgency=low
 
   * Refactor and simplification of API, remove calls in functions that slows down the calculation.

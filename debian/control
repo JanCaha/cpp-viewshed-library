@@ -2,7 +2,7 @@ Source: viewshed
 Section: science
 Priority: optional
 Maintainer: Jan Caha <jan.caha@outlook.com>
-Build-Depends: cmake, build-essential, gdal-bin, libgdal-dev, simplerasters, qtbase5-dev, qt5-qmake
+Build-Depends: cmake, build-essential, ninja-build, clang, gdal-bin, libgdal-dev, simplerasters, qtbase5-dev, qt5-qmake
 Homepage: <https://www.cahik.cz>
 
 Package: viewshed

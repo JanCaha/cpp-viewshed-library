@@ -73,7 +73,7 @@ class InverseLoSAlgorithmTest : public ::testing::Test
         for ( int i = 0; i < eventList.size(); i++ )
         {
             CellEvent e = eventList.at( i );
-            los->push_back( LoSNode( tp->mRow, tp->mCol, &e, cellSize ) );
+            los->push_back( LoSNode( tp, &e, cellSize ) );
         }
     }
 

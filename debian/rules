@@ -5,13 +5,17 @@ BUILDDIR = build_dir
 # secondly called by launchpad
 build:
 	mkdir $(BUILDDIR);
-	cd $(BUILDDIR); cmake \
-		-D CMAKE_INSTALL_PREFIX=../debian/tmp/usr \
+	cmake \
+		-B $(BUILDDIR) \
+		-G Ninja \
+		-DCMAKE_CXX_COMPILER=clang++ \
+		-D CMAKE_BUILD_TYPE=Release \
+		-D CMAKE_INSTALL_PREFIX=debian/tmp/usr \
 		-D BUILD_TESTS=OFF \
 		-D PACK_DEB=OFF \
-		-D BUILD_DOCUMENTATION=OFF \
-		..
-	make -C $(BUILDDIR)
+		-D BUILD_DOCUMENTATION=OFF
+	cmake --build $(BUILDDIR) --config Release --target library_viewshed	
+	cmake --build $(BUILDDIR) --config Release --target create_binaries	
 
 # thirdly called by launchpad
 binary: binary-indep binary-arch
