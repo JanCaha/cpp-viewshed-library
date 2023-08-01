@@ -1,8 +1,8 @@
-viewshed (2.5.1-0ppa0) jammy; urgency=low
+viewshed (2.6.0-0ppa0) jammy; urgency=low
   
-  * fix version
+  * timing fixes bring from 2.2.4
 
- -- Jan Caha <jan.caha@outlook.com>  Mon, 31 Jul 2023 22:44:12 +0200
+ -- Jan Caha <jan.caha@outlook.com>  Tue, 01 Aug 2023 15:15:38 +0200
 
 viewshed (2.5.0-0ppa0) jammy; urgency=low
   
