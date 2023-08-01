@@ -19,7 +19,7 @@ jobs:
       - name: Update and Upgrade
         run: |
           sudo apt update
-          sudo apt install ninja-build doxygen libgtest-dev libgmock-dev clang clang-14 libclang-14-dev lld-14 
+          sudo apt install ninja-build doxygen libgtest-dev libgmock-dev clang
 
       - name: Install GDAL
         run: |

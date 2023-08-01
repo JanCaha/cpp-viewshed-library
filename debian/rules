@@ -3,11 +3,13 @@
 BUILDDIR = build_dir
 
 # secondly called by launchpad
-build: : export CXX=$(whereis clang++)
+build:
 	mkdir $(BUILDDIR);
+	COMPILER=$(whereis clang++)
 	cmake \
 		-B $(BUILDDIR) \
 		-G Ninja \
+		-DCMAKE_CXX_COMPILER=$(COMPILER) \
 		-D CMAKE_BUILD_TYPE=Release \
 		-D CMAKE_INSTALL_PREFIX=debian/tmp/usr \
 		-D BUILD_TESTS=OFF \
