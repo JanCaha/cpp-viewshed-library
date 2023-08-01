@@ -8,4 +8,8 @@ digraph "viewshed::InverseLoS"
   Node2 [label="viewshed::AbstractLoS",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classviewshed_1_1AbstractLoS.html",tooltip="Abstract class that represent line-of-sight (LoS). Consists of LoSNodes, view point and target point ..."];
   Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node3 [label="std::vector\< LoSNode \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" mCurrentLoSNode" ,fontname="Helvetica"];
+  Node4 [label="viewshed::LoSNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classviewshed_1_1LoSNode.html",tooltip="Representation of single cell that creates a point on LoS."];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="viewshed::RasterPosition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classviewshed_1_1RasterPosition.html",tooltip="Class to represent position on raster in term of row and column."];
 }

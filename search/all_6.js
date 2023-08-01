@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gradient_33',['gradient',['../classviewshed_1_1AbstractLoS.html#aeb0f6b59c5b1a593433a55cf29987b1d',1,'viewshed::AbstractLoS::gradient()'],['../classviewshed_1_1Visibility.html#ab002b205c7bcaac12cc0e92240073fd4',1,'viewshed::Visibility::gradient()']]]
+  ['gradient_36',['gradient',['../classviewshed_1_1AbstractLoS.html#af3bcc20774647e93c5205fde2973d26b',1,'viewshed::AbstractLoS::gradient()'],['../classviewshed_1_1Visibility.html#a2293339a933b7e72f9c85a566af89bc8',1,'viewshed::Visibility::gradient()']]]
 ];

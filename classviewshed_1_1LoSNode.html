@@ -99,9 +99,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8440f224ae3124431e12ba81921bf15f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1LoSNode.html#a8440f224ae3124431e12ba81921bf15f">LoSNode</a> (int row, int col)</td></tr>
 <tr class="memdesc:a8440f224ae3124431e12ba81921bf15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> object at specific row and column.  <a href="classviewshed_1_1LoSNode.html#a8440f224ae3124431e12ba81921bf15f">More...</a><br /></td></tr>
 <tr class="separator:a8440f224ae3124431e12ba81921bf15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47df5e9286f08d0e730df443da8cb5ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1LoSNode.html#a47df5e9286f08d0e730df443da8cb5ca">LoSNode</a> (std::shared_ptr&lt; <a class="el" href="classviewshed_1_1Point.html">Point</a> &gt; point, <a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> *e, double &amp;cellSize)</td></tr>
-<tr class="memdesc:a47df5e9286f08d0e730df443da8cb5ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> object build from <a class="el" href="classviewshed_1_1Point.html" title="Class that represents important point for viewshed - view point, or inverse viewshed - target point....">Point</a>, <a class="el" href="classviewshed_1_1CellEvent.html" title="Class representing cell events for Van Kreveld&#39;s plane sweep algorithm. Stores cell position (row and...">CellEvent</a> and cell size.  <a href="classviewshed_1_1LoSNode.html#a47df5e9286f08d0e730df443da8cb5ca">More...</a><br /></td></tr>
-<tr class="separator:a47df5e9286f08d0e730df443da8cb5ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11373bd24228e30deb359a974063357e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1LoSNode.html#a11373bd24228e30deb359a974063357e">LoSNode</a> (const int &amp;pointRow, const int &amp;pointCol, const <a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> *e, const double &amp;cellSize)</td></tr>
+<tr class="memdesc:a11373bd24228e30deb359a974063357e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> object build from <a class="el" href="classviewshed_1_1Point.html" title="Class that represents important point for viewshed - view point, or inverse viewshed - target point....">Point</a> position, <a class="el" href="classviewshed_1_1CellEvent.html" title="Class representing cell events for Van Kreveld&#39;s plane sweep algorithm. Stores cell position (row and...">CellEvent</a> and cell size.  <a href="classviewshed_1_1LoSNode.html#a11373bd24228e30deb359a974063357e">More...</a><br /></td></tr>
+<tr class="separator:a11373bd24228e30deb359a974063357e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6235f365acb60d901b97b58b2568aec2"><td class="memItemLeft" align="right" valign="top"><a id="a6235f365acb60d901b97b58b2568aec2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classviewshed_1_1LoSNode.html">LoSNode</a> &amp;other)</td></tr>
 <tr class="separator:a6235f365acb60d901b97b58b2568aec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,15 +120,18 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;</b> (con
 <tr class="memitem:aeecec5c1a58d8dfff2b1be0a4f6930d6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1LoSNode.html#aeecec5c1a58d8dfff2b1be0a4f6930d6">centreAngle</a> ()</td></tr>
 <tr class="memdesc:aeecec5c1a58d8dfff2b1be0a4f6930d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut call to obtain horizontal angle at center of raster cell that this <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> represents.  <a href="classviewshed_1_1LoSNode.html#aeecec5c1a58d8dfff2b1be0a4f6930d6">More...</a><br /></td></tr>
 <tr class="separator:aeecec5c1a58d8dfff2b1be0a4f6930d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8f0aa0406efc8cf883293ddfb2b905e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1LoSNode.html#ac8f0aa0406efc8cf883293ddfb2b905e">centreGradient</a> ()</td></tr>
-<tr class="memdesc:ac8f0aa0406efc8cf883293ddfb2b905e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut call to obtain gradient (vertical) angle at center of raster cell that this <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> represents.  <a href="classviewshed_1_1LoSNode.html#ac8f0aa0406efc8cf883293ddfb2b905e">More...</a><br /></td></tr>
-<tr class="separator:ac8f0aa0406efc8cf883293ddfb2b905e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7b3e471a11133e2744b37b4b1e688c8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1LoSNode.html#ac7b3e471a11133e2744b37b4b1e688c8">centreElevation</a> ()</td></tr>
 <tr class="memdesc:ac7b3e471a11133e2744b37b4b1e688c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut call to obtain elevation angle at center of raster cell that this <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> represents.  <a href="classviewshed_1_1LoSNode.html#ac7b3e471a11133e2744b37b4b1e688c8">More...</a><br /></td></tr>
 <tr class="separator:ac7b3e471a11133e2744b37b4b1e688c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab074c3524f7be99272d329aae5395d36"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1LoSNode.html#ab074c3524f7be99272d329aae5395d36">centreDistance</a> ()</td></tr>
 <tr class="memdesc:ab074c3524f7be99272d329aae5395d36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut call to obtain distance angle at center of raster cell that this <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> represents.  <a href="classviewshed_1_1LoSNode.html#ab074c3524f7be99272d329aae5395d36">More...</a><br /></td></tr>
 <tr class="separator:ab074c3524f7be99272d329aae5395d36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2a1042b515e5a4b121e4132611f49ea"><td class="memItemLeft" align="right" valign="top"><a id="ad2a1042b515e5a4b121e4132611f49ea"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>elevationAtAngle</b> (const double &amp;angle)</td></tr>
+<tr class="separator:ad2a1042b515e5a4b121e4132611f49ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90debc4afe60e9a15278c86917871a61"><td class="memItemLeft" align="right" valign="top"><a id="a90debc4afe60e9a15278c86917871a61"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>distanceAtAngle</b> (const double &amp;angle)</td></tr>
+<tr class="separator:a90debc4afe60e9a15278c86917871a61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -192,8 +195,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>mCol</b></td></tr>
 
 </div>
 </div>
-<a id="a47df5e9286f08d0e730df443da8cb5ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47df5e9286f08d0e730df443da8cb5ca">&#9670;&nbsp;</a></span>LoSNode() <span class="overload">[2/2]</span></h2>
+<a id="a11373bd24228e30deb359a974063357e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11373bd24228e30deb359a974063357e">&#9670;&nbsp;</a></span>LoSNode() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,19 +204,25 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>mCol</b></td></tr>
         <tr>
           <td class="memname">LoSNode::LoSNode </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classviewshed_1_1Point.html">Point</a> &gt;&#160;</td>
-          <td class="paramname"><em>point</em>, </td>
+          <td class="paramtype">const int &amp;&#160;</td>
+          <td class="paramname"><em>pointRow</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> *&#160;</td>
+          <td class="paramtype">const int &amp;&#160;</td>
+          <td class="paramname"><em>pointCol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> *&#160;</td>
           <td class="paramname"><em>e</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramtype">const double &amp;&#160;</td>
           <td class="paramname"><em>cellSize</em>&#160;</td>
         </tr>
         <tr>
@@ -224,10 +233,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>mCol</b></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Construct a new <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> object build from <a class="el" href="classviewshed_1_1Point.html" title="Class that represents important point for viewshed - view point, or inverse viewshed - target point....">Point</a>, <a class="el" href="classviewshed_1_1CellEvent.html" title="Class representing cell events for Van Kreveld&#39;s plane sweep algorithm. Stores cell position (row and...">CellEvent</a> and cell size. </p>
+<p>Construct a new <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> object build from <a class="el" href="classviewshed_1_1Point.html" title="Class that represents important point for viewshed - view point, or inverse viewshed - target point....">Point</a> position, <a class="el" href="classviewshed_1_1CellEvent.html" title="Class representing cell events for Van Kreveld&#39;s plane sweep algorithm. Stores cell position (row and...">CellEvent</a> and cell size. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">point</td><td>Impotant point of viewshed (either view point for viewshed or target point for inver viewshed). </td></tr>
+    <tr><td class="paramname">pointRow</td><td>Important point row of viewshed (either view point for viewshed or target point for inverseviewshed). </td></tr>
+    <tr><td class="paramname">pointCol</td><td>Important point column of viewshed (either view point for viewshed or target point for inverseviewshed). </td></tr>
     <tr><td class="paramname">e</td><td>Cell event with all the necessary information. </td></tr>
     <tr><td class="paramname">cellSize</td><td>Cell size of raster from which the information was derived. </td></tr>
   </table>
@@ -293,26 +303,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>mCol</b></td></tr>
 </div><div class="memdoc">
 
 <p>Shortcut call to obtain elevation angle at center of raster cell that this <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> represents. </p>
-<dl class="section return"><dt>Returns</dt><dd>double </dd></dl>
-
-</div>
-</div>
-<a id="ac8f0aa0406efc8cf883293ddfb2b905e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8f0aa0406efc8cf883293ddfb2b905e">&#9670;&nbsp;</a></span>centreGradient()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double viewshed::LoSNode::centreGradient </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Shortcut call to obtain gradient (vertical) angle at center of raster cell that this <a class="el" href="classviewshed_1_1LoSNode.html" title="Representation of single cell that creates a point on LoS.">LoSNode</a> represents. </p>
 <dl class="section return"><dt>Returns</dt><dd>double </dd></dl>
 
 </div>
