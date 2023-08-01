@@ -21,12 +21,6 @@ jobs:
           sudo apt update
           sudo apt install ninja-build doxygen libgtest-dev libgmock-dev clang clang-14 libclang-14-dev lld-14 
 
-      - name: Set compiler
-        run: echo "CXX=$(whereis clang++)" >> $GITHUB_ENV
-
-      - name: print clang
-        run: echo $(whereis clang++)
-          
       - name: Install GDAL
         run: |
           sudo apt-get -y install gdal-bin libgdal-dev
@@ -57,6 +51,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
+            -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
@@ -87,6 +82,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
+            -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
@@ -114,6 +110,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
+            -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
