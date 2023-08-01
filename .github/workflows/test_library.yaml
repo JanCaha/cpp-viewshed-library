@@ -19,7 +19,10 @@ jobs:
       - name: Update and Upgrade
         run: |
           sudo apt update
-          sudo apt install ninja-build doxygen libgtest-dev libgmock-dev
+          sudo apt install ninja-build doxygen libgtest-dev libgmock-dev clang
+
+      - name: Set compiler
+        run: echo "CXX=$(whereis clang++)" >> $GITHUB_ENV
 
       - name: Install GDAL
         run: |
