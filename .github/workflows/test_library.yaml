@@ -51,7 +51,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
-            -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
+            -DCMAKE_CXX_COMPILER=clang++ \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
@@ -82,7 +82,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
-            -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
+            -DCMAKE_CXX_COMPILER=clang++ \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
@@ -110,7 +110,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
-            -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
+            -DCMAKE_CXX_COMPILER=clang++ \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
