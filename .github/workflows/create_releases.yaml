@@ -28,7 +28,9 @@ jobs:
         
         - name: Set env
           id: version
-          run: echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+          run: |
+            echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+            echo $VERSION >> $GITHUB_OUTPUT
         
         - name: Print Version
           run: |
