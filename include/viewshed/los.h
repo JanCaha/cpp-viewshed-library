@@ -2,6 +2,7 @@
 #define VIEWSHEDLIB_LOS_H
 
 #include <memory>
+#include <vector>
 
 #include "abstractlos.h"
 #include "enums.h"
@@ -33,12 +34,15 @@ namespace viewshed
         bool isValid() override;
 
         int targetPointIndex() override;
+        int numberOfNodes() override;
         int resultRow() override;
         int resultCol() override;
 
+        LoSNode nodeAt( std::size_t i ) override;
         void removePointsAfterTarget();
 
       protected:
+        void sort() override;
         void findTargetPointIndex() override;
     };
 

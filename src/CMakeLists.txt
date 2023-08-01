@@ -1,5 +1,3 @@
-if(HAS_QT)
-    add_subdirectory(bin)
-endif()
+add_subdirectory(bin)
 
 add_subdirectory(library)

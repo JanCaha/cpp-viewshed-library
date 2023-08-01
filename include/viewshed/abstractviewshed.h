@@ -71,7 +71,7 @@ namespace viewshed
          * @return true
          * @return false
          */
-        bool isInsideAngles( double eventEnterAngle, double eventExitAngle );
+        bool isInsideAngles( const double &eventEnterAngle, const double &eventExitAngle );
 
         /**
          * @brief Set the Maximal Distance limit value. Limits event list creation to cells within this distance limit.

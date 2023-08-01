@@ -5,6 +5,7 @@ cmake --build build --target clean
 cmake -S. \
     -Bbuild \
     -G Ninja \
+    -DCMAKE_CXX_COMPILER=clang++ \
     -DCMAKE_BUILD_TYPE=Release \
     -DPACK_DEB:bool=off \
     -DBUILD_DOCUMENTATION:bool=off \

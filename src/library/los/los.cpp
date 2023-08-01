@@ -10,21 +10,15 @@ using viewshed::LoS;
 using viewshed::LoSNode;
 using viewshed::Visibility;
 
-LoS::LoS() { mValid = false; }
+LoS::LoS() {}
 
-LoS::LoS( std::vector<LoSNode> losNodes )
-{
-    assign( losNodes.begin(), losNodes.end() );
-    mValid = false;
-}
+LoS::LoS( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
 
-void LoS::setLoSNodes( std::vector<LoSNode> losNodes )
-{
-    assign( losNodes.begin(), losNodes.end() );
-    mValid = false;
-}
+void LoS::sort() { std::sort( begin(), end() ); }
 
-bool LoS::isValid() { return mVp->isValid() && mValid; }
+void LoS::setLoSNodes( std::vector<LoSNode> losNodes ) { assign( losNodes.begin(), losNodes.end() ); }
+
+bool LoS::isValid() { return mVp->isValid(); }
 
 void LoS::setTargetPoint( std::shared_ptr<LoSNode> poi, double targetOffset )
 {
@@ -49,11 +43,14 @@ int LoS::targetPointIndex() { return mTargetIndex; }
 void LoS::prepareForCalculation()
 {
     originalNodesCount = size();
-    mValid = true;
 
     sort();
     findTargetPointIndex();
 };
+
+int LoS::numberOfNodes() { return size(); };
+
+LoSNode LoS::nodeAt( std::size_t i ) { return this->operator[]( i ); }
 
 int LoS::resultRow() { return mTp->mRow; }
 
@@ -62,7 +59,6 @@ int LoS::resultCol() { return mTp->mCol; }
 void LoS::removePointsAfterTarget()
 {
 
-    erase(
-        std::remove_if( begin(), end(), [this]( LoSNode &node ) { return mPointDistance <= node.centreDistance(); } ),
-        end() );
+    erase( std::remove_if( begin(), end(), [=]( LoSNode &node ) { return mPointDistance <= node.centreDistance(); } ),
+           end() );
 }

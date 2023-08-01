@@ -27,14 +27,18 @@ void LoSEvaluator::parseNodes()
 {
     mLosValues->targetIndex = mLos->targetIndex();
 
-    double snGradient, nextGradient;
+    double snGradient;
+    double nextGradient;
 
-    for ( int i = 0; i < mLos->numberOfNodes(); i++ )
+    for ( std::size_t i = 0; i < mLos->numberOfNodes(); i++ )
     {
-        snGradient = mLos->gradient( i );
+        mLos->setCurrentLoSNode( i );
+
+        snGradient = mLos->currentGradient();
 
         if ( i + 1 < mLos->numberOfNodes() )
         {
+
             nextGradient = mLos->gradient( i + 1 );
 
             // is current PoI horizon?
@@ -64,7 +68,7 @@ void LoSEvaluator::parseNodes()
             }
         }
 
-        if ( mLos->distance( i ) < mLos->targetDistance() )
+        if ( mLos->currentDistance() < mLos->targetDistance() )
         {
             if ( mLosValues->maxGradientBefore < snGradient )
             {
@@ -80,14 +84,11 @@ void LoSEvaluator::parseNodes()
         }
     }
 
-    int oneBeforeLast = mLos->numberOfNodes() - 1;
-    double gradientOneBeforeLast = mLos->gradient( oneBeforeLast );
-
     // if last point on LoS is visible and higher then global horizon, then move global horizon to this point
-    if ( gradientOneBeforeLast > mLos->gradient( mLosValues->indexHorizon ) &&
-         gradientOneBeforeLast > mLosValues->maxGradient )
+    if ( mLos->gradient( mLos->numberOfNodes() - 1 ) > mLos->gradient( mLosValues->indexHorizon ) &&
+         mLos->gradient( mLos->numberOfNodes() - 1 ) > mLosValues->maxGradient )
     {
-        mLosValues->indexHorizon = oneBeforeLast;
+        mLosValues->indexHorizon = mLos->numberOfNodes() - 1;
     }
 
     mAlreadyParsed = true;
@@ -111,7 +112,7 @@ void LoSEvaluator::calculate()
 
     mResultValues = ViewshedValues( mLos->resultRow(), mLos->resultCol() );
 
-    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
+    for ( std::size_t i = 0; i < mVisibilityIndices->size(); i++ )
     {
         mResultValues.values.push_back( mVisibilityIndices->at( i )->result( mLosValues, mLos ) );
     }

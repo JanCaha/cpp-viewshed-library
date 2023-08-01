@@ -1,5 +1,3 @@
-#include <exception>
-
 #include "abstractlos.h"
 #include "cellevent.h"
 #include "losnode.h"
@@ -7,7 +5,6 @@
 #include "visibility.h"
 
 using viewshed::AbstractLoS;
-using viewshed::LoSNode;
 using viewshed::Point;
 using viewshed::Visibility;
 
@@ -22,7 +19,10 @@ void AbstractLoS::setViewPoint( std::shared_ptr<LoSNode> poi, double observerOff
 
 double AbstractLoS::targetDistance() { return mPointDistance; }
 
-double AbstractLoS::targetGradient() { return Visibility::gradient( mVp, mTp->totalElevation(), mPointDistance ); }
+double AbstractLoS::targetGradient()
+{
+    return Visibility::gradient( mTp->totalElevation() - mVp->totalElevation(), mPointDistance );
+}
 
 double AbstractLoS::targetElevation() { return mTp->totalElevation(); }
 
@@ -53,19 +53,38 @@ double AbstractLoS::viewPointElevation() { return mVp->mElevation; }
 
 double AbstractLoS::viewPointTotalElevation() { return mVp->totalElevation(); }
 
-double AbstractLoS::gradient( int i ) { return Visibility::gradient( mVp, elevation( i ), distance( i ) ); }
+double AbstractLoS::currentDistance() { return mCurrentLoSNode.distanceAtAngle( mAngleHorizontal ); }
 
-double AbstractLoS::distance( int i ) { return at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ); }
-
-double AbstractLoS::elevation( int i )
+double AbstractLoS::currentElevation()
 {
-    double elevation = at( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
+    return mCurrentLoSNode.elevationAtAngle( mAngleHorizontal ) + curvatureCorrectionsFix( currentDistance() );
+}
+
+double AbstractLoS::currentGradient()
+{
+    return Visibility::gradient( currentElevation() - mVp->totalElevation(), currentDistance() );
+}
+
+double AbstractLoS::curvatureCorrectionsFix( const double distance )
+{
+    if ( mCurvatureCorrections )
+    {
+        return Visibility::curvatureCorrections( distance, mRefractionCoefficient, mEarthDiameter );
+    }
+
+    return 0;
+}
+
+double AbstractLoS::elevation( std::size_t i )
+{
+
+    double elevation = this->operator[]( i ).valueAtAngle( mAngleHorizontal, ValueType::Elevation );
 
     if ( mCurvatureCorrections )
     {
-        return elevation +
-               Visibility::curvatureCorrections( at( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
-                                                 mRefractionCoefficient, mEarthDiameter );
+        return elevation + Visibility::curvatureCorrections(
+                               this->operator[]( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance ),
+                               mRefractionCoefficient, mEarthDiameter );
     }
     else
     {
@@ -73,16 +92,14 @@ double AbstractLoS::elevation( int i )
     }
 }
 
-LoSNode AbstractLoS::nodeAt( int i ) { return at( i ); }
-
-int AbstractLoS::numberOfNodes() { return size(); };
-
-void AbstractLoS::sort()
+double AbstractLoS::distance( std::size_t i )
 {
-    if ( !isValid() )
-    {
-        throw std::logic_error( "LoS is not valid." );
-    }
-
-    std::sort( begin(), end() );
+    return this->operator[]( i ).valueAtAngle( mAngleHorizontal, ValueType::Distance );
 }
+
+double AbstractLoS::gradient( std::size_t i )
+{
+    return Visibility::gradient( elevation( i ) - mVp->totalElevation(), distance( i ) );
+}
+
+void AbstractLoS::setCurrentLoSNode( std::size_t i ) { mCurrentLoSNode = this->operator[]( i ); }

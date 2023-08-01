@@ -16,7 +16,7 @@ void AbstractViewshed::prepareMemoryRasters()
     dataType = GDALDataType::GDT_Float32;
 #endif
 
-    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
+    for ( std::size_t i = 0; i < mVisibilityIndices->size(); i++ )
     {
         mResults->push_back( std::make_shared<SingleBandRaster>( *mInputDsm.get(), dataType ) );
     }
@@ -122,7 +122,7 @@ void AbstractViewshed::setAngles( double minAngle, double maxAngle )
 
 bool AbstractViewshed::validAngles() { return !( std::isnan( mMinAngle ) || std::isnan( mMaxAngle ) ); }
 
-bool AbstractViewshed::isInsideAngles( double eventEnterAngle, double eventExitAngle )
+bool AbstractViewshed::isInsideAngles( const double &eventEnterAngle, const double &eventExitAngle )
 {
     if ( validAngles() )
     {
@@ -164,7 +164,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
 
     ViewshedValues rasterValues;
 
-    int i = 0;
+    std::size_t i = 0;
     for ( CellEvent e : mCellEvents )
     {
         progressCallback( mCellEvents.size(), i );
@@ -178,7 +178,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
                     break;
                 }
 
-                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
                 mLosNodes.push_back( mLoSNodeTemp );
                 break;
             }
@@ -243,12 +243,12 @@ void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSqua
 {
     SingleBandRaster result = SingleBandRaster( *dem_.get() );
 
-    int i = 0;
+    std::size_t i = 0;
     for ( CellEvent event : mCellEvents )
     {
         if ( event.mEventType == CellEventPositionType::CENTER )
         {
-            mLoSNodeTemp = LoSNode( mPoint, &event, mCellSize );
+            mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &event, mCellSize );
             result.writeValue( mLoSNodeTemp.mRow, mLoSNodeTemp.mCol, func( mLoSNodeTemp ) );
         }
         i++;
@@ -264,7 +264,7 @@ void AbstractViewshed::saveResults( std::string location, std::string fileNamePr
     std::string filePath;
     std::string fileName;
 
-    for ( int i = 0; i < mVisibilityIndices->size(); i++ )
+    for ( std::size_t i = 0; i < mVisibilityIndices->size(); i++ )
     {
         if ( fileNamePrefix.empty() )
         {
@@ -307,7 +307,7 @@ LoSNode AbstractViewshed::statusNodeFromPoint( OGRPoint point )
     {
         if ( e.mEventType == CellEventPositionType::CENTER && e.mCol == col && e.mRow == row )
         {
-            ln = LoSNode( mPoint, &e, mCellSize );
+            ln = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
             return ln;
         }
     }
@@ -344,7 +344,7 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( OGRPoint point )
                 {
                     break;
                 }
-                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
                 losNodes.push_back( mLoSNodeTemp );
                 break;
             }
@@ -366,7 +366,7 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( OGRPoint point )
 
             case CellEventPositionType::CENTER:
             {
-                mLoSNodeTemp = LoSNode( mPoint, &e, mCellSize );
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
                 if ( mLoSNodeTemp.mCol == poi.mCol && mLoSNodeTemp.mRow == poi.mRow )
                 {
                     return losNodes;

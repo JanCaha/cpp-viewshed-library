@@ -31,7 +31,7 @@ void ViewshedUtils::saveToCsv( std::vector<std::string> rows, std::string header
 
     resultCsvFile.open( fileName );
 
-    for ( int i = 0; i < rows.size(); i++ )
+    for ( std::size_t i = 0; i < rows.size(); i++ )
     {
         resultCsvFile << rows[i];
 
@@ -52,7 +52,7 @@ void ViewshedUtils::saveToCsv( std::vector<DataTriplet> data, std::string header
 
     resultCsvFile << header;
 
-    for ( int i = 0; i < data.size(); i++ )
+    for ( std::size_t i = 0; i < data.size(); i++ )
     {
         std::ostringstream dist, elev;
 
@@ -80,7 +80,7 @@ std::vector<DataTriplet> ViewshedUtils::distanceElevation( std::shared_ptr<Abstr
 
     data.push_back( DataTriplet( 0, los->vp()->totalElevation(), false ) );
 
-    for ( int i = 0; i < los->numberOfNodes(); i++ )
+    for ( std::size_t i = 0; i < los->numberOfNodes(); i++ )
     {
         if ( inverseLoS && ( i == 0 && los->targetDistance() < los->distance( i ) ) )
         {

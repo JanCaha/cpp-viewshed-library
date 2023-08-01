@@ -19,7 +19,7 @@ jobs:
       - name: Update and Upgrade
         run: |
           sudo apt update
-          sudo apt install ninja-build doxygen libgtest-dev libgmock-dev
+          sudo apt install ninja-build doxygen libgtest-dev libgmock-dev clang
 
       - name: Install GDAL
         run: |
@@ -51,6 +51,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
+            -DCMAKE_CXX_COMPILER=clang++ \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
@@ -81,6 +82,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
+            -DCMAKE_CXX_COMPILER=clang++ \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
@@ -108,6 +110,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
+            -DCMAKE_CXX_COMPILER=clang++ \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \

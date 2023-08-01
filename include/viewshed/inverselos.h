@@ -1,6 +1,8 @@
 #ifndef VIEWSHEDLIB_INVERSELOS_H
 #define VIEWSHEDLIB_INVERSELOS_H
 
+#include <vector>
+
 #include "abstractlos.h"
 #include "enums.h"
 
@@ -36,11 +38,15 @@ namespace viewshed
 
         bool isValid() override;
 
+        int numberOfNodes() override;
         int resultRow() override;
         int resultCol() override;
         int targetPointIndex() override;
 
+        LoSNode nodeAt( std::size_t i ) override;
+
       protected:
+        void sort() override;
         void findTargetPointIndex() override;
 
       private:

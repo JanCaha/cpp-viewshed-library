@@ -28,7 +28,9 @@ jobs:
         
         - name: Set env
           id: version
-          run: echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+          run: |
+            echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+            echo $VERSION >> $GITHUB_OUTPUT
         
         - name: Print Version
           run: |
@@ -37,17 +39,11 @@ jobs:
             echo ${PACKAGE}
             echo ${VERSION}
             echo "-----"
-              
-        - name: Push tag
-          uses: anothrNick/github-tag-action@1.64.0 
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
-            CUSTOM_TAG : "v${{steps.version.outputs.VERSION}}"
             
         - name: Update and Upgrade
           run: |
             sudo apt update
-            sudo apt install ninja-build doxygen libgtest-dev libgmock-dev
+            sudo apt install ninja-build doxygen libgtest-dev libgmock-dev clang
 
         - name: Install Qt
           uses: jurplel/install-qt-action@v3
@@ -80,6 +76,7 @@ jobs:
               -S. \
               -Bbuild \
               -G Ninja \
+              -DCMAKE_CXX_COMPILER=clang++ \
               -DCMAKE_BUILD_TYPE=Release \
               -DPACK_DEB:bool=on \
               -DBUILD_DOCUMENTATION:bool=on \
@@ -97,6 +94,16 @@ jobs:
           with:
             name: viewshed
             path: _packages/viewshed_*.deb
+        
+        - name: Move deb file
+          run: |
+            mv _packages/viewshed_*.deb .      
+
+        - name: Release
+          uses: softprops/action-gh-release@v1
+          with:
+            files: viewshed_*.deb
+            tag_name: "v${{steps.version.outputs.VERSION}}"
         
         - name: Deploy Documentation
           uses: peaceiris/actions-gh-pages@v3
@@ -144,8 +151,22 @@ jobs:
           with:
             username: ${{ secrets.DOCKER_USERNAME }}
             password: ${{ secrets.DOCKER_PASSWORD }}
+        
+        - name: Set Env and GA Output
+          id: version
+          run: |
+            echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+            echo $VERSION >> $GITHUB_OUTPUT
+        
+        - name: Build and push Docker image version
+          uses: docker/build-push-action@v4
+          with:
+            file: docker/Dockerfile
+            context: docker/
+            push: true
+            tags: "cahik/viewshed:v${{steps.version.outputs.VERSION}}"
 
-        - name: Build and push Docker image
+        - name: Build and push Docker image latest
           uses: docker/build-push-action@v4
           with:
             file: docker/Dockerfile
