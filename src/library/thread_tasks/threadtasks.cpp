@@ -1,6 +1,7 @@
 #include "threadtasks.h"
 #include "abstractlos.h"
 #include "abstractviewshed.h"
+#include "db.h"
 #include "inverselos.h"
 #include "losevaluator.h"
 #include "losnode.h"
