@@ -31,10 +31,10 @@ void viewshed::evaluateLoS( std::shared_ptr<AbstractLoS> los,
 #if CALCULATE_INDIVIDUAL_LOS_TIMING
     auto inverseLoS = std::dynamic_pointer_cast<InverseLoS>( los );
 
-    losEval.calculate();
-
     if ( uint_dist10( rng ) < 5 )
     {
+        losEval.calculate();
+
         if ( inverseLoS )
         {
             handle_inverse_viewshed_los_timing( los );
@@ -46,10 +46,10 @@ void viewshed::evaluateLoS( std::shared_ptr<AbstractLoS> los,
     }
 #else
     losEval.calculate();
-#endif
 
     for ( int j = 0; j < algs->size(); j++ )
     {
         results->at( j )->writeValue( losEval.results().mRow, losEval.results().mCol, losEval.resultAt( j ) );
     }
+#endif
 }
