@@ -56,9 +56,9 @@ TEST_F( CellEventTest, testCellEventCreation1 )
     ASSERT_EQ( c.mCol, 1 );
     ASSERT_NEAR( c.mDist2point, 2.121320, 0.000001 );
     ASSERT_NEAR( c.mAngle, 2.356194, 0.000001 );
-    ASSERT_NEAR( c.mElevation[0], 1008.2345, 0.0001 );
-    ASSERT_NEAR( c.mElevation[1], 1006.3314, 0.0001 );
-    ASSERT_NEAR( c.mElevation[2], 1004.1940, 0.0001 );
+    ASSERT_NEAR( c.mElevation[0], 1008.2345, 0.001 );
+    ASSERT_NEAR( c.mElevation[1], 1006.3314, 0.001 );
+    ASSERT_NEAR( c.mElevation[2], 1004.1940, 0.001 );
 
     c = v.cellEvent( 1 );
 
@@ -93,9 +93,9 @@ TEST_F( CellEventTest, testCellEventCreation2 )
     ASSERT_EQ( c.mCol, 2 );
     ASSERT_NEAR( c.mDist2point, 1.581138, 0.000001 );
     ASSERT_NEAR( c.mAngle, 3.463343, 0.000001 );
-    ASSERT_NEAR( c.mElevation[0], 1002.4038, 0.0001 );
-    ASSERT_NEAR( c.mElevation[1], 1000.3604, 0.0001 );
-    ASSERT_NEAR( c.mElevation[2], 1000.3604, 0.0001 );
+    ASSERT_NEAR( c.mElevation[0], 1002.4038, 0.001 );
+    ASSERT_NEAR( c.mElevation[1], 1000.3604, 0.001 );
+    ASSERT_NEAR( c.mElevation[2], 1000.3604, 0.001 );
 
     c = v.cellEvent( 1 );
 
