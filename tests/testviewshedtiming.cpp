@@ -52,9 +52,9 @@ u_long estimateTime( u_long measuredTime, double percent = 0.1 )
 
 TEST_F( ViewshedTimingTest, initEventList )
 {
-    system_clock::time_point startTime = steady_clock::now();
+    steady_clock::time_point startTime = steady_clock::now();
     viewshed->initEventList();
-    system_clock::time_point endTime = steady_clock::now();
+    steady_clock::time_point endTime = steady_clock::now();
 
     MiliSeconds diff = std::chrono::duration_cast<MiliSeconds>( endTime - startTime );
 
@@ -65,9 +65,9 @@ TEST_F( ViewshedTimingTest, sortEventList )
 {
     viewshed->initEventList();
 
-    system_clock::time_point startTime = steady_clock::now();
+    steady_clock::time_point startTime = steady_clock::now();
     viewshed->sortEventList();
-    system_clock::time_point endTime = steady_clock::now();
+    steady_clock::time_point endTime = steady_clock::now();
 
     MiliSeconds diff = std::chrono::duration_cast<MiliSeconds>( endTime - startTime );
 
@@ -80,9 +80,9 @@ TEST_F( ViewshedTimingTest, parseEventList )
     viewshed->sortEventList();
     viewshed->setMaxThreads( 1 );
 
-    system_clock::time_point startTime = steady_clock::now();
+    steady_clock::time_point startTime = steady_clock::now();
     viewshed->parseEventList();
-    system_clock::time_point endTime = steady_clock::now();
+    steady_clock::time_point endTime = steady_clock::now();
 
     MiliSeconds diff = std::chrono::duration_cast<MiliSeconds>( endTime - startTime );
 

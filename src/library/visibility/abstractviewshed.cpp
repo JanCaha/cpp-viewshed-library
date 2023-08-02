@@ -33,7 +33,7 @@ void AbstractViewshed::setDefaultResultDataType( GDALDataType dataType )
 
 void AbstractViewshed::initEventList()
 {
-    auto startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
 
     mCellEvents.clear();
     mLosNodes.clear();
@@ -148,7 +148,7 @@ bool AbstractViewshed::isInsideAngles( const double &eventEnterAngle, const doub
 
 void AbstractViewshed::sortEventList()
 {
-    auto startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
 
     std::sort( mCellEvents.begin(), mCellEvents.end() );
 
@@ -160,7 +160,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
 {
     prepareMemoryRasters();
 
-    auto startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
 
     ViewshedValues rasterValues;
 

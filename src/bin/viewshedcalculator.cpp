@@ -483,7 +483,7 @@ namespace ViewshedBinaries
             using namespace std::chrono::_V2;
             using namespace std::chrono;
 
-            auto startTime = steady_clock::now();
+            steady_clock::time_point startTime = steady_clock::now();
 
             mProgressBar->setRange( 0, 100 );
             mProgressBar->setValue( 0 );
