@@ -1,4 +1,5 @@
 #include "abstractviewshed.h"
+#include "db.h"
 #include "threadtasks.h"
 #include "visibility.h"
 
@@ -203,7 +204,14 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
                 mTotalLosNodesCount += mLosNodes.size();
                 mNumberOfLos++;
 
+#if CALCULATE_INDIVIDUAL_LOS_TIMING
+                if ( pg.shouldSample() )
+                {
+                    submitToThreadpool( e );
+                }
+#else
                 submitToThreadpool( e );
+#endif
 
                 break;
             }
