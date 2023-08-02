@@ -1,10 +1,14 @@
 #include "iostream"
 #include <chrono>
 #include <pqxx/pqxx>
+#include <random>
 
 #include "abstractlos.h"
 
 using viewshed::AbstractLoS;
+
+std::uniform_real_distribution<double> Distribution( 0.0, 1.0 );
+std::default_random_engine Generator;
 
 class PG
 {
@@ -32,6 +36,8 @@ class PG
             std::to_string( los->timeToPrepare.count() ) + ", " + std::to_string( los->originalNodesCount ) + " );";
 
         executeSql( sql );
+
+        mNumberCalls++;
     }
 
     void executeSql( std::string &sql )
@@ -51,9 +57,42 @@ class PG
         }
     }
 
+    void resetCounter() { mNumberCalls = 0; }
+
+    void setSamplingValues( double toSavePercent ) { mPercentToSave = toSavePercent; }
+
+    bool shouldSample()
+    {
+        if ( mNumberCalls > mMaxValuesToSave )
+        {
+            return false;
+        }
+
+        if ( Distribution( Generator ) < mPercentToSave )
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     std::string mConnString = "host=localhost dbname=habilitace user=admin password=root port=5430";
+
+    size_t mNumberCalls = 0;
+
+    size_t mMaxValuesToSave = 100000;
+
+    double mPercentToSave = 0.01;
 };
 
 PG pg = PG();
 
-ulong CALLS = 0;
+void handle_inverse_viewshed_los_timing( std::shared_ptr<AbstractLoS> los )
+{
+    pg.add_los_timing_data_to( "inverseviewshed_los_timing", los );
+}
+
+void handle_viewshed_los_timing( std::shared_ptr<AbstractLoS> los )
+{
+    pg.add_los_timing_data_to( "viewshed_los_timing", los );
+}

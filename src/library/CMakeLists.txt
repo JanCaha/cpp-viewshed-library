@@ -13,7 +13,6 @@ set(LIBRARY_VIEWSHED_SRC
     visibility_algorithms/angledifferencetoglobalhorizon.cpp
     visibility_algorithms/slopetoviewangle.cpp
 
-    utils/db.h
     utils/viewshedutils.cpp
 
     structures/cellevent.cpp
