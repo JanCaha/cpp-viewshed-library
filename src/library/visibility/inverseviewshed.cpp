@@ -84,9 +84,9 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
 {
     std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint->mRow, mPoint->mCol, &e, mCellSize );
 
-    auto startTime = std::chrono::_V2::high_resolution_clock::now();
+    auto startTime = std::chrono::_V2::steady_clock::now();
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>( mLosNodes );
-    auto endTime = std::chrono::_V2::high_resolution_clock::now();
+    auto endTime = std::chrono::_V2::steady_clock::now();
     los->timeToCopy = std::chrono::duration_cast<std::chrono::nanoseconds>( endTime - startTime );
     los->setTargetPoint( mPoint, mPoint->mOffset );
     los->setViewPoint( poi, mObserverOffset );

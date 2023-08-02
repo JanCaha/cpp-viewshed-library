@@ -33,7 +33,7 @@ void AbstractViewshed::setDefaultResultDataType( GDALDataType dataType )
 
 void AbstractViewshed::initEventList()
 {
-    std::chrono::_V2::system_clock::time_point startTime = std::chrono::_V2::high_resolution_clock::now();
+    auto startTime = std::chrono::_V2::steady_clock::now();
 
     mCellEvents.clear();
     mLosNodes.clear();
@@ -82,8 +82,8 @@ void AbstractViewshed::initEventList()
         }
     }
 
-    mTimeInit = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::high_resolution_clock::now() -
-                                                                      startTime );
+    mTimeInit =
+        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
 }
 
 void AbstractViewshed::setMaximalDistance( double distance ) { mMaxDistance = distance; }
@@ -148,19 +148,19 @@ bool AbstractViewshed::isInsideAngles( const double &eventEnterAngle, const doub
 
 void AbstractViewshed::sortEventList()
 {
-    std::chrono::_V2::system_clock::time_point startTime = std::chrono::_V2::high_resolution_clock::now();
+    auto startTime = std::chrono::_V2::steady_clock::now();
 
     std::sort( mCellEvents.begin(), mCellEvents.end() );
 
-    mTimeSort = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::high_resolution_clock::now() -
-                                                                      startTime );
+    mTimeSort =
+        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
 }
 
 void AbstractViewshed::parseEventList( std::function<void( int size, int current )> progressCallback )
 {
     prepareMemoryRasters();
 
-    std::chrono::_V2::system_clock::time_point startTime = std::chrono::_V2::high_resolution_clock::now();
+    auto startTime = std::chrono::_V2::steady_clock::now();
 
     ViewshedValues rasterValues;
 
@@ -226,8 +226,8 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
         mResults->at( j )->writeValue( mPoint->mRow, mPoint->mCol, mVisibilityIndices->at( j )->pointValue() );
     }
 
-    mTimeParse = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::high_resolution_clock::now() -
-                                                                       startTime );
+    mTimeParse =
+        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
 }
 
 void AbstractViewshed::setPixelData( ViewshedValues values )
