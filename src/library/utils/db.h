@@ -11,7 +11,17 @@ class PG
   public:
     void add_los_timing_data_to( std::string table, std::shared_ptr<AbstractLoS> los )
     {
-        std::string raster_size = getenv( "RASTER_SIZE" );
+        const char *p_raster_size = getenv( "RASTER_SIZE" );
+        std::string raster_size;
+
+        if ( p_raster_size == nullptr )
+        {
+            raster_size = "-1";
+        }
+        else
+        {
+            raster_size = p_raster_size;
+        }
 
         std::string sql =
             "INSERT INTO " + table +
