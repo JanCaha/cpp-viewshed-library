@@ -483,7 +483,7 @@ namespace ViewshedBinaries
             using namespace std::chrono::_V2;
             using namespace std::chrono;
 
-            system_clock::time_point startTime = high_resolution_clock::now();
+            steady_clock::time_point startTime = steady_clock::now();
 
             mProgressBar->setRange( 0, 100 );
             mProgressBar->setValue( 0 );
@@ -527,7 +527,7 @@ namespace ViewshedBinaries
 
             mCalculateButton->setEnabled( true );
 
-            milliseconds elapsed = duration_cast<milliseconds>( high_resolution_clock::now() - startTime );
+            milliseconds elapsed = duration_cast<milliseconds>( steady_clock::now() - startTime );
 
             statusBar()->showMessage(
                 QString( "Calculation lasted: %1 seconds." ).arg( elapsed.count() / (double)1000 ), 5 * 60 * 1000 );

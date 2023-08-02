@@ -28,7 +28,9 @@ jobs:
         
         - name: Set env
           id: version
-          run: echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+          run: |
+            echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+            echo $VERSION >> $GITHUB_OUTPUT
         
         - name: Print Version
           run: |
@@ -150,11 +152,13 @@ jobs:
             username: ${{ secrets.DOCKER_USERNAME }}
             password: ${{ secrets.DOCKER_PASSWORD }}
         
-        - name: Set env
+        - name: Set Env and GA Output
           id: version
-          run: echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+          run: |
+            echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+            echo $VERSION >> $GITHUB_OUTPUT
         
-        - name: Build and push Docker image
+        - name: Build and push Docker image version
           uses: docker/build-push-action@v4
           with:
             file: docker/Dockerfile
@@ -162,7 +166,7 @@ jobs:
             push: true
             tags: "cahik/viewshed:v${{steps.version.outputs.VERSION}}"
 
-        - name: Build and push Docker image
+        - name: Build and push Docker image latest
           uses: docker/build-push-action@v4
           with:
             file: docker/Dockerfile

@@ -282,6 +282,14 @@ namespace viewshed
          */
         long long sizeOfOutputRasters() { return mVisibilityIndices->size() * sizeOfOutputRaster(); }
 
+        /**
+         * @brief Extract individual cell event from cell events.
+         *
+         * @param i
+         * @return CellEvent
+         */
+        CellEvent cellEvent( size_t i ) { return mCellEvents.at( i ); }
+
       protected:
         /**
          * @brief LoSNodes in currently solved LoS while parsing event list.
