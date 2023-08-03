@@ -1,12 +1,12 @@
 # Viewshed is a Cpp library to calculate Viewshed and extract LoS on Digital Surface Models
 
-Library using QGIS, QT API and C++17 features to calculate visibility (viewshed), inverse visibility and additional information about it. The 
+Library using QGIS, QT API and C++20 features to calculate visibility (viewshed), inverse visibility and additional information about it. The 
 library is developed and tested on Linux.
 
 ## Status
 
-[![Tests for Library](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/test_plugin.yaml/badge.svg)](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/test_plugin.yaml)
-[![Release Latest version as Docker Image](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/release_docker.yaml/badge.svg)](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/release_docker.yaml)
+[![Tests for Library](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/test_library.yaml/badge.svg?branch=master)](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/test_library.yaml)
+[![Prepare Deb Release, Docker Release, Release to PPA](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/create_releases.yaml/badge.svg?branch=master)](https://github.com/JanCaha/cpp-viewshed-library/actions/workflows/create_releases.yaml)
 
 ## Using the library
 
@@ -109,6 +109,8 @@ apt-get -y install simplerasters viewshed viewshed-bin
 ```
 
 ## Citation
+
+If you use the library, please cite it accordingly:
 
 ```bibtex
 @Software{Caha2023,
