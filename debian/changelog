@@ -1,9 +1,9 @@
-viewshed (2.6.2-0ppa0) jammy; urgency=low
+viewshed (2.6.3-0ppa0) jammy; urgency=low
   
   * change to steady_clock in timing
   * timing fixes bring from 2.2.4
 
- -- Jan Caha <jan.caha@outlook.com>  Tue, 01 Aug 2023 15:15:38 +0200
+ -- Jan Caha <jan.caha@outlook.com>  Thu, 03 Aug 2023 22:37:46 +0200
 
 viewshed (2.5.0-0ppa0) jammy; urgency=low
   
