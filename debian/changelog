@@ -1,3 +1,9 @@
+viewshed (2.6.4-0ppa0) jammy; urgency=low
+  
+  * remove unused part of code, that caused issues if tried to build Python bindings
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 07 Aug 2023 21:29:29 +0200
+
 viewshed (2.6.3-0ppa0) jammy; urgency=low
   
   * change to steady_clock in timing
