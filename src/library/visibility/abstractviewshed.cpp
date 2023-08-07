@@ -219,21 +219,8 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
     // parse results left after the algorithm finished
     mThreadPool.wait_for_tasks();
 
-    for ( int j = 0; j < mVisibilityIndices->size(); j++ )
-    {
-        mResults->at( j )->writeValue( mPoint->mRow, mPoint->mCol, mVisibilityIndices->at( j )->pointValue() );
-    }
-
     mTimeParse =
         std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
-}
-
-void AbstractViewshed::setPixelData( ViewshedValues values )
-{
-    for ( int j = 0; j < values.values.size(); j++ )
-    {
-        mResults->at( j )->writeValue( values.mRow, values.mCol, values.values.at( j ) );
-    }
 }
 
 void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSquareCellRaster> dem_,
