@@ -367,13 +367,6 @@ namespace viewshed
         bool validAngles();
 
         /**
-         * @brief Set values to output rasters.
-         *
-         * @param values
-         */
-        void setPixelData( ViewshedValues values );
-
-        /**
          * @brief Threadpool that takes care of preparing individual threads with LoS to be solved.
          *
          */
