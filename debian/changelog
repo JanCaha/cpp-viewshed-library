@@ -1,3 +1,9 @@
+viewshed (2.6.5-0ppa0) jammy; urgency=low
+  
+  * fix viewshedutils.h missing imports
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 14 Aug 2023 11:25:27 +0200
+
 viewshed (2.6.4-0ppa0) jammy; urgency=low
   
   * remove unused part of code, that caused issues if tried to build Python bindings
