@@ -1,6 +1,7 @@
 #ifndef VIEWSHEDLIB_UTILS_H
 #define VIEWSHEDLIB_UTILS_H
 
+#include <memory>
 #include <string>
 
 class OGRSpatialReference;
