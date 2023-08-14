@@ -1,6 +1,9 @@
 #ifndef VIEWSHEDLIB_UTILS_H
 #define VIEWSHEDLIB_UTILS_H
 
+#include <memory>
+#include <string>
+
 class OGRSpatialReference;
 class SingleBandRaster;
 
@@ -11,7 +14,7 @@ namespace viewshed
     class AbstractLoS;
     class LoSNode;
 
-        /**
+    /**
      * @brief Representation of triplet of data. First two values are doubles and third is boolean. Used to export
      * LoS to CSV where the values are point's distance, elevation and whether the point is target point.
      *
