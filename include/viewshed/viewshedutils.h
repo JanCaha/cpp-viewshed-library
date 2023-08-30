@@ -1,6 +1,7 @@
 #ifndef VIEWSHEDLIB_UTILS_H
 #define VIEWSHEDLIB_UTILS_H
 
+#include <limits>
 #include <memory>
 #include <string>
 
