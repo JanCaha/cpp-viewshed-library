@@ -1,7 +1,7 @@
 FROM ubuntu:jammy
 
 RUN apt-get update && \
-    apt-get -y -q install gpg wget lsb-core software-properties-common && \
+    apt-get -y -q install gpg wget lsb-core software-properties-common python3 python3-pip git cmake && \
     apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt/lists/*
