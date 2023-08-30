@@ -25,3 +25,5 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt/lists/*
+
+RUN pip install git+https://github.com/JanCaha/viewshed-library-pybind11
