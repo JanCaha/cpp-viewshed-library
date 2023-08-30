@@ -1,0 +1,3 @@
+/build/debian/tmp/lib/x86_64-linux-gnu/cmake/* /usr/lib/cmake
+/build/debian/tmp/include/* /usr/include
+/build/debian/tmp/lib/x86_64-linux-gnu/libviewshed.so* /usr/lib/
