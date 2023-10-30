@@ -20,7 +20,6 @@ jobs:
         run: |
           sudo apt update
           sudo apt install ninja-build doxygen libgtest-dev libgmock-dev clang
-          sudo apt install libc++-12-dev
 
       - name: Install GDAL
         run: |
