@@ -14,7 +14,7 @@ override_dh_auto_configure:
 		--builddirectory=$(BUILDDIR) \
 		-- \
 		-D CMAKE_INSTALL_PREFIX=debian/tmp/ \
-		-D CMAKE_CXX_COMPILER=clang++ \
+		-D CMAKE_CXX_COMPILER=gcc \
 		-D CMAKE_BUILD_TYPE=Release \
 		-D BUILD_TESTS=OFF \
 		-D PACK_DEB=OFF \
