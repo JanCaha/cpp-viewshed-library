@@ -1,3 +1,15 @@
+viewshed (2.7.3-0ppa0) jammy; urgency=low
+  
+  * different compiler on ppa
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 13 Nov 2023 19:15:32 +0100
+
+viewshed (2.7.1-0ppa0) jammy; urgency=low
+  
+  * update release for new simplerasters
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 30 Oct 2023 19:34:48 +0100
+
 viewshed (2.7.0-0ppa0) jammy; urgency=low
   
   * use dh to build packages

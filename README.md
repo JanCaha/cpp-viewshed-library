@@ -118,7 +118,7 @@ If you use the library, please cite it accordingly:
   title   = {viewshed ({C++ Viewshed library based on GDAL and Qt})},
   year    = {2023},
   date    = {2023-07-11},
-  version = {2.2.0},
+  version = {2.7.0},
   url     = {https://github.com/JanCaha/cpp-viewshed-library},
 }
 ```
