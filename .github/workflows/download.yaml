@@ -22,4 +22,4 @@ jobs:
 
         - name: Install and remove artifact
           run: |
-            sudo apt install simplerasters*.deb  
+            sudo gdebi simplerasters*.deb  
