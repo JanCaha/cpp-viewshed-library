@@ -206,7 +206,9 @@ jobs:
             submodules: true
 
       - name: Set env
-        run: echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+        run: |
+          echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+          echo "DEBIAN_VERSION=$(grep "viewshed (" debian/changelog | grep -E -o -e "[0-9\.-]+" | head -n 1)" >> $GITHUB_ENV
       
       - name: Print Version
         run: |
@@ -214,6 +216,7 @@ jobs:
           echo "Project Version"
           echo ${PACKAGE}
           echo ${VERSION}
+          echo ${DEBIAN_VERSION}
           echo "-----"
 
       - name: install build tools
@@ -250,7 +253,7 @@ jobs:
       - name: Dput to Repo
         run: |
           cd ..
-          dput ppa:jancaha/gis-tools "${PACKAGE}"_"${VERSION}"-0ppa0_source.changes
+          dput ppa:jancaha/gis-tools "${PACKAGE}"_"${DEBIAN_VERSION}"_source.changes
       
       - name: Create Issue
         uses: dacbd/create-issue-action@v1
