@@ -41,16 +41,18 @@ jobs:
           fileName: '*.deb'
           tarBall: false
           zipBall: false
+          out-file-path: "simplerasters"
 
       - name: Print
         run: |
           ls -l 
-          echo $(pwd)
+          cd simplerasters
+          ls -l
   
       - name: Install and remove artifact
         run: |
-          sudo apt install ${{ github.workspace }}/simplerasters.deb
-          rm -rf ${{ github.workspace }}/simplerasters.deb
+          sudo apt install simplerasters/simplerasters*.deb
+          rm -rf simplerasters/simplerasters*.deb
 
 
       - name: Configure
