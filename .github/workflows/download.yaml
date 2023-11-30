@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+        
+        - name: GDEBI Install
+          run: sudo apt isntall gdebi
 
         - uses: robinraju/release-downloader@v1.8
           with:
