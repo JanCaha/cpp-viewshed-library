@@ -12,7 +12,7 @@ jobs:
     steps:
         
         - name: GDEBI Install
-          run: sudo apt isntall gdebi
+          run: sudo apt install gdebi
 
         - uses: robinraju/release-downloader@v1.8
           with:
