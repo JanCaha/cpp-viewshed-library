@@ -22,5 +22,6 @@ jobs:
 
         - name: Install and remove artifact
           run: |
-            sudo apt-get install -y simplerasters*.deb
-            rm simplerasters*.deb
+            sudo add-apt-repository ppa:jancaha/gis-tools
+            sudo apt update
+            sudo apt install simplerasters
