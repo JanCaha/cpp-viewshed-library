@@ -43,6 +43,7 @@ jobs:
   
       - name: Install and remove artifact
         run: |
+          ls -l
           sudo apt install simplerasters.deb
           rm -rf simplerasters.deb
 
