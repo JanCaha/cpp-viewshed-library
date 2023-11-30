@@ -43,8 +43,8 @@ jobs:
   
       - name: Install and remove artifact
         run: |
-          sudo apt install simplerasters*.deb
-          rm -rf simplerasters*.deb
+          sudo apt install simplerasters.deb
+          rm -rf simplerasters.deb
 
       - name: Checkout
         uses: actions/checkout@v3
