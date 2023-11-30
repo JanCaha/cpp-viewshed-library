@@ -17,8 +17,8 @@ jobs:
             repository: "JanCaha/cpp-simplerasters"
             latest: true
             fileName: "*.deb"
-            tarBall: true
-            zipBall: true
+            tarBall: false
+            zipBall: false
         
         - name: Print files
           run : ls -l    
@@ -27,7 +27,6 @@ jobs:
           run: |
             sudo apt install ./simplerasters*.deb
             rm simplerasters*
-            rm cpp-simplerasters*
           
         - name: Print files
           run : ls -l    
