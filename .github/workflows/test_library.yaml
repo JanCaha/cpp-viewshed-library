@@ -41,7 +41,6 @@ jobs:
           fileName: '*.deb'
           tarBall: false
           zipBall: false
-          out-file-path: "simplerasters.deb"
 
       - name: Print
         run: |
