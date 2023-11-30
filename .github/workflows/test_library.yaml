@@ -40,7 +40,7 @@ jobs:
           latest: true
           fileName: '*.deb'
           tarBall: false
-          zipBall: false
+          zipBall: true
           out-file-path: "simplerasters"
 
       - name: Print
