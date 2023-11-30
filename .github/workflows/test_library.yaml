@@ -28,30 +28,16 @@ jobs:
         run: |
           sudo apt-get -y install gdal-bin libgdal-dev
       
+      - name: Install simplerasters
+        run: |
+          sudo add-apt-repository ppa:jancaha/gis-tools
+          sudo apt update
+          sudo apt install simplerasters  
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: true
-
-      - name: Download deb file
-        uses: robinraju/release-downloader@v1
-        with:
-          repository: JanCaha/cpp-simplerasters
-          latest: true
-          out-file-path: "simplerasters"
-
-      - name: Print
-        run: |
-          ls -l 
-          echo "---"
-          cd simplerasters
-          ls -l
-  
-      - name: Install and remove artifact
-        run: |
-          sudo apt install simplerasters/simplerasters*.deb
-          rm -rf simplerasters/simplerasters*.deb
-
 
       - name: Configure
         run: | 
