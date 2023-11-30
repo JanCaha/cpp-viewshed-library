@@ -1,0 +1,24 @@
+name: Download and Install
+
+on: [push, pull_request]
+
+
+        
+jobs:
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+        - uses: robinraju/release-downloader@v1.8
+          with:
+            repository: "JanCaha/cpp-simplerasters"
+            latest: true
+            fileName: "*.deb"
+            tarBall: true
+            zipBall: true
+        
+        - name: Print files
+          run : ls -l    
