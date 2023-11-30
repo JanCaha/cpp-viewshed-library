@@ -33,7 +33,7 @@ jobs:
         with:
           repo: 'JanCaha/cpp-simplerasters'
           regex: true
-          file: 'simplerasters_[0-9\\.]*_amd64\\.deb'
+          file: 'simplerasters.*deb'
           target: 'simplerasters.deb'
           token: ${{ secrets.GITHUB_TOKEN }}    
 
