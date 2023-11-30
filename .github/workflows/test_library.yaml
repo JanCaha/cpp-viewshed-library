@@ -27,15 +27,15 @@ jobs:
       - name: Install GDAL
         run: |
           sudo apt-get -y install gdal-bin libgdal-dev
-
-      - name: Download artifact     
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: 'JanCaha/cpp-simplerasters'
-          regex: true
-          file: 'simplerasters.*deb'
-          token: ${{ secrets.GITHUB_TOKEN }}    
       
+      - name: Download deb file
+        uses: robinraju/release-downloader@v1
+        with:
+          latest: true
+          fileName: "*.deb"
+          tarBall: false
+          zipBall: false 
+
       - name: Print
         run: ls -l 
   
