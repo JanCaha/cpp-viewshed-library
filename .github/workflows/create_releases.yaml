@@ -57,19 +57,18 @@ jobs:
           run: |
             sudo apt-get -y install gdal-bin libgdal-dev
         
-        - name: Download artifact
-          id: download-artifact
-          uses: dawidd6/action-download-artifact@v2
+        - uses: robinraju/release-downloader@v1.8
           with:
-            github_token: ${{secrets.GITHUB_TOKEN}}
-            workflow: create_deb_file.yaml
-            repo: JanCaha/cpp-simplerasters
-            branch: main
-        
+            repository: "JanCaha/cpp-simplerasters"
+            latest: true
+            fileName: "*.deb"
+            tarBall: false
+            zipBall: false
+  
         - name: Install and remove artifact
           run: |
-            sudo apt install ./simplerasters/simplerasters*.deb
-            rm -rf simplerasters
+            sudo apt install ./simplerasters*.deb
+            rm simplerasters*
 
         - name: Configure
           run: | 
@@ -135,18 +134,17 @@ jobs:
             mkdir docker/install
             mv viewshed_*.deb docker/install/    
 
-        - name: Download artifact
-          id: download-artifact
-          uses: dawidd6/action-download-artifact@v2
+        - uses: robinraju/release-downloader@v1.8
           with:
-            github_token: ${{secrets.GITHUB_TOKEN}}
-            workflow: create_deb_file.yaml
-            repo: JanCaha/cpp-simplerasters
-            branch: main
-        
+            repository: "JanCaha/cpp-simplerasters"
+            latest: true
+            fileName: "*.deb"
+            tarBall: false
+            zipBall: false
+         
         - name: Copy simplerasters to docker folder
           run: |
-            mv simplerasters/simplerasters_*.deb docker/install/ 
+            mv simplerasters_*.deb docker/install/ 
 
         - name: Log in to Docker Hub
           uses: docker/login-action@v2
