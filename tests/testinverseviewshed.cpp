@@ -10,6 +10,7 @@
 #include "abstractviewshedalgorithm.h"
 #include "inverseviewshed.h"
 #include "point.h"
+#include "viewshedtypes.h"
 #include "viewshedutils.h"
 #include "visibility.h"
 #include "visibilityangledifferencetolocalhorizon.h"
@@ -24,7 +25,7 @@ class InverseViewshedTest : public ::testing::Test
   protected:
     std::shared_ptr<ProjectedSquareCellRaster> dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM );
     std::shared_ptr<Point> tp = std::make_shared<Point>( OGRPoint( -336364.021, -1189108.615 ), dem, 0 );
-    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs = ViewshedUtils::allAlgorithms();
+    std::shared_ptr<ViewshedAlgorithms> algs = ViewshedUtils::allAlgorithms();
 };
 
 TEST_F( InverseViewshedTest, testLoS )
