@@ -27,6 +27,7 @@ jobs:
           run: |
             sudo apt install ./simplerasters*.deb
             rm simplerasters*
+            rm cpp-simplerasters*
           
         - name: Print files
           run : ls -l    
