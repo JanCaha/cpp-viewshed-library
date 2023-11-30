@@ -33,7 +33,7 @@ jobs:
         with:
           repo: 'JanCaha/cpp-simplerasters'
           file: 'simplerasters_0.6.0_amd64.deb'
-          target: 'simplerasters/'
+          target: 'simplerasters.deb'
           token: ${{ secrets.GITHUB_TOKEN }}    
 
       - name: Install and remove artifact
