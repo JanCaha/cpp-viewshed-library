@@ -38,9 +38,6 @@ jobs:
         with:
           repository: JanCaha/cpp-simplerasters
           latest: true
-          fileName: '*.deb'
-          tarBall: false
-          zipBall: true
           out-file-path: "simplerasters"
 
       - name: Print
