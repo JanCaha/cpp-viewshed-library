@@ -28,6 +28,11 @@ jobs:
         run: |
           sudo apt-get -y install gdal-bin libgdal-dev
       
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
       - name: Download deb file
         uses: robinraju/release-downloader@v1
         with:
@@ -39,17 +44,15 @@ jobs:
           out-file-path: "simplerasters.deb"
 
       - name: Print
-        run: ls -l 
+        run: |
+          ls -l 
+          echo $(pwd)
   
       - name: Install and remove artifact
         run: |
           sudo apt install ${{ github.workspace }}/simplerasters.deb
           rm -rf ${{ github.workspace }}/simplerasters.deb
 
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
 
       - name: Configure
         run: | 
