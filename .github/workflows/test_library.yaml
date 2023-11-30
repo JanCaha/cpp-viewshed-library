@@ -46,6 +46,7 @@ jobs:
       - name: Print
         run: |
           ls -l 
+          echo "---"
           cd simplerasters
           ls -l
   
