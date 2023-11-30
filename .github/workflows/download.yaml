@@ -22,3 +22,7 @@ jobs:
         
         - name: Print files
           run : ls -l    
+        
+        - name: Install and remove artifact
+          run: |
+            sudo apt install ./simplerasters*.deb
