@@ -36,7 +36,10 @@ jobs:
           file: 'simplerasters.*deb'
           target: 'simplerasters.deb'
           token: ${{ secrets.GITHUB_TOKEN }}    
-
+      
+      - name: Print
+        run: ls -l 
+  
       - name: Install and remove artifact
         run: |
           sudo apt install simplerasters.deb
