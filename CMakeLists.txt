@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 2.7.3 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
+project(viewshed VERSION 2.8.0 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
 
 SET(LIBRARY_NAME "viewshed")
 
@@ -88,6 +88,7 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/visibilityslopetoviewangle.h
     include/viewshed/viewshedlibrary.h
     include/viewshed/viewshedutils.h
+    include/viewshed/viewshedtypes.h
 )
 
 # ############################################################
