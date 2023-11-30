@@ -2,6 +2,10 @@
 #define VIEWSHEDLIB_THREADTASK_H
 
 #include "simplerasters.h"
+#include "viewshedtypes.h"
+
+using viewshed::ResultRasters;
+using viewshed::ViewshedAlgorithms;
 
 namespace viewshed
 {
@@ -16,9 +20,8 @@ namespace viewshed
      * @param algs
      * @return ViewshedValues
      */
-    void evaluateLoS( std::shared_ptr<AbstractLoS> los,
-                      std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
-                      std::shared_ptr<std::vector<std::shared_ptr<SingleBandRaster>>> results );
+    void evaluateLoS( std::shared_ptr<AbstractLoS> los, std::shared_ptr<ViewshedAlgorithms> algs,
+                      std::shared_ptr<ResultRasters> results );
 
 } // namespace viewshed
 

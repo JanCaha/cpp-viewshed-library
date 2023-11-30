@@ -20,7 +20,9 @@
 using viewshed::AbstractViewshedAlgorithm;
 using viewshed::DataTriplet;
 using viewshed::InverseLoS;
+using viewshed::ViewshedAlgorithms;
 using viewshed::ViewshedUtils;
+
 using namespace viewshed::visibilityalgorithm;
 
 std::string toStr( bool val ) { return val ? "true" : "false"; }
@@ -194,10 +196,9 @@ bool ViewshedUtils::validateRaster( std::shared_ptr<SingleBandRaster> rl, std::s
     return true;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> ViewshedUtils::allAlgorithms()
+std::shared_ptr<ViewshedAlgorithms> ViewshedUtils::allAlgorithms()
 {
-    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs =
-        std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
+    std::shared_ptr<ViewshedAlgorithms> algs = std::make_shared<ViewshedAlgorithms>();
 
     algs->push_back( std::make_shared<Boolean>() );
     algs->push_back( std::make_shared<Horizons>() );
@@ -220,11 +221,9 @@ std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> Viewshe
     return algs;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>
-ViewshedUtils::allAlgorithms( double invisibleValue )
+std::shared_ptr<ViewshedAlgorithms> ViewshedUtils::allAlgorithms( double invisibleValue )
 {
-    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs =
-        std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
+    std::shared_ptr<ViewshedAlgorithms> algs = std::make_shared<ViewshedAlgorithms>();
 
     algs->push_back( std::make_shared<Boolean>() );
     algs->push_back( std::make_shared<Horizons>( 1, invisibleValue, 2 ) );

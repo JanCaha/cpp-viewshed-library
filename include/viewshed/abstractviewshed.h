@@ -13,10 +13,12 @@
 #include "defaultdatatypes.h"
 #include "los.h"
 #include "losnode.h"
+#include "viewshedtypes.h"
 #include "viewshedvalues.h"
 #include "visibility.h"
 
 using viewshed::LoS;
+using viewshed::ViewshedAlgorithms;
 
 namespace viewshed
 {
@@ -326,7 +328,7 @@ namespace viewshed
          * @brief Visibility indexes to calculate while calculating this viewshed. As \a AbstractViewshedAlgorithm.
          *
          */
-        std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mVisibilityIndices;
+        std::shared_ptr<ViewshedAlgorithms> mVisibilityIndices;
 
         /**
          * @brief Data type of output rasters.
@@ -372,8 +374,7 @@ namespace viewshed
          */
         BS::thread_pool mThreadPool;
 
-        std::shared_ptr<std::vector<std::shared_ptr<SingleBandRaster>>> mResults =
-            std::make_shared<std::vector<std::shared_ptr<SingleBandRaster>>>();
+        std::shared_ptr<ResultRasters> mResults = std::make_shared<ResultRasters>();
 
         std::chrono::nanoseconds mTimeInit;
         std::chrono::nanoseconds mTimeSort;

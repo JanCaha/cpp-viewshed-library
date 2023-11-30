@@ -522,7 +522,7 @@ namespace ViewshedBinaries
 
         bool mDemValid;
 
-        std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
+        std::shared_ptr<ViewshedAlgorithms> mAlgs;
     };
 } // namespace ViewshedBinaries
 

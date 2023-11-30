@@ -6,7 +6,10 @@
 #include <vector>
 
 #include "losimportantvalues.h"
+#include "viewshedtypes.h"
 #include "viewshedvalues.h"
+
+using viewshed::ViewshedAlgorithms;
 
 namespace viewshed
 {
@@ -21,8 +24,7 @@ namespace viewshed
     class LoSEvaluator
     {
       public:
-        LoSEvaluator( std::shared_ptr<AbstractLoS> los,
-                      std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices );
+        LoSEvaluator( std::shared_ptr<AbstractLoS> los, std::shared_ptr<ViewshedAlgorithms> visibilityIndices );
 
         /**
          * @brief Calculate results of LoS evaluation for every algorithms.
@@ -72,7 +74,7 @@ namespace viewshed
 
       private:
         std::shared_ptr<AbstractLoS> mLos;
-        std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mVisibilityIndices;
+        std::shared_ptr<ViewshedAlgorithms> mVisibilityIndices;
         ViewshedValues mResultValues;
 
         void parseNodes();

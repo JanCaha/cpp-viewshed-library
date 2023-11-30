@@ -11,8 +11,7 @@ using viewshed::LoSEvaluator;
 using viewshed::ViewshedValues;
 using viewshed::Visibility;
 
-LoSEvaluator::LoSEvaluator( std::shared_ptr<AbstractLoS> los,
-                            std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices )
+LoSEvaluator::LoSEvaluator( std::shared_ptr<AbstractLoS> los, std::shared_ptr<ViewshedAlgorithms> visibilityIndices )
     : mLos( los ), mVisibilityIndices( visibilityIndices )
 {
 }

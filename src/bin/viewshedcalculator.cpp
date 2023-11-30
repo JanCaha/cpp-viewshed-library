@@ -69,7 +69,7 @@ namespace ViewshedBinaries
         {
             double noData = mDem->noData();
 
-            mAlgs = std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
+            mAlgs = std::make_shared<ViewshedAlgorithms>();
 
             if ( mNoDataForInvisible->isChecked() )
             {
@@ -567,7 +567,7 @@ namespace ViewshedBinaries
 
         bool mDemValid;
 
-        std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> mAlgs;
+        std::shared_ptr<ViewshedAlgorithms> mAlgs;
     };
 } // namespace ViewshedBinaries
 

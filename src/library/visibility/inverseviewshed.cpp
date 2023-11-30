@@ -15,11 +15,11 @@ using viewshed::LoSNode;
 using viewshed::Point;
 using viewshed::ViewshedValues;
 
-InverseViewshed::InverseViewshed(
-    std::shared_ptr<Point> targetPoint, double observerOffset, std::shared_ptr<ProjectedSquareCellRaster> dem,
-    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices,
-    bool applyCurvatureCorrections, double earthDiameter, double refractionCoeff, double minimalAngle,
-    double maximalAngle )
+InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double observerOffset,
+                                  std::shared_ptr<ProjectedSquareCellRaster> dem,
+                                  std::shared_ptr<ViewshedAlgorithms> visibilityIndices, bool applyCurvatureCorrections,
+                                  double earthDiameter, double refractionCoeff, double minimalAngle,
+                                  double maximalAngle )
 {
     mValid = false;
 
