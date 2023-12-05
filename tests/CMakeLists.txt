@@ -75,3 +75,7 @@ ADD_LIBRARY_TEST(testviewshed)
 ADD_LIBRARY_TEST(testinverselosalgorithms)
 ADD_LIBRARY_TEST(testinverseviewshed)
 ADD_LIBRARY_TEST(testviewshedtiming)
+
+ADD_GUI_TEST(testviewshedcalculator)
+ADD_GUI_TEST(testpointwidget)
+ADD_GUI_TEST(testfileselectorwidget)

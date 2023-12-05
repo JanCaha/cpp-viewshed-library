@@ -52,5 +52,8 @@ namespace ViewshedBinaries
         QAction *mClearAction = nullptr;
 
         void clearValue();
+
+        friend class TestFileSelectorWidget;
+        friend class TestViewshedCalculatorWindow;
     };
 }

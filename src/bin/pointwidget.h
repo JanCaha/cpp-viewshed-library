@@ -40,5 +40,7 @@ namespace ViewshedBinaries
         bool mAddCrsLabel = true;
         OGRSpatialReference mCrs;
 
+        friend class TestPointWidget;
+        friend class TestViewshedCalculatorWindow;
     };
 } // namespace ViewshedBinaries

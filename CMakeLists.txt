@@ -32,7 +32,7 @@ if(NEEDS_QT)
     message(STATUS "Using Qt")
     set(CMAKE_AUTOMOC TRUE)
 
-    find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
+    find_package(Qt5 COMPONENTS Core Widgets Xml Gui Test REQUIRED)
 
     set(QT_INCLUDES
         ${Qt5Core_INCLUDE_DIRS}
