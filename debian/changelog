@@ -1,3 +1,17 @@
+viewshed (2.9.0-0) jammy; urgency=low
+  
+  * add test for GUI tools, some GUI refactor for testing
+  * bugfix in ViewshedUtils::earthDiameter() and in GUI when selecting files or directories
+
+ -- Jan Caha <jan.caha@outlook.com>  Tue, 05 Dec 2023 21:29:55 +0100
+ 
+viewshed (2.8.0-0) jammy; urgency=low
+  
+  * add types to simplify some objects
+  * change ppa version numbering
+
+ -- Jan Caha <jan.caha@outlook.com>  Thu, 30 Nov 2023 09:17:58 +0100
+
 viewshed (2.7.3-0ppa0) jammy; urgency=low
   
   * different compiler on ppa

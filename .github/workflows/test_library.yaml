@@ -2,6 +2,9 @@ name: Tests for Library
 
 on: [push, pull_request]
 
+env:
+  COMPILER: c++
+
 jobs:
 
   Tests-Viewshed-library:
@@ -24,23 +27,22 @@ jobs:
       - name: Install GDAL
         run: |
           sudo apt-get -y install gdal-bin libgdal-dev
-
-      - name: Download artifact
-        id: download-artifact
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          workflow: create_deb_file.yaml
-          repo: JanCaha/cpp-simplerasters
-          branch: main
       
+      - uses: robinraju/release-downloader@v1.8
+        with:
+          repository: "JanCaha/cpp-simplerasters"
+          latest: true
+          fileName: "*.deb"
+          tarBall: false
+          zipBall: false
+ 
       - name: Install and remove artifact
         run: |
-          sudo apt install ./simplerasters/simplerasters*.deb
-          rm -rf simplerasters
+          sudo apt install ./simplerasters*.deb
+          rm simplerasters*
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -51,6 +53,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
+            -DCMAKE_CXX_COMPILER=${COMPILER} \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
@@ -81,6 +84,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
+            -DCMAKE_CXX_COMPILER=${COMPILER} \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
@@ -108,13 +112,21 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
+            -DCMAKE_CXX_COMPILER=${COMPILER} \
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
-            -DBUILD_TESTS:bool=off \
+            -DBUILD_TESTS:bool=on \
             -DCELL_EVENT_DATA_FLOAT:bool=on \
             -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
             -DNEEDS_QT:bool=on
+      
+      - name: Run Tests even with Qt
+        id: unittestsqt
+        run: |
+          cmake --build build --config Release --target build_tests
+          cd build
+          ctest -VV
 
       - name: Test Install
         run: |

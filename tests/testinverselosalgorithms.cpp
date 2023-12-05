@@ -10,6 +10,7 @@
 #include "losevaluator.h"
 #include "losnode.h"
 #include "point.h"
+#include "viewshedtypes.h"
 #include "viewshedutils.h"
 #include "visibilityalgorithms.h"
 
@@ -22,8 +23,7 @@ class InverseLoSAlgorithmTest : public ::testing::Test
     std::vector<CellEvent> eventList;
     std::shared_ptr<InverseLoS> los = std::make_shared<InverseLoS>();
     std::shared_ptr<Point> tp = std::make_shared<Point>( 0, 0, 0, 0.001, 1 );
-    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs =
-        std::make_shared<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>();
+    std::shared_ptr<ViewshedAlgorithms> algs = std::make_shared<ViewshedAlgorithms>();
     LoSEvaluator losEval = LoSEvaluator( los, algs );
 
     void resetArray( double *arr, double value )

@@ -11,9 +11,8 @@ using viewshed::AbstractViewshedAlgorithm;
 using viewshed::LoSEvaluator;
 using viewshed::ViewshedValues;
 
-void viewshed::evaluateLoS( std::shared_ptr<AbstractLoS> los,
-                            std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs,
-                            std::shared_ptr<std::vector<std::shared_ptr<SingleBandRaster>>> results )
+void viewshed::evaluateLoS( std::shared_ptr<AbstractLoS> los, std::shared_ptr<ViewshedAlgorithms> algs,
+                            std::shared_ptr<ResultRasters> results )
 {
     LoSEvaluator losEval( los, algs );
 

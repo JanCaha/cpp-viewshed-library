@@ -14,9 +14,8 @@ using viewshed::Viewshed;
 using viewshed::ViewshedValues;
 
 Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<ProjectedSquareCellRaster> dem,
-                    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> visibilityIndices,
-                    bool applyCurvatureCorrections, double earthDiameter, double refractionCoeff, double minimalAngle,
-                    double maximalAngle )
+                    std::shared_ptr<ViewshedAlgorithms> visibilityIndices, bool applyCurvatureCorrections,
+                    double earthDiameter, double refractionCoeff, double minimalAngle, double maximalAngle )
 {
     mValid = false;
 

@@ -57,6 +57,7 @@ int LoS::resultCol() { return mTp->mCol; }
 void LoS::removePointsAfterTarget()
 {
 
-    erase( std::remove_if( begin(), end(), [=]( LoSNode &node ) { return mPointDistance <= node.centreDistance(); } ),
-           end() );
+    erase(
+        std::remove_if( begin(), end(), [this]( LoSNode &node ) { return mPointDistance <= node.centreDistance(); } ),
+        end() );
 }

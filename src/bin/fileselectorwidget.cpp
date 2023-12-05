@@ -72,7 +72,10 @@ void FileSelectorWidget::textEdited( const QString &path )
 
     QFileInfo fileInfo( path );
 
-    if ( fileInfo.exists() )
+    bool selectionValid = ( fileInfo.isDir() && mStorageMode == StorageMode::GetDirectory ) ||
+                          ( fileInfo.isFile() && mStorageMode == StorageMode::GetFile );
+
+    if ( fileInfo.exists() && selectionValid )
     {
         mFilePath = path;
         emit fileChanged( mFilePath );

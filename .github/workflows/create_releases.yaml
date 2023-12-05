@@ -12,6 +12,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   PACKAGE: viewshed
+  COMPILER: c++
         
 jobs:
 
@@ -56,19 +57,18 @@ jobs:
           run: |
             sudo apt-get -y install gdal-bin libgdal-dev
         
-        - name: Download artifact
-          id: download-artifact
-          uses: dawidd6/action-download-artifact@v2
+        - uses: robinraju/release-downloader@v1.8
           with:
-            github_token: ${{secrets.GITHUB_TOKEN}}
-            workflow: create_deb_file.yaml
-            repo: JanCaha/cpp-simplerasters
-            branch: main
-        
+            repository: "JanCaha/cpp-simplerasters"
+            latest: true
+            fileName: "*.deb"
+            tarBall: false
+            zipBall: false
+  
         - name: Install and remove artifact
           run: |
-            sudo apt install ./simplerasters/simplerasters*.deb
-            rm -rf simplerasters
+            sudo apt install ./simplerasters*.deb
+            rm simplerasters*
 
         - name: Configure
           run: | 
@@ -77,7 +77,7 @@ jobs:
               -S. \
               -Bbuild \
               -G Ninja \
-              -DCMAKE_CXX_COMPILER=clang++ \
+              -DCMAKE_CXX_COMPILER=${COMPILER} \
               -DCMAKE_BUILD_TYPE=Release \
               -DPACK_DEB:bool=on \
               -DBUILD_DOCUMENTATION:bool=on \
@@ -134,18 +134,17 @@ jobs:
             mkdir docker/install
             mv viewshed_*.deb docker/install/    
 
-        - name: Download artifact
-          id: download-artifact
-          uses: dawidd6/action-download-artifact@v2
+        - uses: robinraju/release-downloader@v1.8
           with:
-            github_token: ${{secrets.GITHUB_TOKEN}}
-            workflow: create_deb_file.yaml
-            repo: JanCaha/cpp-simplerasters
-            branch: main
-        
+            repository: "JanCaha/cpp-simplerasters"
+            latest: true
+            fileName: "*.deb"
+            tarBall: false
+            zipBall: false
+         
         - name: Copy simplerasters to docker folder
           run: |
-            mv simplerasters/simplerasters_*.deb docker/install/ 
+            mv simplerasters_*.deb docker/install/ 
 
         - name: Log in to Docker Hub
           uses: docker/login-action@v2
@@ -205,7 +204,9 @@ jobs:
             submodules: true
 
       - name: Set env
-        run: echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+        run: |
+          echo "VERSION=$(grep "project("  CMakeLists.txt | grep -E -o -e "[0-9\.]+" | head -n 1)" >> $GITHUB_ENV
+          echo "DEBIAN_VERSION=$(grep "viewshed (" debian/changelog | grep -E -o -e "[0-9\.-]+" | head -n 1)" >> $GITHUB_ENV
       
       - name: Print Version
         run: |
@@ -213,6 +214,7 @@ jobs:
           echo "Project Version"
           echo ${PACKAGE}
           echo ${VERSION}
+          echo ${DEBIAN_VERSION}
           echo "-----"
 
       - name: install build tools
@@ -249,7 +251,7 @@ jobs:
       - name: Dput to Repo
         run: |
           cd ..
-          dput ppa:jancaha/gis-tools "${PACKAGE}"_"${VERSION}"-0ppa0_source.changes
+          dput ppa:jancaha/gis-tools "${PACKAGE}"_"${DEBIAN_VERSION}"_source.changes
       
       - name: Create Issue
         uses: dacbd/create-issue-action@v1

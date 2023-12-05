@@ -84,8 +84,12 @@ void PointWidget::setPoint( OGRPoint p )
 
 void PointWidget::setCrs( OGRSpatialReference crs )
 {
+    mCrs = crs;
+
     QString code = QString::fromStdString( crs.GetAuthorityCode( nullptr ) );
     QString name = QString::fromStdString( crs.GetAuthorityName( nullptr ) );
 
     mCrsLabel->setText( QString( "[%1:%2]" ).arg( name ).arg( code ) );
 }
+
+OGRSpatialReference PointWidget::crs() { return mCrs; }

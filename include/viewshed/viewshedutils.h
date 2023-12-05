@@ -5,12 +5,15 @@
 #include <memory>
 #include <string>
 
+#include "viewshedtypes.h"
+
 class OGRSpatialReference;
 class SingleBandRaster;
 
+using viewshed::ViewshedAlgorithms;
+
 namespace viewshed
 {
-
     class AbstractViewshedAlgorithm;
     class AbstractLoS;
     class LoSNode;
@@ -107,7 +110,7 @@ namespace viewshed
          *
          * @return std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>
          */
-        static std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> allAlgorithms();
+        static std::shared_ptr<ViewshedAlgorithms> allAlgorithms();
 
         /**
          * @brief Returns list of all implemented viewshed indices as algorithms to be used in viewshed of inverse
@@ -116,8 +119,7 @@ namespace viewshed
          * @param invisibleValue
          * @return std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>
          */
-        static std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>>
-        allAlgorithms( double invisibleValue );
+        static std::shared_ptr<ViewshedAlgorithms> allAlgorithms( double invisibleValue );
 
         static bool doubleEqual( double a, double b, double epsilon = 4 * std::numeric_limits<double>::epsilon() );
     };

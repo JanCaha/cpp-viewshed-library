@@ -29,7 +29,7 @@ class ViewshedTimingTest : public ::testing::Test
   protected:
     std::shared_ptr<ProjectedSquareCellRaster> dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM );
     std::shared_ptr<Point> vp = std::make_shared<Point>( OGRPoint( -336364.021, -1189108.615 ), dem );
-    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs = ViewshedUtils::allAlgorithms();
+    std::shared_ptr<ViewshedAlgorithms> algs = ViewshedUtils::allAlgorithms();
     std::shared_ptr<Viewshed> viewshed = std::make_shared<Viewshed>( vp, dem, algs );
 };
 

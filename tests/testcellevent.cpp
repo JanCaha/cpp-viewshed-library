@@ -6,6 +6,7 @@
 #include "cellevent.h"
 #include "point.h"
 #include "viewshed.h"
+#include "viewshedtypes.h"
 #include "viewshedutils.h"
 #include "visibilityalgorithms.h"
 
@@ -15,6 +16,7 @@ using viewshed::AbstractViewshedAlgorithm;
 using viewshed::CellEvent;
 using viewshed::Point;
 using viewshed::Viewshed;
+using viewshed::ViewshedAlgorithms;
 using viewshed::ViewshedUtils;
 
 class CellEventTest : public ::testing::Test
@@ -22,7 +24,7 @@ class CellEventTest : public ::testing::Test
   protected:
     std::shared_ptr<ProjectedSquareCellRaster> dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM_SMALL );
     std::shared_ptr<Point> vp = std::make_shared<Point>( OGRPoint( -336311.5, -1189034.5 ), dem );
-    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs = ViewshedUtils::allAlgorithms();
+    std::shared_ptr<ViewshedAlgorithms> algs = ViewshedUtils::allAlgorithms();
 };
 
 TEST( CellEventTestStatic, size )

@@ -45,6 +45,25 @@ macro(ADD_LIBRARY_TEST testname)
     add_dependencies(build_tests ${testname})
 endmacro(ADD_LIBRARY_TEST)
 
+macro(ADD_GUI_TEST filename)
+    string(REPLACE "test" "" testname ${filename})
+    set(testname test_gui_${testname})
+    add_executable(${testname} "gui/${filename}.cpp")
+
+    target_link_libraries(${testname}
+        library_viewshed
+        ${GDAL_LIBRARY}
+        SimpleRasters::SimpleRasters
+        ${QT_LIBS}
+        Qt5::Test
+        viewshed_widgets
+    )
+    include_directories(${testname} ${CMAKE_SOURCE_DIR}/src/bin)
+
+    add_test(${testname} ${testname} -maxwarnings 10000)
+    add_dependencies(build_tests ${testname})
+endmacro(ADD_GUI_TEST)
+
 # ############################################################
 
 # ############################################################
@@ -56,3 +75,9 @@ ADD_LIBRARY_TEST(testviewshed)
 ADD_LIBRARY_TEST(testinverselosalgorithms)
 ADD_LIBRARY_TEST(testinverseviewshed)
 ADD_LIBRARY_TEST(testviewshedtiming)
+
+if(HAS_QT)
+    ADD_GUI_TEST(testviewshedcalculator)
+    ADD_GUI_TEST(testpointwidget)
+    ADD_GUI_TEST(testfileselectorwidget)
+endif()

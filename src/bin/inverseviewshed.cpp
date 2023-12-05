@@ -110,7 +110,7 @@ int main( int argc, char *argv[] )
         exitWithError( "Error: Target point does not lie on the Dem raster.", parser );
     }
 
-    std::shared_ptr<std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>> algs;
+    std::shared_ptr<ViewshedAlgorithms> algs;
 
     if ( invisibleNoData )
     {
