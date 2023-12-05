@@ -124,6 +124,7 @@ jobs:
       - name: Run Tests even with Qt
         id: unittestsqt
         run: |
+          cmake --build build --config Release --target build_tests
           cd build
           ctest -VV
 
