@@ -116,10 +116,16 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release \
             -DPACK_DEB:bool=off \
             -DBUILD_DOCUMENTATION:bool=off \
-            -DBUILD_TESTS:bool=off \
+            -DBUILD_TESTS:bool=on \
             -DCELL_EVENT_DATA_FLOAT:bool=on \
             -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
             -DNEEDS_QT:bool=on
+      
+      - name: Run Tests even with Qt
+        id: unittestsqt
+        run: |
+          cd build
+          ctest -VV
 
       - name: Test Install
         run: |
