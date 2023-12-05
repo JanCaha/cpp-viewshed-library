@@ -1,4 +1,4 @@
-viewshed (2.9.0-0) jammy; urgency=low
+viewshed (2.9.0-1) jammy; urgency=low
   
   * add test for GUI tools, some GUI refactor for testing
   * bugfix in ViewshedUtils::earthDiameter() and in GUI when selecting files or directories
