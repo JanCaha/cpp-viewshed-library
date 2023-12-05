@@ -252,13 +252,3 @@ jobs:
         run: |
           cd ..
           dput ppa:jancaha/gis-tools "${PACKAGE}"_"${DEBIAN_VERSION}"_source.changes
-      
-      - name: Create Issue
-        uses: dacbd/create-issue-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          owner: JanCaha
-          repo: viewshed-library-pybind11
-          title: Release new version
-          body: |
-            PPA updated with new version of viewshed library. The viewshed python library needs new relase, when the latest viewshed library is online. 
