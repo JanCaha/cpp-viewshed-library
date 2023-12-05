@@ -22,7 +22,7 @@ namespace ViewshedBinaries
         };
         Q_ENUM( StorageMode )
 
-        FileSelectorWidget( QWidget *parent );
+        FileSelectorWidget( QWidget *parent = nullptr );
 
         void setStorageMode( StorageMode mode );
         void setFilePath( QString path );
