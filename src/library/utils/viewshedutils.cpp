@@ -112,8 +112,8 @@ double ViewshedUtils::earthDiameter( OGRSpatialReference crs )
 {
     if ( !crs.IsEmpty() )
     {
-        OGRErr *error;
-        double semiMajor = crs.GetSemiMajor( error );
+        OGRErr error = OGRERR_NONE;
+        double semiMajor = crs.GetSemiMajor( &error );
 
         if ( error == OGRERR_NONE )
         {

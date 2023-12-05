@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 2.8.0 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
+project(viewshed VERSION 2.9.0 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
 
 SET(LIBRARY_NAME "viewshed")
 
@@ -32,7 +32,7 @@ if(NEEDS_QT)
     message(STATUS "Using Qt")
     set(CMAKE_AUTOMOC TRUE)
 
-    find_package(Qt5 COMPONENTS Core Widgets Xml Gui REQUIRED)
+    find_package(Qt5 COMPONENTS Core Widgets Xml Gui Test REQUIRED)
 
     set(QT_INCLUDES
         ${Qt5Core_INCLUDE_DIRS}
@@ -135,9 +135,10 @@ install(TARGETS library_viewshed
 
 if(HAS_QT)
     install(TARGETS
-        viewshed inverseviewshed viewshedcalculator losextractor
+        viewshed inverseviewshed viewshedcalculator losextractor viewshed_widgets
         COMPONENT bin
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 endif()
 
