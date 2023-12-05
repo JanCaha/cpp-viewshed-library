@@ -77,68 +77,70 @@ $(function() {
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">class </span>OGRSpatialReference;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">class </span>SingleBandRaster;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>viewshed</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">class </span>AbstractViewshedAlgorithm;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">class </span>AbstractLoS;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">class </span>LoSNode;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structviewshed_1_1DataTriplet.html">   23</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structviewshed_1_1DataTriplet.html">DataTriplet</a></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <a class="code" href="structviewshed_1_1DataTriplet.html">DataTriplet</a>( <span class="keywordtype">double</span> f, <span class="keywordtype">double</span> s, <span class="keywordtype">bool</span> t )</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            first = f;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            second = s;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            third = t;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        };</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keywordtype">double</span> first;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordtype">double</span> second;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordtype">bool</span> third;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    };</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classviewshed_1_1ViewshedUtils.html">   41</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classviewshed_1_1ViewshedUtils.html">ViewshedUtils</a></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classviewshed_1_1ViewshedUtils.html#a7dab2db716cc29899aace3e520016b00">saveToCsv</a>( std::vector&lt;DataTriplet&gt; data, std::string header, std::string fileName );</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classviewshed_1_1ViewshedUtils.html#a7dab2db716cc29899aace3e520016b00">saveToCsv</a>( std::vector&lt;std::string&gt; rows, std::string header, std::string fileName );</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">static</span> std::vector&lt;DataTriplet&gt; <a class="code" href="classviewshed_1_1ViewshedUtils.html#aebeb13fa3bbc6caf7233be1b1ae41d78">distanceElevation</a>( std::shared_ptr&lt;AbstractLoS&gt; los );</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keyword">static</span> std::vector&lt;std::pair&lt;double, double&gt;&gt; rasterCoordinates( std::shared_ptr&lt;std::vector&lt;LoSNode&gt;&gt; los,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                                                                         <a class="code" href="classviewshed_1_1LoSNode.html">LoSNode</a> poi );</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;viewshedtypes.h&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">class </span>OGRSpatialReference;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">class </span>SingleBandRaster;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">using</span> viewshed::ViewshedAlgorithms;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>viewshed</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">class </span>AbstractViewshedAlgorithm;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">class </span>AbstractLoS;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">class </span>LoSNode;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="structviewshed_1_1DataTriplet.html">   26</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structviewshed_1_1DataTriplet.html">DataTriplet</a></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <a class="code" href="structviewshed_1_1DataTriplet.html">DataTriplet</a>( <span class="keywordtype">double</span> f, <span class="keywordtype">double</span> s, <span class="keywordtype">bool</span> t )</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            first = f;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            second = s;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            third = t;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        };</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordtype">double</span> first;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordtype">double</span> second;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordtype">bool</span> third;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    };</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classviewshed_1_1ViewshedUtils.html">   44</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classviewshed_1_1ViewshedUtils.html">ViewshedUtils</a></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classviewshed_1_1ViewshedUtils.html#a7dab2db716cc29899aace3e520016b00">saveToCsv</a>( std::vector&lt;DataTriplet&gt; data, std::string header, std::string fileName );</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classviewshed_1_1ViewshedUtils.html#a7dab2db716cc29899aace3e520016b00">saveToCsv</a>( std::vector&lt;std::string&gt; rows, std::string header, std::string fileName );</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">static</span> std::vector&lt;DataTriplet&gt; <a class="code" href="classviewshed_1_1ViewshedUtils.html#aebeb13fa3bbc6caf7233be1b1ae41d78">distanceElevation</a>( std::shared_ptr&lt;AbstractLoS&gt; los );</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1ViewshedUtils.html#a819e5565d105db7e7d492a3fe1c1ba7d">earthDiameter</a>( OGRSpatialReference crs );</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classviewshed_1_1ViewshedUtils.html#aeb58168a70796031981d5030a35a87f4">validateRaster</a>( std::shared_ptr&lt;SingleBandRaster&gt; r1, std::string &amp;error );</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classviewshed_1_1ViewshedUtils.html#ab7c196af0ad69970a85aff5faa9b262c">compareRasters</a>( std::shared_ptr&lt;SingleBandRaster&gt; r1, std::shared_ptr&lt;SingleBandRaster&gt; r2,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                                    std::string &amp;error );</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keyword">static</span> std::shared_ptr&lt;std::vector&lt;std::shared_ptr&lt;AbstractViewshedAlgorithm&gt;&gt;&gt; <a class="code" href="classviewshed_1_1ViewshedUtils.html#a649d2a6321c6281b37815dc4d55230f5">allAlgorithms</a>();</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keyword">static</span> std::shared_ptr&lt;std::vector&lt;std::shared_ptr&lt;AbstractViewshedAlgorithm&gt;&gt;&gt;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <a class="code" href="classviewshed_1_1ViewshedUtils.html#a649d2a6321c6281b37815dc4d55230f5">allAlgorithms</a>( <span class="keywordtype">double</span> invisibleValue );</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">bool</span> doubleEqual( <span class="keywordtype">double</span> a, <span class="keywordtype">double</span> b, <span class="keywordtype">double</span> epsilon = 4 * std::numeric_limits&lt;double&gt;::epsilon() );</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    };</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;} <span class="comment">// namespace viewshed</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">static</span> std::vector&lt;std::pair&lt;double, double&gt;&gt; rasterCoordinates( std::shared_ptr&lt;std::vector&lt;LoSNode&gt;&gt; los,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                                                                         <a class="code" href="classviewshed_1_1LoSNode.html">LoSNode</a> poi );</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1ViewshedUtils.html#a819e5565d105db7e7d492a3fe1c1ba7d">earthDiameter</a>( OGRSpatialReference crs );</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classviewshed_1_1ViewshedUtils.html#aeb58168a70796031981d5030a35a87f4">validateRaster</a>( std::shared_ptr&lt;SingleBandRaster&gt; r1, std::string &amp;error );</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classviewshed_1_1ViewshedUtils.html#ab7c196af0ad69970a85aff5faa9b262c">compareRasters</a>( std::shared_ptr&lt;SingleBandRaster&gt; r1, std::shared_ptr&lt;SingleBandRaster&gt; r2,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                                    std::string &amp;error );</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keyword">static</span> std::shared_ptr&lt;ViewshedAlgorithms&gt; <a class="code" href="classviewshed_1_1ViewshedUtils.html#abe1ba24196ff1c23e11adcadb72e1463">allAlgorithms</a>();</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keyword">static</span> std::shared_ptr&lt;ViewshedAlgorithms&gt; <a class="code" href="classviewshed_1_1ViewshedUtils.html#abe1ba24196ff1c23e11adcadb72e1463">allAlgorithms</a>( <span class="keywordtype">double</span> invisibleValue );</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">bool</span> doubleEqual( <span class="keywordtype">double</span> a, <span class="keywordtype">double</span> b, <span class="keywordtype">double</span> epsilon = 4 * std::numeric_limits&lt;double&gt;::epsilon() );</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    };</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;} <span class="comment">// namespace viewshed</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassviewshed_1_1LoSNode_html"><div class="ttname"><a href="classviewshed_1_1LoSNode.html">viewshed::LoSNode</a></div><div class="ttdoc">Representation of single cell that creates a point on LoS.</div><div class="ttdef"><b>Definition:</b> losnode.h:19</div></div>
-<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html">viewshed::ViewshedUtils</a></div><div class="ttdoc">Class that contains mostly static helper functions.</div><div class="ttdef"><b>Definition:</b> viewshedutils.h:42</div></div>
-<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_a649d2a6321c6281b37815dc4d55230f5"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#a649d2a6321c6281b37815dc4d55230f5">viewshed::ViewshedUtils::allAlgorithms</a></div><div class="ttdeci">static std::shared_ptr&lt; std::vector&lt; std::shared_ptr&lt; AbstractViewshedAlgorithm &gt; &gt; &gt; allAlgorithms()</div><div class="ttdoc">Returns list of all implemented viewshed indices as algorithms to be used in viewshed of inverse view...</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:197</div></div>
-<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_a7dab2db716cc29899aace3e520016b00"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#a7dab2db716cc29899aace3e520016b00">viewshed::ViewshedUtils::saveToCsv</a></div><div class="ttdeci">static void saveToCsv(std::vector&lt; DataTriplet &gt; data, std::string header, std::string fileName)</div><div class="ttdoc">Save data vector of DataTriplets as CSV file.</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:44</div></div>
-<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_a819e5565d105db7e7d492a3fe1c1ba7d"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#a819e5565d105db7e7d492a3fe1c1ba7d">viewshed::ViewshedUtils::earthDiameter</a></div><div class="ttdeci">static double earthDiameter(OGRSpatialReference crs)</div><div class="ttdoc">Extract Earth's diameter from ellipsoid associated with provided coordinate reference system.</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:109</div></div>
-<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_ab7c196af0ad69970a85aff5faa9b262c"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#ab7c196af0ad69970a85aff5faa9b262c">viewshed::ViewshedUtils::compareRasters</a></div><div class="ttdeci">static bool compareRasters(std::shared_ptr&lt; SingleBandRaster &gt; r1, std::shared_ptr&lt; SingleBandRaster &gt; r2, std::string &amp;error)</div><div class="ttdoc">Checks if the two rasters have the same properties and that one can be used visibility calculation ma...</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:124</div></div>
-<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_aeb58168a70796031981d5030a35a87f4"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#aeb58168a70796031981d5030a35a87f4">viewshed::ViewshedUtils::validateRaster</a></div><div class="ttdeci">static bool validateRaster(std::shared_ptr&lt; SingleBandRaster &gt; r1, std::string &amp;error)</div><div class="ttdoc">Validate the raster for viewshed calculation, checks if it fulfills all the requirements.</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:162</div></div>
-<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_aebeb13fa3bbc6caf7233be1b1ae41d78"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#aebeb13fa3bbc6caf7233be1b1ae41d78">viewshed::ViewshedUtils::distanceElevation</a></div><div class="ttdeci">static std::vector&lt; DataTriplet &gt; distanceElevation(std::shared_ptr&lt; AbstractLoS &gt; los)</div><div class="ttdoc">Extracts triplets of distance, elevation and target point (boolean) from provided LoS.</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:74</div></div>
-<div class="ttc" id="astructviewshed_1_1DataTriplet_html"><div class="ttname"><a href="structviewshed_1_1DataTriplet.html">viewshed::DataTriplet</a></div><div class="ttdoc">Representation of triplet of data. First two values are doubles and third is boolean....</div><div class="ttdef"><b>Definition:</b> viewshedutils.h:24</div></div>
+<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html">viewshed::ViewshedUtils</a></div><div class="ttdoc">Class that contains mostly static helper functions.</div><div class="ttdef"><b>Definition:</b> viewshedutils.h:45</div></div>
+<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_a7dab2db716cc29899aace3e520016b00"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#a7dab2db716cc29899aace3e520016b00">viewshed::ViewshedUtils::saveToCsv</a></div><div class="ttdeci">static void saveToCsv(std::vector&lt; DataTriplet &gt; data, std::string header, std::string fileName)</div><div class="ttdoc">Save data vector of DataTriplets as CSV file.</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:46</div></div>
+<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_a819e5565d105db7e7d492a3fe1c1ba7d"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#a819e5565d105db7e7d492a3fe1c1ba7d">viewshed::ViewshedUtils::earthDiameter</a></div><div class="ttdeci">static double earthDiameter(OGRSpatialReference crs)</div><div class="ttdoc">Extract Earth's diameter from ellipsoid associated with provided coordinate reference system.</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:111</div></div>
+<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_ab7c196af0ad69970a85aff5faa9b262c"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#ab7c196af0ad69970a85aff5faa9b262c">viewshed::ViewshedUtils::compareRasters</a></div><div class="ttdeci">static bool compareRasters(std::shared_ptr&lt; SingleBandRaster &gt; r1, std::shared_ptr&lt; SingleBandRaster &gt; r2, std::string &amp;error)</div><div class="ttdoc">Checks if the two rasters have the same properties and that one can be used visibility calculation ma...</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:126</div></div>
+<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_abe1ba24196ff1c23e11adcadb72e1463"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#abe1ba24196ff1c23e11adcadb72e1463">viewshed::ViewshedUtils::allAlgorithms</a></div><div class="ttdeci">static std::shared_ptr&lt; ViewshedAlgorithms &gt; allAlgorithms()</div><div class="ttdoc">Returns list of all implemented viewshed indices as algorithms to be used in viewshed of inverse view...</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:199</div></div>
+<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_aeb58168a70796031981d5030a35a87f4"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#aeb58168a70796031981d5030a35a87f4">viewshed::ViewshedUtils::validateRaster</a></div><div class="ttdeci">static bool validateRaster(std::shared_ptr&lt; SingleBandRaster &gt; r1, std::string &amp;error)</div><div class="ttdoc">Validate the raster for viewshed calculation, checks if it fulfills all the requirements.</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:164</div></div>
+<div class="ttc" id="aclassviewshed_1_1ViewshedUtils_html_aebeb13fa3bbc6caf7233be1b1ae41d78"><div class="ttname"><a href="classviewshed_1_1ViewshedUtils.html#aebeb13fa3bbc6caf7233be1b1ae41d78">viewshed::ViewshedUtils::distanceElevation</a></div><div class="ttdeci">static std::vector&lt; DataTriplet &gt; distanceElevation(std::shared_ptr&lt; AbstractLoS &gt; los)</div><div class="ttdoc">Extracts triplets of distance, elevation and target point (boolean) from provided LoS.</div><div class="ttdef"><b>Definition:</b> viewshedutils.cpp:76</div></div>
+<div class="ttc" id="astructviewshed_1_1DataTriplet_html"><div class="ttname"><a href="structviewshed_1_1DataTriplet.html">viewshed::DataTriplet</a></div><div class="ttdoc">Representation of triplet of data. First two values are doubles and third is boolean....</div><div class="ttdef"><b>Definition:</b> viewshedutils.h:27</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

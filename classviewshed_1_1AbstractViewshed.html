@@ -230,10 +230,10 @@ std::shared_ptr&lt; ProjectedSquareCellRaster &gt;&#160;</td><td class="memItemR
 std::shared_ptr&lt; <a class="el" href="classviewshed_1_1Point.html">Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a9639b1f9610981194f5e2c50ff4e3b54">mPoint</a></td></tr>
 <tr class="memdesc:a9639b1f9610981194f5e2c50ff4e3b54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Important point for visibility calculation. Either viewpoint (normal viewshed) or target point (inverse viewshed). <br /></td></tr>
 <tr class="separator:a9639b1f9610981194f5e2c50ff4e3b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cc7ab58955a9c20ad065be722094458"><td class="memItemLeft" align="right" valign="top"><a id="a5cc7ab58955a9c20ad065be722094458"></a>
-std::shared_ptr&lt; std::vector&lt; std::shared_ptr&lt; <a class="el" href="classviewshed_1_1AbstractViewshedAlgorithm.html">AbstractViewshedAlgorithm</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a5cc7ab58955a9c20ad065be722094458">mVisibilityIndices</a></td></tr>
-<tr class="memdesc:a5cc7ab58955a9c20ad065be722094458"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classviewshed_1_1Visibility.html" title="Class that provides static functions to assist with viewshed calculation.">Visibility</a> indexes to calculate while calculating this viewshed. As <em><a class="el" href="classviewshed_1_1AbstractViewshedAlgorithm.html" title="Base class for all Viewshed Algorithms.">AbstractViewshedAlgorithm</a></em>. <br /></td></tr>
-<tr class="separator:a5cc7ab58955a9c20ad065be722094458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad964ea2203cfb77005044455514c36ab"><td class="memItemLeft" align="right" valign="top"><a id="ad964ea2203cfb77005044455514c36ab"></a>
+std::shared_ptr&lt; ViewshedAlgorithms &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#ad964ea2203cfb77005044455514c36ab">mVisibilityIndices</a></td></tr>
+<tr class="memdesc:ad964ea2203cfb77005044455514c36ab"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classviewshed_1_1Visibility.html" title="Class that provides static functions to assist with viewshed calculation.">Visibility</a> indexes to calculate while calculating this viewshed. As <em><a class="el" href="classviewshed_1_1AbstractViewshedAlgorithm.html" title="Base class for all Viewshed Algorithms.">AbstractViewshedAlgorithm</a></em>. <br /></td></tr>
+<tr class="separator:ad964ea2203cfb77005044455514c36ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aa40531479bd1fe9b084eeb5db9c6d2"><td class="memItemLeft" align="right" valign="top"><a id="a8aa40531479bd1fe9b084eeb5db9c6d2"></a>
 GDALDataType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a8aa40531479bd1fe9b084eeb5db9c6d2">mDataType</a> = OUTPUT_RASTER_DATA_TYPE</td></tr>
 <tr class="memdesc:a8aa40531479bd1fe9b084eeb5db9c6d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data type of output rasters. <br /></td></tr>
@@ -289,8 +289,9 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>mRefractionCoeffici
 BS::thread_pool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a9ef606be61d022ff216dd91b2f4964ea">mThreadPool</a></td></tr>
 <tr class="memdesc:a9ef606be61d022ff216dd91b2f4964ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Threadpool that takes care of preparing individual threads with <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a> to be solved. <br /></td></tr>
 <tr class="separator:a9ef606be61d022ff216dd91b2f4964ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a518d0114ec68184eb2ada7ca5631a832"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; std::shared_ptr&lt; SingleBandRaster &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mResults</b></td></tr>
-<tr class="separator:a518d0114ec68184eb2ada7ca5631a832"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad61de04b074b3ec4ee4f09e59cb2357c"><td class="memItemLeft" align="right" valign="top"><a id="ad61de04b074b3ec4ee4f09e59cb2357c"></a>
+std::shared_ptr&lt; ResultRasters &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mResults</b> = std::make_shared&lt;ResultRasters&gt;()</td></tr>
+<tr class="separator:ad61de04b074b3ec4ee4f09e59cb2357c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a5f6960c0bc7823d2d0c138e4e00b1e"><td class="memItemLeft" align="right" valign="top"><a id="a6a5f6960c0bc7823d2d0c138e4e00b1e"></a>
 std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><b>mTimeInit</b></td></tr>
 <tr class="separator:a6a5f6960c0bc7823d2d0c138e4e00b1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1258,31 +1259,6 @@ false </dd></dl>
 <p>Overall size of all solved <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a> in bytes. </p>
 <dl class="section return"><dt>Returns</dt><dd>long long </dd></dl>
 
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a518d0114ec68184eb2ada7ca5631a832"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a518d0114ec68184eb2ada7ca5631a832">&#9670;&nbsp;</a></span>mResults</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;std::vector&lt;std::shared_ptr&lt;SingleBandRaster&gt; &gt; &gt; viewshed::AbstractViewshed::mResults</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">            std::make_shared&lt;std::vector&lt;std::shared_ptr&lt;SingleBandRaster&gt;&gt;&gt;()</div>
-</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
