@@ -23,6 +23,7 @@ namespace ViewshedBinaries
         void setXY( double x, double y );
         void setPoint( OGRPoint p );
         void setCrs( OGRSpatialReference crs );
+        OGRSpatialReference crs();
 
       signals:
         void pointChanged( OGRPoint point );
@@ -37,5 +38,7 @@ namespace ViewshedBinaries
         OGRPoint mPoint;
         bool mPointValid = false;
         bool mAddCrsLabel = true;
+        OGRSpatialReference mCrs;
+
     };
 } // namespace ViewshedBinaries
