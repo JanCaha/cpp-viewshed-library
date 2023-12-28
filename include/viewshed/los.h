@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_LOS_H
-#define VIEWSHEDLIB_LOS_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -47,5 +46,3 @@ namespace viewshed
     };
 
 } // namespace viewshed
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_VIEWSHEDELEVDIFFLOCAL_H
-#define VIEWSHEDLIB_VIEWSHEDELEVDIFFLOCAL_H
+#pragma once
 
 #include "abstractviewshedalgorithm.h"
 #include "losimportantvalues.h"
@@ -28,5 +27,3 @@ namespace viewshed
         };
     } // namespace visibilityalgorithm
 } // namespace viewshed
-
-#endif

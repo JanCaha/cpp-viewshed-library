@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_VIEWSHEDLOCALHORIZONDISTANCE_H
-#define VIEWSHEDLIB_VIEWSHEDLOCALHORIZONDISTANCE_H
+#pragma once
 
 #include "abstractviewshedalgorithm.h"
 
@@ -24,5 +23,3 @@ namespace viewshed
         };
     } // namespace visibilityalgorithm
 } // namespace viewshed
-
-#endif

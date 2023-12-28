@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_RASTERPOSITION_H
-#define VIEWSHEDLIB_RASTERPOSITION_H
+#pragma once
 
 namespace viewshed
 {
@@ -16,5 +15,3 @@ namespace viewshed
         int mRow, mCol;
     };
 } // namespace viewshed
-
-#endif

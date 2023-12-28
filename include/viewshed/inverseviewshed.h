@@ -1,7 +1,7 @@
-#ifndef VIEWSHEDLIB_INVERSEVIEWSHED_H
-#define VIEWSHEDLIB_INVERSEVIEWSHED_H
+#pragma once
 
 #include <functional>
+#include <iostream>
 #include <limits>
 
 #include "abstractviewshed.h"
@@ -42,5 +42,3 @@ namespace viewshed
     };
 
 } // namespace viewshed
-
-#endif

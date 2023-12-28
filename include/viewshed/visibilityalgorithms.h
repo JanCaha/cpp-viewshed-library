@@ -1,3 +1,5 @@
+#pragma once
+
 #include "visibilityangledifferencetoglobalhorizon.h"
 #include "visibilityangledifferencetolocalhorizon.h"
 #include "visibilityboolean.h"

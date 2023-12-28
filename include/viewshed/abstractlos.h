@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_ABSTRACTLOS_H
-#define VIEWSHEDLIB_ABSTRACTLOS_H
+#pragma once
 
 #include <algorithm>
 #include <memory>
@@ -341,5 +340,3 @@ namespace viewshed
     };
 
 } // namespace viewshed
-
-#endif

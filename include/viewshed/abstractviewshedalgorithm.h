@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_ABSTRACTVIEWSHEDALGORITHM_H
-#define VIEWSHEDLIB_ABSTRACTVIEWSHEDALGORITHM_H
+#pragma once
 
 #include <limits>
 #include <string>
@@ -43,5 +42,3 @@ namespace viewshed
     };
 
 } // namespace viewshed
-
-#endif

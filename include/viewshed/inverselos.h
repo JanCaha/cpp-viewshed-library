@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_INVERSELOS_H
-#define VIEWSHEDLIB_INVERSELOS_H
+#pragma once
 
 #include <vector>
 
@@ -58,5 +57,3 @@ namespace viewshed
     };
 
 } // namespace viewshed
-
-#endif

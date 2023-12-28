@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_CELLEVENTPOSITION_H
-#define VIEWSHEDLIB_CELLEVENTPOSITION_H
+#pragma once
 
 namespace viewshed
 {
@@ -14,5 +13,3 @@ namespace viewshed
         CellEventPosition( double row, double col );
     };
 } // namespace viewshed
-
-#endif

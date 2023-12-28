@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_LOSEVALUATOR_H
-#define VIEWSHEDLIB_LOSEVALUATOR_H
+#pragma once
 
 #include <limits>
 #include <memory>
@@ -80,5 +79,3 @@ namespace viewshed
         void parseNodes();
     };
 } // namespace viewshed
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_UTILS_H
-#define VIEWSHEDLIB_UTILS_H
+#pragma once
 
 #include <limits>
 #include <memory>
@@ -124,5 +123,3 @@ namespace viewshed
         static bool doubleEqual( double a, double b, double epsilon = 4 * std::numeric_limits<double>::epsilon() );
     };
 } // namespace viewshed
-
-#endif

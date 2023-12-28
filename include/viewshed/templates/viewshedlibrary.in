@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_H
-#define VIEWSHEDLIB_H
+#pragma once
 
 #include <algorithm>
 #include <string>
@@ -41,5 +40,3 @@ class ViewshedLibrary{
             return str;
         }
 };
-
-#endif

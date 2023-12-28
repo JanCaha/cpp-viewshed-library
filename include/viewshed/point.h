@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_POINT_H
-#define VIEWSHEDLIB_POINT_H
+#pragma once
 
 #include <memory>
 
@@ -77,5 +76,3 @@ namespace viewshed
     };
 
 } // namespace viewshed
-
-#endif
