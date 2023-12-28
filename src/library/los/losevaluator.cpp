@@ -1,5 +1,4 @@
 #include "losevaluator.h"
-#include "abstractviewshed.h"
 #include "abstractviewshedalgorithm.h"
 #include "losnode.h"
 #include "point.h"
