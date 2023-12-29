@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_VIEWSHEDVALUES_H
-#define VIEWSHEDLIB_VIEWSHEDVALUES_H
+#pragma once
 
 #include <vector>
 
@@ -28,5 +27,3 @@ namespace viewshed
         };
     };
 } // namespace viewshed
-
-#endif

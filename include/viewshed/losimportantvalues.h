@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_LOSVALUES_H
-#define VIEWSHEDLIB_LOSVALUES_H
+#pragma once
 
 namespace viewshed
 {
@@ -62,5 +61,3 @@ namespace viewshed
         bool isTargetGlobalHorizon();
     };
 } // namespace viewshed
-
-#endif

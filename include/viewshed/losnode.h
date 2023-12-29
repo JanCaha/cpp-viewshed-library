@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_LOSNODE_H
-#define VIEWSHEDLIB_LOSNODE_H
+#pragma once
 
 #include <memory>
 
@@ -97,5 +96,3 @@ namespace viewshed
         double distanceAtAngle( const double &angle );
     };
 } // namespace viewshed
-
-#endif

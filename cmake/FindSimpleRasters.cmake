@@ -33,4 +33,6 @@ if(simplerasters_LIBRARY)
             IMPORTED_LOCATION "${simplerasters_LIBRARY}"
             INTERFACE_INCLUDE_DIRECTORIES "${simplerasters_INCLUDE_DIR}")
     endif()
+else()
+    message(FATAL_ERROR "Could not find SimpleRasters.")
 endif()

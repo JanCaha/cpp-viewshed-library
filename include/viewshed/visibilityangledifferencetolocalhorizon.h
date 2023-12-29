@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_VIEWSHEDANGLEDIFFLOCAL_H
-#define VIEWSHEDLIB_VIEWSHEDANGLEDIFFLOCAL_H
+#pragma once
 
 #include <limits>
 
@@ -30,5 +29,3 @@ namespace viewshed
         };
     } // namespace visibilityalgorithm
 } // namespace viewshed
-
-#endif

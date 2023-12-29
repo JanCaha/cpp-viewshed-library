@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_ENUMS_H
-#define VIEWSHEDLIB_ENUMS_H
+#pragma once
 
 namespace viewshed
 {
@@ -25,5 +24,3 @@ namespace viewshed
         EXIT = 2
     };
 } // namespace viewshed
-
-#endif

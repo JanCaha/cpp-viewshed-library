@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_TYPES_H
-#define VIEWSHEDLIB_TYPES_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -15,4 +14,3 @@ namespace viewshed
     using ViewshedAlgorithms = std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>;
     using ResultRasters = std::vector<std::shared_ptr<SingleBandRaster>>;
 } // namespace viewshed
-#endif

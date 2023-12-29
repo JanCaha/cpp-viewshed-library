@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_EVENT_H
-#define VIEWSHEDLIB_EVENT_H
+#pragma once
 
 #include "defaultdatatypes.h"
 #include "enums.h"
@@ -30,5 +29,3 @@ namespace viewshed
         bool operator==( const CellEvent other ) const;
     };
 } // namespace viewshed
-
-#endif

@@ -13,6 +13,7 @@ override_dh_auto_configure:
 		--parallel \
 		--builddirectory=$(BUILDDIR) \
 		-- \
+		-D CMAKE_CXX_COMPILER=c++ \
 		-D CMAKE_INSTALL_PREFIX=debian/tmp/ \
 		-D CMAKE_BUILD_TYPE=Release \
 		-D BUILD_TESTS=OFF \

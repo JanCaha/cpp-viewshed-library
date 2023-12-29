@@ -1,5 +1,5 @@
-#ifndef VIEWSHEDLIB_THREADTASK_H
-#define VIEWSHEDLIB_THREADTASK_H
+#pragma once
+
 
 #include "simplerasters.h"
 #include "viewshedtypes.h"
@@ -24,5 +24,3 @@ namespace viewshed
                       std::shared_ptr<ResultRasters> results );
 
 } // namespace viewshed
-
-#endif

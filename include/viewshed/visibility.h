@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_VISIBILITY_H
-#define VIEWSHEDLIB_VISIBILITY_H
+#pragma once
 
 #include "constants.h"
 #include "enums.h"
@@ -89,5 +88,3 @@ namespace viewshed
         static double angle( const double &row, const double &column, const int &pointRow, const int &pointCol );
     };
 } // namespace viewshed
-
-#endif

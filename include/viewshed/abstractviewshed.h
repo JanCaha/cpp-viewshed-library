@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_ABSTRACTVIEWSHED_H
-#define VIEWSHEDLIB_ABSTRACTVIEWSHED_H
+#pragma once
 
 #include <limits>
 
@@ -390,5 +389,3 @@ namespace viewshed
     };
 
 } // namespace viewshed
-
-#endif

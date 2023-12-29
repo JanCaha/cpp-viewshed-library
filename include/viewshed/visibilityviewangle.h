@@ -1,5 +1,4 @@
-#ifndef VIEWSHEDLIB_VIEWSHEDANGLE_H
-#define VIEWSHEDLIB_VIEWSHEDANGLE_H
+#pragma once
 
 #include "abstractviewshedalgorithm.h"
 
@@ -26,5 +25,3 @@ namespace viewshed
         };
     } // namespace visibilityalgorithm
 } // namespace viewshed
-
-#endif
