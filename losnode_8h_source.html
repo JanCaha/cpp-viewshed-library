@@ -70,63 +70,60 @@ $(function() {
 <div class="title">losnode.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef VIEWSHEDLIB_LOSNODE_H</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define VIEWSHEDLIB_LOSNODE_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;enums.h&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;rasterposition.h&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>viewshed</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">class </span>Point;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">class </span>CellEvent;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classviewshed_1_1LoSNode.html">   18</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classviewshed_1_1LoSNode.html">LoSNode</a> : <span class="keyword">public</span> <a class="code" href="classviewshed_1_1RasterPosition.html">RasterPosition</a></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;      <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordtype">double</span> mAngle[3];</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordtype">double</span> mElevs[3];</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keywordtype">double</span> mDistances[3];</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keywordtype">bool</span> mInverseLoSBehindTarget = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <a class="code" href="classviewshed_1_1LoSNode.html#adc5ca5f675df94ac3d32f5f6f8c17805">LoSNode</a>();</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <a class="code" href="classviewshed_1_1LoSNode.html#adc5ca5f675df94ac3d32f5f6f8c17805">LoSNode</a>( <span class="keywordtype">int</span> row, <span class="keywordtype">int</span> col );</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <a class="code" href="classviewshed_1_1LoSNode.html#adc5ca5f675df94ac3d32f5f6f8c17805">LoSNode</a>( <span class="keyword">const</span> <span class="keywordtype">int</span> &amp;pointRow, <span class="keyword">const</span> <span class="keywordtype">int</span> &amp;pointCol, <span class="keyword">const</span> <a class="code" href="classviewshed_1_1CellEvent.html">CellEvent</a> *e, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;cellSize );</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">bool</span> operator==( <span class="keyword">const</span> <a class="code" href="classviewshed_1_1LoSNode.html">LoSNode</a> &amp;other );</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">bool</span> operator!=( <span class="keyword">const</span> <a class="code" href="classviewshed_1_1LoSNode.html">LoSNode</a> &amp;other );</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordtype">bool</span> operator&lt;( <span class="keyword">const</span> <a class="code" href="classviewshed_1_1LoSNode.html">LoSNode</a> other );</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1LoSNode.html#ae43f3ed1ff5ee6d3887b0816b3a4ffed">valueAtAngle</a>( <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle, ValueType valueType = ValueType::Elevation );</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1LoSNode.html#a2e72c953395852d70e639e789da1ef0f">value</a>( CellEventPositionType position, ValueType valueType = ValueType::Elevation );</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1LoSNode.html#aeecec5c1a58d8dfff2b1be0a4f6930d6">centreAngle</a>();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1LoSNode.html#ac7b3e471a11133e2744b37b4b1e688c8">centreElevation</a>();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1LoSNode.html#ab074c3524f7be99272d329aae5395d36">centreDistance</a>();</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordtype">double</span> elevationAtAngle( <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle );</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordtype">double</span> distanceAtAngle( <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle );</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    };</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;} <span class="comment">// namespace viewshed</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassviewshed_1_1CellEvent_html"><div class="ttname"><a href="classviewshed_1_1CellEvent.html">viewshed::CellEvent</a></div><div class="ttdoc">Class representing cell events for Van Kreveld's plane sweep algorithm. Stores cell position (row and...</div><div class="ttdef"><b>Definition:</b> cellevent.h:17</div></div>
-<div class="ttc" id="aclassviewshed_1_1LoSNode_html"><div class="ttname"><a href="classviewshed_1_1LoSNode.html">viewshed::LoSNode</a></div><div class="ttdoc">Representation of single cell that creates a point on LoS.</div><div class="ttdef"><b>Definition:</b> losnode.h:19</div></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;enums.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;rasterposition.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>viewshed</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">class </span>Point;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">class </span>CellEvent;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classviewshed_1_1LoSNode.html">   17</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classviewshed_1_1LoSNode.html">LoSNode</a> : <span class="keyword">public</span> <a class="code" href="classviewshed_1_1RasterPosition.html">RasterPosition</a></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keywordtype">double</span> mAngle[3];</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordtype">double</span> mElevs[3];</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordtype">double</span> mDistances[3];</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keywordtype">bool</span> mInverseLoSBehindTarget = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <a class="code" href="classviewshed_1_1LoSNode.html#adc5ca5f675df94ac3d32f5f6f8c17805">LoSNode</a>();</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <a class="code" href="classviewshed_1_1LoSNode.html#adc5ca5f675df94ac3d32f5f6f8c17805">LoSNode</a>( <span class="keywordtype">int</span> row, <span class="keywordtype">int</span> col );</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <a class="code" href="classviewshed_1_1LoSNode.html#adc5ca5f675df94ac3d32f5f6f8c17805">LoSNode</a>( <span class="keyword">const</span> <span class="keywordtype">int</span> &amp;pointRow, <span class="keyword">const</span> <span class="keywordtype">int</span> &amp;pointCol, <span class="keyword">const</span> <a class="code" href="classviewshed_1_1CellEvent.html">CellEvent</a> *e, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;cellSize );</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">bool</span> operator==( <span class="keyword">const</span> <a class="code" href="classviewshed_1_1LoSNode.html">LoSNode</a> &amp;other );</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">bool</span> operator!=( <span class="keyword">const</span> <a class="code" href="classviewshed_1_1LoSNode.html">LoSNode</a> &amp;other );</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">bool</span> operator&lt;( <span class="keyword">const</span> <a class="code" href="classviewshed_1_1LoSNode.html">LoSNode</a> other );</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1LoSNode.html#ae43f3ed1ff5ee6d3887b0816b3a4ffed">valueAtAngle</a>( <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle, ValueType valueType = ValueType::Elevation );</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1LoSNode.html#a2e72c953395852d70e639e789da1ef0f">value</a>( CellEventPositionType position, ValueType valueType = ValueType::Elevation );</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1LoSNode.html#aeecec5c1a58d8dfff2b1be0a4f6930d6">centreAngle</a>();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1LoSNode.html#ac7b3e471a11133e2744b37b4b1e688c8">centreElevation</a>();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1LoSNode.html#ab074c3524f7be99272d329aae5395d36">centreDistance</a>();</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordtype">double</span> elevationAtAngle( <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle );</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordtype">double</span> distanceAtAngle( <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle );</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    };</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;} <span class="comment">// namespace viewshed</span></div>
+<div class="ttc" id="aclassviewshed_1_1CellEvent_html"><div class="ttname"><a href="classviewshed_1_1CellEvent.html">viewshed::CellEvent</a></div><div class="ttdoc">Class representing cell events for Van Kreveld's plane sweep algorithm. Stores cell position (row and...</div><div class="ttdef"><b>Definition:</b> cellevent.h:16</div></div>
+<div class="ttc" id="aclassviewshed_1_1LoSNode_html"><div class="ttname"><a href="classviewshed_1_1LoSNode.html">viewshed::LoSNode</a></div><div class="ttdoc">Representation of single cell that creates a point on LoS.</div><div class="ttdef"><b>Definition:</b> losnode.h:18</div></div>
 <div class="ttc" id="aclassviewshed_1_1LoSNode_html_a2e72c953395852d70e639e789da1ef0f"><div class="ttname"><a href="classviewshed_1_1LoSNode.html#a2e72c953395852d70e639e789da1ef0f">viewshed::LoSNode::value</a></div><div class="ttdeci">double value(CellEventPositionType position, ValueType valueType=ValueType::Elevation)</div><div class="ttdoc">Extract value of ValueType at specific cell event position.</div><div class="ttdef"><b>Definition:</b> losnode.cpp:70</div></div>
 <div class="ttc" id="aclassviewshed_1_1LoSNode_html_ab074c3524f7be99272d329aae5395d36"><div class="ttname"><a href="classviewshed_1_1LoSNode.html#ab074c3524f7be99272d329aae5395d36">viewshed::LoSNode::centreDistance</a></div><div class="ttdeci">double centreDistance()</div><div class="ttdoc">Shortcut call to obtain distance angle at center of raster cell that this LoSNode represents.</div><div class="ttdef"><b>Definition:</b> losnode.cpp:135</div></div>
 <div class="ttc" id="aclassviewshed_1_1LoSNode_html_ac7b3e471a11133e2744b37b4b1e688c8"><div class="ttname"><a href="classviewshed_1_1LoSNode.html#ac7b3e471a11133e2744b37b4b1e688c8">viewshed::LoSNode::centreElevation</a></div><div class="ttdeci">double centreElevation()</div><div class="ttdoc">Shortcut call to obtain elevation angle at center of raster cell that this LoSNode represents.</div><div class="ttdef"><b>Definition:</b> losnode.cpp:133</div></div>
 <div class="ttc" id="aclassviewshed_1_1LoSNode_html_adc5ca5f675df94ac3d32f5f6f8c17805"><div class="ttname"><a href="classviewshed_1_1LoSNode.html#adc5ca5f675df94ac3d32f5f6f8c17805">viewshed::LoSNode::LoSNode</a></div><div class="ttdeci">LoSNode()</div><div class="ttdoc">Construct a new empty LoSNode object.</div><div class="ttdef"><b>Definition:</b> losnode.cpp:14</div></div>
 <div class="ttc" id="aclassviewshed_1_1LoSNode_html_ae43f3ed1ff5ee6d3887b0816b3a4ffed"><div class="ttname"><a href="classviewshed_1_1LoSNode.html#ae43f3ed1ff5ee6d3887b0816b3a4ffed">viewshed::LoSNode::valueAtAngle</a></div><div class="ttdeci">double valueAtAngle(const double &amp;angle, ValueType valueType=ValueType::Elevation)</div><div class="ttdoc">Extract value of ValueType at specified angle.</div><div class="ttdef"><b>Definition:</b> losnode.cpp:93</div></div>
 <div class="ttc" id="aclassviewshed_1_1LoSNode_html_aeecec5c1a58d8dfff2b1be0a4f6930d6"><div class="ttname"><a href="classviewshed_1_1LoSNode.html#aeecec5c1a58d8dfff2b1be0a4f6930d6">viewshed::LoSNode::centreAngle</a></div><div class="ttdeci">double centreAngle()</div><div class="ttdoc">Shortcut call to obtain horizontal angle at center of raster cell that this LoSNode represents.</div><div class="ttdef"><b>Definition:</b> losnode.cpp:131</div></div>
-<div class="ttc" id="aclassviewshed_1_1RasterPosition_html"><div class="ttname"><a href="classviewshed_1_1RasterPosition.html">viewshed::RasterPosition</a></div><div class="ttdoc">Class to represent position on raster in term of row and column.</div><div class="ttdef"><b>Definition:</b> rasterposition.h:12</div></div>
+<div class="ttc" id="aclassviewshed_1_1RasterPosition_html"><div class="ttname"><a href="classviewshed_1_1RasterPosition.html">viewshed::RasterPosition</a></div><div class="ttdoc">Class to represent position on raster in term of row and column.</div><div class="ttdef"><b>Definition:</b> rasterposition.h:11</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

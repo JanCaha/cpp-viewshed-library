@@ -70,40 +70,37 @@ $(function() {
 <div class="title">losimportantvalues.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef VIEWSHEDLIB_LOSVALUES_H</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define VIEWSHEDLIB_LOSVALUES_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span>viewshed</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="structviewshed_1_1LoSImportantValues.html">   11</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structviewshed_1_1LoSImportantValues.html">LoSImportantValues</a></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="structviewshed_1_1LoSImportantValues.html#ae406f5a1087cacd7b19c32b8ae1512ae">LoSImportantValues</a>();</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordtype">void</span> reset();</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordtype">double</span> maxGradientBefore = -180;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordtype">double</span> maxGradient = -180;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keywordtype">int</span> indexMaxGradientBefore = -1;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keywordtype">int</span> indexMaxGradient = -1;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keywordtype">int</span> indexHorizonBefore = -1;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordtype">int</span> indexHorizon = -1;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordtype">int</span> countHorizonBefore = 0;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordtype">int</span> countHorizon = 0;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordtype">bool</span> targetHorizon = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordtype">int</span> targetIndex = -1;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="structviewshed_1_1LoSImportantValues.html#aa3c0bccdbf6f32b1ff84f2fd678c16c7">horizonBeforeExist</a>();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="structviewshed_1_1LoSImportantValues.html#a31e3635275b0626fa3ea239301cc3164">horizonExist</a>();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="structviewshed_1_1LoSImportantValues.html#ad211e72c4019760331d24e2dff43e557">isTargetHorizon</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="structviewshed_1_1LoSImportantValues.html#ae406b719d2f116c25e82da78499d1da2">isTargetGlobalHorizon</a>();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    };</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace viewshed</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="astructviewshed_1_1LoSImportantValues_html"><div class="ttname"><a href="structviewshed_1_1LoSImportantValues.html">viewshed::LoSImportantValues</a></div><div class="ttdoc">Representation of important values and LoSNode indexes that can be extracted from LoS and are importa...</div><div class="ttdef"><b>Definition:</b> losimportantvalues.h:12</div></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span>viewshed</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="structviewshed_1_1LoSImportantValues.html">   10</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structviewshed_1_1LoSImportantValues.html">LoSImportantValues</a></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="structviewshed_1_1LoSImportantValues.html#ae406f5a1087cacd7b19c32b8ae1512ae">LoSImportantValues</a>();</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keywordtype">void</span> reset();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keywordtype">double</span> maxGradientBefore = -180;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordtype">double</span> maxGradient = -180;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordtype">int</span> indexMaxGradientBefore = -1;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keywordtype">int</span> indexMaxGradient = -1;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keywordtype">int</span> indexHorizonBefore = -1;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keywordtype">int</span> indexHorizon = -1;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordtype">int</span> countHorizonBefore = 0;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordtype">int</span> countHorizon = 0;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordtype">bool</span> targetHorizon = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordtype">int</span> targetIndex = -1;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="structviewshed_1_1LoSImportantValues.html#aa3c0bccdbf6f32b1ff84f2fd678c16c7">horizonBeforeExist</a>();</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="structviewshed_1_1LoSImportantValues.html#a31e3635275b0626fa3ea239301cc3164">horizonExist</a>();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="structviewshed_1_1LoSImportantValues.html#ad211e72c4019760331d24e2dff43e557">isTargetHorizon</a>();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="structviewshed_1_1LoSImportantValues.html#ae406b719d2f116c25e82da78499d1da2">isTargetGlobalHorizon</a>();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    };</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;} <span class="comment">// namespace viewshed</span></div>
+<div class="ttc" id="astructviewshed_1_1LoSImportantValues_html"><div class="ttname"><a href="structviewshed_1_1LoSImportantValues.html">viewshed::LoSImportantValues</a></div><div class="ttdoc">Representation of important values and LoSNode indexes that can be extracted from LoS and are importa...</div><div class="ttdef"><b>Definition:</b> losimportantvalues.h:11</div></div>
 <div class="ttc" id="astructviewshed_1_1LoSImportantValues_html_a31e3635275b0626fa3ea239301cc3164"><div class="ttname"><a href="structviewshed_1_1LoSImportantValues.html#a31e3635275b0626fa3ea239301cc3164">viewshed::LoSImportantValues::horizonExist</a></div><div class="ttdeci">bool horizonExist()</div><div class="ttdoc">Is there a horizon on the LoS?</div><div class="ttdef"><b>Definition:</b> losimportantvalues.cpp:22</div></div>
 <div class="ttc" id="astructviewshed_1_1LoSImportantValues_html_aa3c0bccdbf6f32b1ff84f2fd678c16c7"><div class="ttname"><a href="structviewshed_1_1LoSImportantValues.html#aa3c0bccdbf6f32b1ff84f2fd678c16c7">viewshed::LoSImportantValues::horizonBeforeExist</a></div><div class="ttdeci">bool horizonBeforeExist()</div><div class="ttdoc">Is there a horizon between view point and target point?</div><div class="ttdef"><b>Definition:</b> losimportantvalues.cpp:20</div></div>
 <div class="ttc" id="astructviewshed_1_1LoSImportantValues_html_ad211e72c4019760331d24e2dff43e557"><div class="ttname"><a href="structviewshed_1_1LoSImportantValues.html#ad211e72c4019760331d24e2dff43e557">viewshed::LoSImportantValues::isTargetHorizon</a></div><div class="ttdeci">bool isTargetHorizon()</div><div class="ttdoc">Is the target point a horizon?</div><div class="ttdef"><b>Definition:</b> losimportantvalues.cpp:24</div></div>

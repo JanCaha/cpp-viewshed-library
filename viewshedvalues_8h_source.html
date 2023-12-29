@@ -70,35 +70,32 @@ $(function() {
 <div class="title">viewshedvalues.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef VIEWSHEDLIB_VIEWSHEDVALUES_H</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define VIEWSHEDLIB_VIEWSHEDVALUES_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;rasterposition.h&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>viewshed</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">class </span>Point;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classviewshed_1_1ViewshedValues.html">   17</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classviewshed_1_1ViewshedValues.html">ViewshedValues</a> : <span class="keyword">public</span> <a class="code" href="classviewshed_1_1RasterPosition.html">RasterPosition</a></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        std::vector&lt;double&gt; values;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <a class="code" href="classviewshed_1_1ViewshedValues.html">ViewshedValues</a>(){};</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <a class="code" href="classviewshed_1_1ViewshedValues.html">ViewshedValues</a>( <span class="keywordtype">int</span> row_, <span class="keywordtype">int</span> col_ )</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            mRow = row_;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            mCol = col_;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        };</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    };</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;} <span class="comment">// namespace viewshed</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassviewshed_1_1RasterPosition_html"><div class="ttname"><a href="classviewshed_1_1RasterPosition.html">viewshed::RasterPosition</a></div><div class="ttdoc">Class to represent position on raster in term of row and column.</div><div class="ttdef"><b>Definition:</b> rasterposition.h:12</div></div>
-<div class="ttc" id="aclassviewshed_1_1ViewshedValues_html"><div class="ttname"><a href="classviewshed_1_1ViewshedValues.html">viewshed::ViewshedValues</a></div><div class="ttdoc">A simple class that stores results of visibility indices calculation (in form of vector of doubles) f...</div><div class="ttdef"><b>Definition:</b> viewshedvalues.h:18</div></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;rasterposition.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>viewshed</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">class </span>Point;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classviewshed_1_1ViewshedValues.html">   16</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classviewshed_1_1ViewshedValues.html">ViewshedValues</a> : <span class="keyword">public</span> <a class="code" href="classviewshed_1_1RasterPosition.html">RasterPosition</a></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;      <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        std::vector&lt;double&gt; values;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <a class="code" href="classviewshed_1_1ViewshedValues.html">ViewshedValues</a>(){};</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <a class="code" href="classviewshed_1_1ViewshedValues.html">ViewshedValues</a>( <span class="keywordtype">int</span> row_, <span class="keywordtype">int</span> col_ )</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            mRow = row_;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            mCol = col_;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        };</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    };</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;} <span class="comment">// namespace viewshed</span></div>
+<div class="ttc" id="aclassviewshed_1_1RasterPosition_html"><div class="ttname"><a href="classviewshed_1_1RasterPosition.html">viewshed::RasterPosition</a></div><div class="ttdoc">Class to represent position on raster in term of row and column.</div><div class="ttdef"><b>Definition:</b> rasterposition.h:11</div></div>
+<div class="ttc" id="aclassviewshed_1_1ViewshedValues_html"><div class="ttname"><a href="classviewshed_1_1ViewshedValues.html">viewshed::ViewshedValues</a></div><div class="ttdoc">A simple class that stores results of visibility indices calculation (in form of vector of doubles) f...</div><div class="ttdef"><b>Definition:</b> viewshedvalues.h:17</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

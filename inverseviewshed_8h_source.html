@@ -70,10 +70,10 @@ $(function() {
 <div class="title">inverseviewshed.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef VIEWSHEDLIB_INVERSEVIEWSHED_H</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define VIEWSHEDLIB_INVERSEVIEWSHED_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;abstractviewshed.h&quot;</span></div>
@@ -114,11 +114,9 @@ $(function() {
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    };</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;} <span class="comment">// namespace viewshed</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassviewshed_1_1AbstractViewshed_html"><div class="ttname"><a href="classviewshed_1_1AbstractViewshed.html">viewshed::AbstractViewshed</a></div><div class="ttdoc">Abstract class that represents viewshed calculation from this class specific implementations ( Viewsh...</div><div class="ttdef"><b>Definition:</b> abstractviewshed.h:41</div></div>
+<div class="ttc" id="aclassviewshed_1_1AbstractViewshed_html"><div class="ttname"><a href="classviewshed_1_1AbstractViewshed.html">viewshed::AbstractViewshed</a></div><div class="ttdoc">Abstract class that represents viewshed calculation from this class specific implementations ( Viewsh...</div><div class="ttdef"><b>Definition:</b> abstractviewshed.h:40</div></div>
 <div class="ttc" id="aclassviewshed_1_1AbstractViewshed_html_a7fe46769a66d813bc48955c0576f22b9"><div class="ttname"><a href="classviewshed_1_1AbstractViewshed.html#a7fe46769a66d813bc48955c0576f22b9">viewshed::AbstractViewshed::point</a></div><div class="ttdeci">OGRPoint point(int row, int col)</div><div class="ttdoc">Create OGRPoint with coordinates of given row and column in the raster.</div><div class="ttdef"><b>Definition:</b> abstractviewshed.cpp:268</div></div>
-<div class="ttc" id="aclassviewshed_1_1CellEvent_html"><div class="ttname"><a href="classviewshed_1_1CellEvent.html">viewshed::CellEvent</a></div><div class="ttdoc">Class representing cell events for Van Kreveld's plane sweep algorithm. Stores cell position (row and...</div><div class="ttdef"><b>Definition:</b> cellevent.h:17</div></div>
+<div class="ttc" id="aclassviewshed_1_1CellEvent_html"><div class="ttname"><a href="classviewshed_1_1CellEvent.html">viewshed::CellEvent</a></div><div class="ttdoc">Class representing cell events for Van Kreveld's plane sweep algorithm. Stores cell position (row and...</div><div class="ttdef"><b>Definition:</b> cellevent.h:16</div></div>
 <div class="ttc" id="aclassviewshed_1_1InverseViewshed_html"><div class="ttname"><a href="classviewshed_1_1InverseViewshed.html">viewshed::InverseViewshed</a></div><div class="ttdef"><b>Definition:</b> inverseviewshed.h:20</div></div>
 <div class="ttc" id="aclassviewshed_1_1InverseViewshed_html_a923a9308fc025d005471d9af0ed4b124"><div class="ttname"><a href="classviewshed_1_1InverseViewshed.html#a923a9308fc025d005471d9af0ed4b124">viewshed::InverseViewshed::submitToThreadpool</a></div><div class="ttdeci">void submitToThreadpool(CellEvent &amp;e) override</div><div class="ttdoc">Submit LoS with this CellEvent to threadpool for solving.</div><div class="ttdef"><b>Definition:</b> inverseviewshed.cpp:83</div></div>
 <div class="ttc" id="aclassviewshed_1_1InverseViewshed_html_ab2da0877e8f3be34a32773132d7f95c4"><div class="ttname"><a href="classviewshed_1_1InverseViewshed.html#ab2da0877e8f3be34a32773132d7f95c4">viewshed::InverseViewshed::calculate</a></div><div class="ttdeci">void calculate(std::function&lt; void(std::string, double)&gt; stepsTimingCallback=[](std::string text, double time) { std::cout&lt;&lt; text&lt;&lt; time&lt;&lt; std::endl;}, std::function&lt; void(int, int)&gt; progressCallback=[](int, int) {}) override</div><div class="ttdoc">Calculate the viewshed. Covers all the steps - create list of events, sort list of events,...</div><div class="ttdef"><b>Definition:</b> inverseviewshed.cpp:64</div></div>

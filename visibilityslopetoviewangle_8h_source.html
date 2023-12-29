@@ -70,42 +70,39 @@ $(function() {
 <div class="title">visibilityslopetoviewangle.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef VIEWSHEDLIB_VIEWSHEDSLOPETOVIEWANGLE_H</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define VIEWSHEDLIB_VIEWSHEDSLOPETOVIEWANGLE_H</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;abstractviewshedalgorithm.h&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>viewshed</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">namespace </span>visibilityalgorithm</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html">   12</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html">LoSSlopeToViewAngle</a> : <span class="keyword">public</span> <a class="code" href="classviewshed_1_1AbstractViewshedAlgorithm.html">AbstractViewshedAlgorithm</a></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;          <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html">LoSSlopeToViewAngle</a>( <span class="keywordtype">double</span> invisible = -1, <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#ab34ba83fc489bbd664a6d55621ba2421">pointValue</a> = 0 );</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#a67dd651dc4a7254014ae6df4000e8f18">result</a>( std::shared_ptr&lt;LoSImportantValues&gt; losValues, std::shared_ptr&lt;AbstractLoS&gt; los ) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#ab34ba83fc489bbd664a6d55621ba2421">   20</a></span>&#160;            <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#ab34ba83fc489bbd664a6d55621ba2421">pointValue</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> mPointValue; };</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <span class="keyword">const</span> std::string <a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#a574b5206a948bd2802941ebb4ccb0019">name</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;          <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordtype">double</span> mInvisibile;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keywordtype">double</span> mPointValue;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        };</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    } <span class="comment">// namespace visibilityalgorithm</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;} <span class="comment">// namespace viewshed</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassviewshed_1_1AbstractViewshedAlgorithm_html"><div class="ttname"><a href="classviewshed_1_1AbstractViewshedAlgorithm.html">viewshed::AbstractViewshedAlgorithm</a></div><div class="ttdoc">Base class for all Viewshed Algorithms.</div><div class="ttdef"><b>Definition:</b> abstractviewshedalgorithm.h:19</div></div>
-<div class="ttc" id="aclassviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle_html"><div class="ttname"><a href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html">viewshed::visibilityalgorithm::LoSSlopeToViewAngle</a></div><div class="ttdef"><b>Definition:</b> visibilityslopetoviewangle.h:13</div></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;abstractviewshedalgorithm.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>viewshed</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">namespace </span>visibilityalgorithm</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html">   11</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html">LoSSlopeToViewAngle</a> : <span class="keyword">public</span> <a class="code" href="classviewshed_1_1AbstractViewshedAlgorithm.html">AbstractViewshedAlgorithm</a></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;          <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            <a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html">LoSSlopeToViewAngle</a>( <span class="keywordtype">double</span> invisible = -1, <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#ab34ba83fc489bbd664a6d55621ba2421">pointValue</a> = 0 );</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#a67dd651dc4a7254014ae6df4000e8f18">result</a>( std::shared_ptr&lt;LoSImportantValues&gt; losValues, std::shared_ptr&lt;AbstractLoS&gt; los ) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#ab34ba83fc489bbd664a6d55621ba2421">   19</a></span>&#160;            <span class="keywordtype">double</span> <a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#ab34ba83fc489bbd664a6d55621ba2421">pointValue</a>()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> mPointValue; };</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <span class="keyword">const</span> std::string <a class="code" href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#a574b5206a948bd2802941ebb4ccb0019">name</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;          <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <span class="keywordtype">double</span> mInvisibile;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordtype">double</span> mPointValue;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        };</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    } <span class="comment">// namespace visibilityalgorithm</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;} <span class="comment">// namespace viewshed</span></div>
+<div class="ttc" id="aclassviewshed_1_1AbstractViewshedAlgorithm_html"><div class="ttname"><a href="classviewshed_1_1AbstractViewshedAlgorithm.html">viewshed::AbstractViewshedAlgorithm</a></div><div class="ttdoc">Base class for all Viewshed Algorithms.</div><div class="ttdef"><b>Definition:</b> abstractviewshedalgorithm.h:18</div></div>
+<div class="ttc" id="aclassviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle_html"><div class="ttname"><a href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html">viewshed::visibilityalgorithm::LoSSlopeToViewAngle</a></div><div class="ttdef"><b>Definition:</b> visibilityslopetoviewangle.h:12</div></div>
 <div class="ttc" id="aclassviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle_html_a574b5206a948bd2802941ebb4ccb0019"><div class="ttname"><a href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#a574b5206a948bd2802941ebb4ccb0019">viewshed::visibilityalgorithm::LoSSlopeToViewAngle::name</a></div><div class="ttdeci">const std::string name() override</div><div class="ttdoc">Name of the algorithm.</div><div class="ttdef"><b>Definition:</b> slopetoviewangle.cpp:33</div></div>
 <div class="ttc" id="aclassviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle_html_a67dd651dc4a7254014ae6df4000e8f18"><div class="ttname"><a href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#a67dd651dc4a7254014ae6df4000e8f18">viewshed::visibilityalgorithm::LoSSlopeToViewAngle::result</a></div><div class="ttdeci">double result(std::shared_ptr&lt; LoSImportantValues &gt; losValues, std::shared_ptr&lt; AbstractLoS &gt; los) override</div><div class="ttdoc">Extract resulting value based on LoSImportantValues and specific los.</div><div class="ttdef"><b>Definition:</b> slopetoviewangle.cpp:13</div></div>
-<div class="ttc" id="aclassviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle_html_ab34ba83fc489bbd664a6d55621ba2421"><div class="ttname"><a href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#ab34ba83fc489bbd664a6d55621ba2421">viewshed::visibilityalgorithm::LoSSlopeToViewAngle::pointValue</a></div><div class="ttdeci">double pointValue() override</div><div class="ttdoc">Value at important point, either view point for viewshed or target point for inverse viewshed.</div><div class="ttdef"><b>Definition:</b> visibilityslopetoviewangle.h:20</div></div>
+<div class="ttc" id="aclassviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle_html_ab34ba83fc489bbd664a6d55621ba2421"><div class="ttname"><a href="classviewshed_1_1visibilityalgorithm_1_1LoSSlopeToViewAngle.html#ab34ba83fc489bbd664a6d55621ba2421">viewshed::visibilityalgorithm::LoSSlopeToViewAngle::pointValue</a></div><div class="ttdeci">double pointValue() override</div><div class="ttdoc">Value at important point, either view point for viewshed or target point for inverse viewshed.</div><div class="ttdef"><b>Definition:</b> visibilityslopetoviewangle.h:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
