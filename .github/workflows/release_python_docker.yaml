@@ -85,7 +85,7 @@ jobs:
         
         - name: Install from DEB
           run: |
-            sudo apt install _packages/viewshed_*.deb
+            sudo apt install ./_packages/viewshed_*.deb
             
         - name: Upload DEB file as artifact
           uses: actions/upload-artifact@v3
