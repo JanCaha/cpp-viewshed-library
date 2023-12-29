@@ -1,3 +1,10 @@
+viewshed (3.0.0-0) jammy; urgency=low
+  
+  * update to version 4.0.1 of BS::thread_pool
+  * use #pragma once in header files
+
+ -- Jan Caha <jan.caha@outlook.com>  Fri, 29 Dec 2023 14:51:58 +0100
+
 viewshed (2.9.0-1) jammy; urgency=low
   
   * add test for GUI tools, some GUI refactor for testing
