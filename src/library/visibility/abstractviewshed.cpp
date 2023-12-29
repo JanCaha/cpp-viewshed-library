@@ -210,14 +210,14 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
         if ( mMaxNumberOfTasks < mThreadPool.get_tasks_total() )
         {
             // parse result to rasters to avoid clutching in memory
-            mThreadPool.wait_for_tasks();
+            mThreadPool.wait();
         }
 
         i++;
     }
 
     // parse results left after the algorithm finished
-    mThreadPool.wait_for_tasks();
+    mThreadPool.wait();
 
     mTimeParse =
         std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );

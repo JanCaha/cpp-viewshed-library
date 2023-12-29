@@ -90,7 +90,7 @@ void Viewshed::submitToThreadpool( CellEvent &e )
     los->setTargetPoint( poi );
     los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
-    mThreadPool.push_task( viewshed::evaluateLoS, los, mVisibilityIndices, mResults );
+    mThreadPool.detach_task( std::bind( viewshed::evaluateLoS, los, mVisibilityIndices, mResults ) );
 }
 
 void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell )

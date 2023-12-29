@@ -89,7 +89,7 @@ void InverseViewshed::submitToThreadpool( CellEvent &e )
     los->setViewPoint( poi, mObserverOffset );
     los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
-    mThreadPool.push_task( viewshed::evaluateLoS, los, mVisibilityIndices, mResults );
+    mThreadPool.detach_task( std::bind( viewshed::evaluateLoS, los, mVisibilityIndices, mResults ) );
 }
 
 void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell )
