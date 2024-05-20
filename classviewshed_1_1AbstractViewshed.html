@@ -198,6 +198,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a02e4d5c422807872dc6a94656db0eca5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a02e4d5c422807872dc6a94656db0eca5">cellEvent</a> (size_t i)</td></tr>
 <tr class="memdesc:a02e4d5c422807872dc6a94656db0eca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract individual cell event from cell events.  <a href="classviewshed_1_1AbstractViewshed.html#a02e4d5c422807872dc6a94656db0eca5">More...</a><br /></td></tr>
 <tr class="separator:a02e4d5c422807872dc6a94656db0eca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b6bfe0da1d6379850005fcc9abd7a8b"><td class="memItemLeft" align="right" valign="top"><a id="a7b6bfe0da1d6379850005fcc9abd7a8b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a7b6bfe0da1d6379850005fcc9abd7a8b">calculateVisibilityRaster</a> ()=0</td></tr>
+<tr class="memdesc:a7b6bfe0da1d6379850005fcc9abd7a8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate visibility mask of areas which are visible from point (visibility), or from which the points is visible (inverse visibility). The visibility raster is calculated using fast algorithm, significantly faster than algorithms with visibility indices. <br /></td></tr>
+<tr class="separator:a7b6bfe0da1d6379850005fcc9abd7a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cde26c89fbf6236ca2080130e9a8bae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a1cde26c89fbf6236ca2080130e9a8bae">saveVisibilityRaster</a> (std::string filePath)</td></tr>
+<tr class="memdesc:a1cde26c89fbf6236ca2080130e9a8bae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save visibility raster to file.  <a href="classviewshed_1_1AbstractViewshed.html#a1cde26c89fbf6236ca2080130e9a8bae">More...</a><br /></td></tr>
+<tr class="separator:a1cde26c89fbf6236ca2080130e9a8bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cd6d27d306d880e6cf6e22034e16f04"><td class="memItemLeft" align="right" valign="top"><a id="a4cd6d27d306d880e6cf6e22034e16f04"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a4cd6d27d306d880e6cf6e22034e16f04">calculateVisibilityMask</a> ()</td></tr>
+<tr class="memdesc:a4cd6d27d306d880e6cf6e22034e16f04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate visibility mask raster. <br /></td></tr>
+<tr class="separator:a4cd6d27d306d880e6cf6e22034e16f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -292,6 +303,9 @@ BS::thread_pool&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 <tr class="memitem:ad61de04b074b3ec4ee4f09e59cb2357c"><td class="memItemLeft" align="right" valign="top"><a id="ad61de04b074b3ec4ee4f09e59cb2357c"></a>
 std::shared_ptr&lt; ResultRasters &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mResults</b> = std::make_shared&lt;ResultRasters&gt;()</td></tr>
 <tr class="separator:ad61de04b074b3ec4ee4f09e59cb2357c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16e203e8d4aeeab76926c22468f67ad0"><td class="memItemLeft" align="right" valign="top"><a id="a16e203e8d4aeeab76926c22468f67ad0"></a>
+std::shared_ptr&lt; ProjectedSquareCellRaster &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mVisibilityRaster</b> = nullptr</td></tr>
+<tr class="separator:a16e203e8d4aeeab76926c22468f67ad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a5f6960c0bc7823d2d0c138e4e00b1e"><td class="memItemLeft" align="right" valign="top"><a id="a6a5f6960c0bc7823d2d0c138e4e00b1e"></a>
 std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><b>mTimeInit</b></td></tr>
 <tr class="separator:a6a5f6960c0bc7823d2d0c138e4e00b1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -849,6 +863,32 @@ false </dd></dl>
   <table class="params">
     <tr><td class="paramname">location</td><td></td></tr>
     <tr><td class="paramname">fileNamePrefix</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1cde26c89fbf6236ca2080130e9a8bae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cde26c89fbf6236ca2080130e9a8bae">&#9670;&nbsp;</a></span>saveVisibilityRaster()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AbstractViewshed::saveVisibilityRaster </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>filePath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Save visibility raster to file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filePath</td><td></td></tr>
   </table>
   </dd>
 </dl>
