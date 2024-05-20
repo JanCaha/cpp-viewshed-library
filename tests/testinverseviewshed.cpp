@@ -75,6 +75,18 @@ TEST_F( InverseViewshedTest, testInverseViewshedCalculation )
     v.saveResults( TEST_DATA_RESULTS_DIR, "Inverse" );
 }
 
+TEST_F( InverseViewshedTest, testVisibilityRaster )
+{
+    OGRPoint poiPoint = OGRPoint( -336428.767, -1189102.785 );
+
+    InverseViewshed v( tp, 2, dem, algs );
+    v.initEventList();
+    v.sortEventList();
+
+    v.calculateVisibilityRaster();
+    v.saveVisibilityRaster( TEST_DATA_RESULTS_VISIBILITY_RASTER );
+}
+
 int main( int argc, char **argv )
 {
     testing::InitGoogleTest( &argc, argv );
