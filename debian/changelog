@@ -1,3 +1,9 @@
+viewshed (4.0.0-0) jammy; urgency=low
+  
+  * add functions to calculate visibility raster (mask) as fast alternative
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 20 May 2024 11:21:29 +0200
+
 viewshed (3.0.0-0) jammy; urgency=low
   
   * update to version 4.0.1 of BS::thread_pool
