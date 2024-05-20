@@ -291,6 +291,27 @@ namespace viewshed
          */
         CellEvent cellEvent( size_t i ) { return mCellEvents.at( i ); }
 
+        /**
+         * @brief Calculate visibility mask of areas which are visible from point (visibility), or from which the points
+         * is visible (inverse visibility). The visibility raster is calculated using fast algorithm, significantly
+         * faster than algorithms with visibility indices.
+         *
+         */
+        virtual void calculateVisibilityRaster() = 0;
+
+        /**
+         * @brief Save visibility raster to file.
+         *
+         * @param filePath
+         */
+        void saveVisibilityRaster( std::string filePath );
+
+        /**
+         * @brief Calculate visibility mask raster.
+         *
+         */
+        void calculateVisibilityMask();
+
       protected:
         /**
          * @brief LoSNodes in currently solved LoS while parsing event list.
@@ -374,6 +395,7 @@ namespace viewshed
         BS::thread_pool mThreadPool;
 
         std::shared_ptr<ResultRasters> mResults = std::make_shared<ResultRasters>();
+        std::shared_ptr<ProjectedSquareCellRaster> mVisibilityRaster = nullptr;
 
         std::chrono::nanoseconds mTimeInit;
         std::chrono::nanoseconds mTimeSort;

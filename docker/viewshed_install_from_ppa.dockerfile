@@ -1,7 +1,7 @@
 FROM ubuntu:jammy
 
 RUN apt-get update && \
-    apt-get -y -q install gpg wget lsb-core software-properties-common python3 python3-pip git cmake && \
+    apt-get -y -q install gpg wget lsb-core software-properties-common python3 python3-pip && \
     apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt/lists/*
@@ -20,10 +20,10 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
     add-apt-repository ppa:jancaha/gis-tools && \
     apt-get update && \
-    apt-get -y -q install --no-install-recommends gdal-bin libgdal-dev qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools && \
     apt-get -y install simplerasters viewshed viewshed-bin && \
     apt-get clean autoclean && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip install git+https://github.com/JanCaha/viewshed-library-pybind11
+COPY install/ /
+RUN pip install viewshed-*.whl

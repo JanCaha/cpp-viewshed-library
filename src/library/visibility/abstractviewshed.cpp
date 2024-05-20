@@ -2,6 +2,8 @@
 #include "threadtasks.h"
 #include "visibility.h"
 
+#include <map>
+
 using viewshed::AbstractViewshed;
 using viewshed::LoSNode;
 
@@ -362,3 +364,7 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( OGRPoint point )
     }
     return losNodes;
 }
+
+void AbstractViewshed::saveVisibilityRaster( std::string filePath ) { mVisibilityRaster->saveFile( filePath ); };
+
+void AbstractViewshed::calculateVisibilityMask() { mVisibilityMask = mVisibilityRaster; };

@@ -13,6 +13,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   PACKAGE: viewshed
   COMPILER: c++
+  PYTHON_VERSION: "3.10"
         
 jobs:
 
@@ -55,6 +56,8 @@ jobs:
         
         - name: Install GDAL
           run: |
+            sudo add-apt-repository ppa:ubuntugis/ppa
+            sudo apt update
             sudo apt-get -y install gdal-bin libgdal-dev
         
         - uses: robinraju/release-downloader@v1.8
@@ -89,7 +92,11 @@ jobs:
           run: | 
             cmake --build build --config Release --target all
             cmake --build build --config Release --target pack_viewshed_library_deb
-
+        
+        - name: Install from DEB
+          run: |
+            sudo apt install ./_packages/viewshed_*.deb
+            
         - name: Upload DEB file as artifact
           uses: actions/upload-artifact@v3
           with:
@@ -112,7 +119,32 @@ jobs:
             github_token: ${{ secrets.GITHUB_TOKEN }}
             publish_dir: ./documentation
             publish_branch: gh-pages
-    
+
+        - uses: actions/setup-python@v4
+          with:
+            python-version: ${{env.PYTHON_VERSION}}
+            architecture: 'x64'
+        
+        - name: Install pip packages
+          run: |
+            pip install wheel py-build-cmake build
+
+        - uses: actions/checkout@v4
+          with:
+            repository: 'JanCaha/viewshed-library-pybind11'
+            path: 'python-package'
+            submodules: true
+        
+        - name: Install package
+          run: |
+            cd python-package
+            python -m build .    
+      
+        - uses: actions/upload-artifact@v3
+          with:
+            name: python-viewshed
+            path: python-package/dist/viewshed*.whl
+
   Release-Docker:
 
     runs-on: ubuntu-latest
@@ -174,6 +206,15 @@ jobs:
             push: true
             tags: cahik/viewshed:latest
         
+        - name: Download artifact WHL
+          uses: actions/download-artifact@v3
+          with:
+            name: python-viewshed
+        
+        - name: Copy Python Viewshed to docker folder
+          run: |
+            mv viewshed-*.whl docker/install/        
+
         - name: Build and push Docker image version with Python
           uses: docker/build-push-action@v4
           with:
