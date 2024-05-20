@@ -192,3 +192,115 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         }
     }
 }
+
+void InverseViewshed::calculateVisibilityRaster()
+{
+
+    mVisibilityRaster = std::make_shared<ProjectedSquareCellRaster>( *mInputDsm.get(), GDALDataType::GDT_Float32 );
+
+    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
+
+    std::map<double, LoSNode> los;
+
+    for ( LoSNode ln : mLosNodes )
+    {
+        if ( ln.mInverseLoSBehindTarget )
+        {
+            continue;
+        }
+
+        los.insert( std::pair<double, LoSNode>( ln.centreDistance(), ln ) );
+    }
+
+    std::size_t i = 0;
+    for ( CellEvent e : mCellEvents )
+    {
+        // progressCallback( mCellEvents.size(), i );
+
+        switch ( e.mEventType )
+        {
+            case CellEventPositionType::ENTER:
+            {
+                if ( mPoint->mRow == e.mRow && mPoint->mCol == e.mCol )
+                {
+                    break;
+                }
+                if ( e.mBehindTargetForInverseLoS )
+                {
+                    break;
+                }
+
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
+                los.insert( std::pair<double, LoSNode>( mLoSNodeTemp.centreDistance(), mLoSNodeTemp ) );
+                break;
+            }
+            case CellEventPositionType::EXIT:
+            {
+                if ( mPoint->mRow == e.mRow && mPoint->mCol == e.mCol )
+                {
+                    break;
+                }
+                if ( e.mBehindTargetForInverseLoS )
+                {
+                    break;
+                }
+
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
+                los.erase( mLoSNodeTemp.centreDistance() );
+                break;
+            }
+            case CellEventPositionType::CENTER:
+            {
+                double maxGradient = -99;
+
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
+                double curCorr, gradient, elevation, horizontalAngle;
+
+                double visibilityElevation = mLoSNodeTemp.centreElevation() + mObserverOffset;
+
+                curCorr = Visibility::curvatureCorrections( mLoSNodeTemp.centreDistance(), mRefractionCoefficient,
+                                                            mEarthDiameter );
+                elevation = visibilityElevation + curCorr;
+
+                gradient = Visibility::gradient( mPoint->totalElevation() - elevation, mLoSNodeTemp.centreDistance() );
+
+                double visibilityGradient = gradient;
+                double visibilityDistance = mLoSNodeTemp.centreDistance();
+
+                for ( auto it = los.begin(); it != los.lower_bound( mLoSNodeTemp.centreDistance() ); ++it )
+                {
+                    horizontalAngle = mLoSNodeTemp.centreAngle(); // + M_PI;
+
+                    curCorr = Visibility::curvatureCorrections( visibilityDistance -
+                                                                    it->second.distanceAtAngle( horizontalAngle ),
+                                                                mRefractionCoefficient, mEarthDiameter );
+
+                    elevation = it->second.elevationAtAngle( horizontalAngle ) + curCorr;
+
+                    gradient =
+                        Visibility::gradient( elevation - visibilityElevation,
+                                              visibilityDistance - it->second.distanceAtAngle( horizontalAngle ) );
+
+                    if ( gradient > maxGradient )
+                    {
+                        maxGradient = gradient;
+                    }
+                }
+
+                double visible = 0;
+                if ( maxGradient < visibilityGradient )
+                {
+                    visible = 1;
+                };
+                mVisibilityRaster->writeValue( e.mRow, e.mCol, visible );
+
+                break;
+            }
+        }
+
+        i++;
+    }
+
+    mTimeParse =
+        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
+}

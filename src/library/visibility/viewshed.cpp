@@ -147,3 +147,100 @@ void Viewshed::addEventsFromCell( int &row, int &column, const double &pixelValu
         }
     }
 }
+
+void Viewshed::calculateVisibilityRaster()
+{
+
+    mVisibilityRaster = std::make_shared<ProjectedSquareCellRaster>( *mInputDsm.get(), GDALDataType::GDT_Int32, false );
+    double noDataValue = -999;
+    mVisibilityRaster->setNoData( noDataValue );
+    mVisibilityRaster->prefillValues( noDataValue );
+
+    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
+
+    std::map<double, LoSNode> los;
+
+    for ( LoSNode ln : mLosNodes )
+    {
+        los.insert( std::pair<double, LoSNode>( ln.centreDistance(), ln ) );
+    }
+
+    // observer point is always visible
+    mVisibilityRaster->writeValue( mPoint->mRow, mPoint->mCol, 1 );
+
+    std::size_t i = 0;
+    for ( CellEvent e : mCellEvents )
+    {
+        // progressCallback( mCellEvents.size(), i );
+
+        switch ( e.mEventType )
+        {
+            case CellEventPositionType::ENTER:
+            {
+                if ( mPoint->mRow == e.mRow && mPoint->mCol == e.mCol )
+                {
+                    break;
+                }
+
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
+                los.insert( std::pair<double, LoSNode>( mLoSNodeTemp.centreDistance(), mLoSNodeTemp ) );
+                break;
+            }
+            case CellEventPositionType::EXIT:
+            {
+                if ( mPoint->mRow == e.mRow && mPoint->mCol == e.mCol )
+                {
+                    break;
+                }
+
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
+                los.erase( mLoSNodeTemp.centreDistance() );
+                break;
+            }
+            case CellEventPositionType::CENTER:
+            {
+                double maxGradient = -99;
+                mLoSNodeTemp = LoSNode( mPoint->mRow, mPoint->mCol, &e, mCellSize );
+                double curCorr, gradient, elevation;
+
+                curCorr = Visibility::curvatureCorrections( mLoSNodeTemp.centreDistance(), mRefractionCoefficient,
+                                                            mEarthDiameter );
+                elevation = mLoSNodeTemp.centreElevation() + curCorr;
+
+                gradient = Visibility::gradient( elevation - mPoint->totalElevation(), mLoSNodeTemp.centreDistance() );
+
+                double nodeGradient = gradient;
+
+                for ( auto it = los.begin(); it != los.lower_bound( mLoSNodeTemp.centreDistance() ); ++it )
+                {
+                    curCorr =
+                        Visibility::curvatureCorrections( it->second.distanceAtAngle( mLoSNodeTemp.centreAngle() ),
+                                                          mRefractionCoefficient, mEarthDiameter );
+                    elevation = it->second.elevationAtAngle( mLoSNodeTemp.centreAngle() ) + curCorr;
+
+                    gradient = Visibility::gradient( elevation - mPoint->totalElevation(),
+                                                     it->second.distanceAtAngle( mLoSNodeTemp.centreAngle() ) );
+
+                    if ( gradient > maxGradient )
+                    {
+                        maxGradient = gradient;
+                    }
+                }
+
+                double visible = 0;
+                if ( maxGradient < nodeGradient )
+                {
+                    visible = 1;
+                };
+                mVisibilityRaster->writeValue( e.mRow, e.mCol, visible );
+
+                break;
+            }
+        }
+
+        i++;
+    }
+
+    mTimeParse =
+        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
+}
