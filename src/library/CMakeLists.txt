@@ -85,11 +85,3 @@ configure_file(
     ../../include/viewshed/templates/viewshedlibrary.in
     ${CMAKE_SOURCE_DIR}/include/viewshed/viewshedlibrary.h
 )
-
-install(TARGETS library_viewshed
-    COMPONENT lib
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-    PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-)

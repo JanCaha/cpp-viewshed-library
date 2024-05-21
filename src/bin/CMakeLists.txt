@@ -63,11 +63,4 @@ if(HAS_QT)
         viewshedcalculator
         losextractor
     )
-
-    install(TARGETS
-        viewshed inverseviewshed viewshedcalculator losextractor viewshed_widgets
-        COMPONENT bin
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
 endif()
