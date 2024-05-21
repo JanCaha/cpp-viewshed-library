@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(viewshed VERSION 4.0.0 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
+project(viewshed VERSION 4.0.1 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
 
 SET(LIBRARY_NAME "viewshed")
 
@@ -17,6 +17,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)

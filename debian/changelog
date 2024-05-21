@@ -1,3 +1,9 @@
+viewshed (4.0.1-0) jammy; urgency=low
+  
+  * fix build setting
+
+ -- Jan Caha <jan.caha@outlook.com>  Tue, 21 May 2024 12:58:57 +0200
+
 viewshed (4.0.0-0) jammy; urgency=low
   
   * add functions to calculate visibility raster (mask) as fast alternative
