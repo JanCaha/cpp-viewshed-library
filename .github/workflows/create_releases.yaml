@@ -166,7 +166,7 @@ jobs:
             mkdir docker/install
             mv viewshed_*.deb docker/install/    
 
-        - uses: robinraju/release-downloader@v1.8
+        - uses: robinraju/release-downloader@v1
           with:
             repository: "JanCaha/cpp-simplerasters"
             latest: true
