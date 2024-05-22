@@ -8,10 +8,8 @@ find_path(simplerasters_INCLUDE_DIR
     NAMES simplerasters.h
     PATHS
     /usr/include
-    /usr/include/simplerasters
-    /usr/lib64
     /usr/local/include
-    /usr/local/include/simplerasters
+    PATH_SUFFIXES simplerasters
     "${CMAKE_PREFIX_PATH}/include"
     ${simplerasters_PKGCONF_INCLUDE_DIRS}
 )
