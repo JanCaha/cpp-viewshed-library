@@ -11,7 +11,8 @@ cmake \
     -D CMAKE_INSTALL_PREFIX=debian/tmp/ \
     -D CMAKE_BUILD_TYPE=Release \
     -D BUILD_TESTS:bool=off \
-    -D PACK_DEB:bool=on
+    -D PACK_DEB:bool=on \
+    -D CMAKE_INSTALL_PREFIX=/usr
 
 cmake --build build --config Release --target all
 # cmake --build build --config Release --target install

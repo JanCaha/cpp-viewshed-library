@@ -8,8 +8,8 @@ find_path(simplerasters_INCLUDE_DIR
     NAMES simplerasters.h
     PATHS
     /usr/include
-    /usr/include/simplerasters
-    /usr/lib64
+    /usr/local/include
+    PATH_SUFFIXES simplerasters
     "${CMAKE_PREFIX_PATH}/include"
     ${simplerasters_PKGCONF_INCLUDE_DIRS}
 )
@@ -20,12 +20,13 @@ find_library(simplerasters_LIBRARY
     PATHS
     /usr/lib
     /usr/lib64
+    /usr/local/lib
     "${CMAKE_PREFIX_PATH}/lib"
     ${simplerasters_PKGCONF_LIBRARY_DIRS}
 )
 
 if(simplerasters_LIBRARY)
-    message(STATUS "SimpleRasters installed. Found at: ${simplerasters_LIBRARY}.")
+    message(STATUS "SimpleRasters installed. Found at: ${simplerasters_LIBRARY}. Include dir at: ${simplerasters_INCLUDE_DIR}")
 
     if(NOT TARGET SimpleRasters::SimpleRasters)
         add_library(SimpleRasters::SimpleRasters UNKNOWN IMPORTED)

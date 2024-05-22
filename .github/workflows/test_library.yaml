@@ -121,7 +121,8 @@ jobs:
             -DBUILD_TESTS:bool=on \
             -DCELL_EVENT_DATA_FLOAT:bool=on \
             -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
-            -DNEEDS_QT:bool=on
+            -DNEEDS_QT:bool=on \
+            -D CMAKE_INSTALL_PREFIX=/usr
       
       - name: Run Tests even with Qt
         id: unittestsqt
