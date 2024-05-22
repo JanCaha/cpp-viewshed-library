@@ -99,7 +99,7 @@ jobs:
             sudo apt install ./_packages/viewshed_*.deb
             
         - name: Upload DEB file as artifact
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
             name: viewshed
             path: _packages/viewshed_*.deb
@@ -109,19 +109,19 @@ jobs:
             mv _packages/viewshed_*.deb .      
 
         - name: Release
-          uses: softprops/action-gh-release@v1
+          uses: softprops/action-gh-release@v2
           with:
             files: viewshed_*.deb
             tag_name: "v${{steps.version.outputs.VERSION}}"
         
         - name: Deploy Documentation
-          uses: peaceiris/actions-gh-pages@v3
+          uses: peaceiris/actions-gh-pages@v4
           with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
             publish_dir: ./documentation
             publish_branch: gh-pages
 
-        - uses: actions/setup-python@v4
+        - uses: actions/setup-python@v5
           with:
             python-version: ${{env.PYTHON_VERSION}}
             architecture: 'x64'
@@ -141,7 +141,7 @@ jobs:
             cd python-package
             python -m build .    
       
-        - uses: actions/upload-artifact@v3
+        - uses: actions/upload-artifact@v4
           with:
             name: python-viewshed
             path: python-package/dist/viewshed*.whl
