@@ -103,6 +103,18 @@ TEST_F( ViewshedTest, testVisibilityRaster )
     v.saveVisibilityRaster( TEST_DATA_RESULTS_VISIBILITY_RASTER );
 }
 
+TEST_F( ViewshedTest, testCalculateVisibilityMask )
+{
+    OGRPoint poiPoint = OGRPoint( -336428.767, -1189102.785 );
+
+    Viewshed v( vp, dem, algs );
+    v.initEventList();
+    v.sortEventList();
+
+    v.calculateVisibilityMask();
+    v.saveVisibilityRaster( TEST_DATA_RESULTS_VISIBILITY_RASTER );
+}
+
 int main( int argc, char **argv )
 {
     testing::InitGoogleTest( &argc, argv );
