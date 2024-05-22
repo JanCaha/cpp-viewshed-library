@@ -367,4 +367,11 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( OGRPoint point )
 
 void AbstractViewshed::saveVisibilityRaster( std::string filePath ) { mVisibilityRaster->saveFile( filePath ); };
 
-void AbstractViewshed::calculateVisibilityMask() { mVisibilityMask = mVisibilityRaster; };
+void AbstractViewshed::calculateVisibilityMask()
+{
+    if ( !mVisibilityRaster )
+    {
+        calculateVisibilityRaster();
+    }
+    mVisibilityMask = mVisibilityRaster;
+};
