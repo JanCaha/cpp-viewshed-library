@@ -11,6 +11,7 @@ find_path(simplerasters_INCLUDE_DIR
     /usr/include/simplerasters
     /usr/lib64
     /usr/local/include
+    /usr/local/include/simplerasters
     "${CMAKE_PREFIX_PATH}/include"
     ${simplerasters_PKGCONF_INCLUDE_DIRS}
 )
