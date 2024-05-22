@@ -10,6 +10,7 @@ find_path(simplerasters_INCLUDE_DIR
     /usr/include
     /usr/include/simplerasters
     /usr/lib64
+    /usr/local/include
     "${CMAKE_PREFIX_PATH}/include"
     ${simplerasters_PKGCONF_INCLUDE_DIRS}
 )
@@ -20,6 +21,7 @@ find_library(simplerasters_LIBRARY
     PATHS
     /usr/lib
     /usr/lib64
+    /usr/local/lib
     "${CMAKE_PREFIX_PATH}/lib"
     ${simplerasters_PKGCONF_LIBRARY_DIRS}
 )
