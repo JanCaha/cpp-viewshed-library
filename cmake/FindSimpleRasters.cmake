@@ -25,7 +25,7 @@ find_library(simplerasters_LIBRARY
 )
 
 if(simplerasters_LIBRARY)
-    message(STATUS "SimpleRasters installed. Found at: ${simplerasters_LIBRARY}.")
+    message(STATUS "SimpleRasters installed. Found at: ${simplerasters_LIBRARY}. Include dir at: ${simplerasters_INCLUDE_DIR}")
 
     if(NOT TARGET SimpleRasters::SimpleRasters)
         add_library(SimpleRasters::SimpleRasters UNKNOWN IMPORTED)
