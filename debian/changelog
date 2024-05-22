@@ -1,4 +1,4 @@
-viewshed (4.0.2-0) jammy; urgency=low
+viewshed (4.0.2-1) jammy; urgency=low
   
   * fix segmentation fault for some scenarios
   * fix build setting
