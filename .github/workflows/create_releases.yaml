@@ -86,7 +86,8 @@ jobs:
               -DBUILD_DOCUMENTATION:bool=on \
               -DBUILD_TESTS:bool=on \
               -DCELL_EVENT_DATA_FLOAT:bool=on \
-              -DOUTPUT_RASTER_DATA_FLOAT:bool=on
+              -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
+              -D CMAKE_INSTALL_PREFIX=/usr
 
         - name: Build DEB
           run: | 
