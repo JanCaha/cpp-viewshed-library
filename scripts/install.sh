@@ -11,8 +11,8 @@ cmake \
     -D BUILD_TESTS:bool=off \
     -D CELL_EVENT_DATA_FLOAT:bool=on \
     -D OUTPUT_RASTER_DATA_FLOAT:bool=on \
-    -D NEEDS_QT:bool=on \
-    -D CMAKE_INSTALL_PREFIX=/usr
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D NEEDS_QT:bool=on
 
 cmake --build build --config Release --target library_viewshed
 cmake --build build --config Release --target create_binaries
