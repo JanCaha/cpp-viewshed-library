@@ -113,12 +113,12 @@ apt-get -y install simplerasters viewshed viewshed-bin
 If you use the library, please cite it accordingly:
 
 ```bibtex
-@Software{Caha2023,
+@Software{Caha2024,
   author  = {Jan Caha},
   title   = {viewshed ({C++ Viewshed library based on GDAL and Qt})},
-  year    = {2023},
-  date    = {2023-07-11},
-  version = {2.7.0},
+  year    = {2024},
+  date    = {2024-07-11},
+  version = {4.0.3},
   url     = {https://github.com/JanCaha/cpp-viewshed-library},
 }
 ```
