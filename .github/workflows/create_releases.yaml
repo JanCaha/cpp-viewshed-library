@@ -191,22 +191,6 @@ jobs:
             echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_ENV
             echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
         
-        - name: Build and push Docker image version
-          uses: docker/build-push-action@v4
-          with:
-            file: docker/Dockerfile
-            context: docker/
-            push: true
-            tags: "cahik/viewshed:v${{steps.version.outputs.VERSION}}"
-
-        - name: Build and push Docker image latest
-          uses: docker/build-push-action@v4
-          with:
-            file: docker/Dockerfile
-            context: docker/
-            push: true
-            tags: cahik/viewshed:latest
-        
         - name: Download artifact WHL
           uses: actions/download-artifact@v4
           with:
@@ -222,7 +206,7 @@ jobs:
             file: docker/viewshed_install_from_ppa.dockerfile
             context: docker/
             push: true
-            tags: "cahik/viewshed:v${{steps.version.outputs.VERSION}}-python"
+            tags: "cahik/viewshed:v${{steps.version.outputs.VERSION}}"
 
         - name: Build and push Docker image latest with Python
           uses: docker/build-push-action@v4
@@ -230,7 +214,7 @@ jobs:
             file: docker/viewshed_install_from_ppa.dockerfile
             context: docker/
             push: true
-            tags: cahik/viewshed:latest-python
+            tags: cahik/viewshed:latest
   
   Release-to-PPA:
 
