@@ -23,7 +23,7 @@ jobs:
           run: |
             git fetch origin master linux_build
             git checkout linux_build
-            git merge master
+            git merge origin/master
         
         - uses: stefanzweifel/git-auto-commit-action@v5
           with:
