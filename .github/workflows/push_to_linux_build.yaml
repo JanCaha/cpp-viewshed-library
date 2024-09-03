@@ -1,0 +1,30 @@
+name: Push changes from main to Linux Build Branch
+
+on:
+  push #:
+    # branches:
+    #  - 'main'
+    #  - 'master'
+
+jobs:
+
+  push-changes-to-linux-build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            submodules: true
+    
+        - name: Git 
+          run: |
+            git fetch origin master linux_build
+            git checkout linux_build
+            git merge master
+        
+        - uses: stefanzweifel/git-auto-commit-action@v5
+          with:
+            commit_message: Push changes from master branch
