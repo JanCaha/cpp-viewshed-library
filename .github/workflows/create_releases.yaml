@@ -1,4 +1,4 @@
-name: Prepare Deb Release, Docker Release, Release to PPA
+name: Prepare Deb Release, Docker Release
 
 on:
   workflow_run:
