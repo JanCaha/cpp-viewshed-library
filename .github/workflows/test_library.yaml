@@ -9,7 +9,7 @@ jobs:
 
   Tests-Viewshed-library:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     env:
       DEBIAN_FRONTEND: "noninteractive"
