@@ -98,9 +98,9 @@ jobs:
           cmake --build build --config Release --target run_tests
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
-          version: '5.15.2'
+          version: '5.15.*'
           host: 'linux'
       
       - name: Clean Build
