@@ -1,0 +1,37 @@
+package:
+  name: libviewshed
+  version: "0.1.0"
+
+source:
+  path: ..
+
+build:
+  number: 0
+  script:
+    - cmake -B build -S {{SRC_DIR}} -G Ninja -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=off -DBUILD_DOCUMENTATION:bool=off -DBUILD_TESTS:bool=off -DCELL_EVENT_DATA_FLOAT:bool=on -DOUTPUT_RASTER_DATA_FLOAT:bool=on -DNEEDS_QT:bool=off
+    - cmake --build build --config Release
+    - cmake --install build --prefix {{PREFIX}}
+
+requirements:
+  build:
+    - { { compiler('c') } }
+    - { { compiler('cxx') } }
+  host:
+    - cmake
+    - ninja
+    - libgdal
+    - libsimplerasters
+  run:
+    - libgdal
+    - libsimplerasters
+
+about:
+  home: https://github.com/JanCaha/cpp-viewshed-library
+  license: MIT
+  summary: "C++ Viewshed library based on GDAL and Qt"
+
+extra:
+  recipe-maintainers:
+    - JanCaha
+  channels:
+    - conda-forge
