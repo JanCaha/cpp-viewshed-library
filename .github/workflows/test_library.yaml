@@ -98,10 +98,12 @@ jobs:
           cmake --build build --config Release --target run_tests
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: '5.15.*'
-          host: 'linux'
+        # uses: jurplel/install-qt-action@v4
+        # with:
+        #   version: '5.15.*'
+        #   host: 'linux'
+        run: |
+          sudo apt install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
       
       - name: Clean Build
         run: |
