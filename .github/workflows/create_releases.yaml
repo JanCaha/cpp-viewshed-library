@@ -1,4 +1,8 @@
-name: Prepare Deb Release, Docker Release, Release to PPA
+name: Prepare Deb Release, Docker Release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 on:
   workflow_run:

@@ -1,5 +1,10 @@
 name: Tests for Library
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+
 on: [push, pull_request]
 
 env:
@@ -9,7 +14,7 @@ jobs:
 
   Tests-Viewshed-library:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     env:
       DEBIAN_FRONTEND: "noninteractive"
@@ -97,17 +102,51 @@ jobs:
           cmake --build build --config Release --target build_tests
           cmake --build build --config Release --target run_tests
 
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v3
-        with:
-          version: '5.15.2'
-          host: 'linux'
-      
-      - name: Clean Build
+  Tests-Viewshed-library-with-Qt:
+
+    runs-on: ubuntu-22.04
+
+    env:
+      DEBIAN_FRONTEND: "noninteractive"
+      QT_QPA_PLATFORM: "offscreen"
+      XDG_RUNTIME_DIR: "/tmp"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+
+      - name: Update and Upgrade
         run: |
-          rm -rf build
-          mkdir build
+          sudo apt update
+          sudo apt install ninja-build doxygen libgtest-dev libgmock-dev clang
+
+      - name: Install GDAL
+        run: |
+          sudo add-apt-repository ppa:ubuntugis/ppa
+          sudo apt update
+          sudo apt-get -y install gdal-bin libgdal-dev
       
+      - uses: robinraju/release-downloader@v1
+        with:
+          repository: "JanCaha/cpp-simplerasters"
+          latest: true
+          fileName: "*.deb"
+          tarBall: false
+          zipBall: false
+ 
+      - name: Install and remove artifact
+        run: |
+          sudo apt install ./simplerasters*.deb
+          rm simplerasters*
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install Qt
+        run: |
+          sudo apt install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
+            
       - name: Configure
         run: | 
           cmake \
@@ -135,5 +174,3 @@ jobs:
         run: |
           cmake --build build --config Release --target all
           sudo cmake --build build --config Release --target install
-
-      

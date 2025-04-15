@@ -1,0 +1,72 @@
+name: Conda
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on: push
+
+jobs:
+
+  Update-conda-package-version:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      
+      - name: Set Env variable with project version
+        run: |
+            echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_ENV
+          
+      - name: Print project version
+        run: |
+            echo "Project version: $VERSION"
+
+      - name: Update conda package version
+        run: |
+          sed -i '/version: /c\  version: \"'$VERSION'\"' conda/meta.yaml
+      
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+            commit_message: Change to conda package version
+            file_pattern: 'conda/meta.yaml'
+
+  # build:
+  #   needs: Update-conda-package-version
+
+  #   runs-on: ubuntu-latest
+
+  #   defaults:
+  #     run:
+  #       shell: bash -l {0}
+
+  #   permissions:
+  #     contents: write
+
+  #   env:
+  #     CONDA_PKG_DIR: ~/conda_pkgs_dir
+  #     GH_TOKEN: ${{ github.token }}
+
+  #   steps:
+
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+      
+  #     - name: Setup conda
+  #       uses: conda-incubator/setup-miniconda@v3
+  #       with:
+  #         use-mamba: true
+  #         python-version: 3.12
+  #         environment-file: conda/conda-env.yaml
+  #         activate-environment: dev-viewshed
+
+  #     - name: Build library
+  #       run: |
+  #         conda build conda
