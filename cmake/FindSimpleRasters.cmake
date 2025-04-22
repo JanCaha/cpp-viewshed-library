@@ -22,6 +22,7 @@ find_library(simplerasters_LIBRARY
     /usr/lib64
     /usr/local/lib
     "${CMAKE_PREFIX_PATH}/lib"
+    "${CMAKE_PREFIX_PATH}/bin"
     ${simplerasters_PKGCONF_LIBRARY_DIRS}
 )
 
