@@ -16,9 +16,11 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - pthread-stubs
   host:
     - cmake
     - ninja
+    - pthread-stubs
     - libgdal
     - libsimplerasters
   run:
