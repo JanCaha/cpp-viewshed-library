@@ -26,6 +26,8 @@ find_library(simplerasters_LIBRARY
     ${simplerasters_PKGCONF_LIBRARY_DIRS}
 )
 
+message(STATUS "SimpleRasters installed. Found at: ${simplerasters_LIBRARY}. Include dir at: ${simplerasters_INCLUDE_DIR}")
+
 if(simplerasters_LIBRARY)
     message(STATUS "SimpleRasters installed. Found at: ${simplerasters_LIBRARY}. Include dir at: ${simplerasters_INCLUDE_DIR}")
 
