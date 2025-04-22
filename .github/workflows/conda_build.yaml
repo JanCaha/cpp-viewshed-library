@@ -131,6 +131,10 @@ jobs:
         run: |
           conda install -n base conda-build conda-verify
 
+      - name: Install libsimplerasters
+        run: |
+          conda install -n base libsimplerasters
+
       - name: Build library
         run: |
           conda build conda --output-folder conda_package
