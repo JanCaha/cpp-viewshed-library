@@ -34,4 +34,6 @@ extra:
   recipe-maintainers:
     - JanCaha
   channels:
+    - https://jancaha.github.io/conda-channel/
     - conda-forge
+    - defaults
