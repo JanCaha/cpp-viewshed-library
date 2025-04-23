@@ -20,25 +20,22 @@ find_library(simplerasters_LIBRARY
     /usr/local/lib
     "${CMAKE_PREFIX_PATH}/lib"
     "${CMAKE_PREFIX_PATH}/Library/bin"
+    "${CMAKE_PREFIX_PATH}/Library/lib"
     $ENV{LIBRARY_LIB}
     $ENV{LIBRARY_BIN}
 )
 
-if(NOT simplerasters_LIBRARY)
-    find_path(simplerasters_LIBRARY
-        NAMES simplerasters.dll
-        PATHS
-        "${CMAKE_PREFIX_PATH}/lib"
-        "${CMAKE_PREFIX_PATH}/Library/lib"
-        "${CMAKE_PREFIX_PATH}/Library/bin"
-        $ENV{LIBRARY_LIB}
-        $ENV{LIBRARY_BIN}
-    )
-endif()
-
-message(STATUS "SimpleRasters dirs: $ENV{LIBRARY_LIB} $ENV{LIBRARY_BIN} $ENV{LIBRARY_INC} /// ${CMAKE_PREFIX_PATH}/include")
-message(STATUS "SimpleRasters installed. Found at: ${simplerasters_LIBRARY}. Include dir at: ${simplerasters_INCLUDE_DIR}")
-
+# if(NOT simplerasters_LIBRARY)
+# find_path(simplerasters_LIBRARY
+# NAMES simplerasters.dll
+# PATHS
+# "${CMAKE_PREFIX_PATH}/lib"
+# "${CMAKE_PREFIX_PATH}/Library/lib"
+# "${CMAKE_PREFIX_PATH}/Library/bin"
+# $ENV{LIBRARY_LIB}
+# $ENV{LIBRARY_BIN}
+# )
+# endif()
 if(simplerasters_LIBRARY)
     message(STATUS "SimpleRasters installed. Found at: ${simplerasters_LIBRARY}. Include dir at: ${simplerasters_INCLUDE_DIR}")
 
