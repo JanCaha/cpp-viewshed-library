@@ -1,7 +1,7 @@
 include(LibFindMacros)
 
 if(WIN32)
-    if(DEFINED ENV(CONDA_BUILD))
+    if(DEFINED ENV{CONDA_BUILD})
         message(STATUS "Windows Conda build detected. Adjusting install paths.")
 
         # Include dir
