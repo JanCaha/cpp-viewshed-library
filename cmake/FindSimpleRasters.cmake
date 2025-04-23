@@ -3,16 +3,6 @@ include(LibFindMacros)
 # Use pkg-config to get hints about paths
 libfind_pkg_check_modules(simplerasters_PKGCONF simplerasters)
 
-if(DEFINED ENV{CONDA_PREFIX})
-    set(CONDA_INCLUDE_DIR $ENV{CONDA_PREFIX}/Library/include)
-
-    if(WIN32)
-        set(CONDA_LIBRARY_DIR $ENV{CONDA_PREFIX}/Library/bin $ENV{CONDA_PREFIX}/Library/lib)
-    else()
-        set(CONDA_LIBRAWRY_DIR $ENV{CONDA_PREFIX}/lib)
-    endif()
-endif()
-
 # Include dir
 find_path(simplerasters_INCLUDE_DIR
     NAMES simplerasters.h
@@ -20,7 +10,7 @@ find_path(simplerasters_INCLUDE_DIR
     /usr/include
     /usr/local/include
     "${CMAKE_PREFIX_PATH}/include"
-    "${CONDA_INCLUDE_DIR}"
+    $ENV{LIBRARY_INC}
     PATH_SUFFIXES simplerasters
     ${simplerasters_PKGCONF_INCLUDE_DIRS}
 )
@@ -32,7 +22,8 @@ find_library(simplerasters_LIBRARY
     /usr/lib
     /usr/lib64
     /usr/local/lib
-    "${CONDA_LIBRARY_DIR}"
+    $ENV{LIBRARY_LIB}
+    $ENV{LIBRARY_BIN}
     "${CMAKE_PREFIX_PATH}/lib"
     ${simplerasters_PKGCONF_LIBRARY_DIRS}
 )
