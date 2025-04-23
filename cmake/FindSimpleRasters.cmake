@@ -28,6 +28,7 @@ find_library(simplerasters_LIBRARY
     ${simplerasters_PKGCONF_LIBRARY_DIRS}
 )
 
+message(STATUS "SimpleRasters dirs: $ENV{LIBRARY_LIB} $ENV{LIBRARY_BIN} ${LIBRARY_INC} /// ${CMAKE_PREFIX_PATH}/include")
 message(STATUS "SimpleRasters installed. Found at: ${simplerasters_LIBRARY}. Include dir at: ${simplerasters_INCLUDE_DIR}")
 
 if(simplerasters_LIBRARY)
