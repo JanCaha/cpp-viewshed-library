@@ -17,6 +17,8 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - pthread-stubs
+    - libgdal
+    - libsimplerasters
   host:
     - cmake
     - ninja
