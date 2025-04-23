@@ -109,12 +109,11 @@ if(WIN32)
     if(DEFINED ENV{CONDA_BUILD})
         message(STATUS "CONDA PREFIX detected adjusting install paths. Installing into $ENV{LIBRARY_PREFIX}")
 
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-            ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
-            DESTINATION $ENV{LIBRARY_LIB}/cmake/viewshed
-            COMPONENT lib
-        )
-
+        # install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
+        # ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
+        # DESTINATION $ENV{LIBRARY_LIB}/cmake/viewshed
+        # COMPONENT lib
+        # )
         install(TARGETS library_viewshed
             COMPONENT lib
             RUNTIME DESTINATION $ENV{LIBRARY_BIN}
