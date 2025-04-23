@@ -47,7 +47,7 @@ else()
     )
 endif()
 
-if(simplerasters_LIBRARY)
+if(simplerasters_LIBRARY AND simplerasters_INCLUDE_DIR)
     message(STATUS "SimpleRasters installed. Found at: ${simplerasters_LIBRARY}. Include dir at: ${simplerasters_INCLUDE_DIR}")
 
     if(NOT TARGET SimpleRasters::SimpleRasters)
