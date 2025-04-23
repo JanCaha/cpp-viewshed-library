@@ -1,4 +1,5 @@
 #include <cmath>
+#include <numbers>
 
 #include "abstractlos.h"
 #include "cellevent.h"
