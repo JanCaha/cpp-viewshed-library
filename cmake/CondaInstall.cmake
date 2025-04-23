@@ -1,5 +1,5 @@
-# Conda-specific installation logic
-if(DEFINED ENV{CONDA_BUILD})
+# Conda-specific installation for WINDOWS
+if(DEFINED ENV{CONDA_BUILD} AND WIN32)
     message(STATUS "Conda environment detected. Adjusting install paths for Conda.")
 
     install(TARGETS library_viewshed

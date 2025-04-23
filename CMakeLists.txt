@@ -110,27 +110,10 @@ write_basic_package_version_file(
     COMPATIBILITY SameMajorVersion
 )
 
-if(DEFINED ENV{CONDA_BUILD})
+if(DEFINED ENV{CONDA_BUILD} AND WIN32)
     include(${CMAKE_SOURCE_DIR}/cmake/CondaInstall.cmake)
 else()
     # https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
-    set(INCLUDE_INSTALL_DIR include/viewshed)
-    set(SYSCONFIG_INSTALL_DIR lib/libviewshed.so)
-
-    include(CMakePackageConfigHelpers)
-
-    configure_package_config_file(${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/Viewshed/cmake
-        PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR
-    )
-
-    write_basic_package_version_file(
-        ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
-        VERSION ${PROJECT_VERSION}
-        COMPATIBILITY SameMajorVersion
-    )
-
     include(GNUInstallDirs)
 
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
