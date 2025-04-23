@@ -2,6 +2,9 @@
 if(DEFINED ENV{CONDA_BUILD} AND WIN32)
     message(STATUS "Conda environment detected. Adjusting install paths for Conda.")
 
+    # Ensure static libraries are not built
+    set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+
     install(TARGETS library_viewshed
         COMPONENT lib
         RUNTIME DESTINATION $ENV{LIBRARY_BIN}
