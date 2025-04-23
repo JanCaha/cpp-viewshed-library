@@ -22,9 +22,12 @@ find_library(simplerasters_LIBRARY
     /usr/lib64
     /usr/local/lib
     "${CMAKE_PREFIX_PATH}/lib"
+    "${CMAKE_PREFIX_PATH}/Library/bin"
     $ENV{LIBRARY_LIB}
     $ENV{LIBRARY_BIN}
 )
+SET(AAA $ENV{LIBRARY_LIB})
+message(STATUS "*** SimpleRasters library: ${AAA}")
 
 message(STATUS "SimpleRasters dirs: $ENV{LIBRARY_LIB} $ENV{LIBRARY_BIN} $ENV{LIBRARY_INC} /// ${CMAKE_PREFIX_PATH}/include")
 message(STATUS "SimpleRasters installed. Found at: ${simplerasters_LIBRARY}. Include dir at: ${simplerasters_INCLUDE_DIR}")
