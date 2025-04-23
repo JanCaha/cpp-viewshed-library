@@ -1,9 +1,10 @@
+#include <chrono>
+#include <map>
+#include <numbers>
+
 #include "abstractviewshed.h"
 #include "threadtasks.h"
 #include "visibility.h"
-
-#include <map>
-#include <numbers>
 
 using viewshed::AbstractViewshed;
 using viewshed::LoSNode;
