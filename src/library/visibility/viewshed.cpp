@@ -47,8 +47,7 @@ std::shared_ptr<LoS> Viewshed::getLoS( OGRPoint point, bool onlyToPoi )
     {
         double poiDistance = poi->centreDistance();
 
-        losNodes.erase( std::remove_if( losNodes.begin(), losNodes.end(),
-                                        [&poiDistance]( LoSNode &node )
+        losNodes.erase( std::remove_if( losNodes.begin(), losNodes.end(), [&poiDistance]( LoSNode &node )
                                         { return poiDistance <= node.centreDistance(); } ),
                         losNodes.end() );
     }
