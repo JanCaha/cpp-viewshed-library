@@ -97,19 +97,18 @@ add_subdirectory(src)
 include(GNUInstallDirs)
 
 # Package Configuration
-include(CMakePackageConfigHelpers)
-configure_package_config_file(
-    ${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
-)
+# include(CMakePackageConfigHelpers)
+# configure_package_config_file(
+# ${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
+# ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
+# INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
+# )
 
-write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion
-)
-
+# write_basic_package_version_file(
+# ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
+# VERSION ${PROJECT_VERSION}
+# COMPATIBILITY SameMajorVersion
+# )
 if(DEFINED ENV{CONDA_BUILD} AND WIN32)
     include(${CMAKE_SOURCE_DIR}/cmake/CondaInstall.cmake)
 else()
