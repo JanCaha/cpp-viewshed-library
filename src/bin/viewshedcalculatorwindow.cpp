@@ -442,7 +442,6 @@ void MainCalculatorWindow::calculateViewshed()
         }
     };
 
-    using namespace std::chrono::_V2;
     using namespace std::chrono;
 
     steady_clock::time_point startTime = steady_clock::now();

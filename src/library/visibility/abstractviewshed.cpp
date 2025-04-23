@@ -37,7 +37,7 @@ void AbstractViewshed::setDefaultResultDataType( GDALDataType dataType )
 
 void AbstractViewshed::initEventList()
 {
-    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
 
     mCellEvents.clear();
     mLosNodes.clear();
@@ -84,8 +84,7 @@ void AbstractViewshed::initEventList()
         }
     }
 
-    mTimeInit =
-        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
+    mTimeInit = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
 }
 
 void AbstractViewshed::setMaximalDistance( double distance ) { mMaxDistance = distance; }
@@ -150,19 +149,18 @@ bool AbstractViewshed::isInsideAngles( const double &eventEnterAngle, const doub
 
 void AbstractViewshed::sortEventList()
 {
-    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
 
     std::sort( mCellEvents.begin(), mCellEvents.end() );
 
-    mTimeSort =
-        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
+    mTimeSort = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
 }
 
 void AbstractViewshed::parseEventList( std::function<void( int size, int current )> progressCallback )
 {
     prepareMemoryRasters();
 
-    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
 
     ViewshedValues rasterValues;
 
@@ -223,8 +221,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
     // parse results left after the algorithm finished
     mThreadPool.wait();
 
-    mTimeParse =
-        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
+    mTimeParse = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
 }
 
 void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSquareCellRaster> dem_,

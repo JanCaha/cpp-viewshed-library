@@ -20,7 +20,7 @@
 
 using namespace viewshed;
 using namespace viewshed::visibilityalgorithm;
-using namespace std::chrono::_V2;
+using namespace std::chrono;
 
 using MiliSeconds = std::chrono::milliseconds;
 

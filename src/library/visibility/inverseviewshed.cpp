@@ -65,7 +65,6 @@ std::shared_ptr<InverseLoS> InverseViewshed::getLoS( OGRPoint point, bool onlyTo
 void InverseViewshed::calculate( std::function<void( std::string, double )> stepsTimingCallback,
                                  std::function<void( int size, int current )> progressCallback )
 {
-    using namespace std::chrono::_V2;
     using namespace std::chrono;
 
     initEventList();
@@ -199,7 +198,7 @@ void InverseViewshed::calculateVisibilityRaster()
 
     mVisibilityRaster = std::make_shared<ProjectedSquareCellRaster>( *mInputDsm.get(), GDALDataType::GDT_Float32 );
 
-    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
 
     std::map<double, LoSNode> los;
 
@@ -302,6 +301,5 @@ void InverseViewshed::calculateVisibilityRaster()
         i++;
     }
 
-    mTimeParse =
-        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
+    mTimeParse = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
 }
