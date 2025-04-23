@@ -101,29 +101,12 @@ add_subdirectory(src)
 
 # ############################################################
 # install :
-# https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
-set(INCLUDE_INSTALL_DIR include/viewshed)
-set(SYSCONFIG_INSTALL_DIR lib/libviewshed.so)
-
-include(CMakePackageConfigHelpers)
-
-configure_package_config_file(${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/Viewshed/cmake
-    PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR
-)
-
-write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion
-)
 
 # Adjust install paths for Conda on Windows
 if(WIN32)
     message(STATUS "Windows detected.")
 
-    if(DEFINED ENV{CONDA_PREFIX})
+    if(DEFINED ENV{CONDA_BUILD})
         message(STATUS "CONDA PREFIX detected adjusting install paths. Installing into $ENV{LIBRARY_PREFIX}")
 
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
@@ -155,6 +138,24 @@ if(WIN32)
 
 # If not Windows, use the default install paths
 else()
+    # https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
+    set(INCLUDE_INSTALL_DIR include/viewshed)
+    set(SYSCONFIG_INSTALL_DIR lib/libviewshed.so)
+
+    include(CMakePackageConfigHelpers)
+
+    configure_package_config_file(${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
+        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/Viewshed/cmake
+        PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR
+    )
+
+    write_basic_package_version_file(
+        ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion
+    )
+
     include(GNUInstallDirs)
 
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
