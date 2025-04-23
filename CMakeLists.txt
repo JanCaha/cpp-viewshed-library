@@ -119,29 +119,66 @@ write_basic_package_version_file(
     COMPATIBILITY SameMajorVersion
 )
 
-include(GNUInstallDirs)
+# Adjust install paths for Conda on Windows
+if(WIN32)
+    message(STATUS "Windows detected.")
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
-    COMPONENT lib
-)
+    if(DEFINED ENV{CONDA_PREFIX})
+        message(STATUS "CONDA PREFIX detected adjusting install paths. Installing into $ENV{LIBRARY_PREFIX}")
 
-install(TARGETS library_viewshed
-    COMPONENT lib
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-    PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-)
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
+            ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
+            DESTINATION $ENV{LIBRARY_LIB}/cmake/viewshed
+            COMPONENT lib
+        )
 
-if(HAS_QT)
-    install(TARGETS
-        viewshed inverseviewshed viewshedcalculator losextractor viewshed_widgets
-        COMPONENT bin
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        install(TARGETS library_viewshed
+            COMPONENT lib
+            RUNTIME DESTINATION $ENV{LIBRARY_BIN}
+            LIBRARY DESTINATION $ENV{LIBRARY_LIB}
+            PUBLIC_HEADER DESTINATION $ENV{LIBRARY_INC}/${LIBRARY_NAME}
+            PRIVATE_HEADER DESTINATION $ENV{LIBRARY_INC}/${LIBRARY_NAME}
+            INCLUDES DESTINATION $ENV{LIBRARY_INC}/${LIBRARY_NAME}
+        )
+
+        if(HAS_QT)
+            install(TARGETS
+                viewshed inverseviewshed viewshedcalculator losextractor viewshed_widgets
+                COMPONENT bin
+                RUNTIME DESTINATION $ENV{LIBRARY_BIN}
+                LIBRARY DESTINATION $ENV{LIBRARY_LIB}
+            )
+        endif()
+    else()
+        message(FATAL_ERROR "Conda environment not detected. Please activate a Conda environment.")
+    endif()
+
+# If not Windows, use the default install paths
+else()
+    include(GNUInstallDirs)
+
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
+        COMPONENT lib
     )
+
+    install(TARGETS library_viewshed
+        COMPONENT lib
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+        PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    )
+
+    if(HAS_QT)
+        install(TARGETS
+            viewshed inverseviewshed viewshedcalculator losextractor viewshed_widgets
+            COMPONENT bin
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        )
+    endif()
 endif()
 
 # ############################################################
