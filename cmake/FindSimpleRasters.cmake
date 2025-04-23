@@ -2,7 +2,7 @@ include(LibFindMacros)
 
 if(WIN32)
     if(DEFINED ENV{CONDA_BUILD})
-        message(STATUS "Windows Conda build detected. Adjusting install paths.")
+        message(STATUS "CONDA_BUILD detected adjusting search paths for SimpleRasters, looking into $ENV{LIBRARY_PREFIX}")
 
         # Include dir
         find_path(simplerasters_INCLUDE_DIR
@@ -24,6 +24,8 @@ if(WIN32)
 
 # UNIX search
 else()
+    message(STATUS "Unix detected. Using standard paths for SimpleRasters.")
+
     # Include dir
     find_path(simplerasters_INCLUDE_DIR
         NAMES simplerasters.h
