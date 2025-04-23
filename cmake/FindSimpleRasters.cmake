@@ -1,24 +1,39 @@
 include(LibFindMacros)
 
-# Include dir
-find_path(simplerasters_INCLUDE_DIR
-    NAMES simplerasters.h
-    PATHS
-    /usr/include
-    /usr/local/include
-    "${CMAKE_PREFIX_PATH}/include"
-    $ENV{LIBRARY_INC}
-    PATH_SUFFIXES simplerasters
-)
-
 if(WIN32)
-    find_path(simplerasters_LIBRARY
-        NAMES simplerasters.dll
-        PATHS
-        $ENV{LIBRARY_LIB}
-        $ENV{LIBRARY_BIN}
-    )
+    if(DEFINED ENV(CONDA_BUILD))
+        message(STATUS "Windows Conda build detected. Adjusting install paths.")
+
+        # Include dir
+        find_path(simplerasters_INCLUDE_DIR
+            NAMES simplerasters.h
+            PATHS
+            $ENV{LIBRARY_INC}
+            PATH_SUFFIXES simplerasters
+        )
+
+        find_path(simplerasters_LIBRARY
+            NAMES simplerasters.dll
+            PATHS
+            $ENV{LIBRARY_LIB}
+            $ENV{LIBRARY_BIN}
+        )
+    else()
+        message(FATAL_ERROR "Windows build detected but not a Conda build. Please activate a Conda environment.")
+    endif()
+
+# UNIX search
 else()
+    # Include dir
+    find_path(simplerasters_INCLUDE_DIR
+        NAMES simplerasters.h
+        PATHS
+        /usr/include
+        /usr/local/include
+        "${CMAKE_PREFIX_PATH}/include"
+        PATH_SUFFIXES simplerasters
+    )
+
     # Finally the library itself
     find_library(simplerasters_LIBRARY
         NAMES simplerasters
