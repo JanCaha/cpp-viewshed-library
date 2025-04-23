@@ -41,7 +41,7 @@ namespace ViewshedBinaries
             Q_ASSERT( widget->mPointValid );
 
             OGRWktOptions wktOpts = OGRWktOptions();
-            wktOpts.precision = 3;
+            wktOpts.xyPrecision = 3;
 
             QCOMPARE( widget->point().exportToWkt( wktOpts ),
                       OGRPoint( -336364.021, -1189108.615 ).exportToWkt( wktOpts ) );
