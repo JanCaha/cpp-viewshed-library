@@ -17,7 +17,7 @@ find_path(simplerasters_INCLUDE_DIR
 
 # Finally the library itself
 find_library(simplerasters_LIBRARY
-    NAMES simplerasters
+    NAMES simplerasters simplerasters.dll
     PATHS
     /usr/lib
     /usr/lib64
