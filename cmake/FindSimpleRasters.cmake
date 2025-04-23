@@ -12,7 +12,6 @@ find_path(simplerasters_INCLUDE_DIR
     "${CMAKE_PREFIX_PATH}/include"
     $ENV{LIBRARY_INC}
     PATH_SUFFIXES simplerasters
-    ${simplerasters_PKGCONF_INCLUDE_DIRS}
 )
 
 # Finally the library itself
@@ -25,7 +24,6 @@ find_library(simplerasters_LIBRARY
     "${CMAKE_PREFIX_PATH}/lib"
     $ENV{LIBRARY_LIB}
     $ENV{LIBRARY_BIN}
-    ${simplerasters_PKGCONF_LIBRARY_DIRS}
 )
 
 message(STATUS "SimpleRasters dirs: $ENV{LIBRARY_LIB} $ENV{LIBRARY_BIN} $ENV{LIBRARY_INC} /// ${CMAKE_PREFIX_PATH}/include")
