@@ -75,8 +75,7 @@ void InverseLoS::prepareForCalculation()
 void InverseLoS::removePointsAfterViewPoint()
 {
     double dist = mPointDistance;
-    erase( std::remove_if( begin(), end(),
-                           [&dist]( LoSNode &node )
+    erase( std::remove_if( begin(), end(), [&dist]( LoSNode &node )
                            { return ( dist <= node.centreDistance() && !node.mInverseLoSBehindTarget ); } ),
            end() );
 }
@@ -100,12 +99,12 @@ void InverseLoS::fixDistancesAngles()
             this->operator[]( i ).mDistances[CellEventPositionType::CENTER] += mPointDistance;
             this->operator[]( i ).mDistances[CellEventPositionType::EXIT] += mPointDistance;
 
-            double addValue = -M_PI;
+            double addValue = -std::numbers::pi;
 
-            if ( this->operator[]( i ).mAngle[CellEventPositionType::CENTER] < M_PI ||
+            if ( this->operator[]( i ).mAngle[CellEventPositionType::CENTER] < std::numbers::pi ||
                  this->operator[]( i ).mAngle[CellEventPositionType::CENTER] == 0 )
             {
-                addValue = +M_PI;
+                addValue = +std::numbers::pi;
             }
 
             this->operator[]( i ).mAngle[CellEventPositionType::ENTER] += addValue;

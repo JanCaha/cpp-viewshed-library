@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iterator>
 #include <limits>
+#include <numbers>
 
 #include "cellevent.h"
 #include "celleventposition.h"
@@ -40,7 +41,7 @@ LoSNode::LoSNode( const int &pointRow, const int &pointCol, const CellEvent *e, 
 
     if ( angleEnter > mAngle[CellEventPositionType::CENTER] )
     {
-        angleEnter = angleEnter - ( 2 * M_PI );
+        angleEnter = angleEnter - ( 2 * std::numbers::pi );
     }
 
     mAngle[CellEventPositionType::ENTER] = angleEnter;
@@ -115,10 +116,12 @@ double LoSNode::valueAtAngle( const double &specificAngle, ValueType valueType )
                  ( 1 - ratio ) * value( CellEventPositionType::EXIT, valueType ) );
     }
     // special case for rotation ending LoS
-    else if ( specificAngle > ( M_PI * 1.5 ) && mAngle[CellEventPositionType::ENTER] < specificAngle - ( 2 * M_PI ) )
+    else if ( specificAngle > ( std::numbers::pi * 1.5 ) &&
+              mAngle[CellEventPositionType::ENTER] < specificAngle - ( 2 * std::numbers::pi ) )
     {
         double difference = mAngle[CellEventPositionType::CENTER] - mAngle[CellEventPositionType::ENTER];
-        double ratio = ( ( specificAngle - ( 2 * M_PI ) ) - mAngle[CellEventPositionType::ENTER] ) / difference;
+        double ratio =
+            ( ( specificAngle - ( 2 * std::numbers::pi ) ) - mAngle[CellEventPositionType::ENTER] ) / difference;
         return ( ratio * value( CellEventPositionType::CENTER, valueType ) +
                  ( 1 - ratio ) * value( CellEventPositionType::ENTER, valueType ) );
     }

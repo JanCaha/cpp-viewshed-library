@@ -1,4 +1,5 @@
-#include "math.h"
+#include <cmath>
+#include <numbers>
 
 #include "celleventposition.h"
 #include "point.h"
@@ -21,7 +22,7 @@ double Visibility::gradient( double elevationDiff, double distance )
     if ( elevationDiff == 0 )
         return 0;
 
-    return atan( elevationDiff / distance ) * ( 180 / M_PI );
+    return atan( elevationDiff / distance ) * ( 180 / std::numbers::pi );
 }
 
 double Visibility::curvatureCorrections( const double &distance, const double &refractionCoeff,
@@ -194,32 +195,32 @@ double Visibility::angle( const double &row, const double &column, const int &po
     else if ( pointCol == column && pointRow > row )
     {
         /*between 1st and 2nd quadrant */
-        return M_PI / 2;
+        return std::numbers::pi / 2;
     }
     else if ( column < pointCol && row < pointRow )
     {
         /*second quadrant */
-        return ( M_PI - angle );
+        return ( std::numbers::pi - angle );
     }
     else if ( pointRow == row && column < pointCol )
     {
         /*between 1st and 3rd quadrant */
-        return M_PI;
+        return std::numbers::pi;
     }
     else if ( row > pointRow && column < pointCol )
     {
         /*3rd quadrant */
-        return ( M_PI + angle );
+        return ( std::numbers::pi + angle );
     }
     else if ( pointCol == column && pointRow < row )
     {
         /*between 3rd and 4th quadrant */
-        return ( ( M_PI * 3.0 ) / 2.0 );
+        return ( ( std::numbers::pi * 3.0 ) / 2.0 );
     }
     else if ( column > pointCol && row > pointRow )
     {
         /*4th quadrant */
-        return ( M_PI * 2.0 - angle );
+        return ( std::numbers::pi * 2.0 - angle );
     }
 
     return 0;

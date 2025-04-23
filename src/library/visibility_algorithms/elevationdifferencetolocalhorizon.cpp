@@ -1,4 +1,5 @@
 #include <cmath>
+#include <numbers>
 
 #include "visibilityelevationdifferencetolocalhorizon.h"
 
@@ -20,7 +21,8 @@ double ElevationDifferenceToLocalHorizon::result( std::shared_ptr<LoSImportantVa
 
     if ( losValues->horizonBeforeExist() )
     {
-        change = std::tan( ( M_PI / 180 ) * los->gradient( losValues->indexHorizonBefore ) ) * los->targetDistance();
+        change = std::tan( ( std::numbers::pi / 180 ) * los->gradient( losValues->indexHorizonBefore ) ) *
+                 los->targetDistance();
         difference = los->targetElevation() - ( los->vp()->totalElevation() + change );
     }
     else

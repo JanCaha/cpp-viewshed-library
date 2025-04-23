@@ -3,6 +3,7 @@
 #include "visibility.h"
 
 #include <map>
+#include <numbers>
 
 using viewshed::AbstractViewshed;
 using viewshed::LoSNode;
@@ -92,21 +93,21 @@ void AbstractViewshed::setAngles( double minAngle, double maxAngle )
 {
     if ( !std::isnan( minAngle ) )
     {
-        mMinAngle = minAngle * ( M_PI / 180 );
+        mMinAngle = minAngle * ( std::numbers::pi / 180 );
 
-        if ( mMinAngle < -M_PI )
+        if ( mMinAngle < -std::numbers::pi )
         {
-            mMinAngle = -M_PI;
+            mMinAngle = -std::numbers::pi;
         }
     }
 
     if ( !std::isnan( maxAngle ) )
     {
-        mMaxAngle = maxAngle * ( M_PI / 180 );
+        mMaxAngle = maxAngle * ( std::numbers::pi / 180 );
 
-        if ( M_2_PI < mMaxAngle )
+        if ( std::numbers::pi < mMaxAngle )
         {
-            mMaxAngle = M_2_PI;
+            mMaxAngle = std::numbers::pi;
         }
     }
 
@@ -132,9 +133,9 @@ bool AbstractViewshed::isInsideAngles( const double &eventEnterAngle, const doub
             return true;
         }
 
-        if ( mMinAngle < 0 && M_PI < eventEnterAngle )
+        if ( mMinAngle < 0 && std::numbers::pi < eventEnterAngle )
         {
-            if ( mMinAngle <= ( eventExitAngle - 2 * M_PI ) )
+            if ( mMinAngle <= ( eventExitAngle - 2 * std::numbers::pi ) )
             {
                 return true;
             }
