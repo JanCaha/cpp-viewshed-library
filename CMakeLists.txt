@@ -115,12 +115,11 @@ else()
     # https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
     include(GNUInstallDirs)
 
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
-        COMPONENT lib
-    )
-
+    # install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
+    # ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
+    # DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
+    # COMPONENT lib
+    # )
     install(TARGETS library_viewshed
         COMPONENT lib
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
