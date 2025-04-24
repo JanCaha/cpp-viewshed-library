@@ -6,9 +6,14 @@ if(DEFINED ENV{CONDA_BUILD} AND WIN32)
     set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
 
     install(TARGETS library_viewshed
-        RUNTIME DESTINATION $ENV{LIBRARY_BIN}
-        LIBRARY DESTINATION $ENV{LIBRARY_LIB}
-        PUBLIC_HEADER DESTINATION $ENV{LIBRARY_INC}/${LIBRARY_NAME}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+    )
+
+    install(TARGET_RUNTIME_DLLS library_viewshed
+        DESTINATION bin
+        COMPONENT Runtime
     )
 
     if(HAS_QT)
