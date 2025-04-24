@@ -8,9 +8,15 @@ source:
 build:
   number: 0
   script:
-    - cmake -B build -S {{SRC_DIR}} -G Ninja -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=off -DBUILD_DOCUMENTATION:bool=off -DBUILD_TESTS:bool=off -DCELL_EVENT_DATA_FLOAT:bool=on -DOUTPUT_RASTER_DATA_FLOAT:bool=on -DNEEDS_QT:bool=off
-    - cmake --build build --config Release --target library_viewshed
-    - cmake --install build --prefix {{PREFIX}}
+    # - cmake -B build -S {{SRC_DIR}} -G Ninja -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=off -DBUILD_DOCUMENTATION:bool=off -DBUILD_TESTS:bool=off -DCELL_EVENT_DATA_FLOAT:bool=on -DOUTPUT_RASTER_DATA_FLOAT:bool=on -DNEEDS_QT:bool=off
+    # - cmake --build build --config Release --target library_viewshed
+    # - cmake --install build --prefix {{PREFIX}}
+    {{ cmake_args("BUILD_SHARED_LIBS=ON") }}
+    - cmake -S . -B build -G Ninja %CMAKE_ARGS% -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=off -DBUILD_DOCUMENTATION:bool=off -DBUILD_TESTS:bool=off -DCELL_EVENT_DATA_FLOAT:bool=on -DOUTPUT_RASTER_DATA_FLOAT:bool=on -DNEEDS_QT:bool=off # [win]
+    - cmake -S . -B build -G Ninja ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=off -DBUILD_DOCUMENTATION:bool=off -DBUILD_TESTS:bool=off -DCELL_EVENT_DATA_FLOAT:bool=on -DOUTPUT_RASTER_DATA_FLOAT:bool=on -DNEEDS_QT:bool=off # [unix]
+    - cmake -S . -B build -G Ninja
+    - cmake --build build
+    - cmake --install build 
 
 requirements:
   build:
