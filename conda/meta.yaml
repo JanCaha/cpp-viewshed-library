@@ -9,8 +9,8 @@ build:
   number: 0
   script:
     - cmake -B build -S {{SRC_DIR}} -G Ninja -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=off -DBUILD_DOCUMENTATION:bool=off -DBUILD_TESTS:bool=off -DCELL_EVENT_DATA_FLOAT:bool=on -DOUTPUT_RASTER_DATA_FLOAT:bool=on -DNEEDS_QT:bool=off
-    - cmake --build build --config Release
-    - cmake --install build --prefix {{PREFIX}}
+    - cmake --build build --config Release --target library_viewshed
+    - cmake --build build --config Release --target install --prefix {{PREFIX}}
 
 requirements:
   build:
