@@ -109,7 +109,7 @@ include(GNUInstallDirs)
 # VERSION ${PROJECT_VERSION}
 # COMPATIBILITY SameMajorVersion
 # )
-if(DEFINED ENV{CONDA_BUILD} AND WIN32)
+if(DEFINED ENV{CONDA_BUILD}) # AND WIN32)
     include(${CMAKE_SOURCE_DIR}/cmake/CondaInstall.cmake)
 else()
     # https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
