@@ -6,7 +6,9 @@ if(DEFINED ENV{CONDA_BUILD} AND WIN32)
     set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
 
     install(TARGETS library_viewshed
+        COMPONENT lib
         RUNTIME DESTINATION $ENV{LIBRARY_BIN}
+        LIBRARY DESTINATION $ENV{LIBRARY_LIB}
         PUBLIC_HEADER DESTINATION $ENV{LIBRARY_INC}/${LIBRARY_NAME}
     )
 
@@ -14,6 +16,8 @@ if(DEFINED ENV{CONDA_BUILD} AND WIN32)
         install(TARGETS
             viewshed inverseviewshed viewshedcalculator losextractor viewshed_widgets
             RUNTIME DESTINATION $ENV{LIBRARY_BIN}
+            LIBRARY DESTINATION $ENV{LIBRARY_LIB}
+            PUBLIC_HEADER DESTINATION $ENV{LIBRARY_INC}/${LIBRARY_NAME}
         )
     endif()
 else()
