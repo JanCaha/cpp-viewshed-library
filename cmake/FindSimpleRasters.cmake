@@ -8,15 +8,15 @@ if(WIN32)
         find_path(simplerasters_INCLUDE_DIR
             NAMES simplerasters.h
             PATHS
-            $ENV{LIBRARY_INC}
+            $ENV{BUILD_PREFIX}/Library/include
             PATH_SUFFIXES simplerasters
         )
 
         find_path(simplerasters_LIBRARY
             NAMES simplerasters.dll
             PATHS
-            $ENV{LIBRARY_LIB}
-            $ENV{LIBRARY_BIN}
+            $ENV{BUILD_PREFIX}/Library/bin
+            $ENV{BUILD_PREFIX}/Library/lib
         )
     else()
         message(FATAL_ERROR "Windows build detected but not a Conda build. Please activate a Conda environment.")
