@@ -129,7 +129,7 @@ jobs:
     
       - name: Install conda-build
         run: |
-          conda install -n base conda-build conda-verify compilers
+          conda install -n base conda-build conda-verify compilers m2w64-toolchain
 
       - name: Install libsimplerasters
         run: |
