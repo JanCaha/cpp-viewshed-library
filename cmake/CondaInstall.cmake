@@ -11,11 +11,6 @@ if(DEFINED ENV{CONDA_BUILD} AND WIN32)
         PUBLIC_HEADER DESTINATION $ENV{LIBRARY_INC}/${LIBRARY_NAME}
     )
 
-    install(TARGET_RUNTIME_DLLS library_viewshed
-        DESTINATION bin
-        COMPONENT Runtime
-    )
-
     if(HAS_QT)
         install(TARGETS
             viewshed inverseviewshed viewshedcalculator losextractor viewshed_widgets
