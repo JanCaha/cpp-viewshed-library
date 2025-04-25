@@ -137,6 +137,8 @@ jobs:
 
       - name: Build library
         run: |
+          set CC=x86_64-w64-mingw32-gcc
+          set CXX=x86_64-w64-mingw32-g++
           conda build conda --output-folder conda_package
       
       - name: Upload artifact   
