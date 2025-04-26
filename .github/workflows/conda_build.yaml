@@ -93,54 +93,54 @@ jobs:
           path: conda_package/linux-64/*.conda 
           name: conda_package_linux
 
-  Build-on-Windows:
+  # Build-on-Windows:
 
-    name: Build on Windows
+  #   name: Build on Windows
     
-    runs-on: windows-latest
+  #   runs-on: windows-latest
     
-    needs: Update-conda-package-version
+  #   needs: Update-conda-package-version
 
-    env:
-      GH_TOKEN: ${{ github.token }}
-      LIBARCHIVE: C:\Miniconda\Library\bin\archive.dll
+  #   env:
+  #     GH_TOKEN: ${{ github.token }}
+  #     LIBARCHIVE: C:\Miniconda\Library\bin\archive.dll
 
-    steps:
+  #   steps:
       
-      # - name: Setup MSVC
-      #   uses: ilammy/msvc-dev-cmd@v1
+  #     - name: Setup MSVC
+  #       uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
   
-      - uses: conda-incubator/setup-miniconda@v3
-        with:
-          auto-update-conda: true
-          use-mamba: true
-          channels: conda-forge,defaults
-          auto-activate-base: true
-          activate-environment: ""
+  #     - uses: conda-incubator/setup-miniconda@v3
+  #       with:
+  #         auto-update-conda: true
+  #         use-mamba: true
+  #         channels: conda-forge,defaults
+  #         auto-activate-base: true
+  #         activate-environment: ""
       
-      - name: Add Custom Conda Channel
-        run: |
-          conda config --add channels https://jancaha.github.io/conda-channel
+  #     - name: Add Custom Conda Channel
+  #       run: |
+  #         conda config --add channels https://jancaha.github.io/conda-channel
     
-      - name: Install conda-build
-        run: |
-          conda install -n base conda-build conda-verify
+  #     - name: Install conda-build
+  #       run: |
+  #         conda install -n base conda-build conda-verify
 
-      - name: Install libsimplerasters
-        run: |
-          conda install -n base libsimplerasters
+  #     - name: Install libsimplerasters
+  #       run: |
+  #         conda install -n base libsimplerasters
 
-      - name: Build library
-        run: |
-          conda build conda --output-folder conda_package
+  #     - name: Build library
+  #       run: |
+  #         conda build conda --output-folder conda_package
       
-      - name: Upload artifact   
-        uses: actions/upload-artifact@v4
-        with:
-          path: conda_package/win-64/*.conda
-          name: conda_package_windows
+  #     - name: Upload artifact   
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         path: conda_package/win-64/*.conda
+  #         name: conda_package_windows
