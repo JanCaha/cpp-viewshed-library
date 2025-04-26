@@ -97,30 +97,27 @@ add_subdirectory(src)
 include(GNUInstallDirs)
 
 # Package Configuration
-# include(CMakePackageConfigHelpers)
-# configure_package_config_file(
-# ${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
-# ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-# INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
-# )
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    ${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
+)
 
-# write_basic_package_version_file(
-# ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
-# VERSION ${PROJECT_VERSION}
-# COMPATIBILITY SameMajorVersion
-# )
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
 
-# if(DEFINED ENV{CONDA_BUILD} AND WIN32)
-# include(${CMAKE_SOURCE_DIR}/cmake/CondaInstall.cmake)
-# else()
-# https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
 include(GNUInstallDirs)
 
-# install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-# ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
-# DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
-# COMPONENT lib
-# )
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
+    COMPONENT lib
+)
+
 install(TARGETS library_viewshed
     COMPONENT lib
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
