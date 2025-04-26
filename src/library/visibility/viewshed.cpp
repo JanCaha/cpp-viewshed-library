@@ -1,4 +1,4 @@
-#include "chrono"
+#include <chrono>
 #include <cmath>
 
 #include "los.h"
@@ -47,8 +47,7 @@ std::shared_ptr<LoS> Viewshed::getLoS( OGRPoint point, bool onlyToPoi )
     {
         double poiDistance = poi->centreDistance();
 
-        losNodes.erase( std::remove_if( losNodes.begin(), losNodes.end(),
-                                        [&poiDistance]( LoSNode &node )
+        losNodes.erase( std::remove_if( losNodes.begin(), losNodes.end(), [&poiDistance]( LoSNode &node )
                                         { return poiDistance <= node.centreDistance(); } ),
                         losNodes.end() );
     }
@@ -65,7 +64,6 @@ std::shared_ptr<LoS> Viewshed::getLoS( OGRPoint point, bool onlyToPoi )
 void Viewshed::calculate( std::function<void( std::string, double )> stepsTimingCallback,
                           std::function<void( int size, int current )> progressCallback )
 {
-    using namespace std::chrono::_V2;
     using namespace std::chrono;
 
     initEventList();
@@ -156,7 +154,7 @@ void Viewshed::calculateVisibilityRaster()
     mVisibilityRaster->setNoData( noDataValue );
     mVisibilityRaster->prefillValues( noDataValue );
 
-    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
 
     std::map<double, LoSNode> los;
 
@@ -241,6 +239,5 @@ void Viewshed::calculateVisibilityRaster()
         i++;
     }
 
-    mTimeParse =
-        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
+    mTimeParse = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
 }

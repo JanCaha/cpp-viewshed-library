@@ -1,8 +1,10 @@
+#include <chrono>
+#include <map>
+#include <numbers>
+
 #include "abstractviewshed.h"
 #include "threadtasks.h"
 #include "visibility.h"
-
-#include <map>
 
 using viewshed::AbstractViewshed;
 using viewshed::LoSNode;
@@ -35,7 +37,7 @@ void AbstractViewshed::setDefaultResultDataType( GDALDataType dataType )
 
 void AbstractViewshed::initEventList()
 {
-    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
 
     mCellEvents.clear();
     mLosNodes.clear();
@@ -82,8 +84,7 @@ void AbstractViewshed::initEventList()
         }
     }
 
-    mTimeInit =
-        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
+    mTimeInit = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
 }
 
 void AbstractViewshed::setMaximalDistance( double distance ) { mMaxDistance = distance; }
@@ -92,21 +93,21 @@ void AbstractViewshed::setAngles( double minAngle, double maxAngle )
 {
     if ( !std::isnan( minAngle ) )
     {
-        mMinAngle = minAngle * ( M_PI / 180 );
+        mMinAngle = minAngle * ( std::numbers::pi / 180 );
 
-        if ( mMinAngle < -M_PI )
+        if ( mMinAngle < -std::numbers::pi )
         {
-            mMinAngle = -M_PI;
+            mMinAngle = -std::numbers::pi;
         }
     }
 
     if ( !std::isnan( maxAngle ) )
     {
-        mMaxAngle = maxAngle * ( M_PI / 180 );
+        mMaxAngle = maxAngle * ( std::numbers::pi / 180 );
 
-        if ( M_2_PI < mMaxAngle )
+        if ( std::numbers::pi < mMaxAngle )
         {
-            mMaxAngle = M_2_PI;
+            mMaxAngle = std::numbers::pi;
         }
     }
 
@@ -132,9 +133,9 @@ bool AbstractViewshed::isInsideAngles( const double &eventEnterAngle, const doub
             return true;
         }
 
-        if ( mMinAngle < 0 && M_PI < eventEnterAngle )
+        if ( mMinAngle < 0 && std::numbers::pi < eventEnterAngle )
         {
-            if ( mMinAngle <= ( eventExitAngle - 2 * M_PI ) )
+            if ( mMinAngle <= ( eventExitAngle - 2 * std::numbers::pi ) )
             {
                 return true;
             }
@@ -148,19 +149,18 @@ bool AbstractViewshed::isInsideAngles( const double &eventEnterAngle, const doub
 
 void AbstractViewshed::sortEventList()
 {
-    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
 
     std::sort( mCellEvents.begin(), mCellEvents.end() );
 
-    mTimeSort =
-        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
+    mTimeSort = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
 }
 
 void AbstractViewshed::parseEventList( std::function<void( int size, int current )> progressCallback )
 {
     prepareMemoryRasters();
 
-    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
 
     ViewshedValues rasterValues;
 
@@ -221,8 +221,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
     // parse results left after the algorithm finished
     mThreadPool.wait();
 
-    mTimeParse =
-        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
+    mTimeParse = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
 }
 
 void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSquareCellRaster> dem_,

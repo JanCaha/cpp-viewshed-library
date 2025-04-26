@@ -1,6 +1,6 @@
 #pragma once
 
-#include "chrono"
+#include <chrono>
 #include <fstream>
 
 #include <QDebug>
@@ -50,7 +50,7 @@ namespace ViewshedBinaries
 
         MainCalculatorWindow();
 
-        virtual ~MainCalculatorWindow(){};
+        virtual ~MainCalculatorWindow() {};
 
         void resizeEvent( QResizeEvent *event );
         void prepareAlgorithms();
@@ -112,4 +112,4 @@ namespace ViewshedBinaries
 
         friend class TestViewshedCalculatorWindow;
     };
-}
+} // namespace ViewshedBinaries

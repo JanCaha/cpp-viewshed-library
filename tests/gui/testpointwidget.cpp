@@ -4,6 +4,8 @@
 
 #include "pointwidget.h"
 
+#include "gdal_version.h"
+
 #include "testsettings.h"
 
 using ViewshedBinaries::PointWidget;
@@ -41,7 +43,11 @@ namespace ViewshedBinaries
             Q_ASSERT( widget->mPointValid );
 
             OGRWktOptions wktOpts = OGRWktOptions();
+#if GDAL_VERSION_NUM >= GDAL_COMPUTE_VERSION( 3, 9, 0 )
+            wktOpts.xyPrecision = 3;
+#else
             wktOpts.precision = 3;
+#endif
 
             QCOMPARE( widget->point().exportToWkt( wktOpts ),
                       OGRPoint( -336364.021, -1189108.615 ).exportToWkt( wktOpts ) );

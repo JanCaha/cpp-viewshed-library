@@ -1,8 +1,8 @@
-# check if Doxygen is installed
-find_package(Doxygen)
+if(BUILD_DOCUMENTATION)
+    # check if Doxygen is installed
+    find_package(Doxygen)
 
-if(DOXYGEN_FOUND)
-    if(BUILD_DOCUMENTATION AND CMAKE_BUILD_TYPE STREQUAL "Release")
+    if(DOXYGEN_FOUND AND CMAKE_BUILD_TYPE STREQUAL "Release")
         # set input and output files
         set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
         set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
@@ -27,7 +27,8 @@ if(DOXYGEN_FOUND)
                 add_dependencies(library_viewshed build_documentation)
             endif()
         endif()
-    endif()
-else(DOXYGEN_FOUND)
-    message("Doxygen need to be installed to generate the doxygen documentation")
-endif(DOXYGEN_FOUND)
+
+    else(DOXYGEN_FOUND AND CMAKE_BUILD_TYPE STREQUAL "Release")
+        message("Doxygen need to be installed to generate the doxygen documentation")
+    endif(DOXYGEN_FOUND AND CMAKE_BUILD_TYPE STREQUAL "Release")
+endif(BUILD_DOCUMENTATION)

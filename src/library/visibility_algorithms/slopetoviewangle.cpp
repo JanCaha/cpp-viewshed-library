@@ -1,5 +1,6 @@
 #include <cmath>
 #include <limits>
+#include <numbers>
 
 #include "visibilityslopetoviewangle.h"
 
@@ -15,13 +16,14 @@ double LoSSlopeToViewAngle::result( std::shared_ptr<LoSImportantValues> losValue
     double gradientDiff;
     if ( los->targetIndex() == 0 )
     {
-        gradientDiff =
-            ( 180 / M_PI ) * atan( ( los->targetElevation() - los->viewPointElevation() ) / ( los->targetDistance() ) );
+        gradientDiff = ( 180 / std::numbers::pi ) *
+                       atan( ( los->targetElevation() - los->viewPointElevation() ) / ( los->targetDistance() ) );
     }
     else
     {
-        gradientDiff = ( 180 / M_PI ) * atan( ( los->targetElevation() - los->elevation( los->targetIndex() - 1 ) ) /
-                                              ( los->targetDistance() - los->distance( los->targetIndex() - 1 ) ) );
+        gradientDiff =
+            ( 180 / std::numbers::pi ) * atan( ( los->targetElevation() - los->elevation( los->targetIndex() - 1 ) ) /
+                                               ( los->targetDistance() - los->distance( los->targetIndex() - 1 ) ) );
     }
 
     if ( losValues->maxGradientBefore < los->targetGradient() )

@@ -1,5 +1,6 @@
-#include "chrono"
+#include <chrono>
 #include <cmath>
+#include <numbers>
 
 #include "abstractviewshedalgorithm.h"
 #include "inverselos.h"
@@ -64,7 +65,6 @@ std::shared_ptr<InverseLoS> InverseViewshed::getLoS( OGRPoint point, bool onlyTo
 void InverseViewshed::calculate( std::function<void( std::string, double )> stepsTimingCallback,
                                  std::function<void( int size, int current )> progressCallback )
 {
-    using namespace std::chrono::_V2;
     using namespace std::chrono;
 
     initEventList();
@@ -127,22 +127,22 @@ void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pi
         mOppositeAngleEnter = mAngleEnter;
         mOppositeAngleExit = mAngleExit;
 
-        if ( mOppositeAngleEnter < M_PI )
+        if ( mOppositeAngleEnter < std::numbers::pi )
         {
-            mOppositeAngleEnter = M_PI + mOppositeAngleEnter;
+            mOppositeAngleEnter = std::numbers::pi + mOppositeAngleEnter;
         }
         else
         {
-            mOppositeAngleEnter = mOppositeAngleEnter - M_PI;
+            mOppositeAngleEnter = mOppositeAngleEnter - std::numbers::pi;
         }
 
-        if ( mOppositeAngleExit < M_PI )
+        if ( mOppositeAngleExit < std::numbers::pi )
         {
-            mOppositeAngleExit = M_PI + mOppositeAngleExit;
+            mOppositeAngleExit = std::numbers::pi + mOppositeAngleExit;
         }
         else
         {
-            mOppositeAngleExit = mOppositeAngleExit - M_PI;
+            mOppositeAngleExit = mOppositeAngleExit - std::numbers::pi;
         }
 
         mEventEnterOpposite =
@@ -198,7 +198,7 @@ void InverseViewshed::calculateVisibilityRaster()
 
     mVisibilityRaster = std::make_shared<ProjectedSquareCellRaster>( *mInputDsm.get(), GDALDataType::GDT_Float32 );
 
-    std::chrono::_V2::steady_clock::time_point startTime = std::chrono::_V2::steady_clock::now();
+    std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
 
     std::map<double, LoSNode> los;
 
@@ -269,7 +269,7 @@ void InverseViewshed::calculateVisibilityRaster()
 
                 for ( auto it = los.begin(); it != los.lower_bound( mLoSNodeTemp.centreDistance() ); ++it )
                 {
-                    horizontalAngle = mLoSNodeTemp.centreAngle(); // + M_PI;
+                    horizontalAngle = mLoSNodeTemp.centreAngle(); // + std::numbers::pi;
 
                     curCorr = Visibility::curvatureCorrections( visibilityDistance -
                                                                     it->second.distanceAtAngle( horizontalAngle ),
@@ -301,6 +301,5 @@ void InverseViewshed::calculateVisibilityRaster()
         i++;
     }
 
-    mTimeParse =
-        std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::_V2::steady_clock::now() - startTime );
+    mTimeParse = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
 }

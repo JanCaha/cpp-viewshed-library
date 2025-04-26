@@ -1,37 +1,32 @@
 cmake_minimum_required(VERSION 3.20.0)
 
+# Project Information
 project(viewshed VERSION 4.1.0 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
 
+# Library Name
 SET(LIBRARY_NAME "viewshed")
 
+# Options
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
 option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." ON)
-
 option(NEEDS_QT "Allows optionally building library without searching for Qt. Cannot build binaries with this set to OFF. For running test mainly." ON)
-
 option(CELL_EVENT_DATA_FLOAT "Create CellEvents with data stored `float` instead of `double`. Lowers significantly RAM memory usage." ON)
 option(OUTPUT_RASTER_DATA_FLOAT "Create output rasters with data stored `Float32` instead of `Float64`. Lowers RAM memory usage." ON)
 
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
-
+# C++ Standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+# Module Path
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-if(CMAKE_VERSION VERSION_LESS "3.7.0")
-    set(CMAKE_INCLUDE_CURRENT_DIR ON)
-endif()
-
+# Dependencies
 find_package(GDAL REQUIRED)
-
 find_package(Threads REQUIRED)
-
 find_package(SimpleRasters REQUIRED)
 
 if(NEEDS_QT)
-    message(STATUS "Using Qt")
     set(CMAKE_AUTOMOC TRUE)
 
     find_package(Qt5 COMPONENTS Core Widgets Xml Gui Test REQUIRED)
@@ -53,6 +48,7 @@ else()
     message(STATUS "Not using Qt")
 endif()
 
+# Public Headers
 set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/abstractlos.h
     include/viewshed/abstractviewshed.h
@@ -93,24 +89,19 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/viewshedtypes.h
 )
 
-# ############################################################
-# add sources both external and specific
+# Subdirectories
 add_subdirectory(external)
-
 add_subdirectory(src)
 
-# ############################################################
-# install :
-# https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
-set(INCLUDE_INSTALL_DIR include/viewshed)
-set(SYSCONFIG_INSTALL_DIR lib/libviewshed.so)
+# Installation Directories
+include(GNUInstallDirs)
 
+# Package Configuration
 include(CMakePackageConfigHelpers)
-
-configure_package_config_file(${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
+configure_package_config_file(
+    ${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/Viewshed/cmake
-    PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
 )
 
 write_basic_package_version_file(
@@ -144,38 +135,32 @@ if(HAS_QT)
     )
 endif()
 
-# ############################################################
-# Pack :
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    if(PACK_DEB)
-        message(STATUS "VIEWSHED LIBRARY: DEB will be packed file.")
+# endif()
 
-        include(Packing)
-
-        file(GLOB old_versions "${CMAKE_SOURCE_DIR}/_packages/*.deb")
-
-        if(old_versions)
-            file(REMOVE ${old_versions})
-        endif()
-
-        add_custom_target(pack_viewshed_library_deb
-            COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        )
-
-        add_dependencies(pack_viewshed_library_deb library_viewshed)
-    endif()
+# Documentation
+if(BUILD_DOCUMENTATION)
+    add_subdirectory(docs)
 endif()
 
-# ############################################################
-# Add docs :
-add_subdirectory(docs)
-
-# ############################################################
-# add tests :
+# Tests
 if(BUILD_TESTS)
     include(CTest)
-    enable_testing(true)
-
+    enable_testing()
     add_subdirectory(tests)
+endif()
+
+# Packaging (DEB)
+if(CMAKE_BUILD_TYPE STREQUAL "Release" AND PACK_DEB)
+    include(Packing)
+    file(GLOB old_versions "${CMAKE_SOURCE_DIR}/_packages/*.deb")
+
+    if(old_versions)
+        file(REMOVE ${old_versions})
+    endif()
+
+    add_custom_target(pack_viewshed_library_deb
+        COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+    add_dependencies(pack_viewshed_library_deb library_viewshed)
 endif()
