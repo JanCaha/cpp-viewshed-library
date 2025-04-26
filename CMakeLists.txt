@@ -109,34 +109,36 @@ include(GNUInstallDirs)
 # VERSION ${PROJECT_VERSION}
 # COMPATIBILITY SameMajorVersion
 # )
-if(DEFINED ENV{CONDA_BUILD} AND WIN32)
-    include(${CMAKE_SOURCE_DIR}/cmake/CondaInstall.cmake)
-else()
-    # https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
-    include(GNUInstallDirs)
 
-    # install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-    # ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
-    # DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
-    # COMPONENT lib
-    # )
-    install(TARGETS library_viewshed
-        COMPONENT lib
+# if(DEFINED ENV{CONDA_BUILD} AND WIN32)
+# include(${CMAKE_SOURCE_DIR}/cmake/CondaInstall.cmake)
+# else()
+# https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
+include(GNUInstallDirs)
+
+# install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
+# ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
+# DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
+# COMPONENT lib
+# )
+install(TARGETS library_viewshed
+    COMPONENT lib
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+)
+
+if(HAS_QT)
+    install(TARGETS
+        viewshed inverseviewshed viewshedcalculator losextractor viewshed_widgets
+        COMPONENT bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-        PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
     )
-
-    if(HAS_QT)
-        install(TARGETS
-            viewshed inverseviewshed viewshedcalculator losextractor viewshed_widgets
-            COMPONENT bin
-            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        )
-    endif()
 endif()
+
+# endif()
 
 # Documentation
 if(BUILD_DOCUMENTATION)

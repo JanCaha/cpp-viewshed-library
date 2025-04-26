@@ -107,8 +107,8 @@ jobs:
 
     steps:
       
-      # - name: Setup MSVC
-      #   uses: ilammy/msvc-dev-cmd@v1
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -129,7 +129,7 @@ jobs:
     
       - name: Install conda-build
         run: |
-          conda install -n base conda-build conda-verify compilers m2w64-toolchain
+          conda install -n base conda-build conda-verify
 
       - name: Install libsimplerasters
         run: |
@@ -137,11 +137,6 @@ jobs:
 
       - name: Build library
         run: |
-          set CC=x86_64-w64-mingw32-gcc
-          set CXX=x86_64-w64-mingw32-g++
-          set CMAKE_CC_COMPILER=x86_64-w64-mingw32-gcc
-          set CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++
-          where g++
           conda build conda --output-folder conda_package
       
       - name: Upload artifact   
