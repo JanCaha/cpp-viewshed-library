@@ -60,15 +60,15 @@ jobs:
             -S . \
             -B build \
             -G Ninja \
-            -D CMAKE_CXX_COMPILER=${COMPILER} \
-            -D CMAKE_BUILD_TYPE=Release \
-            -D PACK_DEB:bool=off \
-            -D BUILD_DOCUMENTATION:bool=off \
-            -D BUILD_TESTS:bool=on \
-            -D CELL_EVENT_DATA_FLOAT:bool=on \
-            -D OUTPUT_RASTER_DATA_FLOAT:bool=on \
-            -D NEEDS_QT:bool=off \
-            -D BUILD_GUI_APP:bool=off
+            -DCMAKE_CXX_COMPILER=${COMPILER} \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPACK_DEB:bool=off \
+            -DBUILD_DOCUMENTATION:bool=off \
+            -DBUILD_TESTS:bool=on \
+            -DCELL_EVENT_DATA_FLOAT:bool=on \
+            -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
+            -DNEEDS_QT:bool=off \
+            -DBUILD_GUI_APP:bool=off
 
       - name: Build
         run: | 
@@ -92,15 +92,15 @@ jobs:
             -S . \
             -B build \
             -G Ninja \
-            -D CMAKE_CXX_COMPILER=${COMPILER} \
-            -D CMAKE_BUILD_TYPE=Release \
-            -D PACK_DEB:bool=off \
-            -D BUILD_DOCUMENTATION:bool=off \
-            -D BUILD_TESTS:bool=on \
-            -D CELL_EVENT_DATA_FLOAT:bool=off \
-            -D OUTPUT_RASTER_DATA_FLOAT:bool=off \
-            -D NEEDS_QT:bool=off \
-            -D BUILD_GUI_APP:bool=off
+            -DCMAKE_CXX_COMPILER=${COMPILER} \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPACK_DEB:bool=off \
+            -DBUILD_DOCUMENTATION:bool=off \
+            -DBUILD_TESTS:bool=on \
+            -DCELL_EVENT_DATA_FLOAT:bool=off \
+            -DOUTPUT_RASTER_DATA_FLOAT:bool=off \
+            -DNEEDS_QT:bool=off \
+            -DBUILD_GUI_APP:bool=off
           cmake --build build --config Release --target build_tests
           cmake --build build --config Release --target run_tests
 
@@ -155,16 +155,16 @@ jobs:
             -S . \
             -Bbuild \
             -G Ninja \
-            -D CMAKE_CXX_COMPILER=${COMPILER} \
-            -D CMAKE_BUILD_TYPE=Release \
-            -D PACK_DEB:bool=off \
-            -D BUILD_DOCUMENTATION:bool=off \
-            -D BUILD_TESTS:bool=on \
-            -D CELL_EVENT_DATA_FLOAT:bool=on \
-            -D OUTPUT_RASTER_DATA_FLOAT:bool=on \
-            -D NEEDS_QT:bool=on \
-            -D BUILD_GUI_APP:bool=on \
-            -D CMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_CXX_COMPILER=${COMPILER} \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPACK_DEB:bool=off \
+            -DBUILD_DOCUMENTATION:bool=off \
+            -DBUILD_TESTS:bool=on \
+            -DCELL_EVENT_DATA_FLOAT:bool=on \
+            -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
+            -DNEEDS_QT:bool=on \
+            -DBUILD_GUI_APP:bool=on \
+            -DCMAKE_INSTALL_PREFIX=/usr \
       
       - name: Run Tests even with Qt
         id: unittestsqt
