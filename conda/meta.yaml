@@ -12,6 +12,15 @@ build:
     - cmake --build build --config Release 
     - cmake --install build --prefix {{PREFIX}}
 
+test:
+  requires:
+    - bash 
+  commands:
+    - test -f "${PREFIX}/lib/libviewshed.so"
+    - test -f "${PREFIX}/include/viewshed/viewshed.h"
+    - test -x "${PREFIX}/bin/viewshed"
+    - test -x "${PREFIX}/bin/inverseviewshed"
+
 requirements:
   build:
     - {{ compiler('c') }}
@@ -29,15 +38,6 @@ requirements:
     - libgdal
     - libsimplerasters
     - qt-main 5.*
-
-test:
-  requires:
-    - bash 
-  commands:
-    - test -f "${PREFIX}/lib/libviewshed.so"
-    - test -f "${PREFIX}/include/viewshed/viewshed.h"
-    - test -x "${PREFIX}/bin/viewshed"
-    - test -x "${PREFIX}/bin/inverseviewshed"
 
 about:
   home: https://github.com/JanCaha/cpp-viewshed-library
