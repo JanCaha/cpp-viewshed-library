@@ -11,8 +11,13 @@ option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
 option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." ON)
 option(NEEDS_QT "Allows optionally building library without searching for Qt. Cannot build binaries with this set to OFF. For running test mainly." ON)
+option(BUILD_GUI_APP "Allows building of executable program with GUI" ON)
 option(CELL_EVENT_DATA_FLOAT "Create CellEvents with data stored `float` instead of `double`. Lowers significantly RAM memory usage." ON)
 option(OUTPUT_RASTER_DATA_FLOAT "Create output rasters with data stored `Float32` instead of `Float64`. Lowers RAM memory usage." ON)
+
+if(BUILD_GUI_APP)
+    set(NEEDS_QT ON)
+endif()
 
 # C++ Standard
 set(CMAKE_CXX_STANDARD 20)
@@ -29,19 +34,29 @@ find_package(SimpleRasters REQUIRED)
 if(NEEDS_QT)
     set(CMAKE_AUTOMOC TRUE)
 
-    find_package(Qt5 COMPONENTS Core Widgets Xml Gui Test REQUIRED)
+    find_package(Qt5 COMPONENTS Core Xml Test REQUIRED)
 
     set(QT_INCLUDES
         ${Qt5Core_INCLUDE_DIRS}
-        ${Qt5Widgets_INCLUDE_DIRS}
-        ${Qt5Gui_INCLUDE_DIRS}
     )
 
     set(QT_LIBS
         Qt5::Core
-        Qt5::Gui
-        Qt5::Widgets
     )
+
+    if(BUILD_GUI_APP)
+        find_package(Qt5 COMPONENTS Core Widgets Xml Gui Test REQUIRED)
+
+        set(QT_INCLUDES
+            ${Qt5Core_INCLUDE_DIRS}
+        )
+
+        set(QT_LIBS
+            ${QT_LIBS}
+            Qt5::Gui
+            Qt5::Widgets
+        )
+    endif()
 
     set(HAS_QT TRUE)
 else()
@@ -128,11 +143,20 @@ install(TARGETS library_viewshed
 
 if(HAS_QT)
     install(TARGETS
-        viewshed inverseviewshed viewshedcalculator losextractor viewshed_widgets
+        viewshed inverseviewshed
         COMPONENT bin
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
+
+    if(BUILD_GUI_APP)
+        install(TARGETS
+            viewshedcalculator losextractor viewshed_widgets
+            COMPONENT bin
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        )
+    endif()
 endif()
 
 # endif()
