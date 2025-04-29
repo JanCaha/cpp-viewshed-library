@@ -57,8 +57,8 @@ jobs:
         run: | 
           mkdir build
           cmake \
-            -S. \
-            -Bbuild \
+            -S . \
+            -B build \
             -G Ninja \
             -DCMAKE_CXX_COMPILER=${COMPILER} \
             -DCMAKE_BUILD_TYPE=Release \
@@ -67,7 +67,8 @@ jobs:
             -DBUILD_TESTS:bool=on \
             -DCELL_EVENT_DATA_FLOAT:bool=on \
             -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
-            -DNEEDS_QT:bool=off
+            -DNEEDS_QT:bool=off \
+            -DBUILD_GUI_APP:bool=off
 
       - name: Build
         run: | 
@@ -88,8 +89,8 @@ jobs:
         id: unittestsdouble
         run: |
           cmake \
-            -S. \
-            -Bbuild \
+            -S . \
+            -B build \
             -G Ninja \
             -DCMAKE_CXX_COMPILER=${COMPILER} \
             -DCMAKE_BUILD_TYPE=Release \
@@ -98,7 +99,8 @@ jobs:
             -DBUILD_TESTS:bool=on \
             -DCELL_EVENT_DATA_FLOAT:bool=off \
             -DOUTPUT_RASTER_DATA_FLOAT:bool=off \
-            -DNEEDS_QT:bool=off
+            -DNEEDS_QT:bool=off \
+            -DBUILD_GUI_APP:bool=off
           cmake --build build --config Release --target build_tests
           cmake --build build --config Release --target run_tests
 
@@ -150,7 +152,7 @@ jobs:
       - name: Configure
         run: | 
           cmake \
-            -S. \
+            -S . \
             -Bbuild \
             -G Ninja \
             -DCMAKE_CXX_COMPILER=${COMPILER} \
@@ -161,7 +163,8 @@ jobs:
             -DCELL_EVENT_DATA_FLOAT:bool=on \
             -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
             -DNEEDS_QT:bool=on \
-            -D CMAKE_INSTALL_PREFIX=/usr
+            -DBUILD_GUI_APP:bool=on \
+            -DCMAKE_INSTALL_PREFIX=/usr \
       
       - name: Run Tests even with Qt
         id: unittestsqt
