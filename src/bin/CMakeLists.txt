@@ -21,6 +21,13 @@ macro(create_binary bin_name filename)
     )
 
     add_dependencies(create_binaries ${bin_name})
+
+    install(TARGETS
+        ${bin_name}
+        COMPONENT bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
 endmacro(create_binary)
 
 macro(create_gui_binary bin_name filename)
@@ -56,6 +63,13 @@ if(HAS_QT)
         target_include_directories(viewshed_widgets PUBLIC ${QT_INCLUDES})
         target_include_directories(viewshed_widgets PUBLIC SimpleRasters::SimpleRasters)
         target_include_directories(viewshed_widgets PRIVATE ${GDAL_INCLUDE_DIR})
+
+        install(TARGETS
+            viewshed_widgets
+            COMPONENT bin
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        )
 
         target_link_libraries(viewshed_widgets
             ${QT_LIBS}
