@@ -133,32 +133,6 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
     COMPONENT lib
 )
 
-install(TARGETS library_viewshed
-    COMPONENT lib
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-    PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-)
-
-if(HAS_QT)
-    install(TARGETS
-        viewshed inverseviewshed
-        COMPONENT bin
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
-
-    if(BUILD_GUI_APP)
-        install(TARGETS
-            viewshedcalculator losextractor viewshed_widgets
-            COMPONENT bin
-            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        )
-    endif()
-endif()
-
 # endif()
 
 # Documentation
