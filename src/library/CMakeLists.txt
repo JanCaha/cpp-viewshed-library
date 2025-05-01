@@ -34,29 +34,42 @@ set(LIBRARY_VIEWSHED_SRC
     los/losevaluator.cpp
 )
 
+macro(library_settings target_name)
+    set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME})
+    set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
+
+    set(INSTALL_HEADERS
+        "${LIBRARY_VIEWSHED_PUBLIC_HEADERS}"
+        ${CMAKE_SOURCE_DIR}/external/bsthreadpool/include/BS_thread_pool.hpp
+    )
+
+    set_target_properties(${target_name} PROPERTIES PUBLIC_HEADER "${INSTALL_HEADERS}")
+
+    target_include_directories(${target_name} PUBLIC ${CMAKE_SOURCE_DIR}/include/viewshed)
+    target_include_directories(${target_name} PUBLIC bs_thread_pool)
+    target_include_directories(${target_name} PRIVATE ${GDAL_INCLUDE_DIR})
+    target_include_directories(${target_name} PRIVATE SimpleRasters::SimpleRasters)
+
+    target_link_libraries(${target_name}
+        bs_thread_pool
+        ${GDAL_LIBRARY}
+        SimpleRasters::SimpleRasters
+    )
+
+    install(TARGETS ${target_name}
+        COMPONENT lib
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+        PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    )
+endmacro(library_settings)
+
 add_library(library_viewshed SHARED ${LIBRARY_VIEWSHED_SRC})
+add_library(library_viewshed_static STATIC ${LIBRARY_VIEWSHED_SRC})
 
-set_target_properties(library_viewshed PROPERTIES OUTPUT_NAME "viewshed")
-
-set_target_properties(library_viewshed PROPERTIES VERSION ${PROJECT_VERSION})
-
-set(INSTALL_HEADERS
-    "${LIBRARY_VIEWSHED_PUBLIC_HEADERS}"
-    ${CMAKE_SOURCE_DIR}/external/bsthreadpool/include/BS_thread_pool.hpp
-)
-
-set_target_properties(library_viewshed PROPERTIES PUBLIC_HEADER "${INSTALL_HEADERS}")
-
-target_include_directories(library_viewshed PUBLIC ${CMAKE_SOURCE_DIR}/include/viewshed)
-target_include_directories(library_viewshed PUBLIC bs_thread_pool)
-target_include_directories(library_viewshed PRIVATE ${GDAL_INCLUDE_DIR})
-target_include_directories(library_viewshed PRIVATE SimpleRasters::SimpleRasters)
-
-target_link_libraries(library_viewshed
-    bs_thread_pool
-    ${GDAL_LIBRARY}
-    SimpleRasters::SimpleRasters
-)
+library_settings(library_viewshed)
+library_settings(library_viewshed_static)
 
 if(${CELL_EVENT_DATA_FLOAT})
     message(STATUS "CellEvents will have data type `float`.")
