@@ -47,7 +47,7 @@ macro(library_settings target_name)
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/bsthreadpool/include>
         $<INSTALL_INTERFACE:include/viewshed>
     )
-
+    
     install(TARGETS ${target_name}
         COMPONENT lib
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
