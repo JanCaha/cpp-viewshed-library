@@ -74,6 +74,13 @@ add_library(library_viewshed_static STATIC ${LIBRARY_VIEWSHED_SRC})
 library_settings(library_viewshed)
 library_settings(library_viewshed_static)
 
+install(
+    EXPORT ViewshedTargets
+    FILE ViewshedTargets.cmake
+    NAMESPACE Viewshed::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${LIBRARY_NAME}
+)
+
 if(${CELL_EVENT_DATA_FLOAT})
     message(STATUS "CellEvents will have data type `float`.")
     set(CELL_EVENT_DATA_TYPE float)
