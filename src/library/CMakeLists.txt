@@ -35,7 +35,16 @@ set(LIBRARY_VIEWSHED_SRC
 )
 
 macro(library_settings target_name)
-    set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME})
+    string(TOLOWER ${LIBRARY_NAME} LIBRARY_NAME_LOWER)
+
+    get_target_property(target_type ${target_name} TYPE)
+
+    if (WIN32 AND target_type STREQUAL "STATIC_LIBRARY")
+        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}_static")
+    else()
+        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
+    endif()
+
     set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
 
     target_include_directories(${target_name} PUBLIC 
