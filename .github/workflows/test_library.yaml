@@ -72,7 +72,7 @@ jobs:
 
       - name: Build
         run: | 
-          cmake --build build --config Release --target library_viewshed
+          cmake --build build --config Release --target viewshed_shared
 
       - name: Run Tests
         id: unittests

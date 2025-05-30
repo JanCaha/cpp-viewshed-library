@@ -75,11 +75,11 @@ macro(library_settings target_name)
     )
 endmacro(library_settings)
 
-add_library(library_viewshed SHARED ${LIBRARY_VIEWSHED_SRC})
-add_library(library_viewshed_static STATIC ${LIBRARY_VIEWSHED_SRC})
+add_library(viewshed_shared SHARED ${LIBRARY_VIEWSHED_SRC})
+add_library(viewshed_static STATIC ${LIBRARY_VIEWSHED_SRC})
 
-library_settings(library_viewshed)
-library_settings(library_viewshed_static)
+library_settings(viewshed_shared)
+library_settings(viewshed_static)
 
 install(
     EXPORT ViewshedTargets

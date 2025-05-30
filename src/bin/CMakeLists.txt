@@ -21,7 +21,7 @@ macro(create_binary bin_name filename)
     target_link_libraries(${bin_name}
         ${QT_LIBS}
         GDAL::GDAL
-        library_viewshed
+        viewshed_shared
         SimpleRasters::simplerasters_shared
     )
 
@@ -75,7 +75,7 @@ if(HAS_QT)
 
         target_link_libraries(viewshed_widgets
             ${QT_LIBS}
-            library_viewshed
+            viewshed_shared
             GDAL::GDAL
             SimpleRasters::simplerasters_shared
         )

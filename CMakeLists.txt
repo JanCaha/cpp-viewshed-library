@@ -157,5 +157,5 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release" AND PACK_DEB)
         COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
-    add_dependencies(pack_viewshed_library_deb library_viewshed)
+    add_dependencies(pack_viewshed_library_deb viewshed_shared)
 endif()

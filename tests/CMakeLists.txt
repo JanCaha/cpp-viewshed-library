@@ -31,7 +31,7 @@ macro(add_library_test testname)
     add_executable(${testname} "${testname}.cpp")
 
     target_link_libraries(${testname}
-        library_viewshed
+        viewshed_shared
         GDAL::GDAL
         SimpleRasters::simplerasters_shared
         GTest::gtest
@@ -49,7 +49,7 @@ macro(add_gui_test filename)
     add_executable(${testname} "gui/${filename}.cpp")
     
     target_link_libraries(${testname}
-        library_viewshed
+        viewshed_shared
         GDAL::GDAL
         SimpleRasters::simplerasters_shared
         ${QT_LIBS}

@@ -15,7 +15,8 @@ cmake \
     -D NEEDS_QT:bool=on \
     -D BUILD_GUI_APP:bool=on
 
-cmake --build build --config Release --target library_viewshed
+cmake --build build --config Release --target viewshed_shared
+cmake --build build --config Release --target viewshed_static
 cmake --build build --config Release --target create_binaries
 
 # install
