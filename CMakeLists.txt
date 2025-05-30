@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20.0)
 
 # Project Information
-project(viewshed VERSION 4.1.1 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
+project(viewshed VERSION 4.1.2 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
 
 # Library Name
 SET(LIBRARY_NAME "Viewshed")
