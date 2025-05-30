@@ -8,45 +8,11 @@ on: push
 
 jobs:
 
-  Update-conda-package-version:
-
-    name: Update conda package version
-
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-      
-      - name: Set Env variable with project version
-        run: |
-            echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_ENV
-          
-      - name: Print project version
-        run: |
-            echo "Project version: $VERSION"
-
-      - name: Update conda package version
-        run: |
-          sed -i '/version: /c\  version: \"'$VERSION'\"' conda/meta.yaml
-      
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-            commit_message: Change to conda package version
-            file_pattern: 'conda/meta.yaml'
-
   Build-on-Linux:
 
     name: Build on Linux
 
     runs-on: ubuntu-latest
-
-    needs: Update-conda-package-version
 
     defaults:
       run:
@@ -92,3 +58,48 @@ jobs:
         with:
           path: conda_package/linux-64/*.conda 
           name: conda_package_linux
+
+  Build-on-Windows:
+
+    name: Build on Windows
+
+    runs-on: windows-latest
+
+    permissions:
+      contents: write
+
+    env:
+      CONDA_PKG_DIR: ~/conda_pkgs_dir
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          use-mamba: true
+          channels: conda-forge,defaults
+          auto-activate-base: true
+          activate-environment: ""
+
+      - name: Add Custom Conda Channel
+        run: |
+          conda config --add channels https://jancaha.github.io/conda-channel 
+     
+      - name: Install conda-build
+        run: |
+          conda install -n base conda-build conda-verify
+      
+      - name: Build library
+        run: |
+          conda build conda --variant-config-files conda/variants/windows.yaml --output-folder conda_package
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: conda_package/win-64/*.conda
+          name: conda_package_windows
