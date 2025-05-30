@@ -6,18 +6,25 @@ macro(create_binary bin_name filename)
 
     set_target_properties(${bin_name} PROPERTIES AUTOMOC TRUE)
 
-    target_include_directories(${bin_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/viewshed)
-    target_include_directories(${bin_name} PUBLIC bs_thread_pool)
     target_include_directories(${bin_name} PRIVATE ${QT_INCLUDES})
     target_include_directories(${bin_name} PRIVATE ${GDAL_INCLUDE_DIR})
-    target_include_directories(${bin_name} PRIVATE SimpleRasters::SimpleRasters)
+    target_include_directories(${bin_name} PRIVATE ${SIMPLERASTERS_INCLUDE_DIRS})
+
+    target_include_directories(${bin_name} PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/viewshed>
+        $<INSTALL_INTERFACE:include/viewshed>
+    )
+
+    target_include_directories(${bin_name} PRIVATE 
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/bsthreadpool/include>
+        $<INSTALL_INTERFACE:include/viewshed>
+    )
 
     target_link_libraries(${bin_name}
         ${QT_LIBS}
-        bs_thread_pool
-        library_viewshed
         ${GDAL_LIBRARY}
-        SimpleRasters::SimpleRasters
+        library_viewshed
+        SimpleRasters::simplerasters_shared
     )
 
     add_dependencies(create_binaries ${bin_name})

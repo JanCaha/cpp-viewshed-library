@@ -38,22 +38,14 @@ macro(library_settings target_name)
     set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME})
     set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
 
-    set(INSTALL_HEADERS
-        "${LIBRARY_VIEWSHED_PUBLIC_HEADERS}"
-        ${CMAKE_SOURCE_DIR}/external/bsthreadpool/include/BS_thread_pool.hpp
+    target_include_directories(${target_name} PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/viewshed>
+        $<INSTALL_INTERFACE:include/viewshed>
     )
 
-    set_target_properties(${target_name} PROPERTIES PUBLIC_HEADER "${INSTALL_HEADERS}")
-
-    target_include_directories(${target_name} PUBLIC ${CMAKE_SOURCE_DIR}/include/viewshed)
-    target_include_directories(${target_name} PUBLIC bs_thread_pool)
-    target_include_directories(${target_name} PRIVATE ${GDAL_INCLUDE_DIR})
-    target_include_directories(${target_name} PRIVATE SimpleRasters::SimpleRasters)
-
-    target_link_libraries(${target_name}
-        bs_thread_pool
-        ${GDAL_LIBRARY}
-        SimpleRasters::SimpleRasters
+    target_include_directories(${target_name} PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/bsthreadpool/include>
+        $<INSTALL_INTERFACE:include/viewshed>
     )
 
     install(TARGETS ${target_name}

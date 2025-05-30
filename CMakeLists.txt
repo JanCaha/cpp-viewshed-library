@@ -105,7 +105,6 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
 )
 
 # Subdirectories
-add_subdirectory(external)
 add_subdirectory(src)
 
 # Installation Directories
