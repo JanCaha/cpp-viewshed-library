@@ -107,32 +107,30 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
 # Subdirectories
 add_subdirectory(src)
 
-# Installation Directories
-include(GNUInstallDirs)
-
-# Package Configuration
+# Create and install package configuration files
 include(CMakePackageConfigHelpers)
-configure_package_config_file(
-    ${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
-)
 
+# Configure version file
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
+    "${CMAKE_CURRENT_BINARY_DIR}/${LIBRARY_NAME}ConfigVersion.cmake"
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
 
-include(GNUInstallDirs)
-
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
-    COMPONENT lib
+# Configure config file template
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/${LIBRARY_NAME}Config.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${LIBRARY_NAME}
 )
 
-# endif()
+# Install configuration files
+install(
+    FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/${LIBRARY_NAME}Config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/${LIBRARY_NAME}ConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${LIBRARY_NAME}
+)
 
 # Documentation
 if(BUILD_DOCUMENTATION)
