@@ -11,8 +11,6 @@ include_directories(SYSTEM
     ${GTEST_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}/include/viewshed
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${GDAL_INCLUDE_DIR}
-    SimpleRasters::SimpleRasters
 )
 
 # ############################################################
@@ -34,8 +32,8 @@ macro(add_library_test testname)
 
     target_link_libraries(${testname}
         library_viewshed
-        ${GDAL_LIBRARY}
-        SimpleRasters::SimpleRasters
+        GDAL::GDAL
+        SimpleRasters::simplerasters_shared
         GTest::gtest
         GTest::gtest_main
         GTest::gmock
@@ -49,17 +47,17 @@ macro(add_gui_test filename)
     string(REPLACE "test" "" testname ${filename})
     set(testname test_gui_${testname})
     add_executable(${testname} "gui/${filename}.cpp")
-
+    
     target_link_libraries(${testname}
         library_viewshed
-        ${GDAL_LIBRARY}
-        SimpleRasters::SimpleRasters
+        GDAL::GDAL
+        SimpleRasters::simplerasters_shared
         ${QT_LIBS}
         Qt5::Test
         viewshed_widgets
     )
+
     include_directories(${testname} ${CMAKE_SOURCE_DIR}/src/bin)
-    target_include_directories(${testname} PRIVATE ${GDAL_INCLUDE_DIR})
 
     add_test(${testname} ${testname} -maxwarnings 10000)
     add_dependencies(build_tests ${testname})
