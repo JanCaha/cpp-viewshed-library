@@ -7,20 +7,6 @@ source:
 
 build:
   number: 0
-  skip: true  # [win]
-  script:
-    - cmake ${CMAKE_ARGS} -B build -S {{SRC_DIR}} -G Ninja -DCMAKE_BUILD_TYPE=Release -DPACK_DEB:bool=off -DBUILD_DOCUMENTATION:bool=off -DBUILD_TESTS:bool=off -DCELL_EVENT_DATA_FLOAT:bool=on -DOUTPUT_RASTER_DATA_FLOAT:bool=on -DNEEDS_QT:bool=on -DBUILD_GUI_APP:bool=off
-    - cmake --build build --config Release 
-    - cmake --install build --prefix {{PREFIX}}
-
-test:
-  requires:
-    - bash 
-  commands:
-    - test -f "${PREFIX}/lib/libviewshed.so"
-    - test -f "${PREFIX}/include/viewshed/viewshed.h"
-    - test -x "${PREFIX}/bin/viewshed"
-    - test -x "${PREFIX}/bin/inverseviewshed"
 
 requirements:
   build:
@@ -39,6 +25,14 @@ requirements:
     - libgdal
     - libsimplerasters
     - qt-main 5.*
+
+test:
+  files:
+    - test_script.sh  # [unix]
+    - test_script.bat  # [win]
+  commands:
+    - bash test_script.sh  # [unix]
+    - call test_script.bat  # [win]
 
 about:
   home: https://github.com/JanCaha/cpp-viewshed-library
