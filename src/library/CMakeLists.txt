@@ -47,14 +47,16 @@ macro(library_settings target_name)
 
     set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
 
+    include(GNUInstallDirs)
+
     target_include_directories(${target_name} PUBLIC 
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/viewshed>
-        $<INSTALL_INTERFACE:include/viewshed>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}> 
     )
 
     target_include_directories(${target_name} PUBLIC 
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/bsthreadpool/include>
-        $<INSTALL_INTERFACE:include/viewshed>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}>
     )
     
     target_link_libraries(${target_name}
@@ -84,6 +86,12 @@ install(
     FILE ViewshedTargets.cmake
     NAMESPACE Viewshed::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${LIBRARY_NAME}
+)
+
+install(
+    DIRECTORY ${CMAKE_SOURCE_DIR}/include/viewshed/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    FILES_MATCHING PATTERN "*.h"
 )
 
 if(${CELL_EVENT_DATA_FLOAT})
