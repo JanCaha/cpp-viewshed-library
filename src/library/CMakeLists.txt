@@ -57,6 +57,11 @@ macro(library_settings target_name)
         $<INSTALL_INTERFACE:include/viewshed>
     )
     
+    target_link_libraries(${target_name}
+        GDAL::GDAL
+        SimpleRasters::simplerasters_shared
+    )
+
     install(TARGETS ${target_name}
         COMPONENT lib
         EXPORT ViewshedTargets
