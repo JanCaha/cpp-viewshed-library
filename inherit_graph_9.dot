@@ -1,8 +1,9 @@
 digraph "Graphical Class Hierarchy"
 {
  // LATEX_PDF_SIZE
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [label="viewshed::Visibility",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classviewshed_1_1Visibility.html",tooltip="Class that provides static functions to assist with viewshed calculation."];
+  Node0 [id="Node000000",label="viewshed::Visibility",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classviewshed_1_1Visibility.html",tooltip="Class that provides static functions to assist with viewshed calculation."];
 }
