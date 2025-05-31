@@ -102,6 +102,7 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/viewshedlibrary.h
     include/viewshed/viewshedutils.h
     include/viewshed/viewshedtypes.h
+    include/viewshed/viewshed_export.h
 )
 
 # Subdirectories
