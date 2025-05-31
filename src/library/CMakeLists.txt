@@ -83,8 +83,8 @@ macro(library_settings target_name)
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
     )
+    
 endmacro(library_settings)
 
 add_library(viewshed_shared SHARED ${LIBRARY_VIEWSHED_SRC})
