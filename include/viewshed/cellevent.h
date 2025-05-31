@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include "defaultdatatypes.h"
 #include "enums.h"
@@ -12,7 +13,7 @@ namespace viewshed
      * from important point (viewpoint or target point), horizontal angle from important point.
      *
      */
-    class CellEvent : public RasterPosition
+    class DLL_API CellEvent : public RasterPosition
     {
       public:
         CellEventPositionType mEventType;

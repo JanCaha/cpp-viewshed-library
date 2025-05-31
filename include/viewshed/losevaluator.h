@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <limits>
 #include <memory>
@@ -20,7 +21,7 @@ namespace viewshed
      * result can be obtained from
      *
      */
-    class LoSEvaluator
+    class DLL_API LoSEvaluator
     {
       public:
         LoSEvaluator( std::shared_ptr<AbstractLoS> los, std::shared_ptr<ViewshedAlgorithms> visibilityIndices );

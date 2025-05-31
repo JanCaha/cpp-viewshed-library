@@ -13,12 +13,12 @@ namespace viewshed
      * specific cell.
      *
      */
-    class ViewshedValues : public RasterPosition
+    class DLL_API ViewshedValues : public RasterPosition
     {
       public:
         std::vector<double> values;
 
-        ViewshedValues(){};
+        ViewshedValues() {};
 
         ViewshedValues( int row_, int col_ )
         {

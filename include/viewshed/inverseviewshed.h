@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <functional>
 #include <iostream>
@@ -16,7 +17,7 @@ using viewshed::ViewshedAlgorithms;
 
 namespace viewshed
 {
-    class InverseViewshed : public AbstractViewshed
+    class DLL_API InverseViewshed : public AbstractViewshed
     {
       public:
         InverseViewshed( std::shared_ptr<Point> targetPoint, double observerOffset,

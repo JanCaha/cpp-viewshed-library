@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <algorithm>
 #include <memory>
@@ -20,7 +21,7 @@ namespace viewshed
      * with potential offset from the surface).
      *
      */
-    class AbstractLoS : public std::vector<LoSNode>
+    class DLL_API AbstractLoS : public std::vector<LoSNode>
     {
       public:
         /**

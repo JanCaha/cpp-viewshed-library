@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include "constants.h"
 #include "enums.h"
@@ -15,7 +16,7 @@ namespace viewshed
      * @brief Class that provides static functions to assist with viewshed calculation.
      *
      */
-    class Visibility
+    class DLL_API Visibility
     {
       public:
         /**

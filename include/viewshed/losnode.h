@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <memory>
 
@@ -14,7 +15,7 @@ namespace viewshed
      * @brief Representation of single cell that creates a point on LoS.
      *
      */
-    class LoSNode : public RasterPosition
+    class DLL_API LoSNode : public RasterPosition
     {
       public:
         double mAngle[3];

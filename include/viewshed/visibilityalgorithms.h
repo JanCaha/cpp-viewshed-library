@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include "visibilityangledifferencetoglobalhorizon.h"
 #include "visibilityangledifferencetolocalhorizon.h"

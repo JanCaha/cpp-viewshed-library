@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <limits>
 
@@ -36,7 +37,7 @@ namespace viewshed
      * TOMA, L., ZHUANG, Y., RICHARD, W., METZ, M.  Grass gis manual: r.viewshed, 2022.
      * https://grass.osgeo.org/grass82/manuals/r.viewshed.html.
      */
-    class AbstractViewshed
+    class DLL_API AbstractViewshed
     {
       public:
         /**

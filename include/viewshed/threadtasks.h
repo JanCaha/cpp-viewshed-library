@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 
 #include "simplerasters.h"
@@ -20,7 +21,7 @@ namespace viewshed
      * @param algs
      * @return ViewshedValues
      */
-    void evaluateLoS( std::shared_ptr<AbstractLoS> los, std::shared_ptr<ViewshedAlgorithms> algs,
+    DLL_API void evaluateLoS( std::shared_ptr<AbstractLoS> los, std::shared_ptr<ViewshedAlgorithms> algs,
                       std::shared_ptr<ResultRasters> results );
 
 } // namespace viewshed

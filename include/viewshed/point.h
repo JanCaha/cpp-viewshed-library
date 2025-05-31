@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <memory>
 
@@ -15,7 +16,7 @@ namespace viewshed
      * elevation and cell size.
      *
      */
-    class Point : public RasterPosition
+    class DLL_API Point : public RasterPosition
     {
       public:
         /**
