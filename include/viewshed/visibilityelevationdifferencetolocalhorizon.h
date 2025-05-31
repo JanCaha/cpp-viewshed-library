@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include "abstractviewshedalgorithm.h"
 #include "losimportantvalues.h"
@@ -7,7 +8,7 @@ namespace viewshed
 {
     namespace visibilityalgorithm
     {
-        class ElevationDifferenceToLocalHorizon : public AbstractViewshedAlgorithm
+        class DLL_API ElevationDifferenceToLocalHorizon : public AbstractViewshedAlgorithm
         {
 
           public:

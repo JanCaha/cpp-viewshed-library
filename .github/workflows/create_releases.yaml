@@ -12,7 +12,8 @@ on:
     branches:
       - 'main'
       - 'master'
-
+  workflow_dispatch:
+    
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   PACKAGE: viewshed
@@ -60,11 +61,11 @@ jobs:
         
         - name: Install GDAL
           run: |
-            sudo add-apt-repository ppa:ubuntugis/ppa
+            sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
             sudo apt update
             sudo apt-get -y install gdal-bin libgdal-dev
         
-        - uses: robinraju/release-downloader@v1.10
+        - uses: robinraju/release-downloader@v1
           with:
             repository: "JanCaha/cpp-simplerasters"
             latest: true

@@ -24,7 +24,7 @@ if(BUILD_DOCUMENTATION)
 
         if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
             if(BUILD_DOCUMENTATION)
-                add_dependencies(library_viewshed build_documentation)
+                add_dependencies(viewshed_shared build_documentation)
             endif()
         endif()
 

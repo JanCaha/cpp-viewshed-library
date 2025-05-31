@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <vector>
 
@@ -20,7 +21,7 @@ namespace viewshed
      * @brief Class that represents InverseLoS, that is LoS used in Inverse Viewshed calculation.
      *
      */
-    class InverseLoS : public AbstractLoS
+    class DLL_API InverseLoS : public AbstractLoS
     {
       public:
         InverseLoS();

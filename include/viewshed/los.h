@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <memory>
 #include <vector>
@@ -20,7 +21,7 @@ namespace viewshed
      * @brief Class that represents LoS for classic Viewshed calculation.
      *
      */
-    class LoS : public AbstractLoS
+    class DLL_API LoS : public AbstractLoS
     {
       public:
         LoS();

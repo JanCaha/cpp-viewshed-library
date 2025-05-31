@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <limits>
 #include <string>
@@ -14,7 +15,7 @@ namespace viewshed
      * @brief Base class for all Viewshed Algorithms.
      *
      */
-    class AbstractViewshedAlgorithm
+    class DLL_API AbstractViewshedAlgorithm
     {
       public:
         /**

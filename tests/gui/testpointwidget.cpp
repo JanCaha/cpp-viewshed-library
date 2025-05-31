@@ -5,6 +5,7 @@
 #include "pointwidget.h"
 
 #include "gdal_version.h"
+#include "ogr_geometry.h"
 
 #include "testsettings.h"
 
@@ -38,8 +39,8 @@ namespace ViewshedBinaries
             QTest::keyClicks( widget->mPointX, "-336364.021" );
             QTest::keyClicks( widget->mPointY, "-1189108.615" );
 
-            Q_ASSERT( qFuzzyCompare( widget->mPoint.getX(), -336364.021 ) );
-            Q_ASSERT( qFuzzyCompare( widget->mPoint.getY(), -1189108.615 ) );
+            Q_ASSERT( std::abs( widget->mPoint.getX() - ( -336364.021 ) ) < 0.001 );
+            Q_ASSERT( std::abs( widget->mPoint.getY() - ( -1189108.615 ) ) < 0.001 );
             Q_ASSERT( widget->mPointValid );
 
             OGRWktOptions wktOpts = OGRWktOptions();

@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 namespace viewshed
 {
@@ -6,7 +7,7 @@ namespace viewshed
      * @brief Enum that specifies types of data, that can be extracted from LoSNode.
      *
      */
-    enum class ValueType
+    enum class DLL_API ValueType
     {
         Angle,
         Elevation,
@@ -17,7 +18,7 @@ namespace viewshed
      * @brief Enum that specifies cell event position.
      *
      */
-    enum CellEventPositionType
+    enum DLL_API CellEventPositionType
     {
         ENTER = 0,
         CENTER = 1,

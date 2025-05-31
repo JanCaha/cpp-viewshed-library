@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 namespace viewshed
 {
@@ -7,7 +8,7 @@ namespace viewshed
      * @brief Class to represent position on raster in term of row and column.
      *
      */
-    class RasterPosition
+    class DLL_API RasterPosition
     {
       public:
         RasterPosition(){};

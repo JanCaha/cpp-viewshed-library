@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 namespace viewshed
 {
@@ -7,7 +8,7 @@ namespace viewshed
      * for Visibility Algorithms.
      *
      */
-    struct LoSImportantValues
+    struct DLL_API LoSImportantValues
     {
         /**
          * @brief Construct a new Lo S Important Values object

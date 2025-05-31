@@ -2,6 +2,6 @@
 
 namespace viewshed
 {
-    double const REFRACTION_COEFFICIENT{ 0.142860 };
-    double const EARTH_DIAMETER{ 12740000 };
+    const double REFRACTION_COEFFICIENT{ 0.142860 };
+    const double EARTH_DIAMETER{ 12740000 };
 } // namespace viewshed

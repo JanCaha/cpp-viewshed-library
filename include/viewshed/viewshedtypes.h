@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <memory>
 #include <vector>
@@ -7,9 +8,9 @@
 
 namespace viewshed
 {
-    class AbstractViewshedAlgorithm;
-    class AbstractLoS;
-    class LoSNode;
+    class DLL_API AbstractViewshedAlgorithm;
+    class DLL_API AbstractLoS;
+    class DLL_API LoSNode;
 
     using ViewshedAlgorithms = std::vector<std::shared_ptr<AbstractViewshedAlgorithm>>;
     using ResultRasters = std::vector<std::shared_ptr<SingleBandRaster>>;

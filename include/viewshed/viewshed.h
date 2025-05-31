@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <functional>
 #include <iostream>
@@ -16,7 +17,7 @@ using viewshed::ViewshedAlgorithms;
 
 namespace viewshed
 {
-    class Viewshed : public AbstractViewshed
+    class DLL_API Viewshed : public AbstractViewshed
     {
       public:
         Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<ProjectedSquareCellRaster> dem,

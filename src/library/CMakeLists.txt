@@ -34,34 +34,83 @@ set(LIBRARY_VIEWSHED_SRC
     los/losevaluator.cpp
 )
 
-add_library(library_viewshed SHARED ${LIBRARY_VIEWSHED_SRC})
+macro(library_settings target_name)
+    string(TOLOWER ${LIBRARY_NAME} LIBRARY_NAME_LOWER)
 
-set_target_properties(library_viewshed PROPERTIES OUTPUT_NAME "viewshed")
+    get_target_property(target_type ${target_name} TYPE)
 
-set_target_properties(library_viewshed PROPERTIES VERSION ${PROJECT_VERSION})
+    if (WIN32)
+        if(target_type STREQUAL "STATIC_LIBRARY")
+            set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}_static")
+        else()
+            set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
+            target_compile_definitions(${target_name} PRIVATE VIEWSHED_EXPORTS)
+        endif()
+    else()
+        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
+    endif()
+    
 
-set(INSTALL_HEADERS
-    "${LIBRARY_VIEWSHED_PUBLIC_HEADERS}"
-    ${CMAKE_SOURCE_DIR}/external/bsthreadpool/include/BS_thread_pool.hpp
+    if (WIN32 AND target_type STREQUAL "STATIC_LIBRARY")
+        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}_static")
+    else()
+        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
+    endif()
+
+    set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
+
+    include(GNUInstallDirs)
+
+    target_include_directories(${target_name} PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/viewshed>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}> 
+    )
+
+    target_include_directories(${target_name} PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/bsthreadpool/include>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}>
+    )
+    
+    target_link_libraries(${target_name}
+        GDAL::GDAL
+        SimpleRasters::simplerasters_shared
+    )
+
+    install(TARGETS ${target_name}
+        COMPONENT lib
+        EXPORT ViewshedTargets
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    )
+    
+endmacro(library_settings)
+
+add_library(viewshed_shared SHARED ${LIBRARY_VIEWSHED_SRC})
+add_library(viewshed_static STATIC ${LIBRARY_VIEWSHED_SRC})
+
+library_settings(viewshed_shared)
+library_settings(viewshed_static)
+
+install(
+    EXPORT ViewshedTargets
+    FILE ViewshedTargets.cmake
+    NAMESPACE Viewshed::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${LIBRARY_NAME}
 )
 
-set_target_properties(library_viewshed PROPERTIES PUBLIC_HEADER "${INSTALL_HEADERS}")
-
-target_include_directories(library_viewshed PUBLIC ${CMAKE_SOURCE_DIR}/include/viewshed)
-target_include_directories(library_viewshed PUBLIC bs_thread_pool)
-target_include_directories(library_viewshed PRIVATE ${GDAL_INCLUDE_DIR})
-target_include_directories(library_viewshed PRIVATE SimpleRasters::SimpleRasters)
-
-target_link_libraries(library_viewshed
-    bs_thread_pool
-    ${GDAL_LIBRARY}
-    SimpleRasters::SimpleRasters
+install(
+    DIRECTORY ${CMAKE_SOURCE_DIR}/include/viewshed/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    FILES_MATCHING PATTERN "*.h"
 )
 
 if(${CELL_EVENT_DATA_FLOAT})
     message(STATUS "CellEvents will have data type `float`.")
     set(CELL_EVENT_DATA_TYPE float)
-    target_compile_definitions(library_viewshed PUBLIC CELL_EVENT_USE_FLOAT=1)
+    target_compile_definitions(viewshed_shared PUBLIC CELL_EVENT_USE_FLOAT=1)
+    target_compile_definitions(viewshed_static PUBLIC CELL_EVENT_USE_FLOAT=1)
 else()
     set(CELL_EVENT_DATA_TYPE double)
     message(STATUS "CellEvents will have data type `double`.")

@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include <limits>
 #include <memory>
@@ -22,7 +23,7 @@ namespace viewshed
      * LoS to CSV where the values are point's distance, elevation and whether the point is target point.
      *
      */
-    struct DataTriplet
+    struct DLL_API DataTriplet
     {
         DataTriplet( double f, double s, bool t )
         {
@@ -40,7 +41,7 @@ namespace viewshed
      * @brief Class that contains mostly static helper functions.
      *
      */
-    class ViewshedUtils
+    class DLL_API ViewshedUtils
     {
       public:
         /**

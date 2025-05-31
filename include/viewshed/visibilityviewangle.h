@@ -1,4 +1,5 @@
 #pragma once
+#include "viewshed_export.h"
 
 #include "abstractviewshedalgorithm.h"
 
@@ -6,7 +7,7 @@ namespace viewshed
 {
     namespace visibilityalgorithm
     {
-        class ViewAngle : public AbstractViewshedAlgorithm
+        class DLL_API ViewAngle : public AbstractViewshedAlgorithm
         {
 
           public:

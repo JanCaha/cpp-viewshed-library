@@ -1,0 +1,31 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+# Required dependencies
+find_dependency(GDAL REQUIRED)
+find_dependency(Threads REQUIRED)
+find_dependency(SimpleRasters REQUIRED)
+
+# Optional Qt dependency
+if(@HAS_QT@)
+    find_dependency(Qt5 COMPONENTS Core Xml Test REQUIRED)
+    if(@BUILD_GUI_APP@)
+        find_dependency(Qt5 COMPONENTS Widgets Gui REQUIRED)
+    endif()
+endif()
+
+# Targets
+include("${CMAKE_CURRENT_LIST_DIR}/@LIBRARY_NAME@Targets.cmake")
+
+# Version
+set(@LIBRARY_NAME@_VERSION "@PROJECT_VERSION@")
+
+# Public headers (optional, for consumers)
+set(@LIBRARY_NAME@_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/../../include")
+
+# CMake compatibility
+set_and_check(@LIBRARY_NAME@_CONFIG "${CMAKE_CURRENT_LIST_FILE}")
+
+# Optional: Exported variables for consumers
+set(@LIBRARY_NAME@_FOUND TRUE)

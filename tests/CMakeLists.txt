@@ -11,8 +11,6 @@ include_directories(SYSTEM
     ${GTEST_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}/include/viewshed
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${GDAL_INCLUDE_DIR}
-    SimpleRasters::SimpleRasters
 )
 
 # ############################################################
@@ -29,13 +27,13 @@ add_dependencies(run_tests build_tests)
 
 # ############################################################
 # Macro to add a test:
-macro(ADD_LIBRARY_TEST testname)
+macro(add_library_test testname)
     add_executable(${testname} "${testname}.cpp")
 
     target_link_libraries(${testname}
-        library_viewshed
-        ${GDAL_LIBRARY}
-        SimpleRasters::SimpleRasters
+        viewshed_shared
+        GDAL::GDAL
+        SimpleRasters::simplerasters_shared
         GTest::gtest
         GTest::gtest_main
         GTest::gmock
@@ -43,41 +41,42 @@ macro(ADD_LIBRARY_TEST testname)
 
     add_test(${testname} ${testname} -maxwarnings 10000)
     add_dependencies(build_tests ${testname})
-endmacro(ADD_LIBRARY_TEST)
+endmacro(add_library_test)
 
-macro(ADD_GUI_TEST filename)
+macro(add_gui_test filename)
     string(REPLACE "test" "" testname ${filename})
     set(testname test_gui_${testname})
     add_executable(${testname} "gui/${filename}.cpp")
-
+    
     target_link_libraries(${testname}
-        library_viewshed
-        ${GDAL_LIBRARY}
-        SimpleRasters::SimpleRasters
+        viewshed_shared
+        GDAL::GDAL
+        SimpleRasters::simplerasters_shared
         ${QT_LIBS}
         Qt5::Test
         viewshed_widgets
     )
+
     include_directories(${testname} ${CMAKE_SOURCE_DIR}/src/bin)
 
     add_test(${testname} ${testname} -maxwarnings 10000)
     add_dependencies(build_tests ${testname})
-endmacro(ADD_GUI_TEST)
+endmacro(add_gui_test)
 
 # ############################################################
 
 # ############################################################
 # Tests:
-ADD_LIBRARY_TEST(testcellevent)
-ADD_LIBRARY_TEST(testviewpoint)
-ADD_LIBRARY_TEST(testlosalgorithms)
-ADD_LIBRARY_TEST(testviewshed)
-ADD_LIBRARY_TEST(testinverselosalgorithms)
-ADD_LIBRARY_TEST(testinverseviewshed)
-ADD_LIBRARY_TEST(testviewshedtiming)
+add_library_test(testcellevent)
+add_library_test(testviewpoint)
+add_library_test(testlosalgorithms)
+add_library_test(testviewshed)
+add_library_test(testinverselosalgorithms)
+add_library_test(testinverseviewshed)
+add_library_test(testviewshedtiming)
 
 if(HAS_QT)
-    ADD_GUI_TEST(testviewshedcalculator)
-    ADD_GUI_TEST(testpointwidget)
-    ADD_GUI_TEST(testfileselectorwidget)
+    add_gui_test(testviewshedcalculator)
+    add_gui_test(testpointwidget)
+    add_gui_test(testfileselectorwidget)
 endif()

@@ -6,21 +6,33 @@ macro(create_binary bin_name filename)
 
     set_target_properties(${bin_name} PROPERTIES AUTOMOC TRUE)
 
-    target_include_directories(${bin_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/viewshed)
-    target_include_directories(${bin_name} PUBLIC bs_thread_pool)
     target_include_directories(${bin_name} PRIVATE ${QT_INCLUDES})
-    target_include_directories(${bin_name} PRIVATE ${GDAL_INCLUDE_DIR})
-    target_include_directories(${bin_name} PRIVATE SimpleRasters::SimpleRasters)
+
+    target_include_directories(${bin_name} PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/viewshed>
+        $<INSTALL_INTERFACE:include/viewshed>
+    )
+
+    target_include_directories(${bin_name} PRIVATE 
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/bsthreadpool/include>
+        $<INSTALL_INTERFACE:include/viewshed>
+    )
 
     target_link_libraries(${bin_name}
         ${QT_LIBS}
-        bs_thread_pool
-        library_viewshed
-        ${GDAL_LIBRARY}
-        SimpleRasters::SimpleRasters
+        GDAL::GDAL
+        viewshed_shared
+        SimpleRasters::simplerasters_shared
     )
 
     add_dependencies(create_binaries ${bin_name})
+
+    install(TARGETS
+        ${bin_name}
+        COMPONENT bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
 endmacro(create_binary)
 
 macro(create_gui_binary bin_name filename)
@@ -53,15 +65,19 @@ if(HAS_QT)
 
         set_target_properties(viewshed_widgets PROPERTIES VERSION ${PROJECT_VERSION})
 
-        target_include_directories(viewshed_widgets PUBLIC ${QT_INCLUDES})
-        target_include_directories(viewshed_widgets PUBLIC SimpleRasters::SimpleRasters)
-        target_include_directories(viewshed_widgets PRIVATE ${GDAL_INCLUDE_DIR})
+        target_include_directories(viewshed_widgets PRIVATE ${QT_INCLUDES})
+         install(TARGETS
+            viewshed_widgets
+            COMPONENT bin
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        )
 
         target_link_libraries(viewshed_widgets
             ${QT_LIBS}
-            library_viewshed
-            ${GDAL_LIBRARY}
-            SimpleRasters::SimpleRasters
+            viewshed_shared
+            GDAL::GDAL
+            SimpleRasters::simplerasters_shared
         )
 
         create_gui_binary(viewshedcalculator viewshedcalculator.cpp)

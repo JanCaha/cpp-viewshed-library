@@ -122,3 +122,9 @@ If you use the library, please cite it accordingly:
   url     = {https://github.com/JanCaha/cpp-viewshed-library},
 }
 ```
+
+## Setup precommits
+
+```bash
+cp -r scripts/precommit/* .git/hooks/
+```

@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.20.0)
 
 # Project Information
-project(viewshed VERSION 4.1.0 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
+project(viewshed VERSION 4.1.2 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
 
 # Library Name
-SET(LIBRARY_NAME "viewshed")
+SET(LIBRARY_NAME "Viewshed")
 
 # Options
 option(BUILD_TESTS "Build tests." ON)
@@ -102,64 +102,36 @@ set(LIBRARY_VIEWSHED_PUBLIC_HEADERS
     include/viewshed/viewshedlibrary.h
     include/viewshed/viewshedutils.h
     include/viewshed/viewshedtypes.h
+    include/viewshed/viewshed_export.h
 )
 
 # Subdirectories
-add_subdirectory(external)
 add_subdirectory(src)
 
-# Installation Directories
-include(GNUInstallDirs)
-
-# Package Configuration
+# Create and install package configuration files
 include(CMakePackageConfigHelpers)
-configure_package_config_file(
-    ${CMAKE_MODULE_PATH}/ViewshedConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
-)
 
+# Configure version file
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
+    "${CMAKE_CURRENT_BINARY_DIR}/${LIBRARY_NAME}ConfigVersion.cmake"
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
 
-include(GNUInstallDirs)
-
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/ViewshedConfigVersion.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/viewshed
-    COMPONENT lib
+# Configure config file template
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/${LIBRARY_NAME}Config.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${LIBRARY_NAME}
 )
 
-install(TARGETS library_viewshed
-    COMPONENT lib
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-    PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+# Install configuration files
+install(
+    FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/${LIBRARY_NAME}Config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/${LIBRARY_NAME}ConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${LIBRARY_NAME}
 )
-
-if(HAS_QT)
-    install(TARGETS
-        viewshed inverseviewshed
-        COMPONENT bin
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
-
-    if(BUILD_GUI_APP)
-        install(TARGETS
-            viewshedcalculator losextractor viewshed_widgets
-            COMPONENT bin
-            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        )
-    endif()
-endif()
-
-# endif()
 
 # Documentation
 if(BUILD_DOCUMENTATION)
@@ -186,5 +158,5 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release" AND PACK_DEB)
         COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
-    add_dependencies(pack_viewshed_library_deb library_viewshed)
+    add_dependencies(pack_viewshed_library_deb viewshed_shared)
 endif()
