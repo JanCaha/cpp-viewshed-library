@@ -39,6 +39,18 @@ macro(library_settings target_name)
 
     get_target_property(target_type ${target_name} TYPE)
 
+    if (WIN32)
+        if(target_type STREQUAL "STATIC_LIBRARY")
+            set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}_static")
+        else()
+            set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
+            target_compile_definitions(${target_name} PRIVATE VIEWSHED_EXPORTS)
+        endif()
+    else()
+        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
+    endif()
+    
+
     if (WIN32 AND target_type STREQUAL "STATIC_LIBRARY")
         set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}_static")
     else()
