@@ -87,8 +87,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get autoremove --yes && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /usr/include/simplerasters /usr/include/simplerasters
-COPY --from=build /usr/include/viewshed /usr/include/viewshed
+COPY --from=build /usr/include/SimpleRasters /usr/include/SimpleRasters
+COPY --from=build /usr/include/Viewshed /usr/include/Viewshed
 COPY --from=build /usr/lib/x86_64-linux-gnu/libsimplerasters.so* /usr/lib/x86_64-linux-gnu
 COPY --from=build /usr/lib/x86_64-linux-gnu/libviewshed.so* /usr/lib/x86_64-linux-gnu
 COPY --from=build /usr/lib/x86_64-linux-gnu/libviewshedwidgets.so* /usr/lib/x86_64-linux-gnu
