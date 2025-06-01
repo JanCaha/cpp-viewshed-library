@@ -5,5 +5,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="viewshed::CellEventPosition",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$structviewshed_1_1CellEventPosition.html",tooltip="Simple tuple representing cell event position in term of row and col (as double)."];
+  Node0 [id="Node000000",label="BS::this_thread::thread\l_info_pool",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classBS_1_1this__thread_1_1thread__info__pool.html",tooltip="A helper class to store information about the thread pool that owns the current thread."];
 }

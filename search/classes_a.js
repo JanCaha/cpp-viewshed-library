@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rasterposition_0',['RasterPosition',['../classviewshed_1_1RasterPosition.html',1,'viewshed']]]
+  ['point_0',['Point',['../classviewshed_1_1Point.html',1,'viewshed']]]
 ];

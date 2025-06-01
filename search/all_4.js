@@ -5,5 +5,6 @@ var searchData=
   ['elevationdifference_2',['ElevationDifference',['../classviewshed_1_1visibilityalgorithm_1_1ElevationDifference.html',1,'viewshed::visibilityalgorithm']]],
   ['elevationdifferencetoglobalhorizon_3',['ElevationDifferenceToGlobalHorizon',['../classviewshed_1_1visibilityalgorithm_1_1ElevationDifferenceToGlobalHorizon.html',1,'viewshed::visibilityalgorithm']]],
   ['elevationdifferencetolocalhorizon_4',['ElevationDifferenceToLocalHorizon',['../classviewshed_1_1visibilityalgorithm_1_1ElevationDifferenceToLocalHorizon.html',1,'viewshed::visibilityalgorithm']]],
-  ['eventposition_5',['eventPosition',['../classviewshed_1_1Visibility.html#ad8d357a6a10403885318adfde083057f',1,'viewshed::Visibility']]]
+  ['endl_5',['endl',['../classBS_1_1synced__stream.html#a25e44d2af0173f7148b7cd2c6b9bb1ab',1,'BS::synced_stream']]],
+  ['eventposition_6',['eventPosition',['../classviewshed_1_1Visibility.html#ad8d357a6a10403885318adfde083057f',1,'viewshed::Visibility']]]
 ];

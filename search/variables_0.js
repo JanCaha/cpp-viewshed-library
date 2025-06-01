@@ -1,22 +1,4 @@
 var searchData=
 [
-  ['manglehorizontal_0',['mAngleHorizontal',['../classviewshed_1_1AbstractLoS.html#abcd7329a69ff1ab76c5f1a362d513e13',1,'viewshed::AbstractLoS']]],
-  ['mcellevents_1',['mCellEvents',['../classviewshed_1_1AbstractViewshed.html#ae745a41acd605bfdcb8b129bc3a362f2',1,'viewshed::AbstractViewshed']]],
-  ['mcurrentlosnode_2',['mCurrentLoSNode',['../classviewshed_1_1AbstractLoS.html#a88f5ece19ae01624764bceb966ead26e',1,'viewshed::AbstractLoS']]],
-  ['mcurvaturecorrections_3',['mCurvatureCorrections',['../classviewshed_1_1AbstractLoS.html#ab2874d92fb70da652c3672dfd3a051ae',1,'viewshed::AbstractLoS']]],
-  ['mdatatype_4',['mDataType',['../classviewshed_1_1AbstractViewshed.html#a8aa40531479bd1fe9b084eeb5db9c6d2',1,'viewshed::AbstractViewshed']]],
-  ['mdefaultband_5',['mDefaultBand',['../classviewshed_1_1AbstractViewshed.html#a8d6c49e9e309ca7da7802816adaf22fd',1,'viewshed::AbstractViewshed']]],
-  ['mearthdiameter_6',['mEarthDiameter',['../classviewshed_1_1AbstractLoS.html#a524cb65acfbcc48740c2a21b4315b6b2',1,'viewshed::AbstractLoS']]],
-  ['minputdsm_7',['mInputDsm',['../classviewshed_1_1AbstractViewshed.html#a211912446d326c0325a4c2454a51ae02',1,'viewshed::AbstractViewshed']]],
-  ['mlosnodes_8',['mLosNodes',['../classviewshed_1_1AbstractViewshed.html#a7c68a41b81d2d09bf3224155b8b30c7d',1,'viewshed::AbstractViewshed']]],
-  ['mmaxnumberoftasks_9',['mMaxNumberOfTasks',['../classviewshed_1_1AbstractViewshed.html#a9da7a357fccdce3b0464dd28e4777023',1,'viewshed::AbstractViewshed']]],
-  ['mpoint_10',['mPoint',['../classviewshed_1_1AbstractViewshed.html#a9639b1f9610981194f5e2c50ff4e3b54',1,'viewshed::AbstractViewshed']]],
-  ['mpointdistance_11',['mPointDistance',['../classviewshed_1_1AbstractLoS.html#a69998f84a3e7c232f393f710df56b04a',1,'viewshed::AbstractLoS']]],
-  ['mrefractioncoefficient_12',['mRefractionCoefficient',['../classviewshed_1_1AbstractLoS.html#a68b681d492d9786cc7ed923e0ceed4cd',1,'viewshed::AbstractLoS']]],
-  ['mtargetindex_13',['mTargetIndex',['../classviewshed_1_1AbstractLoS.html#ae91e0d11f5528dccb685c1aa50f114ae',1,'viewshed::AbstractLoS']]],
-  ['mthreadpool_14',['mThreadPool',['../classviewshed_1_1AbstractViewshed.html#a9ef606be61d022ff216dd91b2f4964ea',1,'viewshed::AbstractViewshed']]],
-  ['mtp_15',['mTp',['../classviewshed_1_1AbstractLoS.html#aa3c16379342093cab2da8f8f99dd3e94',1,'viewshed::AbstractLoS']]],
-  ['mvisibilityindices_16',['mVisibilityIndices',['../classviewshed_1_1AbstractViewshed.html#ad964ea2203cfb77005044455514c36ab',1,'viewshed::AbstractViewshed']]],
-  ['mvisibilitymask_17',['mVisibilityMask',['../classviewshed_1_1AbstractViewshed.html#ad3aad55b337a4cde9bf37f694da8f00e',1,'viewshed::AbstractViewshed']]],
-  ['mvp_18',['mVp',['../classviewshed_1_1AbstractLoS.html#ace873e83360fbd63de27df79957ab5fc',1,'viewshed::AbstractLoS']]]
+  ['endl_0',['endl',['../classBS_1_1synced__stream.html#a25e44d2af0173f7148b7cd2c6b9bb1ab',1,'BS::synced_stream']]]
 ];

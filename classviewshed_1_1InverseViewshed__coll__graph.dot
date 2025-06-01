@@ -11,9 +11,11 @@ digraph "viewshed::InverseViewshed"
   Node3 [id="Node000003",label="viewshed::LoSNode",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classviewshed_1_1LoSNode.html",tooltip="Representation of single cell that creates a point on LoS."];
   Node4 -> Node3 [id="edge3_Node000003_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
   Node4 [id="Node000004",label="viewshed::RasterPosition",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classviewshed_1_1RasterPosition.html",tooltip="Class to represent position on raster in term of row and column."];
-  Node5 -> Node2 [id="edge4_Node000002_Node000005",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" mEventCenter\nmEventEnter\nmEventEnterOpposite\nmEventExit\nmEventExitOpposite",fontcolor="grey" ];
-  Node5 [id="Node000005",label="viewshed::CellEvent",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classviewshed_1_1CellEvent.html",tooltip="Class representing cell events for Van Kreveld's plane sweep algorithm. Stores cell position (row and..."];
-  Node4 -> Node5 [id="edge5_Node000005_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node6 -> Node5 [id="edge6_Node000005_Node000006",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" mEventType",fontcolor="grey" ];
-  Node6 [id="Node000006",label="CellEventPositionType",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node5 -> Node2 [id="edge4_Node000002_Node000005",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" mThreadPool",fontcolor="grey" ];
+  Node5 [id="Node000005",label="BS::thread_pool",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classBS_1_1thread__pool.html",tooltip="A fast, lightweight, and easy-to-use C++17 thread pool class."];
+  Node6 -> Node2 [id="edge5_Node000002_Node000006",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" mEventCenter\nmEventEnter\nmEventEnterOpposite\nmEventExit\nmEventExitOpposite",fontcolor="grey" ];
+  Node6 [id="Node000006",label="viewshed::CellEvent",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classviewshed_1_1CellEvent.html",tooltip="Class representing cell events for Van Kreveld's plane sweep algorithm. Stores cell position (row and..."];
+  Node4 -> Node6 [id="edge6_Node000006_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node7 -> Node6 [id="edge7_Node000006_Node000007",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" mEventType",fontcolor="grey" ];
+  Node7 [id="Node000007",label="CellEventPositionType",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
 }

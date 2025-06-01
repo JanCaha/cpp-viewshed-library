@@ -14,10 +14,12 @@ var searchData=
   ['mpoint_11',['mPoint',['../classviewshed_1_1AbstractViewshed.html#a9639b1f9610981194f5e2c50ff4e3b54',1,'viewshed::AbstractViewshed']]],
   ['mpointdistance_12',['mPointDistance',['../classviewshed_1_1AbstractLoS.html#a69998f84a3e7c232f393f710df56b04a',1,'viewshed::AbstractLoS']]],
   ['mrefractioncoefficient_13',['mRefractionCoefficient',['../classviewshed_1_1AbstractLoS.html#a68b681d492d9786cc7ed923e0ceed4cd',1,'viewshed::AbstractLoS']]],
-  ['mtargetindex_14',['mTargetIndex',['../classviewshed_1_1AbstractLoS.html#ae91e0d11f5528dccb685c1aa50f114ae',1,'viewshed::AbstractLoS']]],
-  ['mthreadpool_15',['mThreadPool',['../classviewshed_1_1AbstractViewshed.html#a9ef606be61d022ff216dd91b2f4964ea',1,'viewshed::AbstractViewshed']]],
-  ['mtp_16',['mTp',['../classviewshed_1_1AbstractLoS.html#aa3c16379342093cab2da8f8f99dd3e94',1,'viewshed::AbstractLoS']]],
-  ['mvisibilityindices_17',['mVisibilityIndices',['../classviewshed_1_1AbstractViewshed.html#ad964ea2203cfb77005044455514c36ab',1,'viewshed::AbstractViewshed']]],
-  ['mvisibilitymask_18',['mVisibilityMask',['../classviewshed_1_1AbstractViewshed.html#ad3aad55b337a4cde9bf37f694da8f00e',1,'viewshed::AbstractViewshed']]],
-  ['mvp_19',['mVp',['../classviewshed_1_1AbstractLoS.html#ace873e83360fbd63de27df79957ab5fc',1,'viewshed::AbstractLoS']]]
+  ['ms_14',['ms',['../classBS_1_1timer.html#a69eabae9b119282e3cb1f8a13fa02159',1,'BS::timer']]],
+  ['mtargetindex_15',['mTargetIndex',['../classviewshed_1_1AbstractLoS.html#ae91e0d11f5528dccb685c1aa50f114ae',1,'viewshed::AbstractLoS']]],
+  ['mthreadpool_16',['mThreadPool',['../classviewshed_1_1AbstractViewshed.html#a9ef606be61d022ff216dd91b2f4964ea',1,'viewshed::AbstractViewshed']]],
+  ['mtp_17',['mTp',['../classviewshed_1_1AbstractLoS.html#aa3c16379342093cab2da8f8f99dd3e94',1,'viewshed::AbstractLoS']]],
+  ['multi_5ffuture_18',['multi_future',['../classBS_1_1multi__future.html',1,'BS']]],
+  ['mvisibilityindices_19',['mVisibilityIndices',['../classviewshed_1_1AbstractViewshed.html#ad964ea2203cfb77005044455514c36ab',1,'viewshed::AbstractViewshed']]],
+  ['mvisibilitymask_20',['mVisibilityMask',['../classviewshed_1_1AbstractViewshed.html#ad3aad55b337a4cde9bf37f694da8f00e',1,'viewshed::AbstractViewshed']]],
+  ['mvp_21',['mVp',['../classviewshed_1_1AbstractLoS.html#ace873e83360fbd63de27df79957ab5fc',1,'viewshed::AbstractLoS']]]
 ];

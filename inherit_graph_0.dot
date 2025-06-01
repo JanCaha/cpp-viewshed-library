@@ -5,11 +5,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="std::vector",height=0.2,width=0.4,color="grey60", fillcolor="#E0E0E0", style="filled",tooltip=" "];
-  Node0 -> Node1 [id="edge1_Node000000_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node1 [id="Node000001",label="viewshed::AbstractLoS",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classviewshed_1_1AbstractLoS.html",tooltip="Abstract class that represent line-of-sight (LoS). Consists of LoSNodes, view point and target point ..."];
-  Node1 -> Node2 [id="edge2_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node2 [id="Node000002",label="viewshed::InverseLoS",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classviewshed_1_1InverseLoS.html",tooltip="Class that represents InverseLoS, that is LoS used in Inverse Viewshed calculation."];
-  Node1 -> Node3 [id="edge3_Node000001_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node3 [id="Node000003",label="viewshed::LoS",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classviewshed_1_1LoS.html",tooltip="Class that represents LoS for classic Viewshed calculation."];
+  Node0 [id="Node000000",label="BS::signaller",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classBS_1_1signaller.html",tooltip="A utility class to allow simple signalling between threads."];
 }

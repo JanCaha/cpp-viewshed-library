@@ -8,9 +8,10 @@ var searchData=
   ['centredistance_5',['centreDistance',['../classviewshed_1_1LoSNode.html#ab074c3524f7be99272d329aae5395d36',1,'viewshed::LoSNode']]],
   ['centreelevation_6',['centreElevation',['../classviewshed_1_1LoSNode.html#ac7b3e471a11133e2744b37b4b1e688c8',1,'viewshed::LoSNode']]],
   ['comparerasters_7',['compareRasters',['../classviewshed_1_1ViewshedUtils.html#ab7c196af0ad69970a85aff5faa9b262c',1,'viewshed::ViewshedUtils']]],
-  ['currentdistance_8',['currentDistance',['../classviewshed_1_1AbstractLoS.html#a495375c7b95130d7819138d9dfc2f12f',1,'viewshed::AbstractLoS']]],
-  ['currentelevation_9',['currentElevation',['../classviewshed_1_1AbstractLoS.html#a1bb183989827cde2dd1b8df2892ce736',1,'viewshed::AbstractLoS']]],
-  ['currentgradient_10',['currentGradient',['../classviewshed_1_1AbstractLoS.html#adfef387e09178d03739d573ecf913c85',1,'viewshed::AbstractLoS']]],
-  ['curvaturecorrections_11',['curvaturecorrections',['../classviewshed_1_1Visibility.html#a9b7beb4200e3bee5e5058bd801e9e3e7',1,'viewshed::Visibility::curvatureCorrections(const double &amp;distance, const double &amp;refractionCoeff, const double &amp;earthDiameter)'],['../classviewshed_1_1Visibility.html#a6123dab0caa9feadfbf8c964ecf7f353',1,'viewshed::Visibility::curvatureCorrections(double &amp;distance)']]],
-  ['curvaturecorrectionsfix_12',['curvatureCorrectionsFix',['../classviewshed_1_1AbstractLoS.html#a427c92b4be046dfac719b3d325f6f219',1,'viewshed::AbstractLoS']]]
+  ['current_5fms_8',['current_ms',['../classBS_1_1timer.html#ae1f5174463b91c37c9d331a8bf7fb74b',1,'BS::timer']]],
+  ['currentdistance_9',['currentDistance',['../classviewshed_1_1AbstractLoS.html#a495375c7b95130d7819138d9dfc2f12f',1,'viewshed::AbstractLoS']]],
+  ['currentelevation_10',['currentElevation',['../classviewshed_1_1AbstractLoS.html#a1bb183989827cde2dd1b8df2892ce736',1,'viewshed::AbstractLoS']]],
+  ['currentgradient_11',['currentGradient',['../classviewshed_1_1AbstractLoS.html#adfef387e09178d03739d573ecf913c85',1,'viewshed::AbstractLoS']]],
+  ['curvaturecorrections_12',['curvaturecorrections',['../classviewshed_1_1Visibility.html#a9b7beb4200e3bee5e5058bd801e9e3e7',1,'viewshed::Visibility::curvatureCorrections(const double &amp;distance, const double &amp;refractionCoeff, const double &amp;earthDiameter)'],['../classviewshed_1_1Visibility.html#a6123dab0caa9feadfbf8c964ecf7f353',1,'viewshed::Visibility::curvatureCorrections(double &amp;distance)']]],
+  ['curvaturecorrectionsfix_13',['curvatureCorrectionsFix',['../classviewshed_1_1AbstractLoS.html#a427c92b4be046dfac719b3d325f6f219',1,'viewshed::AbstractLoS']]]
 ];

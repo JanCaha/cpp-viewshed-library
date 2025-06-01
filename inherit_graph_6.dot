@@ -5,5 +5,13 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="viewshed::LoSImportantValues",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$structviewshed_1_1LoSImportantValues.html",tooltip="Representation of important values and LoSNode indexes that can be extracted from LoS and are importa..."];
+  Node0 [id="Node000000",label="std::vector",height=0.2,width=0.4,color="grey60", fillcolor="#E0E0E0", style="filled",tooltip=" "];
+  Node0 -> Node1 [id="edge1_Node000000_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node1 [id="Node000001",label="BS::multi_future\< T \>",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classBS_1_1multi__future.html",tooltip="A helper class to facilitate waiting for and/or getting the results of multiple futures at once."];
+  Node0 -> Node2 [id="edge2_Node000000_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="viewshed::AbstractLoS",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classviewshed_1_1AbstractLoS.html",tooltip="Abstract class that represent line-of-sight (LoS). Consists of LoSNodes, view point and target point ..."];
+  Node2 -> Node3 [id="edge3_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="viewshed::InverseLoS",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classviewshed_1_1InverseLoS.html",tooltip="Class that represents InverseLoS, that is LoS used in Inverse Viewshed calculation."];
+  Node2 -> Node4 [id="edge4_Node000002_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="viewshed::LoS",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classviewshed_1_1LoS.html",tooltip="Class that represents LoS for classic Viewshed calculation."];
 }
