@@ -11,3 +11,4 @@ documentation/*
 include/viewshed/viewshedlibrary.h
 include/viewshed/defaultdatatypes.h
 docker/install
+include/viewshed/BS_thread_pool*.hpp
