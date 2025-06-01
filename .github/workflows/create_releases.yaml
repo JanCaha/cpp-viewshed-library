@@ -78,7 +78,7 @@ jobs:
             sudo apt install ./simplerasters*.deb
             rm simplerasters*
 
-        - name: Configure
+        - name: Configure - with Qt
           run: | 
             mkdir build
             cmake \
@@ -96,16 +96,16 @@ jobs:
               -DNEEDS_QT:bool=on \
               -DCMAKE_INSTALL_PREFIX=/usr
 
-        - name: Build DEB
+        - name: Build DEB - with Qt
           run: | 
             cmake --build build --config Release --target all
             cmake --build build --config Release --target pack_viewshed_library_deb
         
-        - name: Install from DEB
+        - name: Install from DEB - with Qt
           run: |
             sudo apt install ./_packages/viewshed_*.deb
         
-        - name: Configure
+        - name: Configure - without Qt
           run: |
             rm -rf build
             mkdir build
@@ -124,7 +124,7 @@ jobs:
               -DNEEDS_QT:bool=off \
               -DCMAKE_INSTALL_PREFIX=/usr
   
-        - name: Build DEB
+        - name: Build DEB - without Qt
           run: | 
             cmake --build build --config Release --target all
             cmake --build build --config Release --target pack_viewshed_library_deb    
