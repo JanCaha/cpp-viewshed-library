@@ -65,11 +65,6 @@ macro(library_settings target_name)
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/viewshed>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}> 
     )
-
-    target_include_directories(${target_name} PUBLIC 
-        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/bsthreadpool/include>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}>
-    )
     
     target_link_libraries(${target_name}
         GDAL::GDAL
@@ -93,6 +88,18 @@ add_library(viewshed_static STATIC ${LIBRARY_VIEWSHED_SRC})
 library_settings(viewshed_shared)
 library_settings(viewshed_static)
 
+configure_file(
+    ${CMAKE_SOURCE_DIR}/external/bsthreadpool/include/BS_thread_pool.hpp
+    ${CMAKE_SOURCE_DIR}/include/viewshed/BS_thread_pool.hpp
+    COPYONLY
+)
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/external/bsthreadpool/include/BS_thread_pool_utils.hpp
+    ${CMAKE_SOURCE_DIR}/include/viewshed/BS_thread_pool_utils.hpp
+    COPYONLY
+)
+
 install(
     EXPORT ViewshedTargets
     FILE ViewshedTargets.cmake
@@ -103,7 +110,9 @@ install(
 install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/include/viewshed/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
-    FILES_MATCHING PATTERN "*.h"
+    FILES_MATCHING 
+        PATTERN "*.h"
+        PATTERN "*.hpp"
 )
 
 if(${CELL_EVENT_DATA_FLOAT})
