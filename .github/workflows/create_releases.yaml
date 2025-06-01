@@ -78,7 +78,7 @@ jobs:
             sudo apt install ./simplerasters*.deb
             rm simplerasters*
 
-        - name: Configure
+        - name: Configure - with Qt
           run: | 
             mkdir build
             cmake \
@@ -96,29 +96,53 @@ jobs:
               -DNEEDS_QT:bool=on \
               -DCMAKE_INSTALL_PREFIX=/usr
 
-        - name: Build DEB
+        - name: Build DEB - with Qt
           run: | 
             cmake --build build --config Release --target all
             cmake --build build --config Release --target pack_viewshed_library_deb
         
-        - name: Install from DEB
+        - name: Install from DEB - with Qt
           run: |
-            sudo apt install ./_packages/viewshed_*.deb
-            
+            sudo apt install ./_packages/viewshed*.deb
+        
+        - name: Configure - without Qt
+          run: |
+            rm -rf build
+            mkdir build
+            cmake \
+              -S. \
+              -Bbuild \
+              -G Ninja \
+              -DCMAKE_CXX_COMPILER=${COMPILER} \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DPACK_DEB:bool=on \
+              -DBUILD_DOCUMENTATION:bool=off \
+              -DBUILD_TESTS:bool=off \
+              -DCELL_EVENT_DATA_FLOAT:bool=on \
+              -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
+              -DBUILD_GUI_APP:bool=off \
+              -DNEEDS_QT:bool=off \
+              -DCMAKE_INSTALL_PREFIX=/usr
+  
+        - name: Build DEB - without Qt
+          run: | 
+            cmake --build build --config Release --target all
+            cmake --build build --config Release --target pack_viewshed_library_deb    
+
         - name: Upload DEB file as artifact
           uses: actions/upload-artifact@v4
           with:
             name: viewshed
-            path: _packages/viewshed_*.deb
+            path: _packages/viewshed*.deb
         
         - name: Move deb file
           run: |
-            mv _packages/viewshed_*.deb .      
+            mv _packages/viewshed*.deb .      
 
         - name: Release
           uses: softprops/action-gh-release@v2
           with:
-            files: viewshed_*.deb
+            files: viewshed*.deb
             tag_name: "v${{steps.version.outputs.VERSION}}"
         
         - name: Deploy Documentation
@@ -172,8 +196,7 @@ jobs:
           id: version
           run: |
             echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_ENV
-            echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
-                      
+            echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT             
 
         - name: Build and push Docker image version with Python
           uses: docker/build-push-action@v4

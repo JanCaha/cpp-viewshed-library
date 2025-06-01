@@ -1,5 +1,11 @@
+if(${HAS_QT})
+    set(PACKAGE_NAME "${PROJECT_NAME}-with-Qt")
+else()
+    set(PACKAGE_NAME "${PROJECT_NAME}-no-Qt")
+endif()
+
 # these are cache variables, so they could be overwritten with -D,
-set(CPACK_PACKAGE_NAME ${PROJECT_NAME}
+set(CPACK_PACKAGE_NAME ${PACKAGE_NAME}
     CACHE STRING "Viewshed Library"
 )
 
