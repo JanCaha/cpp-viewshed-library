@@ -5,13 +5,13 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  # workflow_run:
-    # workflows: ["Tests for Library"]
-    # types:
-    #   - completed
-    # branches:
-    #   - 'main'
-    #   - 'master'
+  workflow_run:
+    workflows: ["Tests for Library"]
+    types:
+      - completed
+    branches:
+      - 'main'
+      - 'master'
   workflow_dispatch:
     
 env:
