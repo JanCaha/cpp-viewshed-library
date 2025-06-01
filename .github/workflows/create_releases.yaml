@@ -103,7 +103,7 @@ jobs:
         
         - name: Install from DEB - with Qt
           run: |
-            sudo apt install ./_packages/viewshed_*.deb
+            sudo apt install ./_packages/viewshed*.deb
         
         - name: Configure - without Qt
           run: |
@@ -133,16 +133,16 @@ jobs:
           uses: actions/upload-artifact@v4
           with:
             name: viewshed
-            path: _packages/viewshed_*.deb
+            path: _packages/viewshed*.deb
         
         - name: Move deb file
           run: |
-            mv _packages/viewshed_*.deb .      
+            mv _packages/viewshed*.deb .      
 
         - name: Release
           uses: softprops/action-gh-release@v2
           with:
-            files: viewshed_*.deb
+            files: viewshed*.deb
             tag_name: "v${{steps.version.outputs.VERSION}}"
         
         - name: Deploy Documentation
