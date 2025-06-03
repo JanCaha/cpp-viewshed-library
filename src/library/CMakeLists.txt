@@ -50,13 +50,6 @@ macro(library_settings target_name)
         set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
     endif()
     
-
-    if (WIN32 AND target_type STREQUAL "STATIC_LIBRARY")
-        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}_static")
-    else()
-        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
-    endif()
-
     set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
 
     include(GNUInstallDirs)
@@ -77,7 +70,7 @@ macro(library_settings target_name)
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
     )
     
 endmacro(library_settings)
