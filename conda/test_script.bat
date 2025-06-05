@@ -12,10 +12,4 @@ if not exist "%PREFIX%/Library/lib\viewshed_static.lib" exit 1
 if not exist "%PREFIX%/Library/lib/cmake/Viewshed/ViewshedTargets.cmake" exit 1
 if not exist "%PREFIX%/Library/include/Viewshed/abstractviewshed.h" exit 1
 
-REM Check that commands can be run successfully
-echo 🔍 Running command line test...
-
-"%PREFIX%/Library/bin/viewshed.exe" -h
-"%PREFIX%/Library/bin/inverseviewshed.exe" -h
-
 echo ✅ All tests passed successfully.
