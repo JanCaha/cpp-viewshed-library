@@ -14,6 +14,17 @@ check_file_exists() {
   fi
 }
 
+# Function to run a binary with -h and check result
+run_and_check() {
+  local bin="$1"
+  "$bin" -h
+  if [[ $? -ne 0 ]]; then
+    echo "❌ $bin -h failed"
+    exit 1
+  else
+    echo "✅ $bin -h ran successfully"
+  fi
+}
 # existence of files
 check_file_exists "$PREFIX/lib/libviewshed.so"
 check_file_exists "$PREFIX/lib/libviewshed.a"
@@ -21,5 +32,17 @@ check_file_exists "$PREFIX/lib/cmake/Viewshed/ViewshedTargets.cmake"
 check_file_exists "$PREFIX/include/Viewshed/abstractviewshed.h"
 check_file_exists "$PREFIX/bin/viewshed"
 check_file_exists "$PREFIX/bin/inverseviewshed"
+check_file_exists "$PREFIX/bin/viewshedcalculator"
 
+run_and_check "$PREFIX/bin/viewshed"
+run_and_check "$PREFIX/bin/inverseviewshed"
 
+# Run GUI app and close it after 1 second
+if [[ -x "$PREFIX/bin/viewshedcalculator" ]]; then
+  echo "🔍 Launching viewshedcalculator GUI for 1 second..."
+  "$PREFIX/bin/viewshedcalculator" &
+  app_pid=$!
+  sleep 1
+  kill $app_pid || true
+  echo "✅ viewshedcalculator closed."
+fi
