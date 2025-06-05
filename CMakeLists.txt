@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20.0)
 
 # Project Information
-project(viewshed VERSION 4.1.2 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
+project(viewshed VERSION 4.2.0 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
 
 # Library Name
 SET(LIBRARY_NAME "Viewshed")
@@ -148,12 +148,7 @@ endif()
 # Packaging (DEB)
 if(CMAKE_BUILD_TYPE STREQUAL "Release" AND PACK_DEB)
     include(Packing)
-    file(GLOB old_versions "${CMAKE_SOURCE_DIR}/_packages/*.deb")
-
-    if(old_versions)
-        file(REMOVE ${old_versions})
-    endif()
-
+    
     add_custom_target(pack_viewshed_library_deb
         COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
