@@ -126,5 +126,6 @@ If you use the library, please cite it accordingly:
 ## Setup precommits
 
 ```bash
-cp -r scripts/precommit/* .git/hooks/
+sudo apt-get install pre-commit
+pre-commit install -f
 ```
