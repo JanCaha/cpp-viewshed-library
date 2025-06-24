@@ -68,7 +68,7 @@ LoSNode::LoSNode( const int &pointRow, const int &pointCol, const CellEvent *e, 
                               static_cast<double>( pointRow ), static_cast<double>( pointCol ), cellSize );
 }
 
-double LoSNode::value( CellEventPositionType position, ValueType valueType )
+double LoSNode::value( CellEventPositionType position, ValueType valueType ) const
 {
     switch ( valueType )
     {
@@ -91,7 +91,7 @@ double LoSNode::value( CellEventPositionType position, ValueType valueType )
     }
 }
 
-double LoSNode::valueAtAngle( const double &specificAngle, ValueType valueType )
+double LoSNode::valueAtAngle( const double &specificAngle, ValueType valueType ) const
 {
     if ( specificAngle == mAngle[CellEventPositionType::CENTER] )
         return value( CellEventPositionType::CENTER, valueType );
@@ -131,13 +131,13 @@ double LoSNode::valueAtAngle( const double &specificAngle, ValueType valueType )
     }
 }
 
-double LoSNode::centreAngle() { return mAngle[CellEventPositionType::CENTER]; }
+double LoSNode::centreAngle() const { return mAngle[CellEventPositionType::CENTER]; }
 
-double LoSNode::centreElevation() { return mElevs[CellEventPositionType::CENTER]; }
+double LoSNode::centreElevation() const { return mElevs[CellEventPositionType::CENTER]; }
 
-double LoSNode::centreDistance() { return mDistances[CellEventPositionType::CENTER]; }
+double LoSNode::centreDistance() const { return mDistances[CellEventPositionType::CENTER]; }
 
-bool LoSNode::operator==( const LoSNode &other )
+bool LoSNode::operator==( const LoSNode &other ) const
 {
     if ( mRow == other.mRow && mCol == other.mCol )
         return true;
@@ -145,7 +145,7 @@ bool LoSNode::operator==( const LoSNode &other )
         return false;
 }
 
-bool LoSNode::operator!=( const LoSNode &other )
+bool LoSNode::operator!=( const LoSNode &other ) const
 {
     if ( mRow == other.mRow && mCol == other.mCol )
         return false;
@@ -153,11 +153,11 @@ bool LoSNode::operator!=( const LoSNode &other )
         return true;
 }
 
-bool LoSNode::operator<( const LoSNode other )
+bool LoSNode::operator<( const LoSNode other ) const
 {
     return mDistances[CellEventPositionType::CENTER] < other.mDistances[CellEventPositionType::CENTER];
 }
 
-double LoSNode::elevationAtAngle( const double &angle ) { return valueAtAngle( angle, ValueType::Elevation ); }
+double LoSNode::elevationAtAngle( const double &angle ) const { return valueAtAngle( angle, ValueType::Elevation ); }
 
-double LoSNode::distanceAtAngle( const double &angle ) { return valueAtAngle( angle, ValueType::Distance ); }
+double LoSNode::distanceAtAngle( const double &angle ) const { return valueAtAngle( angle, ValueType::Distance ); }
