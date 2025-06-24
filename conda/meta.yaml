@@ -17,20 +17,17 @@ requirements:
     - libsimplerasters
     - qt-main 5.*
     - mesalib # [unix]
-    - libcxx # [osx]
   host:
     - pthread-stubs
     - libgdal
     - libsimplerasters
     - qt-main 5.*
     - mesalib # [unix]
-    - libcxx # [osx]
   run:
     - libgdal
     - libsimplerasters
     - qt-main 5.*
     - mesalib # [unix]
-    - libcxx # [osx]
 
 test:
   files:
