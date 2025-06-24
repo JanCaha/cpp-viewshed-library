@@ -132,7 +132,11 @@ jobs:
           channels: conda-forge,defaults
           auto-activate-base: true
           activate-environment: ""
-
+     
+      - name: Add Custom Conda Channel
+        run: |
+          conda config --add channels https://jancaha.github.io/conda-channel 
+           
       - name: Install conda-build
         run: |
           conda install -n base conda-build conda-verify
