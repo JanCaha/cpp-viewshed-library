@@ -49,9 +49,9 @@ namespace viewshed
          */
         LoSNode( const int &pointRow, const int &pointCol, const CellEvent *e, const double &cellSize );
 
-        bool operator==( const LoSNode &other );
-        bool operator!=( const LoSNode &other );
-        bool operator<( const LoSNode other );
+        bool operator==( const LoSNode &other ) const;
+        bool operator!=( const LoSNode &other ) const;
+        bool operator<( const LoSNode other ) const;
 
         /**
          * @brief Extract value of ValueType at specified angle.
@@ -60,7 +60,7 @@ namespace viewshed
          * @param valueType
          * @return double
          */
-        double valueAtAngle( const double &angle, ValueType valueType = ValueType::Elevation );
+        double valueAtAngle( const double &angle, ValueType valueType = ValueType::Elevation ) const;
 
         /**
          * @brief Extract value of ValueType at specific cell event position.
@@ -69,31 +69,31 @@ namespace viewshed
          * @param valueType
          * @return double
          */
-        double value( CellEventPositionType position, ValueType valueType = ValueType::Elevation );
+        double value( CellEventPositionType position, ValueType valueType = ValueType::Elevation ) const;
 
         /**
          * @brief Shortcut call to obtain horizontal angle at center of raster cell that this LoSNode represents.
          *
          * @return double
          */
-        double centreAngle();
+        double centreAngle() const;
 
         /**
          * @brief Shortcut call to obtain elevation angle at center of raster cell that this LoSNode represents.
          *
          * @return double
          */
-        double centreElevation();
+        double centreElevation() const;
 
         /**
          * @brief Shortcut call to obtain distance angle at center of raster cell that this LoSNode represents.
          *
          * @return double
          */
-        double centreDistance();
+        double centreDistance() const;
 
-        double elevationAtAngle( const double &angle );
+        double elevationAtAngle( const double &angle ) const;
 
-        double distanceAtAngle( const double &angle );
+        double distanceAtAngle( const double &angle ) const;
     };
 } // namespace viewshed
