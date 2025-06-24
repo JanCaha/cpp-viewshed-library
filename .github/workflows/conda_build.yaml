@@ -144,5 +144,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          path: conda_package/osx-64/*.conda
+          path: conda_package/osx-arm64/*.conda
           name: conda_package_macos
