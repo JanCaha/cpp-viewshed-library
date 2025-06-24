@@ -145,7 +145,7 @@ jobs:
 
       - name: Build library
         run: |
-          conda build conda --output-folder conda_package
+          conda build conda --output-folder conda_package --variant-config-files conda/variants/macos.yaml
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
