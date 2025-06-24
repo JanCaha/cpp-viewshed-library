@@ -105,3 +105,44 @@ jobs:
         with:
           path: conda_package/win-64/*.conda
           name: conda_package_windows
+
+  Build-on-macOS:
+
+    name: Build on macOS
+
+    runs-on: macos-latest
+
+    permissions:
+      contents: write
+
+    env:
+      CONDA_PKG_DIR: ~/conda_pkgs_dir
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          use-mamba: true
+          channels: conda-forge,defaults
+          auto-activate-base: true
+          activate-environment: ""
+
+      - name: Install conda-build
+        run: |
+          conda install -n base conda-build conda-verify
+
+      - name: Build library
+        run: |
+          conda build conda --output-folder conda_package
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: conda_package/osx-64/*.conda
+          name: conda_package_macos
