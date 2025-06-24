@@ -113,7 +113,7 @@ apt-get -y install simplerasters viewshed viewshed-bin
 If you use the library, please cite it accordingly:
 
 ```bibtex
-@Software{Caha2024,
+@Software{CahaViewshed,
   author  = {Jan Caha},
   title   = {viewshed ({C++ Viewshed library based on GDAL and Qt})},
   year    = {2024},
@@ -126,5 +126,6 @@ If you use the library, please cite it accordingly:
 ## Setup precommits
 
 ```bash
-cp -r scripts/precommit/* .git/hooks/
+sudo apt-get install pre-commit
+pre-commit install -f
 ```

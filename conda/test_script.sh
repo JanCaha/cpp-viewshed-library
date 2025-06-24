@@ -3,6 +3,13 @@ set -euo pipefail
 
 echo "Running Unix test..."
 
+# change dynamic library extension based on OS - so for Linux, dylib for macOS
+OS_NAME="$(uname -s)"
+LIBRARY_EXTENSION="so"
+if [[ "$OS_NAME" == "Darwin" ]]; then
+    LIBRARY_EXTENSION="dylib"
+fi
+
 # Function to check if a file exists
 check_file_exists() {
   local filepath="$1"
@@ -25,8 +32,9 @@ run_and_check() {
     echo "✅ $bin -h ran successfully"
   fi
 }
+
 # existence of files
-check_file_exists "$PREFIX/lib/libviewshed.so"
+check_file_exists "$PREFIX/lib/libviewshed.$LIBRARY_EXTENSION"
 check_file_exists "$PREFIX/lib/libviewshed.a"
 check_file_exists "$PREFIX/lib/cmake/Viewshed/ViewshedTargets.cmake"
 check_file_exists "$PREFIX/include/Viewshed/abstractviewshed.h"
