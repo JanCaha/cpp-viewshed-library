@@ -53,7 +53,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          version: "6.9.*"
+          version: "6.10.2"
           host: "linux"
 
       - name: Install GDAL
