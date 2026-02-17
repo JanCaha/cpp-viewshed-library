@@ -227,7 +227,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
 void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSquareCellRaster> dem_,
                                                    std::string fileName, std::function<double( LoSNode )> func )
 {
-    SingleBandRaster result = SingleBandRaster( *dem_.get() );
+    SingleBandRaster result = SingleBandRaster( *dem_.get(), false );
 
     std::size_t i = 0;
     for ( CellEvent event : mCellEvents )
