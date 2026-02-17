@@ -92,6 +92,11 @@ TEST_F( ViewshedTimingTest, initEventList )
 
 TEST_F( ViewshedTimingTest, sortEventList )
 {
+    if ( !TEST_BUILD_IS_RELEASE )
+    {
+        GTEST_SKIP() << "Skipping on DEBUG build.";
+    }
+
     if ( isRunningOnGithubActions() )
     {
         GTEST_SKIP() << "Skipping due to fails.";
@@ -112,6 +117,11 @@ TEST_F( ViewshedTimingTest, sortEventList )
 
 TEST_F( ViewshedTimingTest, parseEventList )
 {
+    if ( !TEST_BUILD_IS_RELEASE )
+    {
+        GTEST_SKIP() << "Skipping on DEBUG build.";
+    }
+
     if ( isRunningOnGithubActions() )
     {
         GTEST_SKIP() << "Skipping due to fails.";

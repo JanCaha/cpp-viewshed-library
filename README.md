@@ -116,9 +116,9 @@ If you use the library, please cite it accordingly:
 @Software{CahaViewshed,
   author  = {Jan Caha},
   title   = {viewshed ({C++ Viewshed library based on GDAL and Qt})},
-  year    = {2024},
-  date    = {2024-07-11},
-  version = {4.0.3},
+  year    = {2026}
+  date    = {2026-02-17}
+  version = {5.0.0}
   url     = {https://github.com/JanCaha/cpp-viewshed-library},
 }
 ```

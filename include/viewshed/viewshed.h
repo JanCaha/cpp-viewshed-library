@@ -35,7 +35,7 @@ namespace viewshed
 
         void addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell ) override;
 
-        void submitToThreadpool( CellEvent &e ) override;
+        void submitToThreadpool( const CellEvent &e ) override;
 
         void calculateVisibilityRaster() override;
     };

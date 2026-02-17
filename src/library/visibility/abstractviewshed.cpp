@@ -165,7 +165,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
     ViewshedValues rasterValues;
 
     std::size_t i = 0;
-    for ( CellEvent e : mCellEvents )
+    for ( const CellEvent &e : mCellEvents )
     {
         progressCallback( mCellEvents.size(), i );
 
@@ -209,12 +209,13 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
             }
         }
 
-        if ( mMaxNumberOfTasks < mThreadPool.get_tasks_total() )
+        if ( mThreadPool.get_tasks_total() >= mMaxNumberOfTasks )
         {
-            // parse result to rasters to avoid clutching in memory
-            mThreadPool.wait();
+            while ( mThreadPool.get_tasks_total() > mMaxNumberOfTasks / 2 )
+            {
+                mThreadPool.wait_for( std::chrono::milliseconds( 1 ) );
+            }
         }
-
         i++;
     }
 
@@ -227,10 +228,10 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
 void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSquareCellRaster> dem_,
                                                    std::string fileName, std::function<double( LoSNode )> func )
 {
-    SingleBandRaster result = SingleBandRaster( *dem_.get() );
+    SingleBandRaster result = SingleBandRaster( *dem_.get(), false );
 
     std::size_t i = 0;
-    for ( CellEvent event : mCellEvents )
+    for ( const CellEvent &event : mCellEvents )
     {
         if ( event.mEventType == CellEventPositionType::CENTER )
         {
@@ -258,7 +259,7 @@ void AbstractViewshed::saveResults( std::string location, std::string fileNamePr
         }
         else
         {
-            fileName = mVisibilityIndices->at( i )->name() + ".tif";
+            fileName = fileNamePrefix + mVisibilityIndices->at( i )->name() + ".tif";
         }
         filePath = location + "/" + fileName;
 
@@ -289,7 +290,7 @@ LoSNode AbstractViewshed::statusNodeFromPoint( OGRPoint point )
 
     LoSNode ln;
 
-    for ( CellEvent e : mCellEvents )
+    for ( const CellEvent &e : mCellEvents )
     {
         if ( e.mEventType == CellEventPositionType::CENTER && e.mCol == col && e.mRow == row )
         {
@@ -301,7 +302,7 @@ LoSNode AbstractViewshed::statusNodeFromPoint( OGRPoint point )
     return ln;
 }
 
-void AbstractViewshed::setMaxConcurentTaks( int maxTasks ) { mMaxNumberOfTasks = maxTasks; }
+void AbstractViewshed::setMaxConcurentTasks( int maxTasks ) { mMaxNumberOfTasks = maxTasks; }
 
 void AbstractViewshed::setMaxThreads( int threads )
 {
@@ -320,7 +321,7 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( OGRPoint point )
 
     std::vector<LoSNode> losNodes;
 
-    for ( CellEvent e : mCellEvents )
+    for ( const CellEvent &e : mCellEvents )
     {
         switch ( e.mEventType )
         {

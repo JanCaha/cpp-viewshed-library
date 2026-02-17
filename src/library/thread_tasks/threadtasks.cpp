@@ -17,7 +17,7 @@ void viewshed::evaluateLoS( std::shared_ptr<AbstractLoS> los, std::shared_ptr<Vi
 
     losEval.calculate();
 
-    for ( int j = 0; j < algs->size(); j++ )
+    for ( size_t j = 0; j < algs->size(); j++ )
     {
         results->at( j )->writeValue( losEval.results().mRow, losEval.results().mCol, losEval.resultAt( j ) );
     }

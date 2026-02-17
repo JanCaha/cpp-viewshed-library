@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.20.0)
+cmake_minimum_required(VERSION 3.24.0)
 
 # Project Information
-project(viewshed VERSION 4.2.0 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
+project(viewshed VERSION 5.0.0 DESCRIPTION "C++ Viewshed library based on GDAL and Qt" LANGUAGES CXX)
 
 # Library Name
 SET(LIBRARY_NAME "Viewshed")
@@ -34,27 +34,19 @@ find_package(SimpleRasters REQUIRED)
 if(NEEDS_QT)
     set(CMAKE_AUTOMOC TRUE)
 
-    find_package(Qt5 COMPONENTS Core Xml Test REQUIRED)
-
-    set(QT_INCLUDES
-        ${Qt5Core_INCLUDE_DIRS}
-    )
+    find_package(Qt6 COMPONENTS Core Xml Test REQUIRED)
 
     set(QT_LIBS
-        Qt5::Core
+        Qt6::Core
     )
 
     if(BUILD_GUI_APP)
-        find_package(Qt5 COMPONENTS Core Widgets Xml Gui Test REQUIRED)
-
-        set(QT_INCLUDES
-            ${Qt5Core_INCLUDE_DIRS}
-        )
+        find_package(Qt6 COMPONENTS Core Widgets Xml Gui Test REQUIRED)
 
         set(QT_LIBS
             ${QT_LIBS}
-            Qt5::Gui
-            Qt5::Widgets
+            Qt6::Gui
+            Qt6::Widgets
         )
     endif()
 

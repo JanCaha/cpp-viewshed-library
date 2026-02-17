@@ -95,7 +95,7 @@ namespace viewshed
          *
          * @param maxTasks
          */
-        void setMaxConcurentTaks( int maxTasks );
+        void setMaxConcurentTasks( int maxTasks );
 
         /**
          * @brief Set the maximal number of threads that can be used for calculation.
@@ -137,7 +137,7 @@ namespace viewshed
          *
          * @param e
          */
-        virtual void submitToThreadpool( CellEvent &e ) = 0;
+        virtual void submitToThreadpool( const CellEvent &e ) = 0;
 
         /**
          * @brief Extract individual result raster.
