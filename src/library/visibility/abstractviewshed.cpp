@@ -258,7 +258,7 @@ void AbstractViewshed::saveResults( std::string location, std::string fileNamePr
         }
         else
         {
-            fileName = mVisibilityIndices->at( i )->name() + ".tif";
+            fileName = fileNamePrefix + mVisibilityIndices->at( i )->name() + ".tif";
         }
         filePath = location + "/" + fileName;
 
