@@ -95,7 +95,7 @@ namespace viewshed
          *
          * @param maxTasks
          */
-        void setMaxConcurentTaks( int maxTasks );
+        void setMaxConcurentTasks( int maxTasks );
 
         /**
          * @brief Set the maximal number of threads that can be used for calculation.

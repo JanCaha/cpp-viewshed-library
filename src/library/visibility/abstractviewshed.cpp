@@ -301,7 +301,7 @@ LoSNode AbstractViewshed::statusNodeFromPoint( OGRPoint point )
     return ln;
 }
 
-void AbstractViewshed::setMaxConcurentTaks( int maxTasks ) { mMaxNumberOfTasks = maxTasks; }
+void AbstractViewshed::setMaxConcurentTasks( int maxTasks ) { mMaxNumberOfTasks = maxTasks; }
 
 void AbstractViewshed::setMaxThreads( int threads )
 {
