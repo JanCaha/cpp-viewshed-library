@@ -9,7 +9,7 @@
 #include <QFile>
 #include <QString>
 
-int exitWithError( std::string error, QCommandLineParser &parser )
+[[noreturn]] void exitWithError( std::string error, QCommandLineParser &parser )
 {
     fprintf( stderr, "%s\n", error.c_str() );
     parser.showHelp( 1 );
@@ -101,7 +101,8 @@ double getHeightTarget( QCommandLineParser &parser )
 
 struct Coord
 {
-    double x, y;
+    double x = 0;
+    double y = 0;
 };
 
 Coord getCoords( QCommandLineParser &parser, QString paramName )
