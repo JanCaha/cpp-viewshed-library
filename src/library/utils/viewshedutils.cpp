@@ -185,7 +185,7 @@ bool ViewshedUtils::validateRaster( std::shared_ptr<SingleBandRaster> rl, std::s
 
     if ( !doubleEqual( rl->xCellSize(), rl->yCellSize(), 0.0001 ) )
     {
-        error = "Raster needs to have rectangular cells.";
+        error = "Raster needs to have square cells.";
         return false;
     }
 
