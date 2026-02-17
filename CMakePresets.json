@@ -1,0 +1,98 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 23,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "configure-base-ninja",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}"
+        },
+        {
+            "name": "configure-debug-tests",
+            "inherits": "configure-base-ninja",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "BUILD_TESTS": "ON",
+                "PACK_DEB": "OFF"
+            }
+        },
+        {
+            "name": "configure-release-install",
+            "inherits": "configure-base-ninja",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "BUILD_TESTS": "OFF",
+                "PACK_DEB": "ON",
+                "CMAKE_INSTALL_PREFIX": "/usr",
+                "BUILD_DOCUMENTATION": "ON"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "build-debug-tests",
+            "configurePreset": "configure-debug-tests"
+        },
+        {
+            "name": "build-release-install",
+            "configurePreset": "configure-release-install"
+        },
+        {
+            "name": "build-release-install-target",
+            "configurePreset": "configure-release-install",
+            "targets": [
+                "install"
+            ]
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "test-debug-tests",
+            "configurePreset": "configure-debug-tests",
+            "output": {
+                "verbosity": "verbose"
+            }
+        }
+    ],
+    "workflowPresets": [
+        {
+            "name": "workflow-debug-tests",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "configure-debug-tests"
+                },
+                {
+                    "type": "build",
+                    "name": "build-debug-tests"
+                },
+                {
+                    "type": "test",
+                    "name": "test-debug-tests"
+                }
+            ]
+        },
+        {
+            "name": "workflow-release-install",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "configure-release-install"
+                },
+                {
+                    "type": "build",
+                    "name": "build-release-install"
+                },
+                {
+                    "type": "build",
+                    "name": "build-release-install-target"
+                }
+            ]
+        }
+    ]
+}
