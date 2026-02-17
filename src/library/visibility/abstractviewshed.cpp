@@ -209,12 +209,13 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
             }
         }
 
-        if ( mMaxNumberOfTasks < mThreadPool.get_tasks_total() )
+        if ( mThreadPool.get_tasks_total() >= mMaxNumberOfTasks )
         {
-            // parse result to rasters to avoid clutching in memory
-            mThreadPool.wait();
+            while ( mThreadPool.get_tasks_total() > mMaxNumberOfTasks / 2 )
+            {
+                mThreadPool.wait_for( std::chrono::milliseconds( 1 ) );
+            }
         }
-
         i++;
     }
 
