@@ -31,7 +31,7 @@ Viewshed::Viewshed( std::shared_ptr<Point> viewPoint, std::shared_ptr<ProjectedS
 
     mCellSize = mInputDsm->xCellSize();
 
-    mThreadPool.reset( mThreadPool.get_thread_count() - 1 );
+    mThreadPool.reset( std::max<std::size_t>( 1, mThreadPool.get_thread_count() - 1 ) );
 
     mValid = true;
 }
