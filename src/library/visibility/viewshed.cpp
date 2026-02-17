@@ -79,7 +79,7 @@ void Viewshed::calculate( std::function<void( std::string, double )> stepsTiming
     stepsTimingCallback( "Parsing of event list lasted: ", parseLastedSeconds() );
 }
 
-void Viewshed::submitToThreadpool( CellEvent &e )
+void Viewshed::submitToThreadpool( const CellEvent &e )
 {
     std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint->mRow, mPoint->mCol, &e, mCellSize );
 
@@ -158,7 +158,7 @@ void Viewshed::calculateVisibilityRaster()
 
     std::map<double, LoSNode> los;
 
-    for ( LoSNode ln : mLosNodes )
+    for ( const LoSNode &ln : mLosNodes )
     {
         los.insert( std::pair<double, LoSNode>( ln.centreDistance(), ln ) );
     }
@@ -167,7 +167,7 @@ void Viewshed::calculateVisibilityRaster()
     mVisibilityRaster->writeValue( mPoint->mRow, mPoint->mCol, 1 );
 
     std::size_t i = 0;
-    for ( CellEvent e : mCellEvents )
+    for ( const CellEvent &e : mCellEvents )
     {
         // progressCallback( mCellEvents.size(), i );
 

@@ -80,7 +80,7 @@ void InverseViewshed::calculate( std::function<void( std::string, double )> step
     stepsTimingCallback( "Parsing of event list lasted: ", parseLastedSeconds() );
 }
 
-void InverseViewshed::submitToThreadpool( CellEvent &e )
+void InverseViewshed::submitToThreadpool( const CellEvent &e )
 {
     std::shared_ptr<LoSNode> poi = std::make_shared<LoSNode>( mPoint->mRow, mPoint->mCol, &e, mCellSize );
 
@@ -202,7 +202,7 @@ void InverseViewshed::calculateVisibilityRaster()
 
     std::map<double, LoSNode> los;
 
-    for ( LoSNode ln : mLosNodes )
+    for ( const LoSNode &ln : mLosNodes )
     {
         if ( ln.mInverseLoSBehindTarget )
         {
@@ -213,7 +213,7 @@ void InverseViewshed::calculateVisibilityRaster()
     }
 
     std::size_t i = 0;
-    for ( CellEvent e : mCellEvents )
+    for ( const CellEvent &e : mCellEvents )
     {
         // progressCallback( mCellEvents.size(), i );
 

@@ -165,7 +165,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
     ViewshedValues rasterValues;
 
     std::size_t i = 0;
-    for ( CellEvent e : mCellEvents )
+    for ( const CellEvent &e : mCellEvents )
     {
         progressCallback( mCellEvents.size(), i );
 
@@ -231,7 +231,7 @@ void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSqua
     SingleBandRaster result = SingleBandRaster( *dem_.get(), false );
 
     std::size_t i = 0;
-    for ( CellEvent event : mCellEvents )
+    for ( const CellEvent &event : mCellEvents )
     {
         if ( event.mEventType == CellEventPositionType::CENTER )
         {
@@ -290,7 +290,7 @@ LoSNode AbstractViewshed::statusNodeFromPoint( OGRPoint point )
 
     LoSNode ln;
 
-    for ( CellEvent e : mCellEvents )
+    for ( const CellEvent &e : mCellEvents )
     {
         if ( e.mEventType == CellEventPositionType::CENTER && e.mCol == col && e.mRow == row )
         {
@@ -321,7 +321,7 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( OGRPoint point )
 
     std::vector<LoSNode> losNodes;
 
-    for ( CellEvent e : mCellEvents )
+    for ( const CellEvent &e : mCellEvents )
     {
         switch ( e.mEventType )
         {

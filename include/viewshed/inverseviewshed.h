@@ -34,7 +34,7 @@ namespace viewshed
 
         std::shared_ptr<InverseLoS> getLoS( OGRPoint point, bool onlyToPoint = false );
 
-        void submitToThreadpool( CellEvent &e ) override;
+        void submitToThreadpool( const CellEvent &e ) override;
 
         void addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell ) override;
 

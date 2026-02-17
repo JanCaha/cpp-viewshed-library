@@ -137,7 +137,7 @@ namespace viewshed
          *
          * @param e
          */
-        virtual void submitToThreadpool( CellEvent &e ) = 0;
+        virtual void submitToThreadpool( const CellEvent &e ) = 0;
 
         /**
          * @brief Extract individual result raster.
