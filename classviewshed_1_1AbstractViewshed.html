@@ -126,9 +126,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>extractValuesFromEven
 <tr class="memitem:af1f7bf7904a37b203954133554a6e5c6" id="r_af1f7bf7904a37b203954133554a6e5c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#af1f7bf7904a37b203954133554a6e5c6">setAngles</a> (double minAngle, double maxAngle)</td></tr>
 <tr class="memdesc:af1f7bf7904a37b203954133554a6e5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set horizontal angle limits for viewshed calculation. 0.  <br /></td></tr>
 <tr class="separator:af1f7bf7904a37b203954133554a6e5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac91573d84c24b9334928defa915677cc" id="r_ac91573d84c24b9334928defa915677cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#ac91573d84c24b9334928defa915677cc">setMaxConcurentTaks</a> (int maxTasks)</td></tr>
-<tr class="memdesc:ac91573d84c24b9334928defa915677cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of maximum Concurent Taks that can be prepared in thread pool for processing.  <br /></td></tr>
-<tr class="separator:ac91573d84c24b9334928defa915677cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad34e5bd40bbd72f194395cf49a35f581" id="r_ad34e5bd40bbd72f194395cf49a35f581"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#ad34e5bd40bbd72f194395cf49a35f581">setMaxConcurentTasks</a> (int maxTasks)</td></tr>
+<tr class="memdesc:ad34e5bd40bbd72f194395cf49a35f581"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of maximum Concurent Taks that can be prepared in thread pool for processing.  <br /></td></tr>
+<tr class="separator:ad34e5bd40bbd72f194395cf49a35f581"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab769fe876015ec3bee7c088a5be66f9d" id="r_ab769fe876015ec3bee7c088a5be66f9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#ab769fe876015ec3bee7c088a5be66f9d">setMaxThreads</a> (int threads)</td></tr>
 <tr class="memdesc:ab769fe876015ec3bee7c088a5be66f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the maximal number of threads that can be used for calculation.  <br /></td></tr>
 <tr class="separator:ab769fe876015ec3bee7c088a5be66f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,9 +142,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>prepareMemoryRasters<
 <tr class="memitem:a0d43764410f1f3b9d79fc996092d868d" id="r_a0d43764410f1f3b9d79fc996092d868d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a0d43764410f1f3b9d79fc996092d868d">addEventsFromCell</a> (int &amp;row, int &amp;column, const double &amp;pixelValue, bool &amp;solveCell)=0</td></tr>
 <tr class="memdesc:a0d43764410f1f3b9d79fc996092d868d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that creates events for event list from given cell.  <br /></td></tr>
 <tr class="separator:a0d43764410f1f3b9d79fc996092d868d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e8d3bc53a06da5e2546417cf115b5b3" id="r_a7e8d3bc53a06da5e2546417cf115b5b3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a7e8d3bc53a06da5e2546417cf115b5b3">submitToThreadpool</a> (<a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> &amp;e)=0</td></tr>
-<tr class="memdesc:a7e8d3bc53a06da5e2546417cf115b5b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Submit <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a> with this <em><a class="el" href="classviewshed_1_1CellEvent.html" title="Class representing cell events for Van Kreveld&#39;s plane sweep algorithm. Stores cell position (row and...">CellEvent</a></em> to threadpool for solving.  <br /></td></tr>
-<tr class="separator:a7e8d3bc53a06da5e2546417cf115b5b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1baf0597c06ab57c540c0f518f590683" id="r_a1baf0597c06ab57c540c0f518f590683"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#a1baf0597c06ab57c540c0f518f590683">submitToThreadpool</a> (const <a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> &amp;e)=0</td></tr>
+<tr class="memdesc:a1baf0597c06ab57c540c0f518f590683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Submit <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a> with this <em><a class="el" href="classviewshed_1_1CellEvent.html" title="Class representing cell events for Van Kreveld&#39;s plane sweep algorithm. Stores cell position (row and...">CellEvent</a></em> to threadpool for solving.  <br /></td></tr>
+<tr class="separator:a1baf0597c06ab57c540c0f518f590683"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd92dfd3bb9e8d79ea62f4784092a8d4" id="r_acd92dfd3bb9e8d79ea62f4784092a8d4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; SingleBandRaster &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#acd92dfd3bb9e8d79ea62f4784092a8d4">resultRaster</a> (int index=0)</td></tr>
 <tr class="memdesc:acd92dfd3bb9e8d79ea62f4784092a8d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract individual result raster.  <br /></td></tr>
 <tr class="separator:acd92dfd3bb9e8d79ea62f4784092a8d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -993,14 +993,14 @@ false </dd></dl>
 
 </div>
 </div>
-<a id="ac91573d84c24b9334928defa915677cc" name="ac91573d84c24b9334928defa915677cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac91573d84c24b9334928defa915677cc">&#9670;&#160;</a></span>setMaxConcurentTaks()</h2>
+<a id="ad34e5bd40bbd72f194395cf49a35f581" name="ad34e5bd40bbd72f194395cf49a35f581"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad34e5bd40bbd72f194395cf49a35f581">&#9670;&#160;</a></span>setMaxConcurentTasks()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void AbstractViewshed::setMaxConcurentTaks </td>
+          <td class="memname">void AbstractViewshed::setMaxConcurentTasks </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>maxTasks</em></td><td>)</td>
@@ -1244,8 +1244,8 @@ false </dd></dl>
 
 </div>
 </div>
-<a id="a7e8d3bc53a06da5e2546417cf115b5b3" name="a7e8d3bc53a06da5e2546417cf115b5b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e8d3bc53a06da5e2546417cf115b5b3">&#9670;&#160;</a></span>submitToThreadpool()</h2>
+<a id="a1baf0597c06ab57c540c0f518f590683" name="a1baf0597c06ab57c540c0f518f590683"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1baf0597c06ab57c540c0f518f590683">&#9670;&#160;</a></span>submitToThreadpool()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1256,7 +1256,7 @@ false </dd></dl>
         <tr>
           <td class="memname">virtual void viewshed::AbstractViewshed::submitToThreadpool </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> &amp;&#160;</td>
           <td class="paramname"><em>e</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1276,7 +1276,7 @@ false </dd></dl>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classviewshed_1_1InverseViewshed.html#a923a9308fc025d005471d9af0ed4b124">viewshed::InverseViewshed</a>, and <a class="el" href="classviewshed_1_1Viewshed.html#ab1e01232e635a19ecfca1dc14acd135d">viewshed::Viewshed</a>.</p>
+<p>Implemented in <a class="el" href="classviewshed_1_1InverseViewshed.html#a1658bdb745ab92c64e1635ef124c6e6f">viewshed::InverseViewshed</a>, and <a class="el" href="classviewshed_1_1Viewshed.html#a6be8eefcff88f1c73966b24c2bf1cd48">viewshed::Viewshed</a>.</p>
 
 </div>
 </div>

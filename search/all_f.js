@@ -8,7 +8,7 @@ var searchData=
   ['setcurrentlosnode_5',['setCurrentLoSNode',['../classviewshed_1_1AbstractLoS.html#aac09e0883b7877d171445662cb92083e',1,'viewshed::AbstractLoS']]],
   ['setdefaultresultdatatype_6',['setDefaultResultDataType',['../classviewshed_1_1AbstractViewshed.html#a4af1997ec217f8fb13428b3553cf2ff2',1,'viewshed::AbstractViewshed']]],
   ['setearthdiameter_7',['setEarthDiameter',['../classviewshed_1_1AbstractLoS.html#aa308bfd02080fd0dc5a872c894d3531c',1,'viewshed::AbstractLoS']]],
-  ['setmaxconcurenttaks_8',['setMaxConcurentTaks',['../classviewshed_1_1AbstractViewshed.html#ac91573d84c24b9334928defa915677cc',1,'viewshed::AbstractViewshed']]],
+  ['setmaxconcurenttasks_8',['setMaxConcurentTasks',['../classviewshed_1_1AbstractViewshed.html#ad34e5bd40bbd72f194395cf49a35f581',1,'viewshed::AbstractViewshed']]],
   ['setmaximaldistance_9',['setMaximalDistance',['../classviewshed_1_1AbstractViewshed.html#a1c52b4a6d57576250ea994e1be7847ff',1,'viewshed::AbstractViewshed']]],
   ['setmaxthreads_10',['setMaxThreads',['../classviewshed_1_1AbstractViewshed.html#ab769fe876015ec3bee7c088a5be66f9d',1,'viewshed::AbstractViewshed']]],
   ['setrefractioncoeficient_11',['setRefractionCoeficient',['../classviewshed_1_1AbstractLoS.html#a355650d774aca69ac001d8dc95612d31',1,'viewshed::AbstractLoS']]],
@@ -31,6 +31,6 @@ var searchData=
   ['submit_5floop_28',['submit_loop',['../classBS_1_1thread__pool.html#afef540eeab722bfc80c9c75924b2b563',1,'BS::thread_pool']]],
   ['submit_5fsequence_29',['submit_sequence',['../classBS_1_1thread__pool.html#a0ec05eedac7a0384b0f09b272cb5e0af',1,'BS::thread_pool']]],
   ['submit_5ftask_30',['submit_task',['../classBS_1_1thread__pool.html#af8d2e3f7c20e34fa24e33a7f6a417e44',1,'BS::thread_pool']]],
-  ['submittothreadpool_31',['submittothreadpool',['../classviewshed_1_1AbstractViewshed.html#a7e8d3bc53a06da5e2546417cf115b5b3',1,'viewshed::AbstractViewshed::submitToThreadpool()'],['../classviewshed_1_1InverseViewshed.html#a923a9308fc025d005471d9af0ed4b124',1,'viewshed::InverseViewshed::submitToThreadpool()'],['../classviewshed_1_1Viewshed.html#ab1e01232e635a19ecfca1dc14acd135d',1,'viewshed::Viewshed::submitToThreadpool()']]],
+  ['submittothreadpool_31',['submittothreadpool',['../classviewshed_1_1AbstractViewshed.html#a1baf0597c06ab57c540c0f518f590683',1,'viewshed::AbstractViewshed::submitToThreadpool()'],['../classviewshed_1_1InverseViewshed.html#a1658bdb745ab92c64e1635ef124c6e6f',1,'viewshed::InverseViewshed::submitToThreadpool()'],['../classviewshed_1_1Viewshed.html#a6be8eefcff88f1c73966b24c2bf1cd48',1,'viewshed::Viewshed::submitToThreadpool()']]],
   ['synced_5fstream_32',['synced_stream',['../classBS_1_1synced__stream.html#ae454279a2a55451fb63238f7d0ca24b5',1,'BS::synced_stream::synced_stream()'],['../classBS_1_1synced__stream.html',1,'BS::synced_stream']]]
 ];

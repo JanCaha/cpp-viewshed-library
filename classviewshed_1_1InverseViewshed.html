@@ -102,9 +102,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a77f2a73bba2374c8d2196b932a83cf18" id="r_a77f2a73bba2374c8d2196b932a83cf18"><td class="memItemLeft" align="right" valign="top"><a id="a77f2a73bba2374c8d2196b932a83cf18" name="a77f2a73bba2374c8d2196b932a83cf18"></a>
 std::shared_ptr&lt; <a class="el" href="classviewshed_1_1InverseLoS.html">InverseLoS</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getLoS</b> (OGRPoint <a class="el" href="classviewshed_1_1AbstractViewshed.html#a7fe46769a66d813bc48955c0576f22b9">point</a>, bool onlyToPoint=false)</td></tr>
 <tr class="separator:a77f2a73bba2374c8d2196b932a83cf18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a923a9308fc025d005471d9af0ed4b124" id="r_a923a9308fc025d005471d9af0ed4b124"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1InverseViewshed.html#a923a9308fc025d005471d9af0ed4b124">submitToThreadpool</a> (<a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> &amp;e) override</td></tr>
-<tr class="memdesc:a923a9308fc025d005471d9af0ed4b124"><td class="mdescLeft">&#160;</td><td class="mdescRight">Submit <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a> with this <em><a class="el" href="classviewshed_1_1CellEvent.html" title="Class representing cell events for Van Kreveld&#39;s plane sweep algorithm. Stores cell position (row and...">CellEvent</a></em> to threadpool for solving.  <br /></td></tr>
-<tr class="separator:a923a9308fc025d005471d9af0ed4b124"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1658bdb745ab92c64e1635ef124c6e6f" id="r_a1658bdb745ab92c64e1635ef124c6e6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1InverseViewshed.html#a1658bdb745ab92c64e1635ef124c6e6f">submitToThreadpool</a> (const <a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> &amp;e) override</td></tr>
+<tr class="memdesc:a1658bdb745ab92c64e1635ef124c6e6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Submit <a class="el" href="classviewshed_1_1LoS.html" title="Class that represents LoS for classic Viewshed calculation.">LoS</a> with this <em><a class="el" href="classviewshed_1_1CellEvent.html" title="Class representing cell events for Van Kreveld&#39;s plane sweep algorithm. Stores cell position (row and...">CellEvent</a></em> to threadpool for solving.  <br /></td></tr>
+<tr class="separator:a1658bdb745ab92c64e1635ef124c6e6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7c3c6e81bbb89e1836efd58466268f6" id="r_ab7c3c6e81bbb89e1836efd58466268f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1InverseViewshed.html#ab7c3c6e81bbb89e1836efd58466268f6">addEventsFromCell</a> (int &amp;row, int &amp;column, const double &amp;pixelValue, bool &amp;solveCell) override</td></tr>
 <tr class="memdesc:ab7c3c6e81bbb89e1836efd58466268f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that creates events for event list from given cell.  <br /></td></tr>
 <tr class="separator:ab7c3c6e81bbb89e1836efd58466268f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,9 +138,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>extractValuesFromEven
 <tr class="memitem:af1f7bf7904a37b203954133554a6e5c6 inherit pub_methods_classviewshed_1_1AbstractViewshed" id="r_af1f7bf7904a37b203954133554a6e5c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#af1f7bf7904a37b203954133554a6e5c6">setAngles</a> (double minAngle, double maxAngle)</td></tr>
 <tr class="memdesc:af1f7bf7904a37b203954133554a6e5c6 inherit pub_methods_classviewshed_1_1AbstractViewshed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set horizontal angle limits for viewshed calculation. 0.  <br /></td></tr>
 <tr class="separator:af1f7bf7904a37b203954133554a6e5c6 inherit pub_methods_classviewshed_1_1AbstractViewshed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac91573d84c24b9334928defa915677cc inherit pub_methods_classviewshed_1_1AbstractViewshed" id="r_ac91573d84c24b9334928defa915677cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#ac91573d84c24b9334928defa915677cc">setMaxConcurentTaks</a> (int maxTasks)</td></tr>
-<tr class="memdesc:ac91573d84c24b9334928defa915677cc inherit pub_methods_classviewshed_1_1AbstractViewshed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of maximum Concurent Taks that can be prepared in thread pool for processing.  <br /></td></tr>
-<tr class="separator:ac91573d84c24b9334928defa915677cc inherit pub_methods_classviewshed_1_1AbstractViewshed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad34e5bd40bbd72f194395cf49a35f581 inherit pub_methods_classviewshed_1_1AbstractViewshed" id="r_ad34e5bd40bbd72f194395cf49a35f581"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#ad34e5bd40bbd72f194395cf49a35f581">setMaxConcurentTasks</a> (int maxTasks)</td></tr>
+<tr class="memdesc:ad34e5bd40bbd72f194395cf49a35f581 inherit pub_methods_classviewshed_1_1AbstractViewshed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of maximum Concurent Taks that can be prepared in thread pool for processing.  <br /></td></tr>
+<tr class="separator:ad34e5bd40bbd72f194395cf49a35f581 inherit pub_methods_classviewshed_1_1AbstractViewshed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab769fe876015ec3bee7c088a5be66f9d inherit pub_methods_classviewshed_1_1AbstractViewshed" id="r_ab769fe876015ec3bee7c088a5be66f9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classviewshed_1_1AbstractViewshed.html#ab769fe876015ec3bee7c088a5be66f9d">setMaxThreads</a> (int threads)</td></tr>
 <tr class="memdesc:ab769fe876015ec3bee7c088a5be66f9d inherit pub_methods_classviewshed_1_1AbstractViewshed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the maximal number of threads that can be used for calculation.  <br /></td></tr>
 <tr class="separator:ab769fe876015ec3bee7c088a5be66f9d inherit pub_methods_classviewshed_1_1AbstractViewshed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -499,8 +499,8 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>mOppositeAngleExit<
 
 </div>
 </div>
-<a id="a923a9308fc025d005471d9af0ed4b124" name="a923a9308fc025d005471d9af0ed4b124"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a923a9308fc025d005471d9af0ed4b124">&#9670;&#160;</a></span>submitToThreadpool()</h2>
+<a id="a1658bdb745ab92c64e1635ef124c6e6f" name="a1658bdb745ab92c64e1635ef124c6e6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1658bdb745ab92c64e1635ef124c6e6f">&#9670;&#160;</a></span>submitToThreadpool()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -511,7 +511,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>mOppositeAngleExit<
         <tr>
           <td class="memname">void InverseViewshed::submitToThreadpool </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classviewshed_1_1CellEvent.html">CellEvent</a> &amp;&#160;</td>
           <td class="paramname"><em>e</em></td><td>)</td>
           <td></td>
         </tr>
@@ -531,7 +531,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>mOppositeAngleExit<
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classviewshed_1_1AbstractViewshed.html#a7e8d3bc53a06da5e2546417cf115b5b3">viewshed::AbstractViewshed</a>.</p>
+<p>Implements <a class="el" href="classviewshed_1_1AbstractViewshed.html#a1baf0597c06ab57c540c0f518f590683">viewshed::AbstractViewshed</a>.</p>
 
 </div>
 </div>
