@@ -6,8 +6,6 @@ macro(create_binary bin_name filename)
 
     set_target_properties(${bin_name} PROPERTIES AUTOMOC TRUE)
 
-    target_include_directories(${bin_name} PRIVATE ${QT_INCLUDES})
-
     target_include_directories(${bin_name} PUBLIC 
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/viewshed>
         $<INSTALL_INTERFACE:include/viewshed>
@@ -65,8 +63,7 @@ if(HAS_QT)
 
         set_target_properties(viewshed_widgets PROPERTIES VERSION ${PROJECT_VERSION})
 
-        target_include_directories(viewshed_widgets PRIVATE ${QT_INCLUDES})
-         install(TARGETS
+        install(TARGETS
             viewshed_widgets
             COMPONENT bin
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
