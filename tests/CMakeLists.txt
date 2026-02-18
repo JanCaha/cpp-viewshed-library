@@ -53,7 +53,8 @@ macro(add_gui_test filename)
         GDAL::GDAL
         SimpleRasters::simplerasters_shared
         ${QT_LIBS}
-        Qt6::Test
+        Qt5::Test
+        # Qt6::Test
         viewshed_widgets
     )
 
