@@ -9,9 +9,11 @@ find_dependency(SimpleRasters REQUIRED)
 
 # Optional Qt dependency
 if(@HAS_QT@)
-    find_dependency(Qt6 COMPONENTS Core Xml Test REQUIRED)
+    find_dependency(Qt5 COMPONENTS Core Xml Test REQUIRED)
+    # find_dependency(Qt6 COMPONENTS Core Xml Test REQUIRED)
     if(@BUILD_GUI_APP@)
-        find_dependency(Qt6 COMPONENTS Widgets Gui REQUIRED)
+        find_dependency(Qt5 COMPONENTS Widgets Gui REQUIRED)
+        # find_dependency(Qt6 COMPONENTS Widgets Gui REQUIRED)
     endif()
 endif()
 
