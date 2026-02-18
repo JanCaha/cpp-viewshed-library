@@ -232,7 +232,11 @@ namespace ViewshedBinaries
             connect( mFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::demUpdated );
             connect( mCsvFileWidget, &FileSelectorWidget::fileChanged, this, &MainWindow::updateResultCsv );
             connect( mCalculateButton, &QPushButton::clicked, this, &MainWindow::calculateViewshed );
-            connect( mCurvatureCorrections, &QCheckBox::checkStateChanged, this, &MainWindow::saveSettings );
+
+            // Qt 6
+            // connect( mCurvatureCorrections, &QCheckBox::checkStateChanged, this, &MainWindow::saveSettings );
+            connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainWindow::saveSettings );
+
             connect( mRefractionCoefficient, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
             connect( mEarthDiameter, &QLineEdit::textChanged, this, &MainWindow::saveSettings );
 

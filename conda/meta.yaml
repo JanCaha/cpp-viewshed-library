@@ -15,18 +15,18 @@ requirements:
     - pthread-stubs
     - libgdal
     - libsimplerasters
-    - qt-main 6.*
+    - qt-main 5.*
     - mesalib # [unix]
   host:
     - pthread-stubs
     - libgdal
     - libsimplerasters
-    - qt-main 6.*
+    - qt-main 5.*
     - mesalib # [unix]
   run:
     - libgdal
     - libsimplerasters
-    - qt-main 6.*
+    - qt-main 5.*
     - mesalib # [unix]
 
 test:
