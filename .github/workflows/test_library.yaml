@@ -42,7 +42,7 @@ jobs:
 
       - name: Install simplerasters
         run: |
-          cmake --workflow --preset workflow-release-install
+          sudo cmake --workflow --preset workflow-release-install
 
       - name: Delete simplerasters
         run: |
@@ -61,4 +61,4 @@ jobs:
 
       - name: Install
         run: |
-          cmake --workflow --preset workflow-release-install
+          sudo cmake --workflow --preset workflow-release-install
