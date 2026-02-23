@@ -46,8 +46,8 @@ jobs:
 
       - name: Delete simplerasters
         run: |
-          ls -la
           cd ..
+          ls -la
           rm -rf cpp-simplerasters
 
       - name: Checkout
