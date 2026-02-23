@@ -28,148 +28,37 @@ jobs:
           sudo apt update
           sudo apt-get -y install gdal-bin libgdal-dev
 
-      - uses: robinraju/release-downloader@v1
-        with:
-          repository: "JanCaha/cpp-simplerasters"
-          latest: true
-          fileName: "*.deb"
-          tarBall: false
-          zipBall: false
-
-      - name: Install and remove artifact
-        run: |
-          sudo apt install ./simplerasters*.deb
-          rm simplerasters*
-
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - name: Configure
-        run: |
-          mkdir build
-          cmake \
-            -S . \
-            -B build \
-            -G Ninja \
-            -D CMAKE_C_COMPILER=clang \
-            -D CMAKE_CXX_COMPILER=clang++ \
-            -D CMAKE_BUILD_TYPE=Release \
-            -D PACK_DEB:bool=off \
-            -D BUILD_DOCUMENTATION:bool=off \
-            -D BUILD_TESTS:bool=on \
-            -D CELL_EVENT_DATA_FLOAT:bool=on \
-            -D OUTPUT_RASTER_DATA_FLOAT:bool=on \
-            -D NEEDS_QT:bool=off \
-            -D BUILD_GUI_APP:bool=off
-
-      - name: Build
-        run: |
-          cmake --build build --config Release --target viewshed_shared
-
-      - name: Run Tests
-        id: unittests
-        run: |
-          cmake --build build --config Release --target build_tests
-          cmake --build build --config Release --target run_tests
-
-      - name: Clean Build
-        run: |
-          rm -rf build
-          mkdir build
-
-      - name: Run Tests with double
-        id: unittestsdouble
-        run: |
-          cmake \
-            -S . \
-            -B build \
-            -G Ninja \
-            -D CMAKE_C_COMPILER=clang \
-            -D CMAKE_CXX_COMPILER=clang++ \
-            -D CMAKE_BUILD_TYPE=Release \
-            -D PACK_DEB:bool=off \
-            -D BUILD_DOCUMENTATION:bool=off \
-            -D BUILD_TESTS:bool=on \
-            -D CELL_EVENT_DATA_FLOAT:bool=off \
-            -D OUTPUT_RASTER_DATA_FLOAT:bool=off \
-            -D NEEDS_QT:bool=off \
-            -D BUILD_GUI_APP:bool=off
-          cmake --build build --config Release --target build_tests
-          cmake --build build --config Release --target run_tests
-
-  Tests-Viewshed-library-with-Qt:
-    runs-on: ubuntu-latest
-
-    env:
-      DEBIAN_FRONTEND: "noninteractive"
-      QT_QPA_PLATFORM: "offscreen"
-      XDG_RUNTIME_DIR: "/tmp"
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    steps:
-      - name: Update and Upgrade
-        run: |
-          sudo apt update
-          sudo apt install ninja-build doxygen libgtest-dev libgmock-dev clang
-
-      - name: Install GDAL
-        run: |
-          sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-          sudo apt update
-          sudo apt-get -y install gdal-bin libgdal-dev
-
-      - uses: robinraju/release-downloader@v1
-        with:
-          repository: "JanCaha/cpp-simplerasters"
-          latest: true
-          fileName: "*.deb"
-          tarBall: false
-          zipBall: false
-
-      - name: Install and remove artifact
-        run: |
-          sudo apt install ./simplerasters*.deb
-          rm simplerasters*
-
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
           version: "5.15.2" #"6.10.2"
           host: "linux"
 
-      - name: Configure
-        run: |
-          cmake \
-            -S . \
-            -B build \
-            -G Ninja \
-            -D CMAKE_C_COMPILER=clang \
-            -D CMAKE_CXX_COMPILER=clang++ \
-            -D CMAKE_BUILD_TYPE=Release \
-            -D PACK_DEB:bool=off \
-            -D BUILD_DOCUMENTATION:bool=off \
-            -D BUILD_TESTS:bool=on \
-            -D CELL_EVENT_DATA_FLOAT:bool=on \
-            -D OUTPUT_RASTER_DATA_FLOAT:bool=on \
-            -D NEEDS_QT:bool=on \
-            -D BUILD_GUI_APP:bool=on \
-            -D CMAKE_INSTALL_PREFIX=/usr \
+      - uses: actions/checkout@v6
+        with:
+          # Repository name with owner. For example, actions/checkout
+          # Default: ${{ github.repository }}
+          repository: "JanCaha/cpp-simplerasters"
 
-      - name: Run Tests even with Qt
-        id: unittestsqt
+      - name: Install simplerasters
         run: |
-          cmake --build build --config Release --target build_tests
-          cd build
-          ctest -VV
+          cmake --workflow --preset workflow-release-install
 
-      - name: Test Install
+      - name: Delete simplerasters
         run: |
-          cmake --build build --config Release --target all
-          sudo cmake --build build --config Release --target install
+          ls -la
+          cd ..
+          rm -rf cpp-simplerasters
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Test
+        run: |
+          cmake --workflow --preset workflow-debug-tests
+
+      - name: Install
+        run: |
+          cmake --workflow --preset workflow-release-install
