@@ -43,6 +43,7 @@ jobs:
 
       - name: Install simplerasters
         run: |
+          cd cpp-simplerasters
           sudo cmake --workflow --preset workflow-release-install
 
       - name: Delete simplerasters
