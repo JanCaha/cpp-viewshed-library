@@ -39,6 +39,7 @@ jobs:
           # Repository name with owner. For example, actions/checkout
           # Default: ${{ github.repository }}
           repository: "JanCaha/cpp-simplerasters"
+          path: "cpp-simplerasters"
 
       - name: Install simplerasters
         run: |
