@@ -49,6 +49,7 @@ jobs:
           cd ..
           ls -la
           rm -rf cpp-simplerasters
+          ls -la
 
       - name: Checkout
         uses: actions/checkout@v6
