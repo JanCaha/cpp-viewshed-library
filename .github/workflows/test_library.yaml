@@ -46,7 +46,7 @@ jobs:
           cd cpp-simplerasters
           sudo cmake --workflow --preset workflow-release-install
           cd ..
-          rm -rf cpp-simplerasters
+          sudo rm -rf cpp-simplerasters
 
       - name: Checkout
         uses: actions/checkout@v6
