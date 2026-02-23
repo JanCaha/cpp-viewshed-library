@@ -9,7 +9,6 @@ SET(LIBRARY_NAME "Viewshed")
 # Options
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_DOCUMENTATION "Build documentation." OFF)
-option(PACK_DEB "Pack DEB file for installation in Debian/Ubuntu/Mint and derivatives." ON)
 option(NEEDS_QT "Allows optionally building library without searching for Qt. Cannot build binaries with this set to OFF. For running test mainly." ON)
 option(BUILD_GUI_APP "Allows building of executable program with GUI" ON)
 option(CELL_EVENT_DATA_FLOAT "Create CellEvents with data stored `float` instead of `double`. Lowers significantly RAM memory usage." ON)
@@ -140,15 +139,4 @@ if(BUILD_TESTS)
     include(CTest)
     enable_testing()
     add_subdirectory(tests)
-endif()
-
-# Packaging (DEB)
-if(CMAKE_BUILD_TYPE STREQUAL "Release" AND PACK_DEB)
-    include(Packing)
-    
-    add_custom_target(pack_viewshed_library_deb
-        COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    )
-    add_dependencies(pack_viewshed_library_deb viewshed_shared)
 endif()

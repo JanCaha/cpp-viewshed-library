@@ -1,2 +1,0 @@
-/build/debian/tmp/bin/* /usr/bin
-/build/debian/tmp/lib/x86_64-linux-gnu/libviewshedwidgets.so* /usr/lib/
