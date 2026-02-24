@@ -29,11 +29,8 @@ jobs:
           sudo apt-get -y install gdal-bin libgdal-dev
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: "5.15.2" #"6.10.2"
-          host: "linux"
-          set-env: true
+        run: |
+          sudo apt-get install qtbase5-dev qtbase5-dev-tools qtdeclarative5-dev libqt5svg5-dev
 
       - uses: actions/checkout@v6
         with:
