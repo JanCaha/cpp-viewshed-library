@@ -35,8 +35,6 @@
 using namespace viewshed;
 using namespace viewshed::visibilityalgorithm;
 
-#define DEFAULT_OBSERVER_OFFSET "1.6"
-
 namespace ViewshedBinaries
 {
     class MainWindow : public QMainWindow
@@ -185,7 +183,7 @@ namespace ViewshedBinaries
             mObserverOffset = new QLineEdit( this );
             mObserverOffset->setValidator( mDoubleValidator );
 
-            mObserverOffset->setText( DEFAULT_OBSERVER_OFFSET );
+            mObserverOffset->setText( QString::number( OBSERVER_OFFSET ) );
 
             mTargetOffset = new QLineEdit( this );
             mTargetOffset->setValidator( mDoubleValidator );

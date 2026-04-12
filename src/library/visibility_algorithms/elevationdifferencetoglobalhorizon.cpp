@@ -1,7 +1,5 @@
-#include <cmath>
-#include <numbers>
-
 #include "visibilityelevationdifferencetoglobalhorizon.h"
+#include <cmath>
 
 using viewshed::visibilityalgorithm::ElevationDifferenceToGlobalHorizon;
 
@@ -22,8 +20,7 @@ double ElevationDifferenceToGlobalHorizon::result( std::shared_ptr<LoSImportantV
 
     if ( losValues->horizonExist() )
     {
-        change =
-            std::tan( ( std::numbers::pi / 180 ) * los->gradient( losValues->indexHorizon ) ) * los->targetDistance();
+        change = std::tan( DEG_TO_RAD * los->gradient( losValues->indexHorizon ) ) * los->targetDistance();
         difference = los->targetElevation() - ( los->vp()->totalElevation() + change );
     }
     else

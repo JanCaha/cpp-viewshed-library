@@ -22,7 +22,7 @@ double Visibility::gradient( double elevationDiff, double distance )
     if ( elevationDiff == 0 || distance == 0 )
         return 0;
 
-    return atan( elevationDiff / distance ) * ( 180 / std::numbers::pi );
+    return atan( elevationDiff / distance ) * RAD_TO_DEG;
 }
 
 double Visibility::curvatureCorrections( const double &distance, const double &refractionCoeff,

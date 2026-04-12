@@ -93,7 +93,7 @@ void AbstractViewshed::setAngles( double minAngle, double maxAngle )
 {
     if ( !std::isnan( minAngle ) )
     {
-        mMinAngle = minAngle * ( std::numbers::pi / 180 );
+        mMinAngle = minAngle * ( DEG_TO_RAD );
 
         if ( mMinAngle < -std::numbers::pi )
         {
@@ -103,7 +103,7 @@ void AbstractViewshed::setAngles( double minAngle, double maxAngle )
 
     if ( !std::isnan( maxAngle ) )
     {
-        mMaxAngle = maxAngle * ( std::numbers::pi / 180 );
+        mMaxAngle = maxAngle * ( DEG_TO_RAD );
 
         if ( std::numbers::pi < mMaxAngle )
         {
