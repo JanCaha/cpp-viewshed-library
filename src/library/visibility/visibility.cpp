@@ -19,7 +19,7 @@ double Visibility::distance( const double &x1, const double &y1, const double &x
 
 double Visibility::gradient( double elevationDiff, double distance )
 {
-    if ( elevationDiff == 0 )
+    if ( elevationDiff == 0 || distance == 0 )
         return 0;
 
     return atan( elevationDiff / distance ) * ( 180 / std::numbers::pi );
