@@ -93,7 +93,7 @@ void AbstractViewshed::setAngles( double minAngle, double maxAngle )
 {
     if ( !std::isnan( minAngle ) )
     {
-        mMinAngle = minAngle * ( std::numbers::pi / 180 );
+        mMinAngle = minAngle * ( DEG_TO_RAD );
 
         if ( mMinAngle < -std::numbers::pi )
         {
@@ -103,7 +103,7 @@ void AbstractViewshed::setAngles( double minAngle, double maxAngle )
 
     if ( !std::isnan( maxAngle ) )
     {
-        mMaxAngle = maxAngle * ( std::numbers::pi / 180 );
+        mMaxAngle = maxAngle * ( DEG_TO_RAD );
 
         if ( std::numbers::pi < mMaxAngle )
         {
@@ -164,10 +164,16 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
 
     ViewshedValues rasterValues;
 
+    int lastReportedPercent = -1;
     std::size_t i = 0;
     for ( const CellEvent &e : mCellEvents )
     {
-        progressCallback( mCellEvents.size(), i );
+        int percent = static_cast<int>( ( i * 100 ) / mCellEvents.size() );
+        if ( percent != lastReportedPercent )
+        {
+            progressCallback( mCellEvents.size(), i );
+            lastReportedPercent = percent;
+        }
 
         switch ( e.mEventType )
         {

@@ -1,8 +1,6 @@
+#include "visibilityslopetoviewangle.h"
 #include <cmath>
 #include <limits>
-#include <numbers>
-
-#include "visibilityslopetoviewangle.h"
 
 using viewshed::visibilityalgorithm::LoSSlopeToViewAngle;
 
@@ -16,14 +14,13 @@ double LoSSlopeToViewAngle::result( std::shared_ptr<LoSImportantValues> losValue
     double gradientDiff;
     if ( los->targetIndex() == 0 )
     {
-        gradientDiff = ( 180 / std::numbers::pi ) *
-                       atan( ( los->targetElevation() - los->viewPointElevation() ) / ( los->targetDistance() ) );
+        gradientDiff =
+            RAD_TO_DEG * atan( ( los->targetElevation() - los->viewPointElevation() ) / ( los->targetDistance() ) );
     }
     else
     {
-        gradientDiff =
-            ( 180 / std::numbers::pi ) * atan( ( los->targetElevation() - los->elevation( los->targetIndex() - 1 ) ) /
-                                               ( los->targetDistance() - los->distance( los->targetIndex() - 1 ) ) );
+        gradientDiff = RAD_TO_DEG * atan( ( los->targetElevation() - los->elevation( los->targetIndex() - 1 ) ) /
+                                          ( los->targetDistance() - los->distance( los->targetIndex() - 1 ) ) );
     }
 
     if ( losValues->maxGradientBefore < los->targetGradient() )

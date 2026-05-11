@@ -115,7 +115,7 @@ void MainCalculatorWindow::initMenu()
                  mViewshedType->setCurrentIndex( 0 );
 
                  mPointWidget->setXY( 0, 0 );
-                 mObserverOffset->setText( DEFAULT_OBSERVER_OFFSET );
+                 mObserverOffset->setText( QString::number( OBSERVER_OFFSET ) );
                  mTargetOffset->setText( "0.0" );
 
                  mRefractionCoefficient->setText( QString::number( REFRACTION_COEFFICIENT, 'f' ) );
@@ -168,7 +168,7 @@ void MainCalculatorWindow::initGui()
     mObserverOffset = new QLineEdit( this );
     mObserverOffset->setValidator( mDoubleValidator );
 
-    mObserverOffset->setText( DEFAULT_OBSERVER_OFFSET );
+    mObserverOffset->setText( QString::number( OBSERVER_OFFSET ) );
 
     mTargetOffset = new QLineEdit( this );
     mTargetOffset->setValidator( mDoubleValidator );
@@ -242,7 +242,8 @@ void MainCalculatorWindow::readValuesFromSettings( QSettings &settings )
     mPoint.importFromWkt( const_cast<const char **>( &poP ) );
     mPointWidget->setPoint( mPoint );
 
-    mObserverOffset->setText( settings.value( QStringLiteral( "observerOffset" ), "1.6" ).toString() );
+    mObserverOffset->setText(
+        settings.value( QStringLiteral( "observerOffset" ), QString::number( OBSERVER_OFFSET ) ).toString() );
     mTargetOffset->setText( settings.value( QStringLiteral( "targetOffset" ), "0.0" ).toString() );
 
     mFolderWidget->setFilePath( settings.value( QStringLiteral( "resultFolder" ), QStringLiteral( "" ) ).toString() );

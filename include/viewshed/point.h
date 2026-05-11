@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "constants.h"
 #include "rasterposition.h"
 
 class SingleBandRaster;
@@ -42,7 +43,7 @@ namespace viewshed
          * @param offsetAtPoint
          * @param rasterBand
          */
-        Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint = 1.6 );
+        Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint = OBSERVER_OFFSET );
 
         double mX, mY;
         double mElevation, mOffset;

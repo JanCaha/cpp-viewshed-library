@@ -34,6 +34,9 @@ set(LIBRARY_VIEWSHED_SRC
     los/losevaluator.cpp
 )
 
+set(VIEWSHED_GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated_include/viewshed")
+file(MAKE_DIRECTORY "${VIEWSHED_GENERATED_INCLUDE_DIR}")
+
 macro(library_settings target_name)
     string(TOLOWER ${LIBRARY_NAME} LIBRARY_NAME_LOWER)
 
@@ -55,6 +58,8 @@ macro(library_settings target_name)
     include(GNUInstallDirs)
 
     target_include_directories(${target_name} PUBLIC 
+        $<BUILD_INTERFACE:${VIEWSHED_GENERATED_INCLUDE_DIR}>
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/external/bsthreadpool/include>
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/viewshed>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}> 
     )
@@ -83,13 +88,13 @@ library_settings(viewshed_static)
 
 configure_file(
     ${CMAKE_SOURCE_DIR}/external/bsthreadpool/include/BS_thread_pool.hpp
-    ${CMAKE_SOURCE_DIR}/include/viewshed/BS_thread_pool.hpp
+    ${VIEWSHED_GENERATED_INCLUDE_DIR}/BS_thread_pool.hpp
     COPYONLY
 )
 
 configure_file(
     ${CMAKE_SOURCE_DIR}/external/bsthreadpool/include/BS_thread_pool_utils.hpp
-    ${CMAKE_SOURCE_DIR}/include/viewshed/BS_thread_pool_utils.hpp
+    ${VIEWSHED_GENERATED_INCLUDE_DIR}/BS_thread_pool_utils.hpp
     COPYONLY
 )
 
@@ -106,6 +111,19 @@ install(
     FILES_MATCHING 
         PATTERN "*.h"
         PATTERN "*.hpp"
+        PATTERN "defaultdatatypes.h" EXCLUDE
+        PATTERN "viewshedlibrary.h" EXCLUDE
+        PATTERN "BS_thread_pool.hpp" EXCLUDE
+        PATTERN "BS_thread_pool_utils.hpp" EXCLUDE
+)
+
+install(
+    FILES
+    ${VIEWSHED_GENERATED_INCLUDE_DIR}/defaultdatatypes.h
+    ${VIEWSHED_GENERATED_INCLUDE_DIR}/viewshedlibrary.h
+    ${CMAKE_SOURCE_DIR}/external/bsthreadpool/include/BS_thread_pool.hpp
+    ${CMAKE_SOURCE_DIR}/external/bsthreadpool/include/BS_thread_pool_utils.hpp
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
 )
 
 if(${CELL_EVENT_DATA_FLOAT})
@@ -128,11 +146,11 @@ endif()
 
 configure_file(
     ../../include/viewshed/templates/defaultdatatypes.txt
-    ${CMAKE_SOURCE_DIR}/include/viewshed/defaultdatatypes.h
+    ${VIEWSHED_GENERATED_INCLUDE_DIR}/defaultdatatypes.h
     @ONLY
 )
 
 configure_file(
     ../../include/viewshed/templates/viewshedlibrary.in
-    ${CMAKE_SOURCE_DIR}/include/viewshed/viewshedlibrary.h
+    ${VIEWSHED_GENERATED_INCLUDE_DIR}/viewshedlibrary.h
 )

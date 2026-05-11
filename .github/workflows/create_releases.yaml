@@ -1,18 +1,13 @@
-name: Prepare Deb Release, Docker Release
+name: Prepare Deb Release
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 on:
-  workflow_run:
-    workflows: ["Tests for Library"]
-    types:
-      - completed
-    branches:
-      - "main"
-      - "master"
-  workflow_dispatch:
+  push:
+    tags:
+      - "*"
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -21,7 +16,36 @@ env:
   PYTHON_VERSION: "3.12"
 
 jobs:
+  Verify-tag-branch:
+    runs-on: ubuntu-latest
+
+    outputs:
+      release_allowed: ${{ steps.check.outputs.release_allowed }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify tagged commit is in main or master
+        id: check
+        run: |
+          git fetch origin main master
+
+          if git merge-base --is-ancestor "$GITHUB_SHA" "origin/main" || git merge-base --is-ancestor "$GITHUB_SHA" "origin/master"; then
+            echo "release_allowed=true" >> "$GITHUB_OUTPUT"
+            echo "Tag commit is in main/master."
+          else
+            echo "release_allowed=false" >> "$GITHUB_OUTPUT"
+            echo "Tag commit is not in main/master. Release will be skipped."
+          fi
+
   Create-deb-file-library:
+    needs: Verify-tag-branch
+
+    if: needs.Verify-tag-branch.outputs.release_allowed == 'true'
+
     runs-on: ubuntu-latest
 
     steps:
@@ -45,101 +69,9 @@ jobs:
           echo ${{steps.version.outputs.VERSION}}
           echo "-----"
 
-      - name: Update and Upgrade
-        run: |
-          sudo apt update
-          sudo apt install ninja-build doxygen libgtest-dev libgmock-dev clang
-
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v3
-        with:
-          version: "5.15.2" # "6.10.2"
-          host: "linux"
-
-      - name: Install GDAL
-        run: |
-          sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-          sudo apt update
-          sudo apt-get -y install gdal-bin libgdal-dev
-
-      - uses: robinraju/release-downloader@v1
-        with:
-          repository: "JanCaha/cpp-simplerasters"
-          latest: true
-          fileName: "*.deb"
-          tarBall: false
-          zipBall: false
-
-      - name: Install and remove artifact
-        run: |
-          sudo apt install ./simplerasters*.deb
-          rm simplerasters*
-
-      - name: Configure - with Qt
-        run: |
-          mkdir build
-          cmake \
-            -S. \
-            -Bbuild \
-            -G Ninja \
-            -DCMAKE_CXX_COMPILER=${COMPILER} \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DPACK_DEB:bool=on \
-            -DBUILD_DOCUMENTATION:bool=on \
-            -DBUILD_TESTS:bool=on \
-            -DCELL_EVENT_DATA_FLOAT:bool=on \
-            -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
-            -DBUILD_GUI_APP:bool=on \
-            -DNEEDS_QT:bool=on \
-            -DCMAKE_INSTALL_PREFIX=/usr
-
-      - name: Build DEB - with Qt
-        run: |
-          cmake --build build --config Release --target all
-          cmake --build build --config Release --target pack_viewshed_library_deb
-
-      - name: Install from DEB - with Qt
-        run: |
-          sudo apt install ./_packages/viewshed*.deb
-
-      - name: Configure - without Qt
-        run: |
-          rm -rf build
-          mkdir build
-          cmake \
-            -S. \
-            -Bbuild \
-            -G Ninja \
-            -DCMAKE_CXX_COMPILER=${COMPILER} \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DPACK_DEB:bool=on \
-            -DBUILD_DOCUMENTATION:bool=off \
-            -DBUILD_TESTS:bool=off \
-            -DCELL_EVENT_DATA_FLOAT:bool=on \
-            -DOUTPUT_RASTER_DATA_FLOAT:bool=on \
-            -DBUILD_GUI_APP:bool=off \
-            -DNEEDS_QT:bool=off \
-            -DCMAKE_INSTALL_PREFIX=/usr
-
-      - name: Build DEB - without Qt
-        run: |
-          cmake --build build --config Release --target all
-          cmake --build build --config Release --target pack_viewshed_library_deb
-
-      - name: Upload DEB file as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: viewshed
-          path: _packages/viewshed*.deb
-
-      - name: Move deb file
-        run: |
-          mv _packages/viewshed*.deb .
-
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: viewshed*.deb
           tag_name: "v${{steps.version.outputs.VERSION}}"
 
       - name: Deploy Documentation
@@ -148,63 +80,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./documentation
           publish_branch: gh-pages
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{env.PYTHON_VERSION}}
-          architecture: "x64"
-
-      - name: Install pip packages
-        run: |
-          pip install wheel py-build-cmake build
-
-      - uses: actions/checkout@v4
-        with:
-          repository: "JanCaha/viewshed-library-pybind11"
-          path: "python-package"
-          submodules: true
-
-      - name: Install package
-        run: |
-          cd python-package
-          python -m build .
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: python-viewshed
-          path: python-package/dist/viewshed*.whl
-
-  Release-Docker:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Set Env and GA Output
-        id: version
-        run: |
-          echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_ENV
-          echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
-
-      - name: Build and push Docker image version with Python
-        uses: docker/build-push-action@v4
-        with:
-          file: docker/Dockerfile
-          context: docker/
-          push: true
-          tags: "cahik/viewshed:v${{steps.version.outputs.VERSION}}"
-
-      - name: Build and push Docker image latest with Python
-        uses: docker/build-push-action@v4
-        with:
-          file: docker/Dockerfile
-          context: docker/
-          push: true
-          tags: cahik/viewshed:latest

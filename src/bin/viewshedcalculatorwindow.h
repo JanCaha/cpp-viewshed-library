@@ -30,8 +30,6 @@
 
 using namespace viewshed;
 
-#define DEFAULT_OBSERVER_OFFSET "1.6"
-
 class OGRPoint;
 class ProjectedSquareCellRaster;
 
