@@ -164,10 +164,16 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
 
     ViewshedValues rasterValues;
 
+    int lastReportedPercent = -1;
     std::size_t i = 0;
     for ( const CellEvent &e : mCellEvents )
     {
-        progressCallback( mCellEvents.size(), i );
+        int percent = static_cast<int>( ( i * 100 ) / mCellEvents.size() );
+        if ( percent != lastReportedPercent )
+        {
+            progressCallback( mCellEvents.size(), i );
+            lastReportedPercent = percent;
+        }
 
         switch ( e.mEventType )
         {
