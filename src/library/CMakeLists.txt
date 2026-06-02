@@ -69,6 +69,10 @@ macro(library_settings target_name)
         SimpleRasters::simplerasters_shared
     )
 
+    if(APPLE)
+        target_link_options(${target_name} INTERFACE "-Wl,-stack_size,0x800000")
+    endif()
+
     install(TARGETS ${target_name}
         COMPONENT lib
         EXPORT ViewshedTargets
