@@ -23,6 +23,10 @@ macro(create_binary bin_name filename)
         SimpleRasters::simplerasters_shared
     )
 
+    if(APPLE)
+        target_link_options(${bin_name} PRIVATE "-Wl,-stack_size,0x800000")
+    endif()
+
     add_dependencies(create_binaries ${bin_name})
 
     install(TARGETS

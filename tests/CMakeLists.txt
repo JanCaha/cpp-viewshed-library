@@ -39,6 +39,10 @@ macro(add_library_test testname)
         GTest::gmock
     )
 
+    if(APPLE)
+        target_link_options(${testname} PRIVATE "-Wl,-stack_size,0x800000")
+    endif()
+
     add_test(${testname} ${testname} -maxwarnings 10000)
     add_dependencies(build_tests ${testname})
 endmacro(add_library_test)
