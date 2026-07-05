@@ -24,6 +24,8 @@ namespace viewshed
     class DLL_API AbstractLoS : public std::vector<LoSNode>
     {
       public:
+        virtual ~AbstractLoS() = default;
+
         /**
          * @brief Set the View Point object directly from Point with offset specified as part of this object.
          *
@@ -275,13 +277,13 @@ namespace viewshed
          * @brief Horizontal angle between view point and target point.
          *
          */
-        double mAngleHorizontal;
+        double mAngleHorizontal = 0;
 
         /**
          * @brief Distance between observer and target point.
          *
          */
-        double mPointDistance;
+        double mPointDistance = 0;
 
         /**
          * @brief View point.
@@ -299,7 +301,7 @@ namespace viewshed
          * @brief Index of target point.
          *
          */
-        int mTargetIndex;
+        int mTargetIndex = -1;
 
         /**
          * @brief Use curvature corrections for this LoS.

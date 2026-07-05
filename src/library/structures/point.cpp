@@ -16,7 +16,7 @@ Point::Point( int row, int col, double elevation, double offset, double cellSize
     mOffset = offset;
     mCellSize = cellSize;
 
-    mValid = true;
+    mValid = 0 <= mRow && 0 <= mCol;
 }
 
 Point::Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint )
@@ -56,7 +56,7 @@ void Point::setUp( int row, int col, std::shared_ptr<SingleBandRaster> dem )
     dem->transformCoordinatesToWorld( mRow, mCol, mX, mY );
 
     mElevation = dem->value( mRow, mCol );
-    mValid = dem->isNoData( mRow, mCol );
+    mValid = !dem->isNoData( mRow, mCol );
 }
 
 double Point::totalElevation() { return mElevation + mOffset; }

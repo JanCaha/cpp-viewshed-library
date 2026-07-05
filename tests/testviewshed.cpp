@@ -88,7 +88,27 @@ TEST_F( ViewshedTest, testViewshedCalculation )
 
     ASSERT_EQ( v.numberOfResultRasters(), algs->size() );
 
-    v.saveResults( TEST_DATA_RESULTS_DIR );
+    ASSERT_FALSE( v.hasError() );
+    ASSERT_TRUE( v.saveResults( TEST_DATA_RESULTS_DIR ) );
+}
+
+TEST_F( ViewshedTest, saveResultsToInvalidLocationFails )
+{
+    Viewshed v( vp, dem, algs );
+    v.calculate();
+
+    ASSERT_FALSE( v.saveResults( "/nonexistent/folder/for/results" ) );
+    ASSERT_TRUE( v.hasError() );
+    ASSERT_FALSE( v.errorMessage().empty() );
+}
+
+TEST_F( ViewshedTest, resultRasterHonoursDataType )
+{
+    Viewshed v( vp, dem, algs );
+    v.setDefaultResultDataType( GDALDataType::GDT_Float64 );
+    v.calculate();
+
+    ASSERT_EQ( v.resultRaster( 0 )->gdalDataType(), GDALDataType::GDT_Float64 );
 }
 
 TEST_F( ViewshedTest, testVisibilityRaster )
@@ -100,7 +120,7 @@ TEST_F( ViewshedTest, testVisibilityRaster )
     v.sortEventList();
 
     v.calculateVisibilityRaster();
-    v.saveVisibilityRaster( TEST_DATA_RESULTS_VISIBILITY_RASTER );
+    ASSERT_TRUE( v.saveVisibilityRaster( TEST_DATA_RESULTS_VISIBILITY_RASTER ) );
 }
 
 TEST_F( ViewshedTest, testCalculateVisibilityMask )
@@ -112,7 +132,30 @@ TEST_F( ViewshedTest, testCalculateVisibilityMask )
     v.sortEventList();
 
     v.calculateVisibilityMask();
-    v.saveVisibilityRaster( TEST_DATA_RESULTS_VISIBILITY_RASTER );
+    ASSERT_TRUE( v.saveVisibilityRaster( TEST_DATA_RESULTS_VISIBILITY_RASTER ) );
+}
+
+TEST_F( ViewshedTest, saveVisibilityRasterWithoutCalculationFails )
+{
+    Viewshed v( vp, dem, algs );
+
+    ASSERT_FALSE( v.saveVisibilityRaster( TEST_DATA_RESULTS_VISIBILITY_RASTER ) );
+    ASSERT_TRUE( v.hasError() );
+}
+
+TEST_F( ViewshedTest, invalidViewpointProducesNoEvents )
+{
+    // A viewpoint outside the DEM extent is invalid, which makes the whole
+    // viewshed invalid and initEventList produces zero events.
+    auto invalidVp = std::make_shared<Point>( OGRPoint( 0.0, 0.0 ), dem );
+    ASSERT_FALSE( invalidVp->isValid() );
+
+    Viewshed v( invalidVp, dem, algs );
+    ASSERT_FALSE( v.isValid() );
+
+    v.initEventList();
+
+    ASSERT_EQ( v.numberOfCellEvents(), 0 );
 }
 
 int main( int argc, char **argv )

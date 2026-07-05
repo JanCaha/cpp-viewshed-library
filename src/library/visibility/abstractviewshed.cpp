@@ -14,15 +14,9 @@ void AbstractViewshed::prepareMemoryRasters()
     mResults->clear();
     mResults->reserve( mVisibilityIndices->size() );
 
-    GDALDataType dataType = GDALDataType::GDT_Float64;
-
-#if ( CELL_EVENT_USE_FLOAT )
-    dataType = GDALDataType::GDT_Float32;
-#endif
-
     for ( std::size_t i = 0; i < mVisibilityIndices->size(); i++ )
     {
-        mResults->push_back( std::make_shared<SingleBandRaster>( *mInputDsm.get(), dataType ) );
+        mResults->push_back( std::make_shared<SingleBandRaster>( *mInputDsm.get(), mDataType ) );
     }
 }
 
@@ -42,6 +36,13 @@ void AbstractViewshed::initEventList()
     mCellEvents.clear();
     mLosNodes.clear();
     mValidCells = 0;
+
+    if ( !mPoint || !mPoint->isValid() )
+    {
+        mTimeInit =
+            std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
+        return;
+    }
 
     if ( mInverseViewshed )
     {
@@ -158,6 +159,11 @@ void AbstractViewshed::sortEventList()
 
 void AbstractViewshed::parseEventList( std::function<void( int size, int current )> progressCallback )
 {
+    {
+        std::lock_guard<std::mutex> lock( mTaskErrorMutex );
+        mTaskError.clear();
+    }
+
     prepareMemoryRasters();
 
     std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
@@ -231,7 +237,7 @@ void AbstractViewshed::parseEventList( std::function<void( int size, int current
     mTimeParse = std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
 }
 
-void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSquareCellRaster> dem_,
+bool AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSquareCellRaster> dem_,
                                                    std::string fileName, std::function<double( LoSNode )> func )
 {
     SingleBandRaster result = SingleBandRaster( *dem_.get(), false );
@@ -247,15 +253,17 @@ void AbstractViewshed::extractValuesFromEventList( std::shared_ptr<ProjectedSqua
         i++;
     }
 
-    result.saveFile( fileName );
+    return result.saveFile( fileName );
 }
 
 std::shared_ptr<SingleBandRaster> AbstractViewshed::resultRaster( int index ) { return mResults->at( index ); }
 
-void AbstractViewshed::saveResults( std::string location, std::string fileNamePrefix )
+bool AbstractViewshed::saveResults( std::string location, std::string fileNamePrefix )
 {
     std::string filePath;
     std::string fileName;
+
+    bool allSaved = true;
 
     for ( std::size_t i = 0; i < mVisibilityIndices->size(); i++ )
     {
@@ -269,8 +277,14 @@ void AbstractViewshed::saveResults( std::string location, std::string fileNamePr
         }
         filePath = location + "/" + fileName;
 
-        mResults->at( i )->saveFile( filePath );
+        if ( !mResults->at( i )->saveFile( filePath ) )
+        {
+            recordTaskError( "Could not save raster " + filePath );
+            allSaved = false;
+        }
     }
+
+    return allSaved;
 };
 
 OGRPoint AbstractViewshed::point( int row, int col )
@@ -371,7 +385,22 @@ std::vector<LoSNode> AbstractViewshed::prepareLoSWithPoint( OGRPoint point )
     return losNodes;
 }
 
-void AbstractViewshed::saveVisibilityRaster( std::string filePath ) { mVisibilityRaster->saveFile( filePath ); };
+bool AbstractViewshed::saveVisibilityRaster( std::string filePath )
+{
+    if ( !mVisibilityRaster )
+    {
+        recordTaskError( "Visibility raster does not exist, call calculateVisibilityRaster() first." );
+        return false;
+    }
+
+    if ( !mVisibilityRaster->saveFile( filePath ) )
+    {
+        recordTaskError( "Could not save raster " + filePath );
+        return false;
+    }
+
+    return true;
+};
 
 void AbstractViewshed::calculateVisibilityMask()
 {

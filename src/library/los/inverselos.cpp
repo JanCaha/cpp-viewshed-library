@@ -87,8 +87,7 @@ int InverseLoS::resultRow() { return mVp->mRow; }
 
 int InverseLoS::resultCol() { return mVp->mCol; }
 
-// TODO fix !!!!!
-bool InverseLoS::isValid() { return true; }
+bool InverseLoS::isValid() { return mVp->isValid() && mTp->isValid(); }
 
 void InverseLoS::fixDistancesAngles()
 {

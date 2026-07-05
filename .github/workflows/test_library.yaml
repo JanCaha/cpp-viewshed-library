@@ -8,7 +8,7 @@ on: [push, pull_request]
 
 jobs:
   Tests-Viewshed-library:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
 
     env:
       DEBIAN_FRONTEND: "noninteractive"
@@ -24,13 +24,12 @@ jobs:
 
       - name: Install GDAL
         run: |
-          sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
           sudo apt update
           sudo apt-get -y install gdal-bin libgdal-dev
 
       - name: Install Qt
         run: |
-          sudo apt-get install qtbase5-dev qtbase5-dev-tools qtdeclarative5-dev libqt5svg5-dev
+          sudo apt-get install qt6-base-dev qt6-base-dev-tools
 
       - uses: actions/checkout@v6
         with:

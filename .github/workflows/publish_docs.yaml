@@ -1,0 +1,56 @@
+name: Publish Documentation
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+on:
+  release:
+    types:
+      - created
+      - published
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  Publish-Documentation:
+    runs-on: ubuntu-26.04
+
+    env:
+      DEBIAN_FRONTEND: "noninteractive"
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install ninja-build doxygen gdal-bin libgdal-dev qt6-base-dev qt6-base-dev-tools
+
+      - uses: actions/checkout@v6
+        with:
+          repository: "JanCaha/cpp-simplerasters"
+          path: "cpp-simplerasters"
+
+      - name: Install simplerasters
+        run: |
+          cd cpp-simplerasters
+          sudo cmake --workflow --preset workflow-release-install
+          cd ..
+          sudo rm -rf cpp-simplerasters
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Build documentation
+        run: |
+          cmake --preset configure-release-install
+          cmake --build build/configure-release-install --target run_doxygen
+
+      - name: Deploy documentation
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/configure-release-install/docs/html

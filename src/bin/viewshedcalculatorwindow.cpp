@@ -2,6 +2,8 @@
 #include <chrono>
 #include <fstream>
 
+#include <QMessageBox>
+
 #include "abstractviewshedalgorithm.h"
 #include "inverseviewshed.h"
 #include "point.h"
@@ -202,11 +204,8 @@ void MainCalculatorWindow::initGui()
 
     connect( mViewshedType, qOverload<int>( &QComboBox::currentIndexChanged ), this,
              &MainCalculatorWindow::saveSettings );
-    // Qt 6
-    // connect( mNoDataForInvisible, &QCheckBox::checkStateChanged, this, &MainCalculatorWindow::saveSettings );
-    // connect( mCurvatureCorrections, &QCheckBox::checkStateChanged, this, &MainCalculatorWindow::saveSettings );
-    connect( mNoDataForInvisible, &QCheckBox::stateChanged, this, &MainCalculatorWindow::saveSettings );
-    connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainCalculatorWindow::saveSettings );
+    connect( mNoDataForInvisible, &QCheckBox::toggled, this, &MainCalculatorWindow::saveSettings );
+    connect( mCurvatureCorrections, &QCheckBox::toggled, this, &MainCalculatorWindow::saveSettings );
 
     connect( mRefractionCoefficient, &QLineEdit::textChanged, this, &MainCalculatorWindow::saveSettings );
     connect( mEarthDiameter, &QLineEdit::textChanged, this, &MainCalculatorWindow::saveSettings );
@@ -454,6 +453,8 @@ void MainCalculatorWindow::calculateViewshed()
     mProgressBar->setRange( 0, 100 );
     mProgressBar->setValue( 0 );
 
+    QString errorText;
+
     if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeClassicViewshed )
     {
         std::shared_ptr<Point> vp =
@@ -469,7 +470,10 @@ void MainCalculatorWindow::calculateViewshed()
 
         mProgressBar->setValue( 100 );
 
-        v.saveResults( mFolderWidget->filePath().toStdString() );
+        if ( !v.saveResults( mFolderWidget->filePath().toStdString() ) || v.hasError() )
+        {
+            errorText = QString::fromStdString( v.errorMessage() );
+        }
     }
     else if ( mViewshedType->currentData( Qt::UserRole ) == ViewshedType::TypeInverseViewshed )
     {
@@ -487,15 +491,26 @@ void MainCalculatorWindow::calculateViewshed()
 
         mProgressBar->setValue( 100 );
 
-        iv.saveResults( mFolderWidget->filePath().toStdString(), "Inverse" );
+        if ( !iv.saveResults( mFolderWidget->filePath().toStdString(), "Inverse" ) || iv.hasError() )
+        {
+            errorText = QString::fromStdString( iv.errorMessage() );
+        }
     }
 
     mCalculateButton->setEnabled( true );
 
     milliseconds elapsed = duration_cast<milliseconds>( steady_clock::now() - startTime );
 
-    statusBar()->showMessage( QString( "Calculation lasted: %1 seconds." ).arg( elapsed.count() / (double)1000 ),
-                              5 * 60 * 1000 );
+    if ( errorText.isEmpty() )
+    {
+        statusBar()->showMessage( QString( "Calculation lasted: %1 seconds." ).arg( elapsed.count() / (double)1000 ),
+                                  5 * 60 * 1000 );
+    }
+    else
+    {
+        statusBar()->showMessage( QString( "Calculation failed: %1" ).arg( errorText ), 5 * 60 * 1000 );
+        QMessageBox::critical( this, QStringLiteral( "Error" ), errorText );
+    }
 
     std::ofstream timingTextFile;
     QString filename = mFolderWidget->filePath() + QString( "/timing.txt" );

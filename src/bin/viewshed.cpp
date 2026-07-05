@@ -127,7 +127,15 @@ int main( int argc, char *argv[] )
 
     v.calculate( printTimeInfo, printProgressInfo );
 
-    v.saveResults( resultFolder.toStdString() );
+    if ( v.hasError() )
+    {
+        exitWithError( "Error: " + v.errorMessage(), parser );
+    }
+
+    if ( !v.saveResults( resultFolder.toStdString() ) )
+    {
+        exitWithError( "Error: " + v.errorMessage(), parser );
+    }
 
     return 0;
 }

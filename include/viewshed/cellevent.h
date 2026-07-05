@@ -26,7 +26,7 @@ namespace viewshed
 
         CellEvent( CellEventPositionType eventType, int row, int col, double dist, double angle, double elevation[3] );
 
-        bool operator<( const CellEvent other ) const;
-        bool operator==( const CellEvent other ) const;
+        bool operator<( const CellEvent &other ) const;
+        bool operator==( const CellEvent &other ) const;
     };
 } // namespace viewshed

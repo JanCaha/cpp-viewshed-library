@@ -28,13 +28,13 @@ CellEvent::CellEvent( CellEventPositionType eventType, int row, int col, double 
     mElevation[CellEventPositionType::EXIT] = elevation[CellEventPositionType::EXIT];
 }
 
-bool CellEvent::operator==( const CellEvent other ) const
+bool CellEvent::operator==( const CellEvent &other ) const
 {
     return mRow == other.mRow && mCol == other.mCol && mEventType == other.mEventType &&
            mBehindTargetForInverseLoS == other.mBehindTargetForInverseLoS;
 }
 
-bool CellEvent::operator<( const CellEvent other ) const
+bool CellEvent::operator<( const CellEvent &other ) const
 {
 
     if ( mRow == other.mRow && mCol == other.mCol && mEventType == other.mEventType && mBehindTargetForInverseLoS &&

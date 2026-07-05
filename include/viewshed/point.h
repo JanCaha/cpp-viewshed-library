@@ -45,9 +45,11 @@ namespace viewshed
          */
         Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint = OBSERVER_OFFSET );
 
-        double mX, mY;
-        double mElevation, mOffset;
-        double mCellSize;
+        double mX = 0;
+        double mY = 0;
+        double mElevation = 0;
+        double mOffset = 0;
+        double mCellSize = 0;
 
         /**
          * @brief Combination of elevation plus offset;
@@ -71,7 +73,7 @@ namespace viewshed
         bool isValid();
 
       protected:
-        bool mValid;
+        bool mValid = false;
 
         void setUp( OGRPoint point, std::shared_ptr<SingleBandRaster> dem );
         void setUp( int row, int col, std::shared_ptr<SingleBandRaster> dem );

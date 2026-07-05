@@ -2,6 +2,8 @@
 #include "viewshed_export.h"
 
 #include <limits>
+#include <mutex>
+#include <string>
 
 #include "BS_thread_pool.hpp"
 
@@ -40,6 +42,8 @@ namespace viewshed
     class DLL_API AbstractViewshed
     {
       public:
+        virtual ~AbstractViewshed() = default;
+
         /**
          * @brief Create event list for line sweep algorithm from input raster.
          *
@@ -60,8 +64,12 @@ namespace viewshed
          */
         void parseEventList( std::function<void( int, int )> progressCallback = []( int, int ) {} );
 
-        void extractValuesFromEventList();
-        void extractValuesFromEventList( std::shared_ptr<ProjectedSquareCellRaster> dem_, std::string fileName,
+        /**
+         * @brief Extract values from event list into a raster and save it to file.
+         *
+         * @return true if the raster was successfully saved, false otherwise.
+         */
+        bool extractValuesFromEventList( std::shared_ptr<ProjectedSquareCellRaster> dem_, std::string fileName,
                                          std::function<double( LoSNode )> func );
 
         /**
@@ -152,8 +160,9 @@ namespace viewshed
          *
          * @param location
          * @param fileNamePrefix
+         * @return true if all rasters were successfully saved, false if any save failed.
          */
-        void saveResults( std::string location, std::string fileNamePrefix = "" );
+        bool saveResults( std::string location, std::string fileNamePrefix = "" );
 
         /**
          * @brief Create \a LoSNode from \a OGRPoint.
@@ -192,6 +201,37 @@ namespace viewshed
          * @return long
          */
         long numberOfCellEvents() { return mCellEvents.size(); };
+
+        /**
+         * @brief Check if the viewshed is valid, meaning that the important point is valid.
+         *
+         * @return true
+         * @return false
+         */
+        bool isValid() { return mValid; };
+
+        /**
+         * @brief Check if an error occurred during calculation (e.g. in one of the worker threads).
+         *
+         * @return true
+         * @return false
+         */
+        bool hasError()
+        {
+            std::lock_guard<std::mutex> lock( mTaskErrorMutex );
+            return !mTaskError.empty();
+        }
+
+        /**
+         * @brief Message of the first error that occurred during calculation, empty string if there was none.
+         *
+         * @return std::string
+         */
+        std::string errorMessage()
+        {
+            std::lock_guard<std::mutex> lock( mTaskErrorMutex );
+            return mTaskError;
+        }
 
         /**
          * @brief Set the Visibility Mask for viewshed calculation.
@@ -304,8 +344,9 @@ namespace viewshed
          * @brief Save visibility raster to file.
          *
          * @param filePath
+         * @return true if the raster was successfully saved, false otherwise.
          */
-        void saveVisibilityRaster( std::string filePath );
+        bool saveVisibilityRaster( std::string filePath );
 
         /**
          * @brief Calculate visibility mask raster.
@@ -378,8 +419,34 @@ namespace viewshed
          */
         int mMaxNumberOfTasks = 100;
 
-        double mCellSize;
-        double mValid;
+        double mCellSize = 0;
+        bool mValid = false;
+
+        /**
+         * @brief Guards access to mTaskError, which can be written from worker threads.
+         *
+         */
+        std::mutex mTaskErrorMutex;
+
+        /**
+         * @brief First error that occurred during calculation, empty if there was none.
+         *
+         */
+        std::string mTaskError;
+
+        /**
+         * @brief Store error message from a calculation task, keeping only the first one recorded.
+         *
+         */
+        void recordTaskError( const std::string &message )
+        {
+            std::lock_guard<std::mutex> lock( mTaskErrorMutex );
+            if ( mTaskError.empty() )
+            {
+                mTaskError = message;
+            }
+        }
+
         bool mCurvatureCorrections = false;
         double mEarthDiameter = EARTH_DIAMETER;
         double mRefractionCoefficient = REFRACTION_COEFFICIENT;

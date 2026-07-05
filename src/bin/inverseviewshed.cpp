@@ -131,7 +131,15 @@ int main( int argc, char *argv[] )
 
     iv.calculate( printTimeInfo, printProgressInfo );
 
-    iv.saveResults( resultFolder.toStdString(), "Inverse" );
+    if ( iv.hasError() )
+    {
+        exitWithError( "Error: " + iv.errorMessage(), parser );
+    }
+
+    if ( !iv.saveResults( resultFolder.toStdString(), "Inverse" ) )
+    {
+        exitWithError( "Error: " + iv.errorMessage(), parser );
+    }
 
     return 0;
 }
