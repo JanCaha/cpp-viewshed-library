@@ -55,6 +55,13 @@ macro(library_settings target_name)
     
     set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
 
+    if(NOT target_type STREQUAL "STATIC_LIBRARY")
+        set_target_properties(${target_name} PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+    endif()
+
+    # public headers use C++20 (std::numbers), consumers must inherit the requirement
+    target_compile_features(${target_name} PUBLIC cxx_std_20)
+
     include(GNUInstallDirs)
 
     target_include_directories(${target_name} PUBLIC 
