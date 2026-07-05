@@ -89,7 +89,23 @@ void InverseViewshed::submitToThreadpool( const CellEvent &e )
     los->setViewPoint( poi, mObserverOffset );
     los->applyCurvatureCorrections( mCurvatureCorrections, mRefractionCoefficient, mEarthDiameter );
 
-    mThreadPool.detach_task( std::bind( viewshed::evaluateLoS, los, mVisibilityIndices, mResults ) );
+    // an uncaught exception in a detached task would call std::terminate, record it instead
+    mThreadPool.detach_task(
+        [this, los]()
+        {
+            try
+            {
+                viewshed::evaluateLoS( los, mVisibilityIndices, mResults );
+            }
+            catch ( const std::exception &e )
+            {
+                recordTaskError( e.what() );
+            }
+            catch ( ... )
+            {
+                recordTaskError( "Unknown error while evaluating LoS." );
+            }
+        } );
 }
 
 void InverseViewshed::addEventsFromCell( int &row, int &column, const double &pixelValue, bool &solveCell )
