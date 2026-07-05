@@ -82,10 +82,16 @@ void LoSEvaluator::parseNodes()
     }
 
     // if last point on LoS is visible and higher then global horizon, then move global horizon to this point
-    if ( mLos->gradient( mLos->numberOfNodes() - 1 ) > mLos->gradient( mLosValues->indexHorizon ) &&
-         mLos->gradient( mLos->numberOfNodes() - 1 ) > mLosValues->maxGradient )
+    if ( mLos->numberOfNodes() > 0 )
     {
-        mLosValues->indexHorizon = mLos->numberOfNodes() - 1;
+        double lastGradient = mLos->gradient( mLos->numberOfNodes() - 1 );
+        bool higherThanHorizon =
+            mLosValues->indexHorizon < 0 || lastGradient > mLos->gradient( mLosValues->indexHorizon );
+
+        if ( higherThanHorizon && lastGradient > mLosValues->maxGradient )
+        {
+            mLosValues->indexHorizon = mLos->numberOfNodes() - 1;
+        }
     }
 
     mAlreadyParsed = true;
