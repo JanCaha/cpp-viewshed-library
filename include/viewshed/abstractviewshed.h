@@ -194,6 +194,14 @@ namespace viewshed
         long numberOfCellEvents() { return mCellEvents.size(); };
 
         /**
+         * @brief Check if the viewshed is valid, meaning that the important point is valid.
+         *
+         * @return true
+         * @return false
+         */
+        bool isValid() { return mValid; };
+
+        /**
          * @brief Set the Visibility Mask for viewshed calculation.
          *
          * @param mask
@@ -379,7 +387,7 @@ namespace viewshed
         int mMaxNumberOfTasks = 100;
 
         double mCellSize;
-        double mValid;
+        bool mValid = false;
         bool mCurvatureCorrections = false;
         double mEarthDiameter = EARTH_DIAMETER;
         double mRefractionCoefficient = REFRACTION_COEFFICIENT;

@@ -43,6 +43,13 @@ void AbstractViewshed::initEventList()
     mLosNodes.clear();
     mValidCells = 0;
 
+    if ( !mPoint || !mPoint->isValid() )
+    {
+        mTimeInit =
+            std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::steady_clock::now() - startTime );
+        return;
+    }
+
     if ( mInverseViewshed )
     {
         mCellEvents.reserve( mInputDsm->height() * mInputDsm->width() * 5 );

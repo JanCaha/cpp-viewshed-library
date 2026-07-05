@@ -56,7 +56,7 @@ void Point::setUp( int row, int col, std::shared_ptr<SingleBandRaster> dem )
     dem->transformCoordinatesToWorld( mRow, mCol, mX, mY );
 
     mElevation = dem->value( mRow, mCol );
-    mValid = dem->isNoData( mRow, mCol );
+    mValid = !dem->isNoData( mRow, mCol );
 }
 
 double Point::totalElevation() { return mElevation + mOffset; }

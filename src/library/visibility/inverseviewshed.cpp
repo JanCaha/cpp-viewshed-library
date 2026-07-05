@@ -42,7 +42,7 @@ InverseViewshed::InverseViewshed( std::shared_ptr<Point> targetPoint, double obs
 
     mObserverOffset = observerOffset;
 
-    mValid = true;
+    mValid = mPoint && mPoint->isValid();
 }
 
 std::shared_ptr<InverseLoS> InverseViewshed::getLoS( OGRPoint point, bool onlyToPoi )
