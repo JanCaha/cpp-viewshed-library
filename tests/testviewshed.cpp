@@ -115,6 +115,21 @@ TEST_F( ViewshedTest, testCalculateVisibilityMask )
     v.saveVisibilityRaster( TEST_DATA_RESULTS_VISIBILITY_RASTER );
 }
 
+TEST_F( ViewshedTest, invalidViewpointProducesNoEvents )
+{
+    // A viewpoint outside the DEM extent is invalid, which makes the whole
+    // viewshed invalid and initEventList produces zero events.
+    auto invalidVp = std::make_shared<Point>( OGRPoint( 0.0, 0.0 ), dem );
+    ASSERT_FALSE( invalidVp->isValid() );
+
+    Viewshed v( invalidVp, dem, algs );
+    ASSERT_FALSE( v.isValid() );
+
+    v.initEventList();
+
+    ASSERT_EQ( v.numberOfCellEvents(), 0 );
+}
+
 int main( int argc, char **argv )
 {
     testing::InitGoogleTest( &argc, argv );
