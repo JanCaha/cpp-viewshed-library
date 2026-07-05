@@ -202,11 +202,8 @@ void MainCalculatorWindow::initGui()
 
     connect( mViewshedType, qOverload<int>( &QComboBox::currentIndexChanged ), this,
              &MainCalculatorWindow::saveSettings );
-    // Qt 6
-    // connect( mNoDataForInvisible, &QCheckBox::checkStateChanged, this, &MainCalculatorWindow::saveSettings );
-    // connect( mCurvatureCorrections, &QCheckBox::checkStateChanged, this, &MainCalculatorWindow::saveSettings );
-    connect( mNoDataForInvisible, &QCheckBox::stateChanged, this, &MainCalculatorWindow::saveSettings );
-    connect( mCurvatureCorrections, &QCheckBox::stateChanged, this, &MainCalculatorWindow::saveSettings );
+    connect( mNoDataForInvisible, &QCheckBox::toggled, this, &MainCalculatorWindow::saveSettings );
+    connect( mCurvatureCorrections, &QCheckBox::toggled, this, &MainCalculatorWindow::saveSettings );
 
     connect( mRefractionCoefficient, &QLineEdit::textChanged, this, &MainCalculatorWindow::saveSettings );
     connect( mEarthDiameter, &QLineEdit::textChanged, this, &MainCalculatorWindow::saveSettings );

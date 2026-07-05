@@ -12,21 +12,23 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - cmake
+    - ninja
     - pthread-stubs
     - libgdal
     - libsimplerasters
-    - qt-main 5.*
+    - qt6-main
     - mesalib # [unix]
   host:
     - pthread-stubs
     - libgdal
     - libsimplerasters
-    - qt-main 5.*
+    - qt6-main
     - mesalib # [unix]
   run:
     - libgdal
     - libsimplerasters
-    - qt-main 5.*
+    - qt6-main
     - mesalib # [unix]
 
 test:

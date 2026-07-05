@@ -33,24 +33,19 @@ find_package(SimpleRasters REQUIRED)
 if(NEEDS_QT)
     set(CMAKE_AUTOMOC TRUE)
 
-    find_package(Qt5 COMPONENTS Core Xml Test REQUIRED)
-    # find_package(Qt6 COMPONENTS Core Xml Test REQUIRED)
+    find_package(Qt6 COMPONENTS Core Test REQUIRED)
 
     set(QT_LIBS
-        Qt5::Core
-        # Qt6::Core
+        Qt6::Core
     )
 
     if(BUILD_GUI_APP)
-        find_package(Qt5 COMPONENTS Core Widgets Xml Gui Test REQUIRED)
-        # find_package(Qt6 COMPONENTS Core Widgets Xml Gui Test REQUIRED)
+        find_package(Qt6 COMPONENTS Core Widgets Gui Test REQUIRED)
 
         set(QT_LIBS
             ${QT_LIBS}
-            Qt5::Gui
-            Qt5::Widgets
-            # Qt6::Gui
-            # Qt6::Widgets
+            Qt6::Gui
+            Qt6::Widgets
         )
     endif()
 
