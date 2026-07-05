@@ -44,11 +44,14 @@ TEST( ViewPoint, constructOutsideFarAway )
 
 TEST( ViewPoint, manualConstructRejectsNegativePosition )
 {
-    // Point(row, col, elevation, offset, cellSize) sets mValid = true unconditionally.
-    // A caller using negative row/col (clearly outside any raster) still gets isValid() == true.
+    // Point(row, col, elevation, offset, cellSize) cannot check bounds against a raster,
+    // but negative row/col is outside any raster and must produce an invalid point.
     auto dem = std::make_shared<ProjectedSquareCellRaster>( TEST_DATA_DSM );
     Point vp( -1, -1, 1000.0, 1.6, dem->xCellSize() );
-    ASSERT_TRUE( vp.isValid() );
+    ASSERT_FALSE( vp.isValid() );
+
+    Point validVp( 5, 5, 1000.0, 1.6, dem->xCellSize() );
+    ASSERT_TRUE( validVp.isValid() );
 }
 
 TEST( ValidateRaster, nullPointer )
