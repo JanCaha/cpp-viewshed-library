@@ -40,6 +40,8 @@ namespace viewshed
     class DLL_API AbstractViewshed
     {
       public:
+        virtual ~AbstractViewshed() = default;
+
         /**
          * @brief Create event list for line sweep algorithm from input raster.
          *

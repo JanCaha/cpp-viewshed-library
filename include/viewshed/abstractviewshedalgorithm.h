@@ -18,6 +18,8 @@ namespace viewshed
     class DLL_API AbstractViewshedAlgorithm
     {
       public:
+        virtual ~AbstractViewshedAlgorithm() = default;
+
         /**
          * @brief Extract resulting value based on LoSImportantValues and specific los.
          *

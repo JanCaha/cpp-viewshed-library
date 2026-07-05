@@ -24,6 +24,8 @@ namespace viewshed
     class DLL_API AbstractLoS : public std::vector<LoSNode>
     {
       public:
+        virtual ~AbstractLoS() = default;
+
         /**
          * @brief Set the View Point object directly from Point with offset specified as part of this object.
          *
