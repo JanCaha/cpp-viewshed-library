@@ -386,7 +386,7 @@ namespace viewshed
          */
         int mMaxNumberOfTasks = 100;
 
-        double mCellSize;
+        double mCellSize = 0;
         bool mValid = false;
         bool mCurvatureCorrections = false;
         double mEarthDiameter = EARTH_DIAMETER;
