@@ -7,6 +7,4 @@ digraph "viewshed::CellEvent"
   Node1 [id="Node000001",label="viewshed::CellEvent",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Class representing cell events for Van Kreveld's plane sweep algorithm. Stores cell position (row and..."];
   Node2 -> Node1 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
   Node2 [id="Node000002",label="viewshed::RasterPosition",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classviewshed_1_1RasterPosition.html",tooltip="Class to represent position on raster in term of row and column."];
-  Node3 -> Node1 [id="edge2_Node000001_Node000003",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" mEventType",fontcolor="grey" ];
-  Node3 [id="Node000003",label="CellEventPositionType",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
 }

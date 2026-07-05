@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['multi_5ffuture_0',['multi_future',['../classBS_1_1multi__future.html',1,'BS']]]
+  ['point_0',['Point',['../classPoint.html',1,'Point'],['../classviewshed_1_1Point.html',1,'viewshed::Point']]]
 ];
