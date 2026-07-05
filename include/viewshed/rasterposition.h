@@ -13,6 +13,7 @@ namespace viewshed
       public:
         RasterPosition(){};
 
-        int mRow, mCol;
+        int mRow = -1;
+        int mCol = -1;
     };
 } // namespace viewshed
