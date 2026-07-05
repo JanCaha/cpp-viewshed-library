@@ -8,7 +8,7 @@ on: [push, pull_request]
 
 jobs:
   Tests-Viewshed-library:
-    runs-on: ubuntu-26.04s
+    runs-on: ubuntu-26.04
 
     env:
       DEBIAN_FRONTEND: "noninteractive"
