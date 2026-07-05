@@ -16,7 +16,7 @@ Point::Point( int row, int col, double elevation, double offset, double cellSize
     mOffset = offset;
     mCellSize = cellSize;
 
-    mValid = true;
+    mValid = 0 <= mRow && 0 <= mCol;
 }
 
 Point::Point( OGRPoint point, std::shared_ptr<SingleBandRaster> dem, double offsetAtPoint )
