@@ -42,7 +42,7 @@ TEST( ViewPoint, constructOutsideFarAway )
     ASSERT_FALSE( vp.isValid() );
 }
 
-TEST( ViewPoint, manualConstructSkipsBoundsCheck )
+TEST( ViewPoint, manualConstructRejectsNegativePosition )
 {
     // Point(row, col, elevation, offset, cellSize) sets mValid = true unconditionally.
     // A caller using negative row/col (clearly outside any raster) still gets isValid() == true.
