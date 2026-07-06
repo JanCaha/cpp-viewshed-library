@@ -34,32 +34,35 @@ bool CellEvent::operator==( const CellEvent &other ) const
            mBehindTargetForInverseLoS == other.mBehindTargetForInverseLoS;
 }
 
+// order of events at equal angle: EXIT first, then CENTER, then ENTER
+static int eventTypeSortRank( CellEventPositionType eventType )
+{
+    switch ( eventType )
+    {
+        case CellEventPositionType::EXIT:
+            return 0;
+        case CellEventPositionType::CENTER:
+            return 1;
+        default:
+            return 2;
+    }
+}
+
+// must be a strict weak ordering, otherwise std::sort is undefined behaviour
+// (the previous version returned true for `a<a` on EXIT events with equal angles,
+// which made std::sort in libc++ on macOS read out of bounds and segfault)
 bool CellEvent::operator<( const CellEvent &other ) const
 {
-
-    if ( mRow == other.mRow && mCol == other.mCol && mEventType == other.mEventType && mBehindTargetForInverseLoS &&
-         other.mBehindTargetForInverseLoS )
-        return false;
-
-    if ( mAngle > other.mAngle )
-    {
-        return false;
-    }
-    else if ( mAngle < other.mAngle )
+    if ( mAngle < other.mAngle )
     {
         return true;
     }
-    else
+
+    if ( other.mAngle < mAngle )
     {
-        /*a.angle == b.angle */
-        if ( mEventType == CellEventPositionType::EXIT )
-            return true;
-        if ( other.mEventType == CellEventPositionType::EXIT )
-            return false;
-        if ( mEventType == CellEventPositionType::ENTER )
-            return false;
-        if ( other.mEventType == CellEventPositionType::ENTER )
-            return true;
         return false;
     }
+
+    /*a.angle == b.angle */
+    return eventTypeSortRank( mEventType ) < eventTypeSortRank( other.mEventType );
 }
