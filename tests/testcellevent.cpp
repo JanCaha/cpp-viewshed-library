@@ -112,6 +112,89 @@ TEST_F( CellEventTest, testCellEventCreation2 )
     ASSERT_NEAR( c.mAngle, 3.926990, 0.000001 );
 }
 
+CellEvent makeEvent( CellEventPositionType type, int row, int col, double angle )
+{
+    double elevs[3] = { 1000, 1000, 1000 };
+    return CellEvent( type, row, col, 1.0, angle, elevs );
+}
+
+// operator< is used by std::sort in AbstractViewshed::sortEventList and must therefore
+// be a strict weak ordering, otherwise the sort is undefined behaviour
+// (it segfaults with libc++ on macOS)
+
+TEST( CellEventComparison, irreflexivity )
+{
+    // a < a must always be false
+    CellEvent enter = makeEvent( CellEventPositionType::ENTER, 5, 5, 0.785398 );
+    CellEvent center = makeEvent( CellEventPositionType::CENTER, 5, 5, 0.785398 );
+    CellEvent exit = makeEvent( CellEventPositionType::EXIT, 5, 5, 0.785398 );
+
+    ASSERT_FALSE( enter < enter );
+    ASSERT_FALSE( center < center );
+    ASSERT_FALSE( exit < exit );
+}
+
+TEST( CellEventComparison, asymmetry )
+{
+    // a < b and b < a must never both be true
+    // events of the same type with equal angles exist for cells on the same ray from the viewpoint
+    CellEvent exitA = makeEvent( CellEventPositionType::EXIT, 5, 5, 0.785398 );
+    CellEvent exitB = makeEvent( CellEventPositionType::EXIT, 10, 10, 0.785398 );
+
+    ASSERT_FALSE( ( exitA < exitB ) && ( exitB < exitA ) );
+
+    CellEvent enterA = makeEvent( CellEventPositionType::ENTER, 5, 5, 0.785398 );
+    CellEvent enterB = makeEvent( CellEventPositionType::ENTER, 10, 10, 0.785398 );
+
+    ASSERT_FALSE( ( enterA < enterB ) && ( enterB < enterA ) );
+
+    CellEvent centerA = makeEvent( CellEventPositionType::CENTER, 5, 5, 0.785398 );
+    CellEvent centerB = makeEvent( CellEventPositionType::CENTER, 10, 10, 0.785398 );
+
+    ASSERT_FALSE( ( centerA < centerB ) && ( centerB < centerA ) );
+}
+
+TEST( CellEventComparison, behindTargetDuplicatesAreEquivalent )
+{
+    // InverseViewshed creates at most one behind-target event per cell and type,
+    // so two events matching on row, col and type always share the same angle
+    // and neither may compare less than the other
+    CellEvent a = makeEvent( CellEventPositionType::EXIT, 5, 5, 0.785398 );
+    a.mBehindTargetForInverseLoS = true;
+
+    CellEvent b = makeEvent( CellEventPositionType::EXIT, 5, 5, 0.785398 );
+    b.mBehindTargetForInverseLoS = true;
+
+    ASSERT_FALSE( a < b );
+    ASSERT_FALSE( b < a );
+}
+
+TEST( CellEventComparison, orderedByAngle )
+{
+    CellEvent smallerAngle = makeEvent( CellEventPositionType::ENTER, 5, 5, 0.5 );
+    CellEvent largerAngle = makeEvent( CellEventPositionType::EXIT, 10, 10, 1.5 );
+
+    ASSERT_TRUE( smallerAngle < largerAngle );
+    ASSERT_FALSE( largerAngle < smallerAngle );
+}
+
+TEST( CellEventComparison, equalAngleOrderedByEventType )
+{
+    // at equal angle the order is EXIT, CENTER, ENTER
+    CellEvent enter = makeEvent( CellEventPositionType::ENTER, 5, 5, 0.785398 );
+    CellEvent center = makeEvent( CellEventPositionType::CENTER, 10, 10, 0.785398 );
+    CellEvent exit = makeEvent( CellEventPositionType::EXIT, 15, 15, 0.785398 );
+
+    ASSERT_TRUE( exit < center );
+    ASSERT_FALSE( center < exit );
+
+    ASSERT_TRUE( center < enter );
+    ASSERT_FALSE( enter < center );
+
+    ASSERT_TRUE( exit < enter );
+    ASSERT_FALSE( enter < exit );
+}
+
 int main( int argc, char **argv )
 {
     testing::InitGoogleTest( &argc, argv );
