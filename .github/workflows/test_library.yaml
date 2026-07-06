@@ -57,3 +57,42 @@ jobs:
       - name: Install
         run: |
           sudo cmake --workflow --preset workflow-release-install
+
+  Tests-Viewshed-library-macos:
+    runs-on: macos-latest
+
+    env:
+      QT_QPA_PLATFORM: "offscreen"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CMAKE_PREFIX_PATH: "/opt/homebrew/opt/qt@6"
+
+    steps:
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install ninja doxygen googletest gdal qt@6
+
+      - uses: actions/checkout@v6
+        with:
+          repository: "JanCaha/cpp-simplerasters"
+          path: "cpp-simplerasters"
+
+      - name: Install simplerasters
+        run: |
+          cd cpp-simplerasters
+          sudo cmake --workflow --preset workflow-release-install
+          cd ..
+          sudo rm -rf cpp-simplerasters
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Test
+        run: |
+          cmake --workflow --preset workflow-debug-tests
+
+      - name: Install
+        run: |
+          sudo cmake --workflow --preset workflow-release-install
