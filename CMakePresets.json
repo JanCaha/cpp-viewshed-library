@@ -29,7 +29,7 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
                 "BUILD_TESTS": "OFF",
-                "CMAKE_INSTALL_PREFIX": "/usr",
+                "CMAKE_INSTALL_PREFIX": "/usr/local",
                 "BUILD_DOCUMENTATION": "ON"
             }
         }
